@@ -18,4 +18,8 @@ class PLCModuleFlowChart extends Model
     public function plc_module(){
         return $this->hasOne(PLCModule::class, 'id', 'rev_history_id');
     }
+
+    public function plc_categories_details(){
+        return $this->hasOne(PlcCategory::class, 'id', 'category');
+    }
 }

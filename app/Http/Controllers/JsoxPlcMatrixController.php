@@ -31,7 +31,20 @@ class JsoxPlcMatrixController extends Controller
                 $result .= '</center>';
                 return $result;
         })
+        ->addColumn('documentsxz', function($jsox_plc_matrix){
+            $exploded_document = explode("^",$jsox_plc_matrix->document);
 
+
+            $result = "";
+            $counter = 1;
+            for($x=0; $x < count($exploded_document); $x++){
+
+                $result .=$exploded_document[$x]."<br>";
+
+                $counter++;
+            }
+            return $result;
+        }) 
         ->addColumn('action', function($jsox_plc_matrix){
             $result = "<center>";
             if($jsox_plc_matrix->status == 1){
@@ -44,7 +57,7 @@ class JsoxPlcMatrixController extends Controller
             $result .= '</center>';
             return $result;   
         })
-        ->rawColumns(['status', 'action']) // to format the added columns(status & action) as html format
+        ->rawColumns(['status', 'action','documentsxz']) // to format the added columns(status & action) as html format
         ->make(true);  
     }
 
@@ -64,10 +77,12 @@ class JsoxPlcMatrixController extends Controller
         
         $data = $request->all();
 
+        // return $data;
+        
         $rules = [
             'process_name'   => 'required|string|max:255',
             'control_no'   => 'required|string|max:255',
-            'document'   => 'required|string|max:255',
+            // 'document'   => 'required|string|max:255',
             'frequency'   => 'required|string|max:255',
             'samples'   => 'required|string|max:255',
             'in_charge'   => 'required|string|max:255',
@@ -77,15 +92,42 @@ class JsoxPlcMatrixController extends Controller
         // generate file name
 
         if($validator->passes()){
-                JsoxPlcMatrix::insert([
+            $insert_array = array(
                     'process_name' => $request->process_name,
                     'control_no'  => $request->control_no,
-                    'document' => $request->document,
+                    // 'document' => $request->document,
                     'frequency'  => $request->frequency,
                     'samples'  => $request->samples,
                     'in_charge'  => $request->in_charge,
                     'created_by'  => $request->created_by,
                     'created_at' => date('Y-m-d H:i:s')
+            );
+
+
+            $test = array();
+            $for_req = "document_";
+            if($request->document_number > 1){
+                for($x = 1; $x <= $request->document_number; $x++){
+                    array_push($test, $data[$for_req.$x]);
+                }
+                $imploded_document = implode($test,'^');
+
+                $insert_array['document'] = $imploded_document;
+            }
+            else{
+                $insert_array['document'] = $request->document_1;
+            }
+
+                JsoxPlcMatrix::insert([
+                    $insert_array
+                //     'process_name' => $request->process_name,
+                //     'control_no'  => $request->control_no,
+                //     'document' => $request->document,
+                //     'frequency'  => $request->frequency,
+                //     'samples'  => $request->samples,
+                //     'in_charge'  => $request->in_charge,
+                //     'created_by'  => $request->created_by,
+                //     'created_at' => date('Y-m-d H:i:s')
                 ]);
                 return response()->json(['result' => "1"]);
         }
@@ -97,7 +139,8 @@ class JsoxPlcMatrixController extends Controller
     //============================== GET CLC CATEGORY BY ID TO EDIT ==============================
     public function get_jsox_plc_matrix_by_id(Request $request){
         $jsox_plc_matrix = JsoxPlcMatrix::where('id', $request->jsox_plc_matrix_id)->get(); // get all reports where id is equal to the jsox_plc_matrix-id attribute of the action(Edit)
-        return response()->json(['jsox_plc_matrix' => $jsox_plc_matrix]);  // pass the $clc_category_id(variable) to ajax as a response for retrieving and pass the values on the inputs
+        $exploded_document = explode("^",$jsox_plc_matrix[0]->document);
+        return response()->json(['jsox_plc_matrix' => $jsox_plc_matrix, 'explodedDocument' => $exploded_document]);  // pass the $clc_category_id(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
     // ========================================= EDIT CLC EVIDENCE ===================================================
@@ -110,7 +153,7 @@ class JsoxPlcMatrixController extends Controller
         $rules = [
             'process_name' => 'required|string|max:255',
             'control_no'  => 'required|string|max:255',
-            'document' => 'required|string|max:255',
+            // 'document' => 'required|string|max:255',
             'frequency'  => 'required|string|max:255',
             'samples'  => 'required|string|max:255',
             'in_charge'  => 'required|string|max:255',
@@ -119,18 +162,44 @@ class JsoxPlcMatrixController extends Controller
         $validator = Validator::make($data, $rules);
 
         if($validator->passes()){
-                JsoxPlcMatrix::where('id', $request->jsox_plc_matrix_id)
-                ->update([
-                    'process_name' => $request->process_name,
-                    'control_no'  => $request->control_no,
-                    'document' => $request->document,
-                    'frequency'  => $request->frequency,
-                    'samples'  => $request->samples,
-                    'in_charge'  => $request->in_charge,
-                    'updated_by'  => $request->updated_by,
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
-                return response()->json(['result' => "1"]);
+            $update_array = array(
+                'process_name' => $request->process_name,
+                'control_no'  => $request->control_no,
+                // 'document' => $request->document,
+                'frequency'  => $request->frequency,
+                'samples'  => $request->samples,
+                'in_charge'  => $request->in_charge,
+                'created_by'  => $request->created_by,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $test = array();
+            $for_req = "document_";
+            if($request->document_number > 1){
+                for($x = 1; $x <= $request->document_number; $x++){
+                    array_push($test, $data[$for_req.$x]);
+                }
+                $imploded_document = implode($test,'^');
+
+                $update_array['document'] = $imploded_document;
+            }
+            else{
+                $update_array['document'] = $request->document_1;
+            }
+
+            JsoxPlcMatrix::where('id', $request->jsox_plc_matrix_id)
+            ->update(
+                $update_array
+                // 'process_name' => $request->process_name,
+                // 'control_no'  => $request->control_no,
+                // 'document' => $request->document,
+                // 'frequency'  => $request->frequency,
+                // 'samples'  => $request->samples,
+                // 'in_charge'  => $request->in_charge,
+                // 'updated_by'  => $request->updated_by,
+                // 'updated_at' => date('Y-m-d H:i:s')
+            );
+            return response()->json(['result' => "1"]);
         }
         else{
             return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);

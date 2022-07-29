@@ -15,6 +15,8 @@ class CreateTblPlcEvidences extends Migration
     {
         Schema::create('tbl_plc_evidences', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->String('year');
+            $table->String('fiscal_year');
             $table->String('plc_category');
             $table->String('plc_evidences');
             $table->String('date_uploaded');

@@ -104,6 +104,13 @@ Route::get('/get_plc_evidences_id', 'PlcEvidencesController@get_plc_evidences_id
 Route::post('/edit_plc_evidences', 'PlcEvidencesController@edit_plc_evidences');
 Route::post('/delete_reference_document', 'PlcEvidencesController@delete_reference_document');
 
+//========================== MATRIX CONTROLLER =============================//
+Route::get('/view_matrix', 'MatrixController@view_matrix');
+Route::post('/add_matrix', 'MatrixController@add_matrix');
+Route::get('/get_matrix_by_id', 'MatrixController@get_matrix_by_id');
+Route::post('/edit_matrix', 'MatrixController@edit_matrix');
+Route::post('/change_matrix_stat', 'MatrixController@change_matrix_stat')->name('change_matrix_stat');
+
 //========================== JSOX PLC MATRIX CONTROLLER =============================//
 Route::get('/view_jsox_plc_matrix', 'JsoxPlcMatrixController@view_jsox_plc_matrix');
 Route::get('/get_rapidx_user', 'JsoxPlcMatrixController@get_rapidx_user');
@@ -230,6 +237,10 @@ Route::get('/export_capa/{year_id}/{fiscal_year_id}/{dept_id}', 'PlcCapaControll
 Route::get('/export_clc_summary/{year_id}', 'ExportClcController@export_clc_summary');
 Route::get('/export_it_clc_summary/{year_id}', 'ExportItClcController@export_it_clc_summary');
 Route::get('/export_fcrp_clc_summary/{year_id}', 'ExportFcrpClcController@export_fcrp_clc_summary');
+
+
+Route::get('/export_summary/{year_id}/{select_category}', 'ExportSummaryController@export_summary');
+
 
 
 

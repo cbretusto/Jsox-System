@@ -25,18 +25,18 @@ class rollforward implements FromView, WithTitle, WithEvents
     use Exportable;
 
     protected $date;
-    // protected $factor_item_list;
+    protected $plc_module_rf_details;
     // protected $range1;
 
-    function __construct($date)
+    function __construct($date,$plc_module_rf_details)
     {
         $this->date = $date;
-        // $this->factor_item_list = $factor_item_list;
+        $this->plc_module_rf_details = $plc_module_rf_details;
     }
 
 
     public function view(): View {
-        return view('exports.roll_forward', ['date' => $this->date]);
+        return view('exports.roll_forward', ['date' => $this->date,'rf_details' => $this->plc_module_rf_details]);
     }
 
 
@@ -49,11 +49,21 @@ class rollforward implements FromView, WithTitle, WithEvents
     // for designs
     public function registerEvents(): array
     {
+        $get_rf_detais = $this->plc_module_rf_details;
 
         $style1 = array(
             'font' => array(
                 'name'      =>  'Arial',
-                'size'      =>  8,
+                'size'      =>  12,
+                // 'color'      =>  'red',
+                // 'italic'      =>  true
+            )
+        );
+
+        $stylex = array(
+            'font' => array(
+                'name'      =>  'Arial',
+                'size'      =>  10,
                 // 'color'      =>  'red',
                 // 'italic'      =>  true
             )
@@ -103,139 +113,119 @@ class rollforward implements FromView, WithTitle, WithEvents
         );
 
         return [
-            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5)  {
-
-                
-                // $event->sheet->getDelegate()->getStyle('A2')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('D1D1D1');
-
-                // $event->sheet->getDelegate()->getStyle('C2')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('9dc8e1');
-                // // 82b9d9
-                
-                // $event->sheet->getDelegate()->getStyle('C3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('9dc8e1');
-
-                // $event->sheet->getDelegate()->getStyle('D3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('9dc8e1');
-
-                // $event->sheet->getDelegate()->getStyle('E3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('9dc8e1');
-
-                // $event->sheet->getDelegate()->getStyle('F2')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('95aaf3'); 
-                // //  7e97f1
-                
-                // $event->sheet->getDelegate()->getStyle('F3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('95aaf3');
-
-                // $event->sheet->getDelegate()->getStyle('G3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('95aaf3');
-
-                // $event->sheet->getDelegate()->getStyle('H3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('95aaf3');
-
-                // $event->sheet->getDelegate()->getStyle('I2')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('78d869'); 
-                // //  7e97f1
-                
-                // $event->sheet->getDelegate()->getStyle('I3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('78d869');
-
-                // $event->sheet->getDelegate()->getStyle('J3')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('78d869');
-
-                // $event->sheet->getDelegate()->getStyle('K2')
-                // ->getFill()
-                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                // ->getStartColor()
-                // ->setARGB('D1D1D1');
+            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex,$get_rf_detais)  {
 
 
-                
 
-
-                
-
-                
 
                 $event->sheet->getDelegate()->getStyle('A1')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E3')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E4')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E5')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E6')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E7')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E8')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E9')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E10')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E11')->getAlignment()->setWrapText(true);
+                $event->sheet->getDelegate()->getStyle('E12')->getAlignment()->setWrapText(true);
                 $event->sheet->getDelegate()->getStyle('B2')->getAlignment()->setWrapText(true);
                 $event->sheet->getDelegate()->getStyle('D2')->getAlignment()->setWrapText(true);
-                
-                $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(35);
-                // $event->sheet->getDelegate()->getStyle('A1')->getFont()->setSize(16);
-                // $event->sheet->getDelegate()->getStyle('B1')->getFont()->setSize(16);
 
+                $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(35);
 
 
             $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($styleBorderAll);
-            
+
 
                 $event->sheet->getColumnDimension('A')->setWidth(20);
                 $event->sheet->getColumnDimension('B')->setWidth(15);
                 $event->sheet->getColumnDimension('C')->setWidth(40);
                 $event->sheet->getColumnDimension('D')->setWidth(25);
                 $event->sheet->getColumnDimension('E')->setWidth(50);
-        
+
 
 
                 $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($style1);
+                $event->sheet->getDelegate()->getStyle('A3')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A4')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A5')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A6')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A7')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A8')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A9')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A10')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A11')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('A12')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C3')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C4')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C5')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C6')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C7')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C8')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C9')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C10')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C11')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('C12')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('B3')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B4')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B5')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B6')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B7')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B8')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B9')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B10')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B11')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('B12')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D3')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D4')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D5')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D6')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D7')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D8')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D9')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D10')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D11')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('D12')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('E3')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E4')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E5')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E6')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E7')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E8')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E9')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E10')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E11')->applyFromArray($style3);
+                $event->sheet->getDelegate()->getStyle('E12')->applyFromArray($style3);
                 $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($style2);
+                $event->sheet->getDelegate()->getStyle('A3:E3')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A4:E4')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A5:E5')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A6:E6')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A7:E7')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A8:E8')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A9:E9')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A10:E10')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A11:E11')->applyFromArray($stylex);
+                $event->sheet->getDelegate()->getStyle('A12:E12')->applyFromArray($stylex);
                 $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style3);
                 $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style5);
 
-                // $event->sheet->getDelegate()->getStyle('C2:E2')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('F2:H2')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('I2:J2')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('C3:C4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('D4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('E3:E4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('F3:F4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('G4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('H3:H4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('I3:I4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('J3:J4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('K2:K4')->applyFromArray($style2);
-                // $event->sheet->getDelegate()->getStyle('A5:A40')->applyFromArray($style1);
-                // $event->sheet->getDelegate()->getStyle('B5:B40')->applyFromArray($style1);
 
+                $a = 2;
+                $b = 2;
+
+                for($i = 0; $i < count($get_rf_detais); $i++){
+                    // dd(count($get_concerned_dept));
+                    // $exploded_concerned_dept = explode (',', $get_concerned_dept[$i]->concerned_dept);
+                    $a++;
+                }
+
+                $result = 'A'.$b.':E'.$a;
+
+                // dd($result);
+
+            $event->sheet->getDelegate()->getStyle((string)$result)->applyFromArray($styleBorderAll);
 
             },
         ];

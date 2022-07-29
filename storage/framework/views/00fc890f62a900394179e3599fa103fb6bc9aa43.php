@@ -34,7 +34,7 @@
         }
 
         table.table thead th{
-            padding-top: 5px; 
+            padding-top: 5px;
             padding-bottom: 5px;
             padding-right: 5px;
             padding-left: 5px;
@@ -68,8 +68,9 @@
                                 <h3 class="card-title">PMI IT-CLC</h3>
                             </div>
 
-                            <div class="card-body table-responsive">                            
-                                <div style="float: right;">                   
+                            <div class="card-body table-responsive">
+                                <div style="float: right;">
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#modalExportItClcSummary"><i class="fa fa-download"></i>  Export IT-CLC Summary  </button>
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalAddPmiItClcCategory" id="btnShowAddPmiItClcCategoryModal"><i class="fa fa-plus"></i>  Add PMI IT-CLC  </button>
                                 </div> <br><br>
                                 <div class="table-responsive">
@@ -99,6 +100,47 @@
         </section>
     </div>
 
+        <!-- MODALS -->
+        <div class="modal fade" id="modalExportItClcSummary">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export IT-CLC Summary</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Select Year:</label>
+                                <select name="select_year" id="selectYearId">
+                                    <?php
+                                        $year_now = date('Y');
+
+                                        for($i = 2021; $i <= $year_now; $i++){
+                                            echo "<option value =".$i.">
+                                                ".$i."
+                                                </option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnExportItClcSummary" class="btn btn-dark"><i id="BtnExportItClcSummaryIcon" class="fa fa-check"></i> Export</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    <!-- /.modal -->
+
     <!-- ADD MODAL START -->
     <div class="modal fade" id="modalAddPmiItClcCategory">
         <div class="modal-dialog modal-lg">
@@ -113,66 +155,66 @@
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Control Objective:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcControlObjectives" name="control_objectives"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Internal Control:</label>
                                     <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcInternalControls" name="internal_controls"></textarea>
                                 </div>
                             </div>
 
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Status:</label>
                                     <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcStatus" name="status"></textarea>
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Detected Problems & Improvement Plans:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Review Findings:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcReviewFindings" name="review_findings"></textarea>
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Follow up:</label>
                                     <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcFollowups" name="follow_up"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Status:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" id="txtAddPmiItClcStatusLast" name="status_last"></textarea>
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
                                 
-                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>       
+                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>
                             </div>
                         </div>
                     </div>
@@ -198,70 +240,70 @@
                 <form method="post" id="formEditPmiItClcCategory" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
-                        <input type="hidden" class="form-control" name="pmi_it_clc_category_id" id="txtEditPmiItClcCategoryId"> 
+                        <input type="hidden" class="form-control" name="pmi_it_clc_category_id" id="txtEditPmiItClcCategoryId">
                         <div class="row">
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Control Objective:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcControlObjectives" name="control_objectives" readonly></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Internal Control:</label>
                                     <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcInternalControls" name="internal_controls"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Status:</label>
                                     <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" id="txtEditPmiItClcStatus" name="status"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Detected Problems & Improvement Plans:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Review Findings:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcReviewFindings" name="review_findings"></textarea>
                                 </div>
                             </div>
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Follow up:</label>
                                     <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcFollowups" name="follow_ups"></textarea>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="form-group col-sm-12">
                                     <label class="col-form-label">Status:</label>
                                     <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" id="txtEditPmiItClcStatusLast" name="status_last"></textarea>
                                 </div>
                             </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
                                 
-                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>    
+                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>
                                 <div class="form-group form-check">
                                     <input type="checkbox" class="form-check-input" name="checkbox" id="check_box">
                                     <label >Do you wish to continue editing?</label>
-                                </div>   
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -312,7 +354,7 @@
         let dataTableClcEvidences;
 
         $(document).ready(function () {
-            
+
             bsCustomFileInput.init();
             //Initialize Select2 Elements
             $('.select2').select2();
@@ -327,8 +369,8 @@
                 $(this).closest('tr').addClass('table-active');
             });
 
-            // ======================= CLC CATEGORY DATA TABLE =======================        
-            dataTableClcCategoryPmiItClc = $("#tblClcCategoryPmiItClc").DataTable({ 
+            // ======================= CLC CATEGORY DATA TABLE =======================
+            dataTableClcCategoryPmiItClc = $("#tblClcCategoryPmiItClc").DataTable({
                 "processing" : false,
                 "serverSide" : true,
                 "ordering" : false,
@@ -351,8 +393,8 @@
                 ],
             });// END OF DATATABLE
 
-            // // ======================= CLC EVIDENCES DATA TABLE =======================        
-            // dataTableClcEvidences = $("#tblClcEvidences").DataTable({ 
+            // // ======================= CLC EVIDENCES DATA TABLE =======================
+            // dataTableClcEvidences = $("#tblClcEvidences").DataTable({
             //     "processing" : false,
             //     "serverSide" : true,
             //     "ajax" : {
@@ -368,8 +410,8 @@
             //     ],
             // });// END OF DATATABLE
 
-            // // ======================= CLC EVIDENCES DATA TABLE =======================        
-            // dataTableSelectClcEvidences = $("#tblSelectClcEvidences").DataTable({ 
+            // // ======================= CLC EVIDENCES DATA TABLE =======================
+            // dataTableSelectClcEvidences = $("#tblSelectClcEvidences").DataTable({
             //     "processing" : false,
             //     "serverSide" : true,
             //     "ajax" : {
@@ -392,7 +434,7 @@
                     url: "get_rapidx_user",
                     method: "get",
                     dataType: "json",
-                    beforeSend: function(){    
+                    beforeSend: function(){
                     },
                     success: function(response){
                         let result = response['get_user'];
@@ -434,17 +476,17 @@
             // actionEditClcCategory is generated by datatables and open the modalEditClcCategory(modal) to collect the id of the specified rows
             $(document).on('click', '.actionEditPmiItClcCategory', function(){
                 // the clc_categories-id(attr) is inside the datatables of ClcCategoryController that will be use to collect the clc_categories-id
-                let pmi_itclcId = $(this).attr('pmi_it_clc-id'); 
+                let pmi_itclcId = $(this).attr('pmi_it_clc-id');
 
-                // after clicking the actionEditClcCategory(button) the pmi_itclcId will be pass to the txtEditClcCategoryId(input=hidden) and when the form is submitted this 
+                // after clicking the actionEditClcCategory(button) the pmi_itclcId will be pass to the txtEditClcCategoryId(input=hidden) and when the form is submitted this
                 // will be pass to ajax and collect clc_categories-id that will be use to query the clc_categories-id in the ClcCategoryController to update the report
                 $("#txtEditPmiItClcCategoryId").val(pmi_itclcId);
 
                 // COLLECT THE file_recordId AND PASS TO INPUTS, BASED ON THE CLICKED ROWS //
-                    //GetClcCategoryByIdToEdit() function is inside ClcCategory.js and pass the pmi_itclcId as an argument when passing the ajax that will be use to query 
-                    // the clc_categories-id of get_clc_category_by_id() method inside ClcCategoryController and pass the fetched report based on that query as $clc_category_id(variable) 
+                    //GetClcCategoryByIdToEdit() function is inside ClcCategory.js and pass the pmi_itclcId as an argument when passing the ajax that will be use to query
+                    // the clc_categories-id of get_clc_category_by_id() method inside ClcCategoryController and pass the fetched report based on that query as $clc_category_id(variable)
                     // to pass the values in the inputs of modalEditClcCategory and also to validate the fetched values, inside GetClcCategoryByIdToEdit under ClcCategory.js
-                    GetPmiItClcByIdToEdit(pmi_itclcId); 
+                    GetPmiItClcByIdToEdit(pmi_itclcId);
 
                 // READ ONLY
                 $("#txtEditPmiItClcStatus").attr('disabled', 'disabled');
@@ -506,7 +548,7 @@
                 $("#txtChangeClcCategoryPmiItClcId").val(clccategorypmiitclcId); // after clicking the aChangeUserStat(button) the clccategorypmiitclcId will be pass to the clc_category_pmi_clc_id(input=hidden) and when the form is submitted this will be pass to ajax and collect pmi_clc-id that will be use to query the pmi_clc-id in the ClcCategoryPmiClcController to update the it_clc_status of the pmi_clc
 
                 if(clccategorypmiitclcStat == 1){
-                    $("#lblChangeClcCategoryPmiItClcStatLabel").text('Are you sure to activate?'); 
+                    $("#lblChangeClcCategoryPmiItClcStatLabel").text('Are you sure to activate?');
                     $("#h4ChangeClcCategoryPmiItClcStat").html('<i class="fa fa-user"></i> Activate!');
                 }
                 else{
@@ -524,15 +566,15 @@
 
             //============================== SELECT CLC EVIDENCES FILE ==============================
             $(document).on('click', '.actionSelectClcEvidences', function(){
-                let selectclcevidence = $(this).attr('filter'); 
-                let selectclcevidenceId = $(this).attr('clc_evidences-id'); 
+                let selectclcevidence = $(this).attr('filter');
+                let selectclcevidenceId = $(this).attr('clc_evidences-id');
                 console.log(selectclcevidence);
                 console.log(selectclcevidenceId);
-                $("#selectClcEvidencesFile").val(selectclcevidence); 
-                $("#selectClcEvidencesId").val(selectclcevidenceId); 
+                $("#selectClcEvidencesFile").val(selectclcevidence);
+                $("#selectClcEvidencesId").val(selectclcevidenceId);
 
                 if(selectclcevidence == 0){
-                    $("#lblSelectClcEvidences").text('Are you sure to delete this record?'); 
+                    $("#lblSelectClcEvidences").text('Are you sure to delete this record?');
                     $("#h4SelectClcEvidences").html('<i class="fa fa-times"></i> Delete Record');
                 }
                 else{
@@ -552,7 +594,7 @@
             $("#modalSelectFiles").on('hidden.bs.modal', function () {
                 console.log('PMI IT CLC Reload Successfully');
                 reloadDataTableClcCategoryPmiItClc();
-            });        
+            });
 
             // ========================= RESIZE TEXTAREA =========================
             document.querySelectorAll("textarea").forEach(function (size) {
@@ -566,6 +608,21 @@
             });
 
         }); // JQUERY DOCUMENT READY END
+
+
+        $('#btnExportItClcSummary').on('click', function(){
+
+        // console.log($('#formViewWPRequest').serialize());
+        let year_id = $('#selectYearId').val();
+        // let selected_month = $('#selectMonthId').val();
+
+        window.location.href = `export_it_clc_summary/${year_id}`;
+        console.log(year_id);
+        // console.log(selected_month);
+        $('#modalExportItClcSummary').modal('hide');
+
+
+        });
 
     </script>
 <?php $__env->stopSection(); ?>

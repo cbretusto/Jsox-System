@@ -15,8 +15,10 @@ use Carbon\Carbon;
 use App\PlcCapa;
 use App\RapidXUser;
 use App\PLCModuleSA;
+use App\PLCModuleRCM;
 use App\UserManagement;
 use App\SelectPlcEvidence;
+use App\PLCModuleRCMInternalControl;
 use App\PLCModuleSADicAssessmentDetailsAndFindings;
 use App\PLCModuleSAOecAssessmentDetailsAndFindings;
 use App\PLCModuleSARfAssessmentDetailsAndFindings;
@@ -28,7 +30,22 @@ class PlcModulesSaController extends Controller
         $plc_module_sa = PLCModuleSA::with('plc_sa_dic_assessment_details_finding')->where('category', $request->session)->where('logdel', 0)->get();
         session_start();
         $rapidx_name = $_SESSION['rapidx_name'];
+        // return $get_rcm_id;
+
         return DataTables::of($plc_module_sa)
+
+        ->addColumn('internal_control', function($plc_module_sa){
+            $get_rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('status', 0)->get();
+            $result = '';
+            for($x = 0; $x < count($get_rcm_internal_control); $x++){
+                $result .= $get_rcm_internal_control[$x]->internal_control;
+                $result .= '<br>';
+                $result .= '<br>';
+            }
+            $result .= '<center>';
+            // return $plc_module_sa->rcm_id;
+            return $result;
+        })
 
         ->addColumn('dic_assessment', function($plc_module_sa){
             $plc_sa_module = SelectPlcEvidence::where('assessment_details_and_findings', 1)->where('logdel', 0)->get();
@@ -289,7 +306,7 @@ class PlcModulesSaController extends Controller
             $result .= '</center>';
             return $result;
         })
-            ->rawColumns(['action', 'dic_assessment','oec_assessment', 'rf_assessment', 'fu_assessment', 'dic_status', 'oec_status', 'rf_status', 'fu_status', 'approval_status'])
+            ->rawColumns(['action', 'internal_control', 'dic_assessment','oec_assessment', 'rf_assessment', 'fu_assessment', 'dic_status', 'oec_status', 'rf_status', 'fu_status', 'approval_status'])
             ->make(true);
     }
 
@@ -399,25 +416,25 @@ class PlcModulesSaController extends Controller
                     'sa_id'                         => $request->sa_data_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
-                    'dic_status'                        => $request->dic_status,
+                    'dic_status'                    => $request->dic_status,
                     'created_at'                    => date('Y-m-d H:i:s'),
                 );
 
                 $dic_files = $request->file("dic_attachment");
                 if(isset($request->dic_checkbox)){
-                        for($i = 0; $i < count($dic_files); $i++){
-                            $original_filename_dic = $dic_files[$i]->getClientOriginalName();
-                            array_push($arr_upload_file_dic, $original_filename_dic);
-                            Storage::putFileAs('public/plc_sa_attachment', $dic_files[$i],  $original_filename_dic);
-                        }
-                        $multiple_file_uploaded_dic = implode(', ', $arr_upload_file_dic);
+                    for($i = 0; $i < count($dic_files); $i++){
+                        $original_filename_dic = $dic_files[$i]->getClientOriginalName();
+                        array_push($arr_upload_file_dic, $original_filename_dic);
+                        Storage::putFileAs('public/plc_sa_attachment', $dic_files[$i],  $original_filename_dic);
+                    }
+                    $multiple_file_uploaded_dic = implode(', ', $arr_upload_file_dic);
 
-                        $dic_edit_array['dic_assessment_details_findings'] = $request->dic_assessment;
-                        $dic_edit_array['dic_attachment'] = $multiple_file_uploaded_dic;
+                    $dic_edit_array['dic_assessment_details_findings'] = $request->dic_assessment;
+                    $dic_edit_array['dic_attachment'] = $multiple_file_uploaded_dic;
 
-                        PLCModuleSADicAssessmentDetailsAndFindings::insert([
-                            $dic_edit_array
-                        ]);
+                    PLCModuleSADicAssessmentDetailsAndFindings::insert([
+                        $dic_edit_array
+                    ]);
                 }else{
                     if(isset($dic_files)){
                         for($i = 0; $i < count($dic_files); $i++){
@@ -938,18 +955,17 @@ class PlcModulesSaController extends Controller
     //============================== COUNT STATUS BY CATEGORY //==============================
     public function count_pmi_category_by_id(Request $request){
         $get_sa_status = PLCModuleSA::where('category', $request->category)->where('logdel', 0)->get();
+
+        //FIRST HALF
         $get_dic_good_status = collect($get_sa_status)->where('dic_status', 'G');
         $get_oec_good_status = collect($get_sa_status)->where('oec_status', 'G');
         
+        //SECOND HALF
         $get_dic_not_good_status = collect($get_sa_status)->where('dic_status', 'NG');
         $get_oec_not_good_status = collect($get_sa_status)->where('oec_status', 'NG');
+
         // return $get_sa_status;
 
-        //     if(){
-
-        //     }else{
-
-        //     }
         return response()->json(['get_sa_status' => $get_sa_status, 
             'get_dic_good_status' => count($get_dic_good_status), 
             'get_oec_good_status' => count($get_oec_good_status),

@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
-use App\PLCModuleRCM;
+use Carbon\Carbon;
 use DataTables;
+
 use App\RapidXUser;
 use App\PLCModuleSA;
-use Carbon\Carbon;
+use App\PLCModuleRCM;
+use App\PLCModuleRCMInternalControl;
 
 class PlcModulesRcmController extends Controller
 {
@@ -68,6 +70,17 @@ class PlcModulesRcmController extends Controller
             return $result;
         })
 
+        ->addColumn('internal_control', function ($plc_module_rcm){
+            $internalControl = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_rcm->id)->get();
+            $result = "";
+            for($x = 0; $x < count($internalControl); $x++){
+                $result .= $internalControl[$x]->internal_control;
+                $result .= '<br>';
+                $result .= '<br>';
+            }
+            return $result;
+        })
+
         ->addColumn('action', function ($plc_module_rcm){
             $result = "";
             $result = "<center>";
@@ -84,7 +97,7 @@ class PlcModulesRcmController extends Controller
             $result .= '</center>';
             return $result;
         })
-            ->rawColumns(['action', 'status', 'description'])
+            ->rawColumns(['status', 'description', 'internal_control', 'action'])
             ->make(true);
     }
 
@@ -124,7 +137,7 @@ class PlcModulesRcmController extends Controller
         }
         else{
 
-            PLCModuleRCM::insert([
+            $add_rcm_details = [
                 'category'          => $request->category_name,
                 'control_objective' => $request->add_control_objective,
                 'risk_summary'      => $request->add_risk_summary,
@@ -140,40 +153,92 @@ class PlcModulesRcmController extends Controller
                 'key_control'       => $request->add_key_control,
                 'it_control'        => $request->add_it_control,
                 'control_id'        => $request->add_control_id,
-                'internal_control'  => $request->add_internal_control,
                 'preventive'        => $request->add_preventive,
                 'defective'         => $request->add_defective,
                 'manual'            => $request->add_manual,
                 'automatic'         => $request->add_automatic,
                 'system'            => $request->add_system,
                 'logdel'            => 0,
-            ]);
+            ];
 
-            $get_control_objective_id = PLCModuleRCM::where('control_objective', $request->add_control_objective)->get();
-            // return $get_control_objective_id;
-            $get_id_to_rcm_id = $get_control_objective_id[0]->id;
-            // return $test_id;
+            $rcmId = PLCModuleRCM::insertGetId(
+                $add_rcm_details
+            );
 
-            if ($request->add_control_id != null && $request->add_internal_control != null){
-                PLCModuleSA::insert([
-                    'rcm_id'            => $get_id_to_rcm_id,
+            //START RCM INTERNAL CONTROLS
+            if($request->add_internal_control_counter > 1){ // Multiple Insert
+                $add_rcm_internal_control = [
+                    'rcm_id'            => $rcmId,
                     'category'          => $request->category_name,
-                    'control_no'        => $request->add_control_id,
-                    'internal_control'  => $request->add_internal_control,
-                    'key_control'       => $request->add_key_control,
-                    'it_control'        => $request->add_it_control,
+                    'created_at'        => date('Y-m-d H:i:s'),
+                ];
+                    
+                for($index = 1; $index <= $request->add_internal_control_counter; $index++){
+                    if($request->add_internal_control_counter > 1){
+                        $check_status = $request->input("internal_control_checkbox_$index");
+                        if ($check_status == null){
+                            $rcm_status = '0';
+                        }else{
+                            $rcm_status = '1';
+                        }
+                        $add_rcm_internal_control['status'] = $rcm_status;
+                    }
+                    $add_rcm_internal_control['counter'] = $index;
+                    $add_rcm_internal_control['internal_control'] = $request->input("internal_control_$index");
+
+                    PLCModuleRCMInternalControl::insert([
+                        $add_rcm_internal_control
+                    ]);
+                }
+                
+                if ($request->add_control_id != null && $request->input("internal_control_2") != null){
+                    PLCModuleSA::insert([
+                        'rcm_id'            => $rcmId,
+                        'category'          => $request->category_name,
+                        'control_no'        => $request->add_control_id,
+                        'key_control'       => $request->add_key_control,
+                        'it_control'        => $request->add_it_control,
+                    ]);
+                }
+            }else{ // Single Insert
+                $add_rcm_internal_control = [
+                    'rcm_id'            => $rcmId,
+                    'category'          => $request->category_name,
+                    'counter'           => 1,
+                    'created_at'        => date('Y-m-d H:i:s'),
+                ];
+
+                $add_rcm_internal_control['internal_control'] = $request->internal_control_1;
+
+                PLCModuleRCMInternalControl::insert([
+                    $add_rcm_internal_control
                 ]);
-            }
+
+                if ($request->add_control_id != null && $request->internal_control_1 != null){
+                    PLCModuleSA::insert([
+                        'rcm_id'            => $rcmId,
+                        'category'          => $request->category_name,
+                        'control_no'        => $request->add_control_id,
+                        'key_control'       => $request->add_key_control,
+                        'it_control'        => $request->add_it_control,
+                    ]);
+                }
+            }//END RCM INTERNAL CONTROL
+
             return response()->json(['result' => "1"]);
         }
     }
 
     //=============== ADD RCM DATA FUNCTION END ===================//
     public function get_rcm_data_id_to_edit(Request $request){
-        $rcm_data = PLCModuleRCM::where('id', $request->rcm_data_id)->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
-        // return $rcm_data;
+        $rcm_data = PLCModuleRCM::with('rcm_info')->where('id', $request->rcm_data_id)->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
+        $internal_control = PLCModuleRCMInternalControl::where('rcm_id', $rcm_data[0]->id)->get();
+        // return $internal_control;
 
-        return response()->json(['rcm_data' => $rcm_data]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
+        return response()->json([
+            'rcm_data' => $rcm_data,
+            'internal_control' => $internal_control
+        ]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
     //==================== EDIT RCM DATA FUNCTION =========================//
@@ -192,64 +257,181 @@ class PlcModulesRcmController extends Controller
         }
         else{
 
+            $edit_rcm_details = [
+            'control_objective' => $request->edit_control_objective,
+            'risk_summary' => $request->edit_risk_summary,
+            'risk_detail' => $request->edit_risk_detail,
+            'debit' => $request->edit_debit,
+            'credit' => $request->edit_credit,
+            'validity' => $request->edit_validity,
+            'completeness' => $request->edit_completeness,
+            'accuracy' => $request->edit_accuracy,
+            'cut_off' => $request->edit_cut_off,
+            'valuation' => $request->edit_valuation,
+            'presentation' => $request->edit_presentation,
+            'key_control' => $request->edit_key_control,
+            'it_control' => $request->edit_it_control,
+            'control_id' => $request->edit_control_id,
+            'preventive' => $request->edit_preventive,
+            'defective' => $request->edit_defective,
+            'manual' => $request->edit_manual,
+            'automatic' => $request->edit_automatic,
+            'system' => $request->edit_system
+            ];
+
             PLCModuleRCM::where('id', $request->rcm_data_id)
-                ->update([ // The update method expects an array of column and value pairs representing the columns that should be updated.
-                'control_objective' => $request->edit_control_objective,
-                'risk_summary' => $request->edit_risk_summary,
-                'risk_detail' => $request->edit_risk_detail,
-                'debit' => $request->edit_debit,
-                'credit' => $request->edit_credit,
-                'validity' => $request->edit_validity,
-                'completeness' => $request->edit_completeness,
-                'accuracy' => $request->edit_accuracy,
-                'cut_off' => $request->edit_cut_off,
-                'valuation' => $request->edit_valuation,
-                'presentation' => $request->edit_presentation,
-                'key_control' => $request->edit_key_control,
-                'it_control' => $request->edit_it_control,
-                'control_id' => $request->edit_control_id,
-                'internal_control' => $request->edit_internal_control,
-                'preventive' => $request->edit_preventive,
-                'defective' => $request->edit_defective,
-                'manual' => $request->edit_manual,
-                'automatic' => $request->edit_automatic,
-                'system' => $request->edit_system]);
+            ->update(
+                $edit_rcm_details
+            );
+                
+            //START RCM INTERNAL CONTROLS
+            if($request->edit_internal_control_counter > 1){ // Multiple Insert
+                PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->delete();
+
+                $edit_rcm_internal_control = [
+                    'rcm_id'            => $request->rcm_data_id,
+                    'category'          => $request->category_name,
+                    'created_at'        => date('Y-m-d H:i:s'),
+                ];
+                    
+                for($index = 1; $index <= $request->edit_internal_control_counter; $index++){
+                    if($request->edit_internal_control_counter > 1){
+                        $check_status = $request->input("internal_control_checkbox_$index");
+                        if ($check_status == null){
+                            $rcm_status = '0';
+                        }else{
+                            $rcm_status = '1';
+                        }
+                        $edit_rcm_internal_control['status'] = $rcm_status;
+                    }
+                    $edit_rcm_internal_control['counter'] = $index;
+                    $edit_rcm_internal_control['internal_control'] = $request->input("internal_control_$index");
+
+                    PLCModuleRCMInternalControl::insert(
+                        $edit_rcm_internal_control
+                    );
+                }
                 
                 $PLCModuleRCM = PLCModuleRCM::where('id', $request->rcm_data_id)->get();
-                // return $PLCModuleRCM;
-                if($PLCModuleRCM[0]->edit_control_id != null && $PLCModuleRCM[0]->edit_internal_control != null){
+                $rcm_sa = [
+                    'control_no'    => $request->edit_control_id,
+                    'key_control'   => $request->edit_key_control,
+                    'it_control'    => $request->edit_it_control,
+                ];
+
+                if($PLCModuleRCM[0]->edit_control_id != null && $PLCModuleRCM[0]->internal_control_2 != null){
                     PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                    ->update([
-                        // 'category'          => $request->category_name,
-                        'control_no'        => $request->edit_control_id,
-                        'internal_control'  => $request->edit_internal_control,
-                        'key_control' => $request->edit_key_control,
-                        'it_control' => $request->edit_it_control,
-                    ]);
-                    // return response()->json(['result' => "if in update"]);
+                    ->update(
+                        $rcm_sa
+                    );
                 }
                 else{
                     if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
+                        if($PLCModuleRCM[0]->control_id == null){
+                            $rcm_sa['logdel'] = 1;
+                        }else{
+                            $rcm_sa['logdel'] = 0;
+                        }
                         PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                        ->update([
-                            // 'category'          => $request->category_name,
-                            'control_no'        => $request->edit_control_id,
-                            'internal_control'  => $request->edit_internal_control,
-                            'key_control' => $request->edit_key_control,
-                            'it_control' => $request->edit_it_control,
-                        ]);
+                        ->update(
+                            $rcm_sa
+                        );
                     }else{
                         PLCModuleSA::insert([
                             'rcm_id'            => $request->rcm_data_id,
                             'category'          => $request->category_name,
                             'control_no'        => $request->edit_control_id,
-                            'internal_control'  => $request->edit_internal_control,
                             'key_control'       => $request->edit_key_control,
                             'it_control'        => $request->edit_it_control,
                         ]);
                     }
-                    // return response()->json(['result' => "else in update"]);
                 }
+            }else{ // Single Insert
+                $edit_rcm_internal_control = [
+                    'rcm_id'            => $request->rcm_data_id,
+                    'category'          => $request->category_name,
+                    'counter'           => 1,
+                    'created_at'        => date('Y-m-d H:i:s'),
+                ];
+
+                PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->delete();
+
+                $edit_rcm_internal_control['internal_control'] = $request->internal_control_1;
+
+                PLCModuleRCMInternalControl::insert(
+                    $edit_rcm_internal_control
+                );
+
+                $PLCModuleRCM = PLCModuleRCM::where('id', $request->rcm_data_id)->get();
+                $rcm_sa = [
+                    'control_no'    => $request->edit_control_id,
+                    'key_control'   => $request->edit_key_control,
+                    'it_control'    => $request->edit_it_control,
+                ];
+                if($PLCModuleRCM[0]->edit_control_id != null && $PLCModuleRCM[0]->internal_control_1 != null){
+                    PLCModuleSA::where('rcm_id', $request->rcm_data_id)
+                    ->update(
+                        $rcm_sa
+                    );
+                }
+                else{
+                    if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
+                        if($PLCModuleRCM[0]->control_id == null){
+                            $rcm_sa['logdel'] = 1;
+                            // return '1';
+                            // exit(0);
+                        }else{
+                            $rcm_sa['logdel'] = 0;
+                            // return '0';
+                            // exit(0);
+                        }
+
+                        PLCModuleSA::where('rcm_id', $request->rcm_data_id)
+                        ->update(
+                            $rcm_sa
+                        );
+                    }else{
+                        PLCModuleSA::insert([
+                            'rcm_id'            => $request->rcm_data_id,
+                            'category'          => $request->category_name,
+                            'control_no'        => $request->edit_control_id,
+                            'key_control'       => $request->edit_key_control,
+                            'it_control'        => $request->edit_it_control,
+                        ]);
+                    }
+                }
+            }//END RCM INTERNAL CONTROL
+
+               // // $PLCModuleRCM = PLCModuleRCM::where('id', $request->rcm_data_id)->get();
+                // // if($PLCModuleRCM[0]->edit_control_id != null && $PLCModuleRCM[0]->edit_internal_control != null){
+                // //     PLCModuleSA::where('rcm_id', $request->rcm_data_id)
+                // //     ->update([
+                // //         'control_no'        => $request->edit_control_id,
+                // //         'internal_control'  => $request->edit_internal_control,
+                // //         'key_control' => $request->edit_key_control,
+                // //         'it_control' => $request->edit_it_control,
+                // //     ]);
+                // // }
+                // // else{
+                // //     if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
+                // //         PLCModuleSA::where('rcm_id', $request->rcm_data_id)
+                // //         ->update([
+                // //             'control_no'        => $request->edit_control_id,
+                // //             'internal_control'  => $request->edit_internal_control,
+                // //             'key_control' => $request->edit_key_control,
+                // //             'it_control' => $request->edit_it_control,
+                // //         ]);
+                // //     }else{
+                // //         PLCModuleSA::insert([
+                // //             'rcm_id'            => $request->rcm_data_id,
+                // //             'category'          => $request->category_name,
+                // //             'control_no'        => $request->edit_control_id,
+                // //             'internal_control'  => $request->edit_internal_control,
+                // //             'key_control'       => $request->edit_key_control,
+                // //             'it_control'        => $request->edit_it_control,
+                // //         ]);
+                // //     }
+                // // }
             /*DB::commit();*/
             return response()->json(['result' => "1"]);
         }

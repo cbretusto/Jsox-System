@@ -34,30 +34,42 @@ class UsersExports implements  WithMultipleSheets
 
     use Exportable;
     protected $date;
-    protected $plc_module_sa_NG;
-    protected $plc_module_sa_category1;
-    protected $approver_status_array;
-    protected $status_check_array;
-    protected $assessment_status_array;
-    protected $second_assessment_status_array;
-    protected $second_half_status_check_array;
     protected $plc_module_sa;
-    // protected $fy_summary_first_half_assessment;
+    protected $status_check_array;
+    protected $assessment_status_array_dic;
+    protected $yec_date_arr;
+    protected $second_half_status_check_array;
+    protected $second_assessment_status_array;
+    protected $first_half_affected_status_arr;
+    protected $second_assessment_status_array_rf;
+    protected $fu_affected_internal_control_arr;
+    protected $second_assessment_status_array_fu;
+    protected $plc_module_sa_concerned_dept;
+    protected $plc_module_rf_details;
+    protected $plc_section;
+
+
 
 
     //
-    function __construct($date, $plc_module_sa_NG,$plc_module_sa_category1,$approver_status_array, $status_check_array,$assessment_status_array,$second_assessment_status_array,$second_half_status_check_array,$plc_module_sa)
+    function __construct($date,$plc_module_sa,$status_check_array,$assessment_status_array_dic,$yec_date_arr,$second_half_status_check_array,$second_assessment_status_array,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu,$plc_module_sa_concerned_dept,$plc_module_rf_details,$plc_section)
     {
         $this->date = $date;
-        $this->plc_module_sa_NG = $plc_module_sa_NG;
         $this->plc_module_sa = $plc_module_sa;
-        $this->plc_module_sa_category1 = $plc_module_sa_category1;
-        $this->approver_status_array = $approver_status_array;
         $this->status_check_array = $status_check_array;
-        $this->assessment_status_array = $assessment_status_array;
-        $this->second_assessment_status_array = $second_assessment_status_array;
+        $this->assessment_status_array_dic = $assessment_status_array_dic;
+        $this->yec_date_arr = $yec_date_arr;
         $this->second_half_status_check_array = $second_half_status_check_array;
-        // $this->fy_summary_first_half_assessment = $fy_summary_first_half_assessment;
+        $this->second_assessment_status_array = $second_assessment_status_array;
+        $this->first_half_affected_status_arr = $first_half_affected_status_arr;
+        $this->second_assessment_status_array_rf = $second_assessment_status_array_rf;
+        $this->fu_affected_internal_control_arr = $fu_affected_internal_control_arr;
+        $this->second_assessment_status_array_fu = $second_assessment_status_array_fu;
+        $this->plc_module_sa_concerned_dept = $plc_module_sa_concerned_dept;
+        $this->plc_module_rf_details = $plc_module_rf_details;
+        $this->plc_section = $plc_section;
+
+
     }
 
 
@@ -65,10 +77,10 @@ class UsersExports implements  WithMultipleSheets
     {
         $sheets = [];
 
-        $sheets[] = new audit_result($this->date, $this->plc_module_sa_NG, $this->plc_module_sa, $this->plc_module_sa_category1, $this->approver_status_array,$this->status_check_array,$this->assessment_status_array,$this->second_assessment_status_array,$this->second_half_status_check_array);
-        $sheets[] = new fy_summary($this->date,$this->plc_module_sa_NG);
-        $sheets[] = new firsthalf($this->date);
-        $sheets[] = new rollforward($this->date);
+        $sheets[] = new audit_result($this->date, $this->plc_module_sa, $this->status_check_array,$this->assessment_status_array_dic,  $this->second_half_status_check_array, $this->second_assessment_status_array );
+        $sheets[] = new fy_summary($this->date, $this->plc_module_sa,$this->assessment_status_array_dic,$this->yec_date_arr,$this->first_half_affected_status_arr,$this->second_assessment_status_array_rf,$this->fu_affected_internal_control_arr,$this->second_assessment_status_array_fu);
+        $sheets[] = new firsthalf($this->date,$this->plc_module_sa_concerned_dept,$plc_section);
+        $sheets[] = new rollforward($this->date,$this->plc_module_rf_details);
 
 
         return $sheets;

@@ -27,6 +27,7 @@ class fy_summary implements FromView, WithTitle, WithEvents
     use Exportable;
 
     protected $date;
+    protected $plc_module_sa;
     protected $assessment_status_array_dic;
     protected $yec_date_arr;
     protected $first_half_affected_status_arr;
@@ -36,9 +37,10 @@ class fy_summary implements FromView, WithTitle, WithEvents
 
 
 
-    function __construct($date,$assessment_status_array_dic,$yec_date_arr,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu)
+    function __construct($date,$plc_module_sa,$assessment_status_array_dic,$yec_date_arr,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu)
     {
         $this->date = $date;
+        $this->plc_module_sa = $plc_module_sa;
         $this->assessment_status_array_dic = $assessment_status_array_dic;
         $this->yec_date_arr = $yec_date_arr;
         $this->first_half_affected_status_arr = $first_half_affected_status_arr;
@@ -52,7 +54,7 @@ class fy_summary implements FromView, WithTitle, WithEvents
 
 
     public function view(): View {
-        return view('exports.fy_summary', ['date' => $this->date, 'first_year_assessment_status' => $this->assessment_status_array_dic, 'yec_date' => $this->yec_date_arr, 'affected_internal' => $this->first_half_affected_status_arr, 'second_half_rf_status' => $this->second_assessment_status_array_rf, 'affected_internal_rf' => $this->fu_affected_internal_control_arr, 'follow_up_status' => $this->second_assessment_status_array_fu]);
+        return view('exports.fy_summary', ['date' => $this->date, 'data' => $this->plc_module_sa, 'first_year_assessment_status' => $this->assessment_status_array_dic, 'yec_date' => $this->yec_date_arr, 'affected_internal' => $this->first_half_affected_status_arr, 'second_half_rf_status' => $this->second_assessment_status_array_rf, 'affected_internal_rf' => $this->fu_affected_internal_control_arr, 'follow_up_status' => $this->second_assessment_status_array_fu]);
     }
 
 

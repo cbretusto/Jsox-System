@@ -121,13 +121,6 @@ class firsthalf implements FromView, WithTitle, WithEvents
             AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex,$get_concerned_dept)  {
 
 
-                // $exploded_concerned_dept = explode (',', $get_concerned_dept->concerned_dept);
-
-
-
-
-
-
                 $event->sheet->getDelegate()->getStyle('A1')->getAlignment()->setWrapText(true);
                 $event->sheet->getDelegate()->getStyle('E3')->getAlignment()->setWrapText(true);
                 $event->sheet->getDelegate()->getStyle('E4')->getAlignment()->setWrapText(true);
@@ -221,6 +214,23 @@ class firsthalf implements FromView, WithTitle, WithEvents
                 $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style3);
                 $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style5);
 
+                $a = 2;
+                $b = 2;
+
+                for($i = 0; $i < count($get_concerned_dept); $i++){
+                    // dd(count($get_concerned_dept));
+                    // $exploded_concerned_dept = explode (',', $get_concerned_dept[$i]->concerned_dept);
+                    $a++;
+                }
+
+                $result = 'A'.$b.':E'.$a;
+
+                // dd($result);
+
+            $event->sheet->getDelegate()->getStyle((string)$result)->applyFromArray($styleBorderAll);
+
+
+                // dd(count($exploded_concerned_dept));
 
 
 

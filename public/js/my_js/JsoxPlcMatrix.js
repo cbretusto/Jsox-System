@@ -135,10 +135,28 @@ function GetJsoxPlcMatrixByIdToEdit(JsoxPlcMatrixId){
             if(jsox_plc_matrix.length > 0){
                 $("#selEditJsoxPlcMatrix").val(jsox_plc_matrix[0].process_name).trigger('change');;
                 $("#txtEditControlNo").val(jsox_plc_matrix[0].control_no);
-                $("#txtEditDocument").val(jsox_plc_matrix[0].document);
+                // $("#txtEditDocument").val(jsox_plc_matrix[0].document);
                 $("#txtEditFrequency").val(jsox_plc_matrix[0].frequency);
                 $("#txtEditSamples").val(jsox_plc_matrix[0].samples);
                 $("#txtEditInCharge").val(jsox_plc_matrix[0].in_charge);
+
+                let counter = 0;
+                // To remove auto counting of row in multiple (EDIT)
+                for(let doc = 0; doc <= response['explodedDocument'].length; doc++){
+                    $('#removeRowDocumentEdit')[0].click();
+                }
+                for(let x = 1; x <= response['explodedDocument'].length; x++){
+                    // console.log(response['explodedDocument'])
+                    
+                    if(x!=1){
+                        $('#addRowDocumentEdit')[0].click();
+                    }
+                    $("#txtEditDocument_"+x).val(response['explodedDocument'][counter]);
+
+                    counter = counter + 1;
+                }
+
+
             }
             else{
                 toastr.warning('No Jsox PLC Matrix Record Found!');

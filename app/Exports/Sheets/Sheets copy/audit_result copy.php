@@ -28,34 +28,29 @@ class audit_result implements FromView, WithTitle, WithEvents
 
     use Exportable;
     protected $date;
-    protected $plc_module_sa_NG;
     protected $plc_module_sa;
-    protected $plc_module_sa_category1;
-    protected $approver_status_array;
     protected $status_check_array;
-    protected $assessment_status_array;
-    protected $second_assessment_status_array;
+    protected $assessment_status_array_dic;
     protected $second_half_status_check_array;
+    protected $second_assessment_status_array;
 
-    function __construct($date, $plc_module_sa_NG,$approver_status_array,$plc_module_sa_category1,$status_check_array,$assessment_status_array,$second_assessment_status_array,$second_half_status_check_array,$plc_module_sa)
+
+    function __construct($date, $plc_module_sa,$status_check_array,$assessment_status_array_dic,$second_half_status_check_array,$second_assessment_status_array)
     {
         $this->date = $date;
-        $this->plc_module_sa_NG = $plc_module_sa_NG;
         $this->plc_module_sa = $plc_module_sa;
-        $this->plc_module_sa_category1 = $plc_module_sa_category1;
-        $this->approver_status_array = $approver_status_array;
         $this->status_check_array = $status_check_array;
-        $this->assessment_status_array = $assessment_status_array;
-        $this->second_assessment_status_array = $second_assessment_status_array;
+        $this->assessment_status_array_dic = $assessment_status_array_dic;
         $this->second_half_status_check_array = $second_half_status_check_array;
+        $this->second_assessment_status_array = $second_assessment_status_array;
 
-        // $this->factor_item_list = $factor_item_list;
+
     }
 
 
     public function view(): View {
 
-                return view('exports.audit_result', ['date' => $this->date, 'data' => $this->plc_module_sa_NG, 'data_category' =>$this->plc_module_sa_category1, 'approver_status_array' => $this->approver_status_array, 'status_check' => $this->status_check_array, 'assessment_status' => $this->assessment_status_array, 'second_assessment_status' => $this->second_assessment_status_array, 'second_half_status_check' => $this->second_half_status_check_array]);
+                return view('exports.audit_result', ['date' => $this->date, 'data' => $this->plc_module_sa, 'status_check' =>$this->status_check_array,'assessment_status' =>$this->assessment_status_array_dic, 'second_half_status_check' =>$this->second_half_status_check_array, 'second_assessment_status' =>$this->second_assessment_status_array]);
 
         }
 
@@ -74,6 +69,15 @@ class audit_result implements FromView, WithTitle, WithEvents
                     'size'      =>  12,
                     // 'color'      =>  'red',
                     // 'italic'      =>  true
+                )
+            );
+
+            $text_bold = array(
+                'font' => array(
+                    'name'      =>  'Arial',
+                    'size'      =>  12,
+                    // 'color'      =>  'red',
+                    'bold'      =>  true
                 )
             );
 
@@ -113,7 +117,7 @@ class audit_result implements FromView, WithTitle, WithEvents
             ];
 
             return [
-                AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll)  {
+                AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$text_bold)  {
 
 
                     $event->sheet->getDelegate()->getStyle('A2')
@@ -163,6 +167,7 @@ class audit_result implements FromView, WithTitle, WithEvents
                     $event->sheet->getDelegate()->getStyle('A38')->getFont()->setSize(12);
                     $event->sheet->getDelegate()->getStyle('A39')->getFont()->setSize(12);
                     $event->sheet->getDelegate()->getStyle('A40')->getFont()->setSize(12);
+                    // $event->sheet->getDelegate()->getStyle('A41')->getFont()->setSize(12);
 
 
 
@@ -205,6 +210,11 @@ class audit_result implements FromView, WithTitle, WithEvents
                 $event->sheet->getDelegate()->getStyle('A38:H38')->applyFromArray($styleBorderAll);
                 $event->sheet->getDelegate()->getStyle('A39:H39')->applyFromArray($styleBorderAll);
                 $event->sheet->getDelegate()->getStyle('A40:H40')->applyFromArray($styleBorderAll);
+                $event->sheet->getDelegate()->getStyle('C5:C40')->applyFromArray($text_bold);
+                $event->sheet->getDelegate()->getStyle('D5:D40')->applyFromArray($text_bold);
+                $event->sheet->getDelegate()->getStyle('F5:F40')->applyFromArray($text_bold);
+                $event->sheet->getDelegate()->getStyle('G5:G40')->applyFromArray($text_bold);
+                // $event->sheet->getDelegate()->getStyle('A41:H41')->applyFromArray($styleBorderAll);
 
 
 

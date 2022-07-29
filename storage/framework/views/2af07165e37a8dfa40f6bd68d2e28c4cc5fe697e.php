@@ -42,8 +42,9 @@
 
 <script src="<?php echo e(asset('public/js/my_js/PlcCategory.js?n=5')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/PlcEvidences.js?n=4')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/JsoxPlcMatrix.js?n=3')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/PlcModules.js?n=1')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/JsoxPlcMatrix.js?n=1')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/Matrix.js?n=1')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/PlcModules.js?n=4')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/PlcModulesFlowChart.js?n=1')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/PlcModulesRCM.js?n=1')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/PlcModuleSaData.js?n=6')); ?>"></script>

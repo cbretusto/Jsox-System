@@ -1,7 +1,16 @@
 <table>
+
+    <?php
+    for($q= 0; $q < count($data); $q++){
+
+        $year = $data[$q]->year;
+        $result = substr("$year",2);
+    }
+    ?>
+
     <tr>
         <th>
-            <b>PMI FY21</b>
+            <b>PMI FY{{ $result }}</b>
         </th>
         <th>
             <b>Process Level Control (PLC) Audit Status</b>

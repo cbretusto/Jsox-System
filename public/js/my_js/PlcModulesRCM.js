@@ -158,81 +158,110 @@ function GetRcmData(rcmDataID){
         },
         success: function(response){
             let rcm_data = response['rcm_data'];
-
+            let internal_control = response['internal_control'];
             // console.log(rcm_data);
 
             if(rcm_data.length > 0){
-                if(rcm_data[0].validity == 'X'){
-                    $("#editValidityId").prop("checked",true);
-                }else if (rcm_data[0].validity == 'NULL'){
-                    $("#editValidityId").prop("checked",false);
-                }
-                if(rcm_data[0].completeness == 'X'){
-                    $("#editCompletenessId").prop("checked",true);
-                }else if (rcm_data[0].completeness == 'NULL'){
-                    $("#editCompletenessId").prop("checked",false);
-                }
-                if(rcm_data[0].accuracy == 'X'){
-                    $("#editAccuracyId").prop("checked",true);
-                }else if (rcm_data[0].accuracy == 'NULL'){
-                    $("#editAccuracyId").prop("checked",false);
-                }
-                if(rcm_data[0].cut_off == 'X'){
-                    $("#editCutOffId").prop("checked",true);
-                }else if (rcm_data[0].cut_off == 'NULL'){
-                    $("#editCutOffId").prop("checked",false);
-                }
-                if(rcm_data[0].valuation == 'X'){
-                    $("#editValuationId").prop("checked",true);
-                }else if (rcm_data[0].valuation == 'NULL'){
-                    $("#editValuationId").prop("checked",false);
-                }
-                if(rcm_data[0].presentation == 'X'){
-                    $("#editPresentationId").prop("checked",true);
-                }else if (rcm_data[0].presentation == 'NULL'){
-                    $("#editPresentationId").prop("checked",false);
-                }
-                if(rcm_data[0].key_control == 'X'){
-                    $("#editKeyControlId").prop("checked",true);
-                }else if (rcm_data[0].key_control == 'NULL'){
-                    $("#editKeyControlId").prop("checked",false);
-                }
-                if(rcm_data[0].it_control == 'X'){
-                    $("#editItControlId").prop("checked",true);
-                }else if (rcm_data[0].it_control == 'NULL'){
-                    $("#editItControlId").prop("checked",false);
-                }
-                if(rcm_data[0].preventive == 'X'){
-                    $("#editPreventiveId").prop("checked",true);
-                }else if (rcm_data[0].preventive == 'NULL'){
-                    $("#editPreventiveId").prop("checked",false);
-                }
-                if(rcm_data[0].defective == 'X'){
-                    $("#editDefectiveId").prop("checked",true);
-                }else if (rcm_data[0].defective == 'NULL'){
-                    $("#editDefectiveId").prop("checked",false);
-                }
-                if(rcm_data[0].manual == 'X'){
-                    $("#editManualId").prop("checked",true);
-                }else if (rcm_data[0].manual == 'NULL'){
-                    $("#editManualId").prop("checked",false);
-                }
-                if(rcm_data[0].automatic == 'X'){
-                    $("#editAutomaticId").prop("checked",true);
-                }else if (rcm_data[0].automatic == 'NULL'){
-                    $("#editAutomaticId").prop("checked",false);
-                }
-
                 $("#txtEditControlObjectiveId").val(rcm_data[0].control_objective);
                 $("#txtEditRiskSummary").val(rcm_data[0].risk_summary);
                 $("#txtEditRiskDetailId").val(rcm_data[0].risk_detail);
                 $("#txtEditDebitId").val(rcm_data[0].debit);
                 $("#txtEditCreditId").val(rcm_data[0].credit);
                 $("#txtEditControlId").val(rcm_data[0].control_id);
-                $("#txtEditInternalControlId").val(rcm_data[0].internal_control);
                 $("#txtEditSystemId").val(rcm_data[0].system);
 
+                //START INTERNAL CONTROL GET DATA
+                $("#txtEditRcmIntenralControl").val(internal_control[0].internal_control);
 
+                // To remove auto counting of row in multiple (EDIT)
+                for(let ic = 2; ic <= internal_control.length; ic++){
+                    $('#removeEditRowRcmInternalControl')[0].click();
+                }
+                let ic_counter = 1;
+                // To automatic add row in edit base on how many the INTERNAL CONTROL is
+                for(let ic = 2; ic <= internal_control.length; ic++){
+                    $('#addEditRowRcmInternalControl')[0].click();
+                    $('#txtEditRcmIntenralControl_'+ic).val(internal_control[ic_counter].internal_control)
+
+                    if(internal_control[ic_counter].status == '0'){
+                        $("#internalControlCheckBox_"+ic).prop("checked",false);
+                    }else if(internal_control[ic_counter].status == '1'){
+                        $("#internalControlCheckBox_"+ic).prop("checked",true);
+                    }
+                    ic_counter = ic_counter+1;
+                }
+
+                if(rcm_data[0].validity == 'X'){
+                    $("#editValidityId").prop("checked",true);
+                }else if (rcm_data[0].validity == 'NULL'){
+                    $("#editValidityId").prop("checked",false);
+                }
+
+                if(rcm_data[0].completeness == 'X'){
+                    $("#editCompletenessId").prop("checked",true);
+                }else if (rcm_data[0].completeness == 'NULL'){
+                    $("#editCompletenessId").prop("checked",false);
+                }
+
+                if(rcm_data[0].accuracy == 'X'){
+                    $("#editAccuracyId").prop("checked",true);
+                }else if (rcm_data[0].accuracy == 'NULL'){
+                    $("#editAccuracyId").prop("checked",false);
+                }
+
+                if(rcm_data[0].cut_off == 'X'){
+                    $("#editCutOffId").prop("checked",true);
+                }else if (rcm_data[0].cut_off == 'NULL'){
+                    $("#editCutOffId").prop("checked",false);
+                }
+
+                if(rcm_data[0].valuation == 'X'){
+                    $("#editValuationId").prop("checked",true);
+                }else if (rcm_data[0].valuation == 'NULL'){
+                    $("#editValuationId").prop("checked",false);
+                }
+
+                if(rcm_data[0].presentation == 'X'){
+                    $("#editPresentationId").prop("checked",true);
+                }else if (rcm_data[0].presentation == 'NULL'){
+                    $("#editPresentationId").prop("checked",false);
+                }
+
+                if(rcm_data[0].key_control == 'X'){
+                    $("#editKeyControlId").prop("checked",true);
+                }else if (rcm_data[0].key_control == 'NULL'){
+                    $("#editKeyControlId").prop("checked",false);
+                }
+
+                if(rcm_data[0].it_control == 'X'){
+                    $("#editItControlId").prop("checked",true);
+                }else if (rcm_data[0].it_control == 'NULL'){
+                    $("#editItControlId").prop("checked",false);
+                }
+
+                if(rcm_data[0].preventive == 'X'){
+                    $("#editPreventiveId").prop("checked",true);
+                }else if (rcm_data[0].preventive == 'NULL'){
+                    $("#editPreventiveId").prop("checked",false);
+                }
+
+                if(rcm_data[0].defective == 'X'){
+                    $("#editDefectiveId").prop("checked",true);
+                }else if (rcm_data[0].defective == 'NULL'){
+                    $("#editDefectiveId").prop("checked",false);
+                }
+
+                if(rcm_data[0].manual == 'X'){
+                    $("#editManualId").prop("checked",true);
+                }else if (rcm_data[0].manual == 'NULL'){
+                    $("#editManualId").prop("checked",false);
+                }
+                
+                if(rcm_data[0].automatic == 'X'){
+                    $("#editAutomaticId").prop("checked",true);
+                }else if (rcm_data[0].automatic == 'NULL'){
+                    $("#editAutomaticId").prop("checked",false);
+                }
             }
             else{
                 toastr.warning('No RCM Data Record Found!');
@@ -299,8 +328,8 @@ function EditRcmData(){
                 $("#modalEditRcmData").modal('hide');
                 $("#editRcmDataForm")[0].reset();
                 toastr.success('RCM Data succesfully saved!');
-                dataTablePlcModuleRCM.draw(); // reload the tables after insertion
-                dataTablePlcModuleSa.draw(); // reload the tables after insertion
+                // dataTablePlcModuleRCM.draw(); // reload the tables after insertion
+                // dataTablePlcModuleSa.draw(); // reload the tables after insertion
             }
 
             $("#iBtnEditRcmDataIcon").removeClass('fa fa-spinner fa-pulse');

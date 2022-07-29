@@ -19,33 +19,32 @@
 @section('title', 'JSOX')
 
 @section('content_page')
-<style type="text/css">
-    table{
-        color: black;
-    }
+    <style type="text/css">
+        table{
+            color: black;
+        }
 
-    table.table tbody td{
-        vertical-align: middle;
-        /* text-align: center; */
-    }
-</style>
-
-        <div class="content-wrapper"  style="height: 666px; overflow: scroll;">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>PLC Evidences</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                <li class="breadcrumb-item active">PLC Evidences Management</li>
-                            </ol>
-                        </div>
+        table.table tbody td{
+            vertical-align: middle;
+            /* text-align: center; */
+        }
+    </style>
+    <div class="content-wrapper"  style="height: 666px; overflow: scroll;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>PLC Evidences</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">PLC Evidences Management</li>
+                        </ol>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
         <!-- Main content -->
         <section class="content">
@@ -53,7 +52,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
@@ -65,166 +63,193 @@
 
                                 </ul>
                             <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="user-management" role="tabpanel" aria-labelledby="user-management-tab">
+                                <div class="tab-pane fade show active" id="user-management" role="tabpanel" aria-labelledby="user-management-tab">
                                     <div>
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddPlcEvidences" id = "btnAddPlcEvidencesModal"
-                                    style="float: right;"><i class="fas fa-plus"></i> Add
-                                    PLC Evidences</button></div><br><br>
+                                        <button class="btn btn-dark mt-1" data-toggle="modal" data-target="#modalAddPlcEvidences" id = "btnAddPlcEvidencesModal"
+                                        style="float: right;"><i class="fas fa-plus"></i> Add
+                                        PLC Evidences</button></div><br><br>
 
-
-                                    <div class="table-responsive">
-                                    <table id="plcEvidencesTable"
-                                        class="table table-sm table-bordered table-striped table-hover"
-                                        width="100%" style="white-space: pre-wrap;">
-                                        <thead>
-                                            <tr>
-                                                {{-- <th style="width: 10%">ID</th> --}}
-                                                <th style="width: 10%">PLC Category</th>
-                                                <th style="width: 10%">PLC Evidences File Name</th>
-                                                <th style="width: 10%">Date Uploaded</th>
-                                                <th style="width: 10%">Uploaded By</th>
-                                                {{-- <th style="width: 10%">Date Revised</th> --}}
-                                                {{-- <th style="width: 10%">Revised By</th> --}}
-                                                <th style="width: 10%">Action</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                        <div class="table-responsive">
+                                        <table id="plcEvidencesTable"
+                                            class="table table-sm table-bordered table-striped table-hover"
+                                            width="100%" style="white-space: pre-wrap;">
+                                            <thead>
+                                                <tr style="text-align:center">
+                                                    <th style="width: 10%">Date Uploaded</th>
+                                                    <th style="width: 10%">Fiscal Year and Audit Period</th>
+                                                    <th style="width: 30%">PLC Category</th>
+                                                    <th style="width: 20%">PLC Evidences File Name</th>
+                                                    <th style="width: 15%">Uploaded By</th>
+                                                    <th style="width: 10%">Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            {{-- <div class="tab-pane fade" id="archive" role="tabpanel" aria-labelledby="archive-tab">
-                                <div class="table-responsive mt-5">
-                                    <table id="tblRevisedPlcEvidences" class="table table-sm table-bordered table-striped table-hover display nowrap" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-
-                                                <th style="width: 10%">PLC Category</th>
-                                                <th style="width: 10%">Revised PLC Evidences</th>
-                                                <th style="width: 10%">Date Revised</th>
-                                                <th style="width: 10%">Revised By</th>
-
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div> --}}
-
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        </div>
+    </div>
 
-        <!-- ADD PLC EVIDENCES -->
-        <div class="modal fade" id="modalAddPlcEvidences">
-            <div class="modal-dialog">
+    <!-- ADD PLC EVIDENCES -->
+    <div class="modal fade" id="modalAddPlcEvidences">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Upload PLC Evidences</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Upload PLC Evidences</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <form id="formAddPlcEvidences" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="row">
-                    <div class="col-sm-12">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                        {{-- <div class="col-sm-12"> --}}
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
+                                    </div>
+                                    <input type="text" class="form-control h-100" name="fiscal_year" id="txtAddYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                </div>
+                            </div>
 
-                        {{-- <div class="form-group">
-                            <input type="text" class="form-control" name="category" id="txtcategory" readonly>
-                        </div> --}}
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Audit Period:</strong></span>
+                                    </div>
+                                    <select class="form-control select2bs4" name="audit_period" id="selAddFiscalYear" required>
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                        <div class="form-group">
-                        <label>Choose PLC Category</label>
-                        <div class="input-group">
-                            {{-- <input type="text" class="form-control mr-3"style ="width: 10%;" id="txtAddPlcCategory" name="plc_category"> --}}
-                            <select class="select2bs4 selectAddPlcCategory" id="selectPlcCategory" name="plc_category"></select>
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Choose PLC Category:</strong></span>
+                                    </div>
+                                    <select class="form-control select2bs4 selectAddPlcCategory" name="plc_category" id="selectPlcCategory" required></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Uploaded by:</strong></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="name_of_uploader" id="txtAddNameofUploader" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <input type="file" class ="" name="uploaded_file[]" id="txtAddReportUploadedFile" accept=".xlsx, .xls, .csv, application/pdf" multiple>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="hidden" class="" name="uploaded_date" id="txtAddReportUploadedDate" value="{{ \Carbon\Carbon::now()->format('M. d, Y') }}" readonly>
+                            </div>
                         </div>
-                        </div>
-
-                        {{-- <div class="form-group">
-                            <label>Upload PLC Evidences</label> <br>
-                            <input type="file" class ="" name="uploaded_file" id="txtAddReportUploadedFile" accept="application/pdf">
-                        </div> --}}
-
-                        <div class="form-group">
-                            <label>Upload PLC Evidences</label> <br>
-                            <input type="file" class ="" name="uploaded_file[]" id="txtAddReportUploadedFile" accept=".xlsx, .xls, .csv, application/pdf" multiple>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="hidden" class="" name="uploaded_date" id="txtAddReportUploadedDate" value="{{ \Carbon\Carbon::now()->format('M. d, Y') }}" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Uploaded by</label>
-                            <input type="text" class="form-control" name="name_of_uploader" id="txtAddNameofUploader" readonly>
-                        </div>
-
                     </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnAddPlcEvidences" class="btn btn-dark"><i id="BtnAddPlcEvidencesIcon" class="fa fa-check"></i> Save</button>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btnAddPlcEvidences" class="btn btn-primary"><i id="BtnAddPlcEvidencesIcon" class="fa fa-check"></i> Save</button>
-                </div>
                 </form>
-            </div>
-            <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- END PLC EVIDENCES -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- END PLC EVIDENCES -->
 
-        <!-- EDIT MODAL START -->
-        <div class="modal fade" id="modalEditPlcEvidences">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-dark">
-                        <h4 class="modal-title"><i class="far fa-edit"></i> Edit PLC Evidence</h4>
-                        <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close" btn-sm>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form method="post" id="editPlcEvidencesForm">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <input type="hidden" class="form-control" name="plc_evidence_id" id="txtPlcEvidenceId">
-                                        <input type="hidden" class="form-control" name="plc_evidence_status" id="txtPlcEvidenceStatus">
-                                        <label>PLC Category</label>
-                                        <input type="text" class="form-control" name="edit_plc_category" id="txtEditPlcCategoryId" readonly><br>
-                                        <label>Re-upload PLC Evidence</label>
+    <!-- EDIT MODAL START -->
+    <div class="modal fade" id="modalEditPlcEvidences">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="far fa-edit"></i> Edit PLC Evidence</h4>
+                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close" btn-sm>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="editPlcEvidencesForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" name="plc_evidence_id" id="txtPlcEvidenceId">
+                                    <input type="hidden" class="form-control" name="plc_evidence_status" id="txtPlcEvidenceStatus">
+
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
+                                            </div>
+                                            <input type="text" class="form-control" name="fiscal_year" id="txtEditFiscalYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Audit Period:</strong></span>
+                                            </div>
+                                            <select class="form-control select2bs4" name="audit_period" id="selEditAuditPeriod" required>
+                                                <option selected disabled value="">--Select--</option>
+                                                <option value="First Half">First Half</option>
+                                                <option value="Second Half">Second Half</option>
+                                            </select>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Choose PLC Category:</strong></span>
+                                            </div>
+                                            <input type="text" class="form-control" name="edit_plc_category" id="txtEditPlcCategoryId" readonly><br>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Revised by:</strong></span>
+                                            </div>
+                                            <input type="text" class="form-control" name="revised_by" id="txtEditPlcUploadedById" readonly>
+                                            <input type="hidden" class="" name="revised_date" id="txtRevisedDate" value="{{ \Carbon\Carbon::now()->format('M. d, Y') }}" readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group col-sm-12"> 
                                         <input type="text" class="form-control" name="uploadedfile" id="txtEditReportUploaded_File">
-                                        <br>
-                                        <input type="file" class="d-none" name="edit_uploaded_file[]" id="txtEditUploadedFile"  accept=".xlsx, .xls, .csv, application/pdf" required multiple><br>
-                                        <label>Revised by</label>
-                                        <input type="text" class="form-control" name="revised_by" id="txtEditPlcUploadedById" readonly>
-                                        <input type="hidden" class="" name="revised_date" id="txtRevisedDate" value="{{ \Carbon\Carbon::now()->format('M. d, Y') }}" readonly>
+                                        <input type="file" class="d-none" name="edit_uploaded_file[]" id="txtEditUploadedFile"  accept=".xlsx, .xls, .csv, application/pdf" required multiple>
                                     </div>
 
                                     <div class="form-group form-check">
                                         <input type="checkbox" class="form-check-input" name="checkbox" id="check_box">
                                         <label >Do you wish to continue editing?</label>
-
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" id="btnEditPlcEvidence" class="btn btn-primary d-none" ><i id="iBtnEditPlcEvidenceIcon" class="fa fa-check"></i> Save</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnEditPlcEvidence" class="btn btn-dark d-none" ><i id="iBtnEditPlcEvidenceIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
             </div>
-        </div><!-- EDIT MODAL END -->
-
+        </div>
+    </div><!-- EDIT MODAL END -->
 @endsection
 
 @section('js_content')
@@ -236,7 +261,7 @@
             GetPlcCategory($(".selectAddPlcCategory"));
 
              // ============================== VIEW PLC EVIDENCES DATATABLES  START ==============================
-    dataTablePlcEvidences = $("#plcEvidencesTable").DataTable({
+            dataTablePlcEvidences = $("#plcEvidencesTable").DataTable({
                 "processing" : false,
                 "serverSide" : true,
                 "responsive": true,
@@ -250,10 +275,10 @@
                     url: "view_plc_evidences", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
                 },
                 "columns":[
-                    // { "data" : "id" },
+                    { "data" : "date_uploaded"},
+                    { "data" : "fiscal_year_audit_period" },
                     { "data" : "plc_category"},
                     { "data" : "plc_evidences"},
-                    { "data" : "date_uploaded"},
                     { "data" : "uploaded_by"},
                     // { "data" : "updated_a1"},
                     // { "data" : "revised_by"},
@@ -341,6 +366,8 @@
                 // after clicking the actionEditUser(button) the userId will be pass to the txtEditUserId(input=hidden) and when the form is submitted this will be pass to ajax and collect user-id that will be use to query the user-id in the UserController to update the user
                 $("#txtPlcEvidenceId").val(plcEvidencesID);
 
+                $("#txtEditFiscalYear").attr('disabled', 'disabled');
+                $("#selEditAuditPeriod").attr('disabled', 'disabled');
                 $("#txtEditReportUploaded_File").attr('disabled', 'disabled');
 
 
@@ -357,24 +384,6 @@
                 event.preventDefault();
                 EditPlcEvidences();
             });
-
-            $('#modalEditPlcEvidences').on('hidden.bs.modal', function() {
-                            $('input[name = checkbox ]').prop('checked', false);
-                            // $('#editPlcEvidencesForm').reset()
-                            // $('#modalEditPlcEvidences').modal('toggle');
-                            // window.location.reload();
-
-                    if($('input[name = checkbox ]').is(":checked")){
-                        $("#txtEditReportUploaded_File").addClass('d-none');
-                        $("#txtEditUploadedFile").removeClass('d-none');
-                        $("#btnEditPlcEvidence").removeClass('d-none');
-                    }
-                    else{
-                        $("#txtEditReportUploaded_File").removeClass('d-none');
-                        $("#txtEditUploadedFile").addClass('d-none');
-                        $("#btnEditPlcEvidence").addClass('d-none');
-                    }
-                        });
 
     </script>
 @endsection

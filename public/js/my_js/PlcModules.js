@@ -211,80 +211,55 @@ function GetRevisionHistoryId(revisionHistoryId){
         },
         success: function(response){
             let history_revision = response['revision_history'];
-            // let implodedReasonRev = response ['explodeReasonForRevision'];
-            // let implodedDetailsRev = response ['explodeReasonForDetailsRevision']
-            // let implodedReasonRevArr = [];
-            // let implodedDetailsArr = [];
-            // console.log(implodedDetailsRev);
-
 
             if(history_revision.length > 0){
-            //     $('#txtMaxRowReasonIdForEdit').val(0).trigger('change');
-            //     $('#dynamic_field_for_revision').find('.btn_remove_for_reason').closest('tr').remove();
-
-
-
-            //     for (let index = 0; index < implodedReasonRev.length; index++) {
-            //         implodedReasonRevArr.push(implodedReasonRev[index]);
-            //     }
-
-            //     let counter = 0;
-            //     for (let reasonIndex = 0; reasonIndex < implodedReasonRevArr.length; reasonIndex++) {
-            //         counter++;
-
-            //         var html  = '<tr class="col-md-12" style="text-align:center;" id="tr_for_reason_'+reasonIndex+'">'
-            //             html += '	<td class ="col-md-1">'
-            //             html += '		<button type="button" name="remove" id="'+reasonIndex+'" class="btn btn-danger btn_remove_for_reason" ><i class="fa fa-times"></i></button>'
-            //             html += '	</td>'
-            //             html += '	<td>'
-            //             html += ' <input class="form-control" type="text" name="edit_revision_history_reason_'+reasonIndex+'" id="txtEditRevisionHistoryReason" autocomplete = "off">'
-            //             html += '	</td>'
-
-            //             html += '</tr>'
-            //             $('#dynamic_field_for_revision').append(html);
-            //             $('input[name="edit_revision_history_reason_'+reasonIndex+'"]', $('#editRevisionHistoryForm')).val(implodedReasonRevArr[reasonIndex]);
-            //             $('#txtMaxRowReasonIdForEdit').val(counter);
-
-
-            //     }
-            //     console.log(counter);
-
-            //     $('#txtMaxRowDetailsIdForEdit').val(0).trigger('change');
-            //     $('#dynamic_field_for_details').find('.btn_remove_for_details').closest('tr').remove();
-            //     for (let index1 = 0; index1 < implodedDetailsRev.length; index1++) {
-            //         implodedDetailsArr.push(implodedDetailsRev[index1]);
-            //     }
-            //     for (let implodedArrLoop1 = 0; implodedArrLoop1 < implodedDetailsArr.length; implodedArrLoop1++) {
-
-            //         var html  = '<tr class="col-md-12" style="text-align:center;" id="tr_for_details_'+implodedArrLoop1+'">'
-            //             html += '	<td class ="col-md-1">'
-            //             html += '		<button type="button" name="remove" id="'+implodedArrLoop1+'" class="btn btn-danger btn_remove_for_details" ><i class="fa fa-times"></i></button>'
-            //             html += '	</td>'
-            //             html += '	<td>'
-            //             html += ' <input class="form-control" type="text" name="edit_revision_history_details_'+implodedArrLoop1+'" id="txtEditRevisionHistoryDetails" autocomplete = "off">'
-            //             html += '	</td>'
-
-            //             html += '</tr>'
-            //             $('#dynamic_field_for_details').append(html);
-            //             $('input[name="edit_revision_history_details_'+implodedArrLoop1+'"]', $('#editRevisionHistoryForm')).val(implodedDetailsArr[implodedArrLoop1]);
-            //             $('#txtMaxRowDetailsIdForEdit').val(implodedArrLoop1);
-            //     }
             let editRevisionHistoryForm = $('#editRevisionHistoryForm');
             let process_owner_splitted = history_revision[0].process_owner.split('/')
-                console.log(history_revision[0].process_owner);
-                console.log(process_owner_splitted);
+                // console.log(history_revision[0].process_owner);
+                // console.log(process_owner_splitted);
                 $("#selectEditProcessOwner").val('');
                 for(i = 0; i<process_owner_splitted.length; i++){
                     let process_owner = '<option selected value="' + process_owner_splitted[i] + '">' + process_owner_splitted[i] + '</option>';
                     $('select[name="edit_revision_history_process_owner[]"]', editRevisionHistoryForm).append(process_owner);  
                 }
-                // $("#selectEditProcessOwner").val(history_revision[0].process_owner).trigger('change');
                 $("#txtEditVersionNo").val(history_revision[0].version_no);
                 $("#txtEditRevisionHistoryDate").val(history_revision[0].revision_date);
                 $("#selectEditDepartment").val(history_revision[0].concerned_dept).trigger('change');
-                $("#selectEditProcessInCharge").val(history_revision[0].in_charge).trigger('change');
-                $("#txteditReasonForRevision").val(history_revision[0].reason_for_revision);
-                $("#txteditDetailsOfRevision").val(history_revision[0].details_of_revision);
+                $("#selectEditProcessInCharge").val(history_revision[0].in_charge);
+
+                //REASON FOR REVISION
+                let reasonForRevisionCounter = 0;
+                // To remove auto counting of row in multiple (EDIT)
+                for(let rvr = 0; rvr <= response['explodeReasonForRevision'].length; rvr++){
+                    $('#removeEditRowReasonForRevision')[0].click();
+                }
+                for(let x = 1; x <= response['explodeReasonForRevision'].length; x++){
+                    // console.log(response['explodeReasonForRevision'])
+                    
+                    if(x!=1){
+                        $('#addEditRowReasonForRevision')[0].click();
+                    }
+                    $("#txtEditReasonForRevision"+x).val(response['explodeReasonForRevision'][reasonForRevisionCounter]);
+
+                    reasonForRevisionCounter = reasonForRevisionCounter + 1;
+                }
+
+                //DETAILS OF REVISION
+                let detailsOfRevisionCounter = 0;
+                // To remove auto counting of row in multiple (EDIT)
+                for(let dor = 0; dor <= response['explodeDetailsOfRevision'].length; dor++){
+                    $('#removeEditRowDetailsOfRevision')[0].click();
+                }
+                for(let y = 1; y <= response['explodeDetailsOfRevision'].length; y++){
+                    console.log(response['explodeDetailsOfRevision'])
+                    
+                    if(y!=1){
+                        $('#addEditRowDetailsOfRevision')[0].click();
+                    }
+                    $("#txtEditDetailsOfRevision"+y).val(response['explodeDetailsOfRevision'][detailsOfRevisionCounter]);
+
+                    detailsOfRevisionCounter = detailsOfRevisionCounter + 1;
+                }
             }
             else{
                 toastr.warning('No Revision History Record Found!');
@@ -346,7 +321,6 @@ function EditRevisionHistory(){
                 $("#editRevisionHistoryForm")[0].reset();
                 toastr.success('Revision History succesfully saved!');
                 dataTablePlcModuleRevisionHistory.draw(); // reload the tables after insertion
-                dataTablePlcModuleFlowChart
             }
 
             $("#iBtnRevisionHistoryIcon").removeClass('fa fa-spinner fa-pulse');
@@ -636,7 +610,7 @@ function LoadConcernedDepartment(cboElement)
         success: function(response){
             result = '';
             if(response['users_department'].length > 0){
-                // result = '<option selected disabled>-- Select Concerned Department -- </option>';
+                result = '<option selected disabled>-- Select Concerned Department -- </option>';
                 for(let index = 0; index < response['users_department'].length; index++){
                     // let disabled = '';
                     // console.log(response['users_department'][index].id);

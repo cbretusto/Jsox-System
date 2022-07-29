@@ -151,10 +151,15 @@ class InvExcelController extends Controller
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        $plc_module_sa_concerned_dept = PLCModuleSA::with('plc_categories')
+        $plc_module_sa_concerned_dept = PLCModuleSA::
+        with(
+            'plc_categories',
+            'plc_sa_dic_assessment_details_finding',
+            'plc_sa_oec_assessment_details_finding'
+            )
             ->where(function($q){
-            $q->where('dic_status', '=', 'NG')
-            ->orWhere('oec_status', '=','NG');
+            $q->where('dic_status', '!=', 'G')
+            ->orWhere('oec_status', '!=','G');
         })->get();
 
         $plc_module_rf_details = PLCModuleSA::with('plc_categories')
@@ -163,6 +168,18 @@ class InvExcelController extends Controller
         ->get();
 
         // return $plc_module_sa_concerned_dept;
+
+        $plc_section = PLCModuleSA::
+        where('dic_status', '!=', 'G')
+        ->orWhere('oec_status', '!=','G')
+        ->distinct()
+        ->get('concerned_dept');
+
+        // return $plc_section;
+
+
+
+
 
 
         // if(count($plc_module_sa_concerned_dept) > 0){
@@ -332,12 +349,35 @@ class InvExcelController extends Controller
 
     }
 
+            for($q= 0; $q < count($plc_module_sa); $q++){
+
+                $year = $plc_module_sa[$q]->year;
+                $result = substr("$year",2);
+            }
+
+            // return $result;
+
             // return $second_assessment_status_array_fu;
 
         // print_r ($second_assessment_status_array);
         $date = date('Ymd',strtotime(NOW()));
         // return $date;
-        return Excel::download(new UsersExports($date,$plc_module_sa,$status_check_array,$assessment_status_array_dic,$yec_date_arr,$second_half_status_check_array,$second_assessment_status_array,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu,$plc_module_sa_concerned_dept,$plc_module_rf_details,$plc_module_sa_category1), 'PMI FY21 PLC Audit Result - '.$date.'.xlsx');
+        return Excel::download(new UsersExports(
+            $date,
+            $plc_module_sa,
+            $status_check_array,
+            $assessment_status_array_dic,
+            $yec_date_arr,
+            $second_half_status_check_array,
+            $second_assessment_status_array,
+            $first_half_affected_status_arr,
+            $second_assessment_status_array_rf,
+            $fu_affected_internal_control_arr,
+            $second_assessment_status_array_fu,
+            $plc_module_sa_concerned_dept,
+            $plc_module_rf_details,
+            $plc_section,
+            ), 'PMI FY'.$result.' PLC Audit Result.xlsx');
         // return Excel::download(new audit_result($date,$plc_module_sa), 'PMI FY21 PLC Audit Result - '.$date.'.xlsx');
 
 

@@ -15,6 +15,7 @@ class CreateTblPLCModuleSa extends Migration
     {
         Schema::create('tbl_plc_module_sa', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('rcm_id')->unsigned();
             $table->string('category');
             $table->string('year');
             $table->string('fiscal_year');
@@ -22,10 +23,11 @@ class CreateTblPLCModuleSa extends Migration
             $table->string('view_assessed_by')->comment = 'view only';
             $table->string('checked_by')->comment = 'Approver - IAS General Manager (First Half)';
             $table->string('view_checked_by')->comment = 'view only';
-            $table->string('control_no');
-            $table->string('key_control');
-            $table->string('it_control');
-            $table->string('internal_control');
+            $table->string('concerned_dept');
+            $table->string('control_no')->comment = 'RCM Control ID';
+            $table->string('non_key_control');
+            $table->string('key_control')->comment = 'RCM Key Control';
+            $table->string('it_control')->comment = 'RCM IT Control';
             $table->string('dic_status');
             $table->string('oec_status');
             $table->string('second_half_assessed_by')->comment = 'Approver - IAS Jr Auditor (Second Half)';
@@ -38,7 +40,6 @@ class CreateTblPLCModuleSa extends Migration
             $table->string('fu_status');
             $table->string('yec_approved_date');
             $table->unsignedTinyInteger('approver_status')->default(0)->comment = '0-For Update/Approval of Jr. Auditor, 1-Approval of IAS Manager, 2-(1st Half) Approved & (2nd half)For Approval Junior Auditor, 3-(1st Half) Approved & (2nd half) For Approval -IAS Manager, 4-Approved';
-            $table->bigInteger('rcm_id')->unsigned();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
 

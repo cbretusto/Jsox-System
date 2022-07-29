@@ -70,6 +70,7 @@
 
                             <div class="card-body table-responsive">
                                 <div style="float: right;">
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#modalExportFcrpClcSummary"><i class="fa fa-download"></i>  Export FCRP-CLC Summary  </button>
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalAddPmiFcrpCategory" id="btnShowAddPmiFcrpCategoryModal"><i class="fa fa-plus"></i>  Add PMI FCRP  </button>
                                 </div> <br><br>
                                 <div class="table-responsive">
@@ -99,6 +100,47 @@
             </div>
         </section>
     </div>
+
+        <!-- MODALS -->
+        <div class="modal fade" id="modalExportFcrpClcSummary">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export IT-CLC Summary</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Select Year:</label>
+                                <select name="select_year" id="selectYearId">
+                                    <?php
+                                        $year_now = date('Y');
+
+                                        for($i = 2021; $i <= $year_now; $i++){
+                                            echo "<option value =".$i.">
+                                                ".$i."
+                                                </option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnExportFcrpSummary" class="btn btn-dark"><i id="btnExportFcrpSummaryIcon" class="fa fa-check"></i> Export</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    <!-- /.modal -->
 
     <!-- ADD MODAL START -->
     <div class="modal fade" id="modalAddPmiFcrpCategory">
@@ -802,6 +844,20 @@
             });
 
         }); // JQUERY DOCUMENT READY END
+
+        $('#btnExportFcrpSummary').on('click', function(){
+
+        // console.log($('#formViewWPRequest').serialize());
+        let year_id = $('#selectYearId').val();
+        // let selected_month = $('#selectMonthId').val();
+
+        window.location.href = `export_fcrp_clc_summary/${year_id}`;
+        console.log(year_id);
+        // console.log(selected_month);
+        $('#modalExportFcrpClcSummary').modal('hide');
+
+
+        });
 
     </script>
 @endsection

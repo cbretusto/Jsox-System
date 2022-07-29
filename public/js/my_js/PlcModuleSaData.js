@@ -1,57 +1,3 @@
-// // ============================== DELETE SA DATA ==============================
-// function DeleteSaData(){
-//     toastr.options = {
-//         "closeButton": false,
-//         "debug": false,
-//         "newestOnTop": true,
-//         "progressBar": true,
-//         "positionClass": "toast-top-right",
-//         "preventDuplicates": false,
-//         "onclick": null,
-//         "showDuration": "300",
-//         "hideDuration": "3000",
-//         "timeOut": "3000",
-//         "extendedTimeOut": "3000",
-//         "showEasing": "swing",
-//         "hideEasing": "linear",
-//         "showMethod": "fadeIn",
-//         "hideMethod": "fadeOut",
-//     };
-
-//     $.ajax({
-//         url: "delete_sa_data",
-//         method: "post",
-//         data: $('#deleteSaForm').serialize(),
-//         dataType: "json",
-//         beforeSend: function(){
-//             $("#iBtnDeleteSaDataIcon").addClass('fa fa-spinner fa-pulse');
-//             $("#btnDeleteSaData").prop('disabled', 'disabled');
-//         },
-//         success: function(response){
-//             let result = response['result'];
-//             if(result == 1){
-//                 $("#modalDeleteSaData").modal('hide');
-//                 $("#deleteSaForm")[0].reset();
-//                 toastr.success('SA Data successfully deleted');
-//                 dataTablePlcModuleSa.draw();
-//             }
-//             else{
-//                 toastr.warning('No SA Data found!');
-//             }
-
-//             $("#iBtnDeleteSaDataIcon").removeClass('fa fa-spinner fa-pulse');
-//             $("#btnDeleteSaData").removeAttr('disabled');
-//             $("#iBtnDeleteSaDataIcon").addClass('fa fa-check');
-//         },
-//         error: function(data, xhr, status){
-//             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-//             $("#iBtnDeleteSaDataIcon").removeClass('fa fa-spinner fa-pulse');
-//             $("#btnDeleteSaData").removeAttr('disabled');
-//             $("#iBtnDeleteSaDataIcon").addClass('fa fa-check');
-//         }
-//     });
-// }
-
 //============================== EDIT USER BY ID TO EDIT ==============================
 function GetSaData(saDataId){
     toastr.options = {
@@ -484,40 +430,6 @@ function LoadUserListAssessedBy(cboElement){
         }
     });
 }
-
-// function UserList(cboElement){
-//     let result = '<option value="">N/A</option>';
-
-//     $.ajax({
-//     url: "load_user_SA",
-//     method: "get",
-//     dataType: "json",
-//     beforeSend: function(){
-//             result = '<option value=""> -- Loading -- </option>';
-//             cboElement.html(result);
-//         },
-//         success: function(response){
-//             result = '';
-//             if(response['users'].length > 0){
-//                 result = '<option selected disabled>-- Select User -- </option>';
-//                 for(let index = 0; index < response['users'].length; index++){
-//                     result += '<option value="' + response['users'][index].rapidx_name + '">' + response['users'][index].rapidx_name + '</option>';
-//                 }
-//             }
-//             else{
-//                 result = '<option value=""> -- No record found -- </option>';
-//             }
-//             cboElement.html(result);
-//         },
-//         error: function(data, xhr, status){
-//             result = '<option value=""> -- Reload Again -- </option>';
-//             cboElement.html(result);
-//             toastr.error('Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-//         }
-
-//     });
-// }
-
 
 function ApprovedSaData(){
     toastr.options = {

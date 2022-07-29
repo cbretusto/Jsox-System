@@ -49,6 +49,7 @@ class rollforward implements FromView, WithTitle, WithEvents
     // for designs
     public function registerEvents(): array
     {
+        $get_rf_detais = $this->plc_module_rf_details;
 
         $style1 = array(
             'font' => array(
@@ -112,7 +113,7 @@ class rollforward implements FromView, WithTitle, WithEvents
         );
 
         return [
-            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex)  {
+            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex,$get_rf_detais)  {
 
 
 
@@ -209,6 +210,22 @@ class rollforward implements FromView, WithTitle, WithEvents
                 $event->sheet->getDelegate()->getStyle('A12:E12')->applyFromArray($stylex);
                 $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style3);
                 $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style5);
+
+
+                $a = 2;
+                $b = 2;
+
+                for($i = 0; $i < count($get_rf_detais); $i++){
+                    // dd(count($get_concerned_dept));
+                    // $exploded_concerned_dept = explode (',', $get_concerned_dept[$i]->concerned_dept);
+                    $a++;
+                }
+
+                $result = 'A'.$b.':E'.$a;
+
+                // dd($result);
+
+            $event->sheet->getDelegate()->getStyle((string)$result)->applyFromArray($styleBorderAll);
 
             },
         ];

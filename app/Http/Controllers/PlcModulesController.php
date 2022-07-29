@@ -65,7 +65,7 @@ class PlcModulesController extends Controller
                 if($process_owner != NULL){
                     $result .= Carbon::parse($date)->format('M d, Y');
                 }else{
-                    $result = $date;
+                    $result .= $date;
                 }
             //    $result = Carbon::$date->format('M. d, Y');
 
@@ -111,157 +111,142 @@ class PlcModulesController extends Controller
         }
 
 
-            //===== ADD REVISION HISTORY FUNCTION ====//
-        public function add_revision_history(Request $request)
-        {
+        //===== ADD REVISION HISTORY FUNCTION ====//
+        public function add_revision_history(Request $request){
             date_default_timezone_set('Asia/Manila');
             session_start();
 
             $data = $request->all();
-
-            // return $data;
-            // return $request->process_owner;
-
-
             $validator = Validator::make($data, [
-            'process_owner' => 'required',
-            'revision_date' => 'required',
-            'version_no' => 'required',
-            'add_reason_for_revision' => 'required',
-            'concerned_dept' => 'required',
-            'add_details_of_revision' => 'required',
-            'process_in_charge' => 'required'
-
+            // 'process_owner' => 'required',
+            // 'revision_date' => 'required',
+            // 'version_no' => 'required',
+            // 'add_revision_history_array' => 'required',
+            // 'concerned_dept' => 'required',
+            // 'add_details_of_revision' => 'required',
+            // 'process_in_charge' => 'required'
             ]);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()){
                 return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
             }
             else{
-                // $revision_array = array();
-                // $add_revision = "reason_for_revision_";
-
-                // for ($index=1; $index <= $request->txt_max_row_reason; $index++) {
-                //     if($request->txt_max_row_reason >= 1){
-                //         $revision_data = $add_revision.$index;
-
-                //         $rules["reason_for_revision_$index"] = ['required'];
-
-                //         $revision_array[] = $request->$revision_data;
-
-                //     }
-                //     else{
-                //         $rules["reason_for_revision_$index"] = [''];
-
-                //     }
-
-                // }
-                // $reason_revision = implode(", ", $revision_array);
-                    // return $reason_revision;
-
-
-                // $revision_details_array = array();
-                // $add_revision_details = "details_of_revision_";
-
-                // for ($index=1; $index <= $request->txt_max_row_reason_details; $index++) {
-                //     if($request->txt_max_row_reason_details >= 1){
-                //         $revision_details_data = $add_revision_details.$index;
-
-                //         $rules["details_of_revision_$index"] = ['required'];
-
-                //         $revision_details_array[] = $request->$revision_details_data;
-
-                //     }
-                //     else{
-                //         $rules["details_of_revision_$index"] = [''];
-
-                //     }
-
-                // }
                 $add_revision_process_owner = implode(" / ", $request->process_owner);
                 $add_concerned_department = implode(" / ", $request->concerned_dept);
                 // return $add_revision_process_owner;
-                $get_rev_history_id = PLCModule::insertGetId([
+
+               //START
+                $add_revision_history_array = array(
                     'category' => $request->category_name,
                     'process_owner' => $add_revision_process_owner,
                     'revision_date' => $request->revision_date,
                     'version_no' =>    $request->version_no,
-                    'reason_for_revision' => $request->add_reason_for_revision,
                     'concerned_dept' =>  $add_concerned_department,
-                    'details_of_revision' =>  $request->add_details_of_revision,
-                    'in_charge' =>  $request->process_in_charge,
-                    'logdel' => 0,
-                ]);
-                
-                // $get_rev_history_id = PLCModule::where('id', $request->id)->get();
+                    'in_charge'     => $request->in_charge,
+                    'created_at' => date('Y-m-d H:i:s')
+                );
 
-                // $get_id_to_flow_chart_id = $get_rev_history_id[0]->id;
-                // return $get_id_to_flow_chart_id;
+                //REASON FOR REVISION
+                $reasonForRevisionArray = array();
+                $reasonForRevision = "reason_for_revision";
 
-                PLCModuleFlowChart::insert([
-                    'rev_history_id'    => $get_rev_history_id,
+                if($request->add_reason_for_revision_counter > 1){ // Multiple Insert
+                    for($x = 1; $x <= $request->add_reason_for_revision_counter; $x++){
+                        array_push($reasonForRevisionArray, $data[$reasonForRevision.$x]);
+                    }
+                    $imploded_reason_for_revision = implode($reasonForRevisionArray,"\n\n");
+                    $add_revision_history_array['reason_for_revision'] =  $imploded_reason_for_revision;
+                }
+                else{ // Single Insert
+                    $add_revision_history_array['reason_for_revision'] =  $request->reason_for_revision1;
+                }
+
+                //DETAILS OF REVISION
+                $detailsOfRevisionArray = array();
+                $detailsOfRevision = "details_of_revision";
+
+                if($request->add_details_of_revision_counter > 1){ // Multiple Insert
+                    for($y = 1; $y <= $request->add_details_of_revision_counter; $y++){
+                        array_push($detailsOfRevisionArray, $data[$detailsOfRevision.$y]);
+                    }
+                    $imploded_details_of_revision = implode($detailsOfRevisionArray,"\n\n");
+                    $add_revision_history_array['details_of_revision'] = $imploded_details_of_revision;
+                }
+                else{ // Single Insert
+                    $add_revision_history_array['details_of_revision'] = $request->details_of_revision1;
+                }//END
+
+                //ADD REVISION HISTORY
+                $get_rev_history_id = PLCModule::insertGetId(
+                    $add_revision_history_array
+                );
+
+                //ADD FLOW CHART
+                $add_flowchart = array(
                     'category'          => $request->category_name,
                     'process_owner'     => $add_revision_process_owner,
                     'revision_date'     => $request->revision_date,
                     'version_no'        => $request->version_no,
-                ]);
+                );
+                $add_flowchart['rev_history_id'] =  $get_rev_history_id;
 
-                    return response()->json(['result' => "1"]);
+                 //ADD FLOW CHART
+                $get_rev_history_id = PLCModuleFlowChart::insert([
+                    $add_flowchart
+                ]);
+                return response()->json(['result' => "1"]);
             }
-        }
-        //===== ADD REVISION HISTORY FUNCTION END ====//
+        }//===== ADD REVISION HISTORY FUNCTION END ====//
 
 
         //=====NO REVISION HISTORY FUNCTION ====//
-        public function no_revision_history(Request $request)
-        {
+        public function no_revision_history(Request $request){
             date_default_timezone_set('Asia/Manila');
             session_start();
 
             $data = $request->all();
-
             $validator = Validator::make($data, [
 
             ]);
-
-            if ($validator->fails())
-            {
+            if ($validator->fails()){
                 return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
-            } else
-                {
+            }else{
+                $get_id = PLCModule::insertGetId([
+                    'revision_date' => $request->no_revision,
+                    'category' => $request->category_name,
+                    'logdel' => 0
+                ]);
 
-                    PLCModule::insert([
+                PLCModuleFlowChart::insert([
+                    'rev_history_id' => $get_id,
+                    'revision_date' => $request->no_revision,
+                    'category' => $request->category_name,
+                    'logdel' => 0
+                ]);
 
-                            'revision_date' => $request->no_revision,
-                            'category' => $request->category_name,
-                            'logdel' => 0
-                        ]);
+                return response()->json(['result' => "1"]);
+            }
+        }//=====NO REVISION HISTORY FUNCTION END ====//
 
-                    return response()->json(['result' => "1"]);
-
-
-                }
-        }
-        //=====NO REVISION HISTORY FUNCTION END ====//
-
-             //============================== GET PLC CATEGORY BY ID TO EDIT ==============================
+    //============================== GET PLC CATEGORY BY ID TO EDIT ==============================
     public function get_revision_history_id_to_edit(Request $request){
         $revision_history = PLCModule::where('id', $request->revision_history_id)->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
         // return $user[0]->rapidx_user_details->name;
-        // $test = array();
-
-        $explodeReasonForRevision = explode (', ', $revision_history[0]->reason_for_revision);
-        $explodeDetailsForRevision = explode (', ', $revision_history[0]->details_of_revision);
-        // $test = $revision_history[0]->reason_for_revision;
+        // $revisionHistory = array();
+        
+        $explodeReasonForRevision = explode ("\n\n", $revision_history[0]->reason_for_revision);
+        $explodeDetailsOfRevision = explode ("\n\n", $revision_history[0]->details_of_revision);
+        // $revisionHistory = $revision_history[0]->reason_for_revision;
 
         // print_r($explodeDetailsForRevision);
-
-        return response()->json(['revision_history' => $revision_history, 'explodeReasonForRevision' => $explodeReasonForRevision, 'explodeReasonForDetailsRevision' => $explodeDetailsForRevision ]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
+        // return  $explodeDetailsOfRevision;
+        return response()->json(['revision_history' => $revision_history, 
+            'explodeReasonForRevision' => $explodeReasonForRevision, 
+            'explodeDetailsOfRevision' => $explodeDetailsOfRevision]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
-     //============================== EDIT REVISION HISTORY ==============================
-     public function edit_revision_history(Request $request){
+    //============================== EDIT REVISION HISTORY ==============================
+    public function edit_revision_history(Request $request){
         date_default_timezone_set('Asia/Manila');
 
         $data = $request->all(); // collect all input fields
@@ -275,190 +260,129 @@ class PlcModulesController extends Controller
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
         }
         else{
-            // $edit_revision_array = array();
-
-            // for ($index=0; $index < $request->txt_max_row_reason; $index++) {
-            //     if($request->txt_max_row_reason > 0 ){
-
-            //         // $revision_data = $edit_revision.$index;
-            //         // return $request->reasonIndex;
-
-            //         $edit_revision_reason = $request->input("edit_revision_history_reason_$index");
-
-            //         $rules["edit_revision_history_reason_$index"] = ['required'];
-
-            //         array_push($edit_revision_array, $edit_revision_reason);
-
-            //     }
-            //     else{
-            //         $rules["edit_revision_history_reason_$index"] = [''];
-
-            //     }
-
-            // }
-            // $edit_reason_revision = implode(", ", $edit_revision_array);
-            // //  return $reason_revision;
-
-            // $edit_revision_details_array = array();
-
-            // for ($index=0; $index < $request->txt_max_row_reason; $index++) {
-            //     if($request->txt_max_row_reason > 0 ){
-
-            //         // $revision_data = $edit_revision.$index;
-            //         // return $request->reasonIndex;
-
-            //         $edit_revision_details = $request->input("edit_revision_history_details_$index");
-
-            //         $rules["edit_revision_history_details_$index"] = ['required'];
-
-            //         array_push($edit_revision_details_array, $edit_revision_details);
-
-            //     }
-            //     else{
-            //         $rules["edit_revision_history_details_$index"] = [''];
-
-            //     }
-
-            // }
-            // $edit_reason_details = implode(", ", $edit_revision_details_array);
-            // //  return $reason_revision;
-
             $edit_revision_process_owner = implode(" / ", $request->edit_revision_history_process_owner);
             $edit_revision_history_concerned_department = implode(" / ", $request->edit_revision_history_concerned_dept);
-            PLCModule::where('id', $request->revision_history_id)
-            ->update([ // The update method expects an array of column and value pairs representing the columns that should be updated.
+
+            //START
+            $edit_revision_history_array = array(
                 'process_owner' => $edit_revision_process_owner,
                 'revision_date' => $request->edit_revision_history_date,
-                'version_no' =>    $request->edit_version_no,
-                'reason_for_revision' => $request->edit_reason_for_revision,
-                'concerned_dept' => $edit_revision_history_concerned_department,
-                'details_of_revision' => $request->edit_details_of_revision,
-                'in_charge' => $request->edit_revision_history_in_charge
-            ]);
+                'version_no'    => $request->edit_version_no,
+                'concerned_dept'=> $edit_revision_history_concerned_department,
+                'in_charge'     => $request->edit_revision_history_in_charge
+            );
 
+            //REASON FOR REVISION
+            $reasonForRevisionArray = array();
+            $reasonForRevision = "reason_for_revision";
+
+            if($request->edit_reason_for_revision_counter > 1){ // Multiple Insert
+                for($x = 1; $x <= $request->edit_reason_for_revision_counter; $x++){
+                    array_push($reasonForRevisionArray, $data[$reasonForRevision.$x]);
+                }
+                $imploded_reason_for_revision = implode($reasonForRevisionArray,"\n\n");
+                $edit_revision_history_array['reason_for_revision'] = $imploded_reason_for_revision;
+            }
+            else{ // Single Insert
+                $edit_revision_history_array['reason_for_revision'] = $request->reason_for_revision1;
+            }
+
+            //DETAILS OF REVISION
+            $detailsOfRevisionArray = array();
+            $detailsOfRevision = "details_of_revision";
+
+            if($request->edit_details_of_revision_counter > 1){ // Multiple Insert
+                for($y = 1; $y <= $request->edit_details_of_revision_counter; $y++){
+                    array_push($detailsOfRevisionArray, $data[$detailsOfRevision.$y]);
+                }
+                $imploded_details_of_revision = implode($detailsOfRevisionArray,"\n\n");
+                $edit_revision_history_array['details_of_revision'] = $imploded_details_of_revision;
+            }
+            else{ // Single Insert
+                $edit_revision_history_array['details_of_revision'] = $request->details_of_revision1;
+            }//END
+
+            //UPDATE REVISION HISTORY
+            PLCModule::where('id', $request->revision_history_id)
+            ->update(
+                $edit_revision_history_array
+            );
+
+            //UPDATE FLOW CHART
             if(PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)->exists()){
                 PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)
                 ->update([
-                    'process_owner' => $edit_revision_process_owner,
-                ]);    
-            }else{
-                PLCModuleFlowChart::insert([
-                    'category'      => $request->category_name,
-                    'process_owner' => $edit_revision_process_owner,
-                    'revision_date' => $request->edit_revision_history_date,
-                    'version_no'    => $request->edit_version_no,    
-
+                    'category'          => $request->category_name,
+                    'process_owner'     => $edit_revision_process_owner,
+                    'revision_date'     => $request->edit_revision_history_date,
+                    'version_no'        => $request->edit_version_no,
                 ]);
-            }    
-
-            /*DB::commit();*/
+            }else{
+                //ADD FLOW CHART
+                PLCModuleFlowChart::insert([
+                    'rev_history_id'    => $request->revision_history_id,
+                    'category'          => $request->category_name,
+                    'process_owner'     => $edit_revision_process_owner,
+                    'revision_date'     => $request->edit_revision_history_date,
+                    'version_no'        => $request->edit_version_no,
+                ]);
+            }
             return response()->json(['result' => "1"]);
 
         }
     }
 
-    // //============================== DEACTIVATE PLC CATEGORY ==============================
-    // public function deactivate_revision_history(Request $request)
-    // {
-    //     date_default_timezone_set('Asia/Manila');
-    //     session_start();
-
-    //     $data = $request->all();
-
-    //     PLCModule::where('id', $request->deactivate_revision_history_id)
-    //         ->update([
-    //             // 'logdel' => 1,
-    //             'status' => 2
-    //         ]);
-
-    //     return response()->json(['result' => "1"]);
-    // }
-    //  //============================== ACTIVATE PLC CATEGORY ==============================
-    //  public function activate_revision_history(Request $request)
-    //  {
-    //      date_default_timezone_set('Asia/Manila');
-    //      session_start();
-
-    //      $data = $request->all();
-
-    //      PLCModule::where('id', $request->activate_history_id)
-    //      ->update([
-    //         //  'logdel' => 0
-    //          'status' => 1
-    //      ]);
-
-    //      return response()->json(['result' => "1"]);
-    //  }
-
     //============================== CHANGE PMI CLC STAT ==============================
-    public function change_plc_revision_history_stat(Request $request){        
-    date_default_timezone_set('Asia/Manila');
+    public function change_plc_revision_history_stat(Request $request){
+        date_default_timezone_set('Asia/Manila');
 
-    $data = $request->all(); // collect all input fields
+        $data = $request->all(); // collect all input fields
 
-    $validator = Validator::make($data, [
-        'plc_revision_history_id' => 'required',
-        'status' => 'required',
-    ]);
-
-    if($validator->passes()){
-        PLCModule::where('id', $request->plc_revision_history_id)
-        ->update([
-            'status' => $request->status,
-            'updated_at' => date('Y-m-d H:i:s'),
+        $validator = Validator::make($data, [
+            'plc_revision_history_id' => 'required',
+            'status' => 'required',
         ]);
-        
-        // PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)
-        // ->update([
-        //     'flow_chart_status' => $request->flow_chart_status,
-        //     'updated_at' => date('Y-m-d H:i:s'),
-        // ]);
 
-        PLCModuleFlowChart::where('id', $request->plc_revision_history_id)
-        ->update([
-            'flow_chart_status' => $request->status,
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-        
-        return response()->json(['result' => "1"]);
+        if($validator->passes()){
+            PLCModule::where('id', $request->plc_revision_history_id)
+            ->update([
+                'status' => $request->status,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            PLCModuleFlowChart::where('id', $request->plc_revision_history_id)
+            ->update([
+                'flow_chart_status' => $request->status,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            return response()->json(['result' => "1"]);
+        }
+        else{
+            return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
+        }
     }
-    else{
-        return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
-    }
-}
-
-
 
     public function go_to_plc_category_session(Request $request){
         date_default_timezone_set('Asia/Manila');
         session_start();
         // return $request->useSession;
         session(['pmi_plc_category_id' => $request->useSession]);
-
         return response()->json(['result' => 1]);
     }
 
     public function load_user_management_rev(Request $request){
-        // $users = RapidXUser::where('user_stat', 1)->orderBy('name','asc')->whereNotIn('name',['Admin','Test QAD Admin Approver'])->get();
         $users = UserManagement::where('user_level_id', 2)->get();
-        // return $users;
         return response()->json(['users' => $users]);
     }
 
     public function load_user_management_process_owner(Request $request){
-        // $users = RapidXUser::where('user_stat', 1)->orderBy('name','asc')->whereNotIn('name',['Admin','Test QAD Admin Approver'])->get();
         $users = UserManagement::where('logdel', 0)->where('user_level_id', 2)->orWhere('user_level_id', 3)->get();
-        // return $users;
         return response()->json(['users' => $users]);
     }
 
     public function load_concerned_department(Request $request){
-        // $users = RapidXUser::where('user_stat', 1)->orderBy('name','asc')->whereNotIn('name',['Admin','Test QAD Admin Approver'])->get();
-        $users_department = RapidXDepartment::all();
-
-        // return $users_department;
-
-        // $users = UserManagement::where('user_level_id', 2)->get();
+        $users_department = RapidXDepartment::where('department_stat', 1)->get();
         return response()->json(['users_department' => $users_department]);
     }
 

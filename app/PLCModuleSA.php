@@ -1,13 +1,15 @@
 <?php
 
 namespace App;
-use App\PLCModuleRCM;
+
+use App\PlcCapa;
 use App\PlcCategory;
+use App\PLCModuleRCM;
 use App\PlcEvidences;
 use App\PLCCAPACapaAnalysis;
 use App\PLCCAPACorrectiveAction;
 use App\PLCCAPAPreventiveAction;
-use App\PlcCapa;
+use App\PLCModuleRCMInternalControl;
 use Illuminate\Database\Eloquent\Model;
 
 class PLCModuleSA extends Model
@@ -47,9 +49,9 @@ class PLCModuleSA extends Model
         return $this->hasMany(PlcCapa::class, 'sa_id', 'id');
     }
 
-    // public function plc_capa_analysis_details(){
-    //     return $this->hasMany(PLCCAPACapaAnalysis::class, 'plc_capa_id', 'id');
-    // }
+    public function rcm_info(){
+        return $this->hasMany(PLCModuleRCMInternalControl::class, 'rcm_id', 'rcm_id');
+    }
 
     // public function plc_capa_corrective_actions_details(){
     //     return $this->hasMany(PLCCAPACorrectiveAction::class, 'plc_capa_id', 'id');

@@ -115,6 +115,8 @@ function GetClcEvidencesByIdToEdit(clc_evidencesId){
             let clc_evidences_id = response['clc_evidences_id'];
             if(clc_evidences_id.length > 0){
                 $("#txtEditDate").val(clc_evidences_id[0].date_uploaded);
+                $("#txtEditFiscalYear").val(clc_evidences_id[0].fiscal_year);
+                $("#selEditAuditPeriod").val(clc_evidences_id[0].audit_period).trigger('change');
                 $("#selEditClcCategory").val(clc_evidences_id[0].clc_category).trigger('change');
                 $("#EditClcEvidenceFile").val(clc_evidences_id[0].uploaded_file);
 

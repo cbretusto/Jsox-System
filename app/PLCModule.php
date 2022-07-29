@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\UserManagement;
+use App\PlcCategory;
 
 class PLCModule extends Model
 {
@@ -18,6 +19,11 @@ class PLCModule extends Model
     public function rapidx_user_details1()
     {
     	return $this->hasOne(RapidXUser::class, 'id', 'rapidx_id');
+    }
+
+    public function plc_category_details()
+    {
+    	return $this->hasOne(PlcCategory::class, 'id', 'category');
     }
     // public function rapidx_user_name()
     // {

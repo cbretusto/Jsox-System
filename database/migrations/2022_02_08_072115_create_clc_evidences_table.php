@@ -16,6 +16,8 @@ class CreateClcEvidencesTable extends Migration
         Schema::create('clc_evidences', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('date_uploaded');
+            $table->string('fiscal_year');
+            $table->string('audit_period');
             $table->string('clc_category');
             $table->string('uploaded_file');
             $table->string('uploaded_by');

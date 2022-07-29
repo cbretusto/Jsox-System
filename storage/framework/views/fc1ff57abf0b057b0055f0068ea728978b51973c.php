@@ -146,13 +146,13 @@
                             ?>
                         </select>
 
-                        <label>Select Fiscal year:</label>
+                        <label>Select Audit Period:</label>
                         <select name="select_fiscal_year" id="selectFiscalYearId">
                             <option value="First-Half">First Half</option>
                             <option value="Second-Half">Second Half</option>
                         </select>
 
-                        <label>Select Dept/Division:</label>
+                        <label>Select Section/Dept.:</label>
                         <select name="select_dept" id="selectDeptId">
                             <option value="PPC">PPC</option>
                             <option value="Warehouse">Warehouse</option>

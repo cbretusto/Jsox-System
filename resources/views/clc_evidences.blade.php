@@ -27,7 +27,7 @@
 
         table.table tbody td{
             vertical-align: middle;
-            text-align: center;
+            /* text-align: center; */
         }
     </style>
 
@@ -54,15 +54,16 @@
                                 <div style="float: right;">                   
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalAddClcEvidences" id="btnShowAddClcEvidencesModal"><i class="fa fa-plus"></i>  Add CLC Evidence </button>
                                 </div> <br><br>
-                                <div class="table responsive">
+                                <div class="table responsive" style="height: 666px; overflow-y: scroll;">
                                     <table id="tblClcEvidences" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
                                         <thead>
                                             <tr style="text-align:center">
                                             <th>Date Uploaded</th>
+                                            <th>Fiscal Year & Audit Period</th>
                                             <th>Category</th>
                                             <th>CLC Uploaded File</th>
                                             <th>Uploaded By</th>
-                                            <th style="width: 20%">Action</th>
+                                            <th>Action</th>
                                             </tr>
                                         </thead>            
                                     </table>
@@ -88,30 +89,50 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="form-group col-sm-12 flex-column d-flex"> 
-                                        <br>
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Date Uploaded: </strong></span>
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Date Uploaded:</strong></span>
                                             </div>
                                             <input type="text" class="form-control" id="txtAddDate" name="date_uploaded" value="{{ \Carbon\Carbon::now()->format('M. d, Y') }}" readonly> 
-                                        </div> 
+                                        </div>
                                     </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex"> 
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Category: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
                                             </div>
-                                            <select class="form-control select2bs4 selectClcCategory"  id="selAddClcCategory" name="clc_category" style="width: 70%;">
-                                            <!-- Code generated -->
-                                        </div> 
+                                            <input type="text" class="form-control h-100" name="fiscal_year" id="txtAddFiscalYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                        </div>
                                     </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex"> 
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Audit Period:</strong></span>
+                                            </div>
+                                            <select class="form-control select2bs4" name="audit_period" id="selAddAuditPeriod" required>
+                                                <option selected disabled value="">--Select--</option>
+                                                <option value="First Half">First Half</option>
+                                                <option value="Second Half">Second Half</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Category:</strong></span>
+                                            </div>
+                                            <select class="form-control select2bs4 selectClcCategory" name="clc_category" id="selAddClcCategory" required></select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
                                             <input type="hidden" class="form-control" id="txtAddUploadedBy" name="uploaded_by" readonly>
                                         </div> 
-                                        <input type="file" class="" id="txtAddClcEvidenceFile" name="uploaded_file[]" accept="application/pdf" multiple required> 
+                                        <input type="file" class="" id="txtAddClcEvidenceFile" name="uploaded_file[]" accept=".xlsx, .xls, .csv, application/pdf" multiple required> 
                                     </div>
                                 </div>
                             </div>
@@ -139,32 +160,52 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <input type="hidden" class="form-control" name="clc_evidences_id" id="txtEditClcEvidencesId"> 
-                                    <div class="form-group col-sm-12 flex-column d-flex">
-                                        <br>
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Date Uploaded: </strong></span>
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Date Uploaded:</strong></span>
                                             </div>
                                             <input type="text" class="form-control" id="txtEditDate" name="date_uploaded" readonly> 
-                                        </div> 
+                                        </div>
                                     </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex"> 
-                                        <div class="input-group mb-4">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Category: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
                                             </div>
-                                            <select class="form-control select2bs4 selectClcCategory"  id="selEditClcCategory" name="clc_category" style="width: 70%;">
-                                            <!-- Code generated -->
-                                        </div> 
+                                            <input type="text" class="form-control h-100" name="fiscal_year" id="txtEditFiscalYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                        </div>
                                     </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex"> 
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Audit Period:</strong></span>
+                                            </div>
+                                            <select class="form-control select2bs4" name="audit_period" id="selEditAuditPeriod" required>
+                                                <option selected disabled value="">--Select--</option>
+                                                <option value="First Half">First Half</option>
+                                                <option value="Second Half">Second Half</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend w-50">
+                                                <span class="input-group-text w-100"><strong>Category:</strong></span>
+                                            </div>
+                                            <select class="form-control select2bs4 selectClcCategory" name="clc_category" id="selEditClcCategory" required></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-12 flex-column d-flex"> 
+                                        <div class="input-group mb-1">
                                             <input type="hidden" class="form-control" id="txtUpdatedBy" name="updated_by" readonly>
                                         </div> 
                                         <input type="text" class="form-control" id="EditClcEvidenceFile" name="uploadedfile">
-                                        <input type="file" class="d-none" id="txtEditClcEvidenceFile" name="uploaded_file" accept="application/pdf" required> 
+                                        <input type="file" class="d-none" id="txtEditClcEvidenceFile" name="uploaded_file[]" accept=".xlsx, .xls, .csv, application/pdf" multiple required> 
                                     </div>
 
                                     <div class="form-group form-check">
@@ -242,6 +283,7 @@
 
                 "columns":[
                     { "data" : "date_uploaded" },
+                    { "data" : "fiscal_year_audit_period" },
                     { "data" : "clc_category" },
                     { "data" : "uploaded_file" },
                     { "data" : "uploaded_by" },
@@ -297,6 +339,8 @@
                     GetClcEvidencesByIdToEdit(clc_evidencesId); 
 
                 // READ ONLY
+                $("#txtEditFiscalYear").attr('disabled', 'disabled');
+                $("#selEditAuditPeriod").attr('disabled', 'disabled');
                 $("#selEditClcCategory").attr('disabled', 'disabled');
                 $("#EditClcEvidenceFile").attr('disabled', 'disabled');
             });
@@ -312,12 +356,16 @@
             $('#check_box').on('click', function() {
                 $('#check_box').attr('checked', 'checked');
                 if($(this).is(":checked")){
+                    $("#txtEditFiscalYear").removeAttr('disabled', false);
+                    $("#selEditAuditPeriod").removeAttr('disabled', false);
                     $("#selEditClcCategory").removeAttr('disabled', false);
                     $("#txtEditClcEvidenceFile").removeClass('d-none');
                     $("#EditClcEvidenceFile").addClass('d-none');
                     $("#btnEditClcEvidences").removeClass('d-none');
                 }
                 else{
+                    $("#txtEditFiscalYear").attr('disabled', 'disabled');
+                    $("#selEditAuditPeriod").attr('disabled', 'disabled');
                     $("#selEditClcCategory").attr('disabled', 'disabled');
                     $("#txtEditClcEvidenceFile").addClass('d-none');
                     $("#EditClcEvidenceFile").removeClass('d-none');
@@ -331,22 +379,22 @@
                 });
             });
 
-                // //============================== DELETE CLC EVIDENCE ==============================
-                // // aDeleteReport is generated by datatables to collect the id of the specified rows
-                // $(document).on('click', '.actionDeleteClcEvidences', function(){
-                //     let clc_evidencesId = $(this).attr('clc_evidences-id');
-                //     $("#txtDeleteClcEvidenceId").val(clc_evidencesId);
-                //     console.log(clc_evidencesId);
-                //     $("#modalDeleteClcEvidences").modal('hide');
-                // });
+            // //============================== DELETE CLC EVIDENCE ==============================
+            // // aDeleteReport is generated by datatables to collect the id of the specified rows
+            // $(document).on('click', '.actionDeleteClcEvidences', function(){
+            //     let clc_evidencesId = $(this).attr('clc_evidences-id');
+            //     $("#txtDeleteClcEvidenceId").val(clc_evidencesId);
+            //     console.log(clc_evidencesId);
+            //     $("#modalDeleteClcEvidences").modal('hide');
+            // });
 
-                // // The DeleteReport(); function is inside public/js/my_js/FileRecord.js
-                // // after the submission, the ajax request will pass the formDeleteReport(form) of data(input) in the uri(delete_report)
-                // // then the controller will handle that uri to use specific method called delete_report() inside FileRecordController
-                // $("#formDeleteClcEvidence").submit(function(event){
-                //     event.preventDefault();
-                //     DeleteClcEvidence();
-                // });
+            // // The DeleteReport(); function is inside public/js/my_js/FileRecord.js
+            // // after the submission, the ajax request will pass the formDeleteReport(form) of data(input) in the uri(delete_report)
+            // // then the controller will handle that uri to use specific method called delete_report() inside FileRecordController
+            // $("#formDeleteClcEvidence").submit(function(event){
+            //     event.preventDefault();
+            //     DeleteClcEvidence();
+            // });
 
         }); // JQUERY DOCUMENT READY END
     </script>                  

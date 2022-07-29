@@ -22,6 +22,17 @@ class ClcEvidencesController extends Controller
         // return $clc_evidences;
         return DataTables::of($clc_evidences)
 
+        ->addColumn('fiscal_year_audit_period', function($clc_evidences){
+            $result = "";
+            if($clc_evidences->fiscal_year != null && $clc_evidences->audit_period != null){
+                $result .= "FY ".$clc_evidences->fiscal_year."";
+                $result .= "<br>" .$clc_evidences->audit_period. "";
+            }else{
+                $result .=  "iror 404 sheeesh";
+            }
+            return $result;
+        })
+
         ->addColumn('uploaded_file', function($clc_evidences){
             $result = "";
             // $result .= "<a href='download_file_clc_evidence/" . $clc_evidences->id . "'  > $clc_evidences->uploaded_file</a>";
@@ -42,7 +53,7 @@ class ClcEvidencesController extends Controller
             $result .= '</center>';
             return $result;   
         })
-        ->rawColumns(['uploaded_file', 'action']) // to format the added columns(status & action) as html format
+        ->rawColumns(['fiscal_year_audit_period', 'uploaded_file', 'action']) // to format the added columns(status & action) as html format
         ->make(true);  
     }
 
@@ -209,10 +220,12 @@ class ClcEvidencesController extends Controller
 
                 ClcEvidences::insert([
                     'date_uploaded' => $request->date_uploaded,
+                    'fiscal_year'          => $request->fiscal_year,
+                    'audit_period'   => $request->audit_period,
                     'clc_category'  => $request->clc_category,
-                    'uploaded_by' => $request->uploaded_by,
-                    'uploaded_file'  => $multiple_file_uploaded,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'uploaded_by'   => $request->uploaded_by,
+                    'uploaded_file' => $multiple_file_uploaded,
+                    'created_at'    => date('Y-m-d H:i:s')
                 ]);
                 return response()->json(['result' => "1"]);
         }
@@ -249,16 +262,26 @@ class ClcEvidencesController extends Controller
         $validator = Validator::make($data, $rules);
 
         if($validator->passes()){
-                $original_filename = $request->file('uploaded_file')->getClientOriginalName();
+            $arr_upload_file = array();
+            $original_filename = null;
                 // return $original_filename;
-                Storage::putFileAs('public/clc_evidences', $request->uploaded_file,  $original_filename);
+                $files = $request->file('uploaded_file');
+                foreach($files as $file){
+                    $original_filename = $file->getClientOriginalName();
+                    array_push($arr_upload_file, $original_filename);
+                    Storage::putFileAs('public/clc_evidences', $file,  $original_filename);
+                }
+                $multiple_file_uploaded = implode('/', $arr_upload_file);
+
                 ClcEvidences::where('id', $request->clc_evidences_id)
                 ->update([
                     'date_uploaded' => $request->date_uploaded,
+                    'fiscal_year'          => $request->fiscal_year,
+                    'audit_period'   => $request->audit_period,
                     'clc_category'  => $request->clc_category,
-                    'updated_by' => $request->updated_by,
-                    'uploaded_file'  => $original_filename,
-                    'updated_at' => date('Y-m-d H:i:s'),
+                    'updated_by'    => $request->updated_by,
+                    'uploaded_file' => $multiple_file_uploaded,
+                    'updated_at'    => date('Y-m-d H:i:s'),
                 ]);
                 return response()->json(['result' => "1"]);
         }

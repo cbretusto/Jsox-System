@@ -134,33 +134,34 @@ function GetPlcEvidences(plcEvidencesID){
         },
         success: function(response){
             let evidences = response['plc_evidence'];
-            // console.log(evidences);
             if(evidences.length > 0){
+                console.log(evidences); 
                 // $("#txtEditPlcUploadedById").val(evidences[0].id);
+                $("#txtEditFiscalYear").val(evidences[0].fiscal_year);
+                $("#selEditAuditPeriod").val(evidences[0].audit_period).trigger('change');
                 $("#txtEditPlcCategoryId").val(evidences[0].plc_category);
                 $("#txtPlcEvidenceStatus").val(evidences[0].status);
                 $("#txtEditReportUploaded_File").val(evidences[0].plc_evidences)
                 $('#modalEditPlcEvidences').on('hide', function() {
                     // window.location.reload();
                 });
+
                 $('#check_box').on('click', function() {
                     $('#check_box').attr('checked', 'checked');
                     if($(this).is(":checked")){
+                        $("#txtEditFiscalYear").removeAttr('disabled', false);
+                        $("#selEditAuditPeriod").removeAttr('disabled', false);
                         $("#txtEditReportUploaded_File").addClass('d-none');
                         $("#txtEditUploadedFile").removeClass('d-none');
                         $("#btnEditPlcEvidence").removeClass('d-none');
                     }
                     else{
+                        $("#txtEditFiscalYear").attr('disabled', 'disabled');
+                        $("#selEditAuditPeriod").attr('disabled', 'disabled');
                         $("#txtEditReportUploaded_File").removeClass('d-none');
                         $("#txtEditUploadedFile").addClass('d-none');
                         $("#btnEditPlcEvidence").addClass('d-none');
                     }
-                    // $(document).ready(function(){
-                    //     $('#modalEditPlcEvidences').on('hidden.bs.modal', function() {
-                    //         $('#check_box').attr('checked', false);
-                    //         // window.location.reload();
-                    //     });
-                    // });
                 });
 
             }

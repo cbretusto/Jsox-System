@@ -15,30 +15,36 @@
                             <div class="info-box-content">
                                 <h2 class="card-title"><strong>PMI - 01 Receiving Orders</strong></h2><br>
                                 <div class="row">
-                                    <div class="col-sm-3">
+                                    <div class="ml-2">
                                         <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                             <span class="badge badge-success text-white" id="totalNumberOfGood1" style="font-size:15px;">--</span>
                                         </span>
                                     </div>
                                     
-                                    <div class="col-sm-4">
+                                    <div class="ml-2">
                                         <span class="badge badge-danger text-white shadow">NOT GOOD:&nbsp;
                                             <span class="badge badge-danger text-white" id="totalNumberOfNotGood1" style="font-size:15px;">--</span>
                                         </span>
                                     </div>
                                     
-                                    <div class="col-sm-4">
-                                        <span class="badge badge-warning shadow">STATUS:
-                                            <span class="badge badge-warning" id="checkPendingStatus1" style="font-size:14px;">Pending</span>
+                                    <div class="ml-2">
+                                        <span class="badge badge-warning shadow" id="firstHalfPending1">1st HALF STATUS:
+                                            <span class="badge badge-warning" id="checkFirstHalfPendingStatus1" style="font-size:14px;"> Pending</span>
                                         </span>
-                                        <span class="badge badge-success text-white shadow d-none">STATUS:
-                                            <span class="badge badge-success text-white" id="checkDoneStatus1" style="font-size:14px;">Done</span>
+                                        <span class="badge badge-success shadow  d-none" id="firstHalfDone1">1st HALF STATUS:
+                                            <span class="badge badge-success text-white" id="checkFirstHalfDoneStatus1" style="font-size:13px;">Done</span>
+                                        </span>
+
+                                        <span class="badge badge-warning shadow d-none" id="secondHalfPending1">2nd HALF STATUS:
+                                            <span class="badge badge-warning" id="checkSecondHalfDoneStatus1" style="font-size:14px;"> Pending</span>
+                                        </span>
+                                        <span class="badge badge-success text-white shadow d-none" id="secondHalfDone1">2nd HALF STATUS:
+                                            <span class="badge badge-success text-white" id="checkSecondHalfDoneStatus1" style="font-size:14px;">Done</span>
                                         </span>
                                     </div>
                                 </div>
                                 <input type="hidden" id="count_pmi_1" value="1">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -72,7 +78,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_10" value="10">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -106,7 +111,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_19" value="19">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -140,7 +144,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_28" value="28">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -153,7 +156,8 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood2" style="font-size:15px;">--</span>
-</span>                                            </div>
+                                            </span>                                            
+                                        </div>
 
                                         <div class="col-sm-4">
                                             <span class="badge badge-danger text-white shadow">NOT GOOD:&nbsp;
@@ -173,7 +177,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_2" value="2">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -207,7 +210,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_11" value="11">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -241,7 +243,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_20" value="20">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -275,7 +276,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_29" value="29">
                             </div>
-                        
                         </div>
                     </div>
                     
@@ -309,7 +309,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_3" value="3">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -343,7 +342,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_12" value="12">
                             </div>
-                        
                         </div>
                     </div>
                     
@@ -377,7 +375,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_21" value="21">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -409,7 +406,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_30" value="30">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -443,7 +439,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_4" value="4">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -477,7 +472,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_13" value="13">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -511,7 +505,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_22" value="22">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -545,7 +538,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_31" value="31">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -579,7 +571,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_5" value="5">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -613,7 +604,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_14" value="14">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -647,7 +637,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_23" value="23">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -681,7 +670,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_32" value="32">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -715,7 +703,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_6" value="6">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -749,7 +736,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_15" value="15">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -783,7 +769,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_24" value="24">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -815,7 +800,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_33" value="33">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -849,7 +833,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_7" value="7">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -883,7 +866,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_16" value="16">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -917,7 +899,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_25" value="25">
                             </div>
-                        
                         </div>
                     </div>
                     
@@ -951,7 +932,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_34" value="34">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -985,7 +965,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_8" value="8">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -1019,7 +998,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_17" value="17">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -1053,7 +1031,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_26" value="26">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -1087,7 +1064,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_35" value="35">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -1121,7 +1097,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_9" value="9">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -1132,7 +1107,7 @@
                                     <h2 class="card-title"><strong>PMI - 18 E-Payment by Dollar</strong></h2><br>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <span class="badge badge-success text-white shadow">GOOD:&nbsp;WWW
+                                            <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood18" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
@@ -1155,7 +1130,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_18" value="18">
                             </div>
-                        
                         </div>
                     </div>
 
@@ -1189,7 +1163,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_27" value="27">
                             </div>
-                        
                         </div>
                     </div>
                     
@@ -1223,7 +1196,6 @@
                                 </div>
                                 <input type="hidden" id="count_pmi_36" value="36">
                             </div>
-                        
                         </div>
                     </div>
 
