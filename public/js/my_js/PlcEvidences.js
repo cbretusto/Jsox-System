@@ -139,7 +139,7 @@ function GetPlcEvidences(plcEvidencesID){
                 // $("#txtEditPlcUploadedById").val(evidences[0].id);
                 $("#txtEditFiscalYear").val(evidences[0].fiscal_year);
                 $("#selEditAuditPeriod").val(evidences[0].audit_period).trigger('change');
-                $("#txtEditPlcCategoryId").val(evidences[0].plc_category);
+                $("#selectEditPlcCategory").val(evidences[0].plc_category).trigger('change');
                 $("#txtPlcEvidenceStatus").val(evidences[0].status);
                 $("#txtEditReportUploaded_File").val(evidences[0].plc_evidences)
                 $('#modalEditPlcEvidences').on('hide', function() {
@@ -151,6 +151,7 @@ function GetPlcEvidences(plcEvidencesID){
                     if($(this).is(":checked")){
                         $("#txtEditFiscalYear").removeAttr('disabled', false);
                         $("#selEditAuditPeriod").removeAttr('disabled', false);
+                        $("#selectEditPlcCategory").removeAttr('disabled', false);
                         $("#txtEditReportUploaded_File").addClass('d-none');
                         $("#txtEditUploadedFile").removeClass('d-none');
                         $("#btnEditPlcEvidence").removeClass('d-none');
@@ -158,6 +159,7 @@ function GetPlcEvidences(plcEvidencesID){
                     else{
                         $("#txtEditFiscalYear").attr('disabled', 'disabled');
                         $("#selEditAuditPeriod").attr('disabled', 'disabled');
+                        $("#selectEditPlcCategory").attr('disabled', 'disabled');
                         $("#txtEditReportUploaded_File").removeClass('d-none');
                         $("#txtEditUploadedFile").addClass('d-none');
                         $("#btnEditPlcEvidence").addClass('d-none');

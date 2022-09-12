@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\PLCModuleSADicAssessmentDetailsAndFindings;
+use App\PLCModuleSAOecAssessmentDetailsAndFindings;
+use App\PLCModuleSARfAssessmentDetailsAndFindings;
+use App\PLCModuleSAFuAssessmentDetailsAndFindings;
+use App\PLCModuleRCMInternalControl;
 use App\PlcCapaStatementOfFindings;
 use App\PLCCAPACorrectiveAction;
 use App\PLCCAPAPreventiveAction;
@@ -28,6 +32,7 @@ class PlcCapaController extends Controller{
     public function view_plc_capa(){
         $get_plc_capa = PlcCapa::with([
             'plc_sa_info',
+            'plc_sa_info.rcm_info',
             'plc_sa_info.plc_categories'
         ])
         ->where('logdel',0)
@@ -37,38 +42,34 @@ class PlcCapaController extends Controller{
         ->addColumn('action',function($get_plc_capa){
             $result = "";
             $result = "<center>";
-            // $result .= "<a href = 'export_capa/" .$get_plc_capa->id."/".$get_plc_capa->plc_sa_info->concerned_dept."'><button class='btn btn-info btn-sm text-center' style='width:150px;margin:2%;'><i class='fas fa-file-export'></i> Export Audit Result</button>&nbsp;</a>";
-            // $result .= "<a href = 'export_capa/" .$get_plc_capa->id."'><button class='btn btn-info btn-sm text-center'><i class='fas fa-file-export'></i>  Export Capa Report</button></a> &nbsp;&nbsp;&nbsp;";
-            // $result .= '<br>';
             $result .= '<button class="btn btn-primary btn-sm  text-center actionEditPlcCapa" plc-capa-id="' . $get_plc_capa->id . '" data-toggle="modal" data-target="#modalEditPlcCapa" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
             $result .= '</center>';
             return $result;
         })
 
-        //
+        ->addColumn('internal_control',function($get_plc_capa){
+            $get_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $get_plc_capa->rcm_id)->where('status', 0)->get();
+            $result = "";
+            for($x = 0; $x < count($get_internal_control); $x++){
+                $result .=  $get_internal_control[$x]->internal_control. PHP_EOL . PHP_EOL;
+            }
+            // return $get_internal_control;
+            return $result;
+        })
 
-        // ->addColumn('statement_of_findings',function($get_plc_capa){
-        //     $get_statement_of_findings_by_id = PlcCapaStatementOfFindings::where('sa_id', $get_plc_capa->id)->get();
-        //     $category = '';
-        //     $result = '';
-        //     for($x = 0; $x < count($get_statement_of_findings_by_id); $x++){
-        //         if($get_statement_of_findings_by_id[$x]->oec_attachment != null){
-        //             $result .= $get_statement_of_findings_by_id[$x]->capa_analysis;
-        //             $result .= '<center>';
-        //             $statement_of_findings_multiple_upload = explode(", ", $get_statement_of_findings_by_id[$x]->oec_attachment);
-        //             for($i = 0; $i<count($statement_of_findings_multiple_upload); $i++){
-        //                 $result .= '<a style="" class="image" href="storage/app/public/plc_sa_capa_analysis_attachment/'. $statement_of_findings_multiple_upload[$i] .'" target="_blank"><img src="storage/app/public/plc_sa_capa_analysis_attachment/' . $statement_of_findings_multiple_upload[$i] . '" style="max-width: 170px; max-height: 125px; width: 170px; height: auto; border: 1px solid #000;" class="mb-1"></a>';
-        //                 $result .= '</center>';
-        //                 $result .= '<br>';
-        //             }
-        //         }else{
-        //             $result .= $get_statement_of_findings_by_id[$x]->capa_analysis;
-        //             $result .= '<br>';
-        //             $result .= '<br>';
-        //         }
-        //     }
-        //     return $result;
-        // })
+        ->addColumn('statement_of_findings',function($get_plc_capa){
+            $get_dic_ng = PLCModuleSADicAssessmentDetailsAndFindings::where('sa_id', $get_plc_capa->sa_id)->where('dic_status', 'NG')->get();
+            $get_oec_ng = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $get_plc_capa->sa_id)->where('oec_status', 'NG')->get();
+            $result = '';
+            for($x = 0; $x < count($get_dic_ng); $x++){
+                $result .= $get_dic_ng[$x]->dic_assessment_details_findings. PHP_EOL . PHP_EOL;
+            }
+
+            for($y = 0; $y < count($get_oec_ng); $y++){
+                $result .= $get_oec_ng[$y]->oec_assessment_details_findings. PHP_EOL . PHP_EOL;
+            }
+            return $result;
+        })
 
         ->addColumn('capa_analysis',function($get_plc_capa){
             $get_capa_analysis_module_by_id = PLCCAPACapaAnalysis::where('plc_capa_id', $get_plc_capa->id)->get();
@@ -579,27 +580,14 @@ class PlcCapaController extends Controller{
     public function export_capa(Request $request,$year_id,$fiscal_year_id,$dept_id)
     {
 
-        // $get_plc_capa_result = PlcCapa::with([
-        //     'plc_sa_info',
-        //     'plc_sa_info.plc_categories',
-        //     'plc_rev_history'
-        // ])
-        // ->get();
-
-        // return $fiscal_year_id;
-
-        // $get_plc_capa_result = collect($get_plc_capa_result)->where('plc_sa_info.concerned_dept', $concerned_dept);
-
-        // return $dept_id;
         $get_statement_of_findings_first_half = PLCModuleSA::with([
+            'rcm_info',
             'plc_sa_dic_assessment_details_finding',
             'plc_sa_oec_assessment_details_finding',
             'plc_categories',
-            // 'plc_rev_history',
             'plc_capa_details.plc_sa_capa_analysis_details',
             'plc_capa_details.plc_sa_corrective_action_details',
-            'plc_capa_details.plc_sa_preventive_action_details'
-
+            'plc_capa_details.plc_sa_preventive_action_details',
         ])
         ->where('dic_status', 'NG')
         ->where('year', $year_id)
@@ -609,13 +597,8 @@ class PlcCapaController extends Controller{
         ->where('year', $year_id)
         ->where('fiscal_year', $fiscal_year_id)
         ->where('concerned_dept', $dept_id)
-
         // })
         ->get();
-
-        // return $get_statement_of_findings_first_half;
-
-        // $plc_capa_analysis_attachment = $get_statement_of_findings_first_half[0]->plc_capa_details->plc_sa_capa_analysis_details->capa_analysis_attachment;
 
 
         $date = date('Ymd',strtotime(NOW()));

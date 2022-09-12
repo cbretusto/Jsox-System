@@ -10,7 +10,7 @@
 
     <tr>
         <th>
-            <b>PMI FY{{ $result }}</b>
+            <b>PMI FY</b>
         </th>
         <th>
             <b>Process Level Control (PLC) Audit Status</b>
@@ -38,10 +38,10 @@
         <td rowspan="2">Status</td>
     </tr>
     <tr>
-        <td style="font-size: 10px">{{ $data[0]->view_assessed_by }}</td>
+        {{-- <td style="font-size: 10px">{{ $data[0]->view_assessed_by }}</td>
         <td style="font-size: 10px">{{ $data[0]->view_checked_by }}</td>
         <td style="font-size: 10px">{{ $data[0]->view_second_half_assessed_by }}</td>
-        <td style="font-size: 10px">{{ $data[0]->view_second_half_checked_by }}</td>
+        <td style="font-size: 10px">{{ $data[0]->view_second_half_checked_by }}</td> --}}
     </tr>
 
     <tr>

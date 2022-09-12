@@ -30,7 +30,7 @@ function AddRevisionHistory(){
         },
         success: function(response){
             if(response['validation'] == 'hasError'){
-                toastr.error('Saving User Failed!');
+                toastr.error('Saving Revision History Failed!');
 
                 if(response['error']['process_owner'] === undefined){
                     $("#txtProcessOwner").removeClass('is-invalid');
@@ -224,42 +224,26 @@ function GetRevisionHistoryId(revisionHistoryId){
                 }
                 $("#txtEditVersionNo").val(history_revision[0].version_no);
                 $("#txtEditRevisionHistoryDate").val(history_revision[0].revision_date);
-                $("#selectEditDepartment").val(history_revision[0].concerned_dept).trigger('change');
-                $("#selectEditProcessInCharge").val(history_revision[0].in_charge);
+                // $("#selectEditDepartment").val(history_revision[0].concerned_dept).trigger('change');
+                // $("#selectEditProcessInCharge").val(history_revision[0].in_charge);
 
-                //REASON FOR REVISION
-                let reasonForRevisionCounter = 0;
-                // To remove auto counting of row in multiple (EDIT)
-                for(let rvr = 0; rvr <= response['explodeReasonForRevision'].length; rvr++){
-                    $('#removeEditRowReasonForRevision')[0].click();
-                }
-                for(let x = 1; x <= response['explodeReasonForRevision'].length; x++){
-                    // console.log(response['explodeReasonForRevision'])
+
+                // //DETAILS OF REVISION
+                // let detailsOfRevisionCounter = 0;
+                // // To remove auto counting of row in multiple (EDIT)
+                // for(let dor = 0; dor <= response['explodeDetailsOfRevision'].length; dor++){
+                //     $('#removeEditRowDetailsOfRevision')[0].click();
+                // }
+                // for(let y = 1; y <= response['explodeDetailsOfRevision'].length; y++){
+                //     console.log(response['explodeDetailsOfRevision'])
                     
-                    if(x!=1){
-                        $('#addEditRowReasonForRevision')[0].click();
-                    }
-                    $("#txtEditReasonForRevision"+x).val(response['explodeReasonForRevision'][reasonForRevisionCounter]);
+                //     if(y!=1){
+                //         $('#addEditRowDetailsOfRevision')[0].click();
+                //     }
+                //     $("#txtEditDetailsOfRevision"+y).val(response['explodeDetailsOfRevision'][detailsOfRevisionCounter]);
 
-                    reasonForRevisionCounter = reasonForRevisionCounter + 1;
-                }
-
-                //DETAILS OF REVISION
-                let detailsOfRevisionCounter = 0;
-                // To remove auto counting of row in multiple (EDIT)
-                for(let dor = 0; dor <= response['explodeDetailsOfRevision'].length; dor++){
-                    $('#removeEditRowDetailsOfRevision')[0].click();
-                }
-                for(let y = 1; y <= response['explodeDetailsOfRevision'].length; y++){
-                    console.log(response['explodeDetailsOfRevision'])
-                    
-                    if(y!=1){
-                        $('#addEditRowDetailsOfRevision')[0].click();
-                    }
-                    $("#txtEditDetailsOfRevision"+y).val(response['explodeDetailsOfRevision'][detailsOfRevisionCounter]);
-
-                    detailsOfRevisionCounter = detailsOfRevisionCounter + 1;
-                }
+                //     detailsOfRevisionCounter = detailsOfRevisionCounter + 1;
+                // }
             }
             else{
                 toastr.warning('No Revision History Record Found!');
@@ -594,35 +578,29 @@ function LoadUserListProcessOwner(cboElement)
     });
 }
 
-function LoadConcernedDepartment(cboElement)
-{
-    let result = '<option value="">N/A</option>';
-
+function LoadConcernedDepartment(cboElement){
     $.ajax({
-
-    url: "load_concerned_department",
-    method: "get",
-    dataType: "json",
-    beforeSend: function(){
+        url: "load_concerned_department",
+        method: "get",
+        dataType: "json",
+        beforeSend: function(){
             result = '<option value=""> -- Loading -- </option>';
             cboElement.html(result);
         },
         success: function(response){
             result = '';
             if(response['users_department'].length > 0){
-                result = '<option selected disabled>-- Select Concerned Department -- </option>';
-                for(let index = 0; index < response['users_department'].length; index++){
-                    // let disabled = '';
-                    // console.log(response['users_department'][index].id);
-                    result += '<option value="' + response['users_department'][index].department_name + '">' + response['users_department'][index].department_name + '</option>';
+                
+                let selectDept = $('.sel-user-concerned-department').attr('multiple');
+                if (!selectDept !== 'multiple') {
+                    // console.log(selectDept);
+                    // console.log(typeof selectDept);
+                    // result += '<option selected disabled>-- Select Concerned Department -- </option>';
+                    result += '<option value="">-- Select -- </option>';
+                }
 
-                    // if(JsonObject['users'][index].status == 2){
-                    //     disabled = 'disabled';
-                    // }
-                    // else{
-                    //     disabled = '';
-                    // }
-                    // result += '<option data-code="' + JsonObject['users'][index].id + '" ' + disabled + '>' + JsonObject['users'][index].name + '</option>';
+                for(let index = 0; index < response['users_department'].length; index++){
+                    result += '<option value="' + response['users_department'][index].department_name + '">' + response['users_department'][index].department_name + '</option>';
                 }
             }
             else{

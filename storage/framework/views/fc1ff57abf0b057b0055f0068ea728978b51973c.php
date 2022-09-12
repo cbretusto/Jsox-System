@@ -86,6 +86,11 @@
                                             style="float: left;"><i class="fas fa-download"></i> Export Summary
                                             </button>
 
+                                            <button class="btn btn-primary mr-2" data-toggle="modal"
+                                            data-target="#modalExportAuditResult"
+                                            style="float: left;"><i class="fas fa-download"></i> Export Audit Result
+                                            </button>
+
                         
 
 
@@ -168,6 +173,54 @@
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
             <button type="submit" id="btnExportSummary" class="btn btn-dark"><i id="BtnExportSummaryIcon" class="fa fa-check"></i> Export</button>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- MODALS -->
+<div class="modal fade" id="modalExportAuditResult">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header bg-dark">
+            <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export Audit Result</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Select Year:</label>
+                        <select name="select_year" id="selectAuditYearId">
+                            <?php
+                                $year_now = date('Y');
+
+                                for($i = 2022; $i <= $year_now; $i++){
+                                    echo "<option value =".$i.">
+                                        ".$i."
+                                        </option>";
+                                }
+                            ?>
+                        </select>
+
+                        <label>Select Audit Period:</label>
+                        <select name="select_fiscal_year" id="selectAuditFiscalYearId">
+                            <option value="First-Half">First Half</option>
+                            <option value="Second-Half">Second Half</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+            <button type="submit" id="btnExportAuditResult" class="btn btn-dark"><i id="BtnExportAuditResult" class="fa fa-check"></i> Export</button>
         </div>
     </div>
     <!-- /.modal-content -->
@@ -369,7 +422,7 @@
                 { "data" : "action", orderable:false, searchable:false },
                 { "data" : "plc_sa_info.plc_categories.plc_category"},
                 { "data" : "plc_sa_info.control_no"},
-                { "data" : "plc_sa_info.internal_control"},
+                { "data" : "internal_control"},
                 { "data" : "statement_of_findings"},
                 { "data" : "capa_analysis"},
                 { "data" : "corrective_action"},
@@ -378,6 +431,10 @@
                 { "data" : "commitment_date"},
                 { "data" : "in_charge"},
             ],
+            "columnDefs": [
+                    // { className: "align-top", targets: [2, 3, 4, 5, 7, 9, 10, 12, 13, 15] },
+                    { className: "align-middle", targets: [0] },
+                ],
         });
         //VIEW PLC CAPA DATATABLES END
 
@@ -472,7 +529,7 @@
         //         }
         //         console.log('Add row statementOfFindingsforEdit ', statementOfFindingsforEdit);
 
-        //         var html =  '     <div class="divHeader_'+statementOfFindingsforEdit+' generatedDivHeader"><h6><span class="badge badge-secondary"> # '+ statementOfFindingsforEdit +'.</span></h6></div>';
+        //         var html =  '     <div class="divHeader_'+statementOfFindingsforEdit+'"><h6><span class="badge badge-secondary"> # '+ statementOfFindingsforEdit +'.</span></h6></div>';
         //             html += '	  <div class="row mt-2 generatedDiv"  id="row_'+statementOfFindingsforEdit+'">';
 
         //             html += '       <div class="col-md-12" id="row_'+statementOfFindingsforEdit+'">';
@@ -501,7 +558,7 @@
         //         let statement_of_findings_counter = $("input[name='statement_of_findings_counter']", $('#divStatementOfFindings')).val();
         //         // let customerClaimId = $("input[name='customer_claim_id'", $("#formCustomerClaim")).val();
         //         // console.log('customerClaimId ', customerClaimId);
-        //         var html =  '     <div class="divHeader_'+statementOfFindings+' generatedDivHeader"><h6s><span class="badge badge-secondary"> # '+ statementOfFindings +'.</span></h6s></div>';
+        //         var html =  '     <div class="divHeader_'+statementOfFindings+'"><h6s><span class="badge badge-secondary"> # '+ statementOfFindings +'.</span></h6s></div>';
         //             html += '	  <div class="row mt-2 generatedDiv"  id="row_'+statementOfFindings+'">';
 
         //             html += '       <div class="col-md-12" id="row_'+statementOfFindings+'">';
@@ -570,6 +627,19 @@
             $('#modalExportSummary').modal('hide');
         });
 
+        $('#btnExportAuditResult').on('click', function(){
+            // console.log($('#formViewWPRequest').serialize());
+            let audit_year_id = $('#selectAuditYearId').val();
+            let audit_fiscal_year_id = $('#selectAuditFiscalYearId').val();
+            // let selected_month = $('#selectMonthId').val();
+
+            window.location.href = `export/<?php echo e(Session::get("pmi_plc_category_id")); ?>/${audit_year_id}/${audit_fiscal_year_id}`;
+            // console.log(fiscal_year_id);
+            // console.log(dept_id);
+            // console.log(selected_month);
+            $('#modalExportAuditResult').modal('hide');
+        });
+
         //============================= ADD CAPA ANALYSIS =============================
         let capaAnalysisCounter = 1;
         $('#addRowCapaAnalysis').click(function(){
@@ -579,7 +649,7 @@
             }
             console.log('Capa Analysis Row(+):', capaAnalysisCounter);
 
-            var html = '<div class="divCapaAnalysisHeader_'+capaAnalysisCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ capaAnalysisCounter +'.</span> <label>CAPA Analysis:</label></div>';
+            var html = '<div class="divCapaAnalysisHeader_'+capaAnalysisCounter+' border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ capaAnalysisCounter +'.</span> <label>CAPA Analysis:</label></div>';
                 html += '   <div class="row mt-2 generatedDiv"  id="row_'+capaAnalysisCounter+'">';
                 html += '       <div class="col-md-12" id="row_'+capaAnalysisCounter+'">';
                 html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditCapaAnalysis_'+capaAnalysisCounter+'" name="capa_analysis_'+capaAnalysisCounter+'" tyle="height: 134px;"></textarea>';
@@ -622,7 +692,7 @@
             }
             console.log('Corrective Action Row(+):', correctiveActionCounter);
 
-            var html = '<div class="divCorrectiveActionHeader_'+correctiveActionCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ correctiveActionCounter +'.</span> <label>Corrective Action:</label></div>';
+            var html = '<div class="divCorrectiveActionHeader_'+correctiveActionCounter+' border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ correctiveActionCounter +'.</span> <label>Corrective Action:</label></div>';
                 html += '   <div class="row mt-2 generatedDiv"  id="row_'+correctiveActionCounter+'">';
                 html += '       <div class="col-md-12" id="row_'+correctiveActionCounter+'">';
                 html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditCorrectiveAction_'+correctiveActionCounter+'" name="corrective_action_'+correctiveActionCounter+'" tyle="height: 134px;"></textarea>';
@@ -665,7 +735,7 @@
             }
             console.log('Preventive Action Row(+):', preventiveActionCounter);
 
-            var html = '<div class="divPreventiveActionHeader_'+preventiveActionCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ preventiveActionCounter +'.</span> <label>Preventive Action:</label></div>';
+            var html = '<div class="divPreventiveActionHeader_'+preventiveActionCounter+' border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ preventiveActionCounter +'.</span> <label>Preventive Action:</label></div>';
                 html += '   <div class="row mt-2 generatedDiv"  id="row_'+preventiveActionCounter+'">';
                 html += '       <div class="col-md-12" id="row_'+preventiveActionCounter+'">';
                 html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditPreventiveAction_'+preventiveActionCounter+'" name="preventive_action_'+preventiveActionCounter+'" tyle="height: 134px;"></textarea>';

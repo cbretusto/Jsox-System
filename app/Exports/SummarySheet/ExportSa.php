@@ -98,6 +98,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     'vertical' => Alignment::VERTICAL_CENTER,
                 ]
             );
+
             $styleBorderBottomThin= [
                 'borders' => [
                     'bottom' => [
@@ -105,6 +106,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     ],
                 ],
             ];
+
             $styleBorderAll = [
                 'borders' => [
                     'allBorders' => [
@@ -112,6 +114,16 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     ],
                 ],
             ];
+
+            $diagonal= [
+                'borders' => [
+                    'diagonal' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                    'diagonalDirection' => \PhpOffice\PhpSpreadsheet\Style\Borders::DIAGONAL_UP,
+                ],
+            ];
+
 
             $hlv_top = array(
                 'alignment' => [
@@ -130,6 +142,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
             );
 
 
+
             return [
                 AfterSheet::class => function(AfterSheet $event) use (
                     $arial_font12,
@@ -140,6 +153,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $styleBorderAll,
                     $hlv_top,
                     $hcv_top,
+                    $diagonal,
                     $arial_font12_bold,
                     $sa_details
 
@@ -149,6 +163,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     ->getFont()
                     ->getColor()
                     ->setARGB('FFFFFF');
+
 
                     $event->sheet->getDelegate()->getStyle('B4:N7')
                     ->getFill()
@@ -286,7 +301,9 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                             $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12_bold);
                             $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hcv_top);
                         }else{
-                            $event->sheet->setCellValue('C'.$start_col,"-");
+                            // $event->sheet->setCellValue('C'.$start_col,"-");
+                            // $event->sheet->setBorderStyle('B8', PHPExcel_Style_Borders::DIAGONAL_DOWN);
+                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($diagonal);
                             $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hcv_top);
                             $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12_bold);
                         }
@@ -296,14 +313,15 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                             $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12_bold);
                             $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_top);
                         }else{
-                            $event->sheet->setCellValue('D'.$start_col,"-");
+                            // $event->sheet->setCellValue('D'.$start_col,"-");
+                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($diagonal);
                             $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_top);
                             $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12_bold);
                         }
 
 
                         $control_no = $sa_details[$i]->control_no;
-                        $internal_control = $sa_details[$i]->internal_control;
+                        // $internal_control = $sa_details[$i]->internal_control;
 
 
                         // $event->sheet->getDelegate()->mergeCells('B'.$start_col.':C'.$start_col);
@@ -313,10 +331,22 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                         $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($arial_font12);
 
 
-                        $event->sheet->setCellValue('G'.$start_col,$internal_control);
-                        $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
-                        $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
+                        for($m=0; $m < count($sa_details[$i]->rcm_info); $m++){
+
+                            $internal_control = $sa_details[$i]->rcm_info[$m]->internal_control;
+                            $status = $sa_details[$i]->rcm_info[$m]->status;
+
+                            if($status == 0){
+                                $event->sheet->setCellValue('G'.$start_col,$internal_control);
+                                $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
+                                $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
+                                $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
+                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+
+                            }
+
+                        }
+
 
                         $dicCounter = count($sa_details[$i]->plc_sa_dic_assessment_details_finding);
 
@@ -407,7 +437,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                             // $counter = ;
                             array_push($array,$oec_start_col);
 
-                            // dd($array);
+                            // dd($oec_start_col);
 
                             if($oec_status == 'NG'){
                                 $event->sheet->getDelegate()->getStyle('K'.$oec_start_col)
@@ -437,6 +467,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                 ->getStartColor()
                                 // ->setARGB('DD4B39');
                                 ->setARGB('FFFFFF');
+
                                 $event->sheet->getDelegate()->getStyle('B'.$oec_start_col.':N'.$oec_start_col)->applyFromArray($styleBorderAll);
 
                                 $oec_attachment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_attachment;
@@ -495,15 +526,19 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                 // $tempoCounter++;
                             }
 
+                            $event->sheet->getDelegate()->mergeCells('K'.$array[0].':K'.end($array));
+                            $event->sheet->getDelegate()->mergeCells('B'.$array[0].':B'.end($array));
+                            $event->sheet->getDelegate()->mergeCells('C'.$array[0].':C'.end($array));
+                            $event->sheet->getDelegate()->mergeCells('D'.$array[0].':D'.end($array));
+                            $event->sheet->getDelegate()->mergeCells('G'.$array[0].':G'.end($array));
+                            $event->sheet->getDelegate()->mergeCells('H'.$array[0].':H'.end($array));
+                            $event->sheet->getDelegate()->mergeCells('I'.$array[0].':I'.end($array));
+
+
+                            $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
                         }
                         // $event->sheet->setCellValue('P1',$array[0]);
-                        $event->sheet->getDelegate()->mergeCells('K'.$array[0].':K'.end($array));
-                        $event->sheet->getDelegate()->mergeCells('B'.$array[0].':B'.end($array));
-                        $event->sheet->getDelegate()->mergeCells('C'.$array[0].':C'.end($array));
-                        $event->sheet->getDelegate()->mergeCells('D'.$array[0].':D'.end($array));
-                        $event->sheet->getDelegate()->mergeCells('G'.$array[0].':G'.end($array));
-                        $event->sheet->getDelegate()->mergeCells('H'.$array[0].':H'.end($array));
-                        $event->sheet->getDelegate()->mergeCells('I'.$array[0].':I'.end($array));
+
 
                     }
 

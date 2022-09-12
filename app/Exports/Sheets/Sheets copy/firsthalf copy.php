@@ -264,8 +264,6 @@ class firsthalf implements FromView, WithTitle, WithEvents
 
                         // $event->sheet->setCellValue('B'.$start_col, $countt);
 
-
-
                         if($dicCounter > 0){
                             $dicCounter--;
                             $start_col++;
@@ -274,6 +272,7 @@ class firsthalf implements FromView, WithTitle, WithEvents
 
                     }
 
+                    $event->sheet->getDelegate()->getStyle('A'.$start_col.':E'.$start_col)->applyFromArray($styleBorderAll);
 
 
 

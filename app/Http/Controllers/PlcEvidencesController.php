@@ -13,12 +13,10 @@ use App\RapidXUser;
 use DataTables;
 use Carbon\Carbon;
 
-class PlcEvidencesController extends Controller
-{
-
+class PlcEvidencesController extends Controller{
     public function view_plc_evidences()
     {
-        $plc_evidences = PlcEvidences::where('logdel', 0)->get();
+        $plc_evidences = PlcEvidences::where('logdel', 0)->orderBy('id', 'desc')->get();
 
         return DataTables::of($plc_evidences)
 
@@ -260,6 +258,7 @@ class PlcEvidencesController extends Controller
                 ->update([
                     'fiscal_year'   => $request->fiscal_year,
                     'audit_period'  => $request->audit_period,
+                    'plc_category'  => $request->edit_plc_category,
                     'revised_by'    => $request->revised_by,
                     'plc_evidences' => $imploaded_arr_uploaded_file_orig_edit,
                     'revised_date'  => $request->revised_date,

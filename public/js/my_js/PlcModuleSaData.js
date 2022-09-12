@@ -34,13 +34,22 @@ function GetSaData(saDataId){
             let oec_details = response['oec_details'];
             let rf_details  = response['rf_details'];
             let fu_details  = response['fu_details'];
+            let rcm_internal_coctrol  = response['rcm_internal_coctrol'];
             // console.log('test', sa_data);
             if(sa_data.length > 0){
                 $("#selectEditDept").val(sa_data[0].concerned_dept).trigger('change');
                 $("#txtEditSaControlNo").val(sa_data[0].control_no);
-                $("#txtEditSaInternalControl").val(sa_data[0].internal_control);
                 $("#txtEditSaRfImprovement").val(sa_data[0].rf_improvement);
                 $("#txtEditSaFuImprovement").val(sa_data[0].fu_improvement);
+                
+                let bugok = "";
+                for (let index = 0; index < rcm_internal_coctrol.length; index++) {
+                    bugok += rcm_internal_coctrol[index].internal_control + "\n\n";
+                    console.log(rcm_internal_coctrol);
+                    // $("#txtEditSaInternalControl").val(rcm_internal_coctrol[index].internal_control);
+                }
+                $("#txtEditSaInternalControl").val(bugok);
+
 
                 //START DIC GET DATA
                 $("#txtEditSaDicAssessment").val(dic_details[0].dic_assessment_details_findings);

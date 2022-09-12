@@ -395,12 +395,35 @@ class CapaExports implements  FromView, WithTitle, WithEvents
                         $event->sheet->getDelegate()->getStyle('B'.$start_col_for_first_half)->getAlignment()->setWrapText(true);
                         $event->sheet->getDelegate()->getStyle('B'.$start_col_for_first_half)->applyFromArray($style_left);
 
-                        $event->sheet->setCellValue('D'.$start_col_for_first_half,$statement_of_findings_first_half[$x]->internal_control);
-                        $event->sheet->getDelegate()->getStyle('D'.$start_col_for_first_half)->applyFromArray($stylex);
-                        $event->sheet->getDelegate()->getStyle('D'.$start_col_for_first_half)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('D'.$start_col_for_first_half)->applyFromArray($style_left);
+                        // dd($statement_of_findings_first_half[$x]->rcm_info);
+                        $counter = 0;
+                        for ($i=0; $i < count($statement_of_findings_first_half[$x]->rcm_info); $i++) {
+                            if($statement_of_findings_first_half[$x]->rcm_info[$i]->status != 1){
+                                $counter+=1;
+                            }
+                        }
+
+                        $internalCounter = $counter;
+
+                        // dd($internalCounter);
+
+                        for($g=0; $g < count($statement_of_findings_first_half[$x]->rcm_info); $g++){
+
+                            // if($statement_of_findings_first_half[$x]->rcm_info[$g]->status != 1){
+                            $event->sheet->setCellValue('D'.$start_col_for_first_half,$statement_of_findings_first_half[$x]->rcm_info[$g]->internal_control);
+                            $event->sheet->getDelegate()->getStyle('D'.$start_col_for_first_half)->applyFromArray($stylex);
+                            $event->sheet->getDelegate()->getStyle('D'.$start_col_for_first_half)->getAlignment()->setWrapText(true);
+                            $event->sheet->getDelegate()->getStyle('D'.$start_col_for_first_half)->applyFromArray($style_left);
+                            // }
 
 
+                            if($internalCounter > 0){
+                                $start_col_for_first_half++;
+                                $internalCounter--;
+                                // $tempoCounter++;
+                            }
+                        }
+                        // dd($internalCounter);
 
                         $statement_findings_number = 1;
 
@@ -620,6 +643,8 @@ class CapaExports implements  FromView, WithTitle, WithEvents
 
 
                         }
+
+
 
                         for ($q=0; $q < count($statement_of_findings_first_half[$x]->plc_capa_details); $q++){
 

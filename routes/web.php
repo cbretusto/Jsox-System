@@ -223,7 +223,7 @@ Route::get('/get_pmi_it_clc_category_by_id', 'ClcCategoryPmiItClcController@get_
 Route::post('/edit_pmi_it_clc_category', 'ClcCategoryPmiItClcController@edit_pmi_it_clc_category');
 Route::post('/change_clc_category_pmi_it_clc_stat', 'ClcCategoryPmiItClcController@change_clc_category_pmi_it_clc_stat')->name('change_clc_category_pmi_it_clc_stat');
 
-Route::get('/export/{id}', 'InvExcelController@export');
+Route::get('/export/{id}/{audit_year_id}/{audit_fiscal_year_id}', 'InvExcelController@export');
 
 //============================= PLC CAPA CONTROLLER ================================
 Route::get('/view_plc_capa', 'PlcCapaController@view_plc_capa');

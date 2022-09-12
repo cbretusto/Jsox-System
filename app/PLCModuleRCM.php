@@ -20,7 +20,4 @@ class PLCModuleRCM extends Model
     public function rcm_info(){
         return $this->hasMany(PLCModuleRCMInternalControl::class, 'rcm_id', 'id');
     }
-    // public function sa_module(){
-    //     return $this->hasOne(PLCModuleSA::class, 'rcm_id', 'id');
-    // }
 }

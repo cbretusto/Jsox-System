@@ -302,7 +302,7 @@
                                     </div>
                                     <select class="form-control select2bs4 selectPmiClcTitle" name="titles" id="selectEditPmiClcTitle" style="width: 70%;">
                                         <option selected disabled value="">--Select--</option>
-                                        <option value="Ethics and intergrity">Ethics and integrity</option>
+                                        <option value="Ethics and integrity">Ethics and integrity</option>
                                         <option value="Roles of board directors and corporate auditors">Roles of board directors and corporate auditors</option>
                                         <option value="Executive stance and attitude">Executive stance and attitude</option>
                                         <option value="Organizational structure">Organizational structure</option>

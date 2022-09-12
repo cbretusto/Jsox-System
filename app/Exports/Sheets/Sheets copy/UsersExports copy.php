@@ -47,12 +47,13 @@ class UsersExports implements  WithMultipleSheets
     protected $plc_module_sa_concerned_dept;
     protected $plc_module_rf_details;
     protected $plc_section;
+    protected $audit_year_id;
 
 
 
 
     //
-    function __construct($date,$plc_module_sa,$status_check_array,$assessment_status_array_dic,$yec_date_arr,$second_half_status_check_array,$second_assessment_status_array,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu,$plc_module_sa_concerned_dept,$plc_module_rf_details,$plc_section)
+    function __construct($date,$plc_module_sa,$status_check_array,$assessment_status_array_dic,$yec_date_arr,$second_half_status_check_array,$second_assessment_status_array,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu,$plc_module_sa_concerned_dept,$plc_module_rf_details,$plc_section,$audit_year_id)
     {
         $this->date = $date;
         $this->plc_module_sa = $plc_module_sa;
@@ -68,6 +69,7 @@ class UsersExports implements  WithMultipleSheets
         $this->plc_module_sa_concerned_dept = $plc_module_sa_concerned_dept;
         $this->plc_module_rf_details = $plc_module_rf_details;
         $this->plc_section = $plc_section;
+        $this->audit_year_id = $audit_year_id;
 
 
     }
@@ -76,11 +78,17 @@ class UsersExports implements  WithMultipleSheets
     public function sheets(): array
     {
         $sheets = [];
+        if($this->audit_year_id == 2022){
+            $sheets[] = new audit_result($this->date, $this->plc_module_sa, $this->status_check_array,$this->assessment_status_array_dic,  $this->second_half_status_check_array, $this->second_assessment_status_array );
+            $sheets[] = new fy_summary($this->date, $this->plc_module_sa,$this->assessment_status_array_dic,$this->yec_date_arr,$this->first_half_affected_status_arr,$this->second_assessment_status_array_rf,$this->fu_affected_internal_control_arr,$this->second_assessment_status_array_fu);
+            $sheets[] = new firsthalf($this->date,$this->plc_module_sa_concerned_dept,$this->$plc_section);
+        }else{
+            $sheets[] = new audit_result($this->date, $this->plc_module_sa, $this->status_check_array,$this->assessment_status_array_dic,  $this->second_half_status_check_array, $this->second_assessment_status_array );
+            $sheets[] = new fy_summary($this->date, $this->plc_module_sa,$this->assessment_status_array_dic,$this->yec_date_arr,$this->first_half_affected_status_arr,$this->second_assessment_status_array_rf,$this->fu_affected_internal_control_arr,$this->second_assessment_status_array_fu);
+            $sheets[] = new firsthalf($this->date,$this->plc_module_sa_concerned_dept,$plc_section);
+            $sheets[] = new rollforward($this->date,$this->plc_module_rf_details);
+        }
 
-        $sheets[] = new audit_result($this->date, $this->plc_module_sa, $this->status_check_array,$this->assessment_status_array_dic,  $this->second_half_status_check_array, $this->second_assessment_status_array );
-        $sheets[] = new fy_summary($this->date, $this->plc_module_sa,$this->assessment_status_array_dic,$this->yec_date_arr,$this->first_half_affected_status_arr,$this->second_assessment_status_array_rf,$this->fu_affected_internal_control_arr,$this->second_assessment_status_array_fu);
-        $sheets[] = new firsthalf($this->date,$this->plc_module_sa_concerned_dept,$plc_section);
-        $sheets[] = new rollforward($this->date,$this->plc_module_rf_details);
 
 
         return $sheets;

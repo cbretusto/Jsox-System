@@ -30,7 +30,7 @@ class PlcModulesSaController extends Controller
         $plc_module_sa = PLCModuleSA::with('plc_sa_dic_assessment_details_finding')->where('category', $request->session)->where('logdel', 0)->get();
         session_start();
         $rapidx_name = $_SESSION['rapidx_name'];
-        // return $get_rcm_id;
+        // return $plc_module_sa;
 
         return DataTables::of($plc_module_sa)
 
@@ -42,7 +42,6 @@ class PlcModulesSaController extends Controller
                 $result .= '<br>';
                 $result .= '<br>';
             }
-            $result .= '<center>';
             // return $plc_module_sa->rcm_id;
             return $result;
         })
@@ -316,7 +315,8 @@ class PlcModulesSaController extends Controller
             'plc_sa_dic_assessment_details_finding',
             'plc_sa_oec_assessment_details_finding',
             'plc_sa_rf_assessment_details_finding',
-            'plc_sa_fu_assessment_details_finding'
+            'plc_sa_fu_assessment_details_finding',
+            'rcm_info'
         ])
         ->where('id', $request->sa_data_id)
         ->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
@@ -325,12 +325,15 @@ class PlcModulesSaController extends Controller
         $oec_assesment_details_and_finding_details = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $rf_assesment_details_and_finding_details = PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
+        $rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('status', 0)->get();
 
         return response()->json(['sa_data' => $sa_data,
-        'dic_details' => $dic_assesment_details_and_finding_details,
-        'oec_details' => $oec_assesment_details_and_finding_details,
-        'rf_details' => $rf_assesment_details_and_finding_details,
-        'fu_details' => $fu_assesment_details_and_finding_details]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
+            'dic_details' => $dic_assesment_details_and_finding_details,
+            'oec_details' => $oec_assesment_details_and_finding_details,
+            'rf_details' => $rf_assesment_details_and_finding_details,
+            'fu_details' => $fu_assesment_details_and_finding_details,
+            'rcm_internal_coctrol' => $rcm_internal_control
+        ]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
     // ========================================= EDIT SA MODULE ===================================================
@@ -396,17 +399,42 @@ class PlcModulesSaController extends Controller
             }
             //End Approver Status
 
-            if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
-                $get_plc_capa = PlcCapa::where('sa_id', $request->sa_data_id)
-                ->get();
+            // if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
+                
+            //     $get_plc_capa = PlcCapa::where('sa_id', $request->sa_data_id)
+            //     ->get();
 
-                if(count($get_plc_capa) > 0 ){
-                    PlcCapa::where('sa_id', $request->sa_data_id)->delete();
+            //     if(count($get_plc_capa) > 0 ){
+            //         PlcCapa::where('sa_id', $request->sa_data_id)->delete();
+            //     }
+            //     PlcCapa::insert([
+            //         'sa_id' => $request->sa_data_id,
+            //         // 'rcm_id' => $get_plc_capa->rcm_id
+            //     ]);
+            //     // return $get_plc_capa;
+            // }
+
+            $plc_capa = PLCModuleSA::where('id', $request->sa_data_id)->get();
+            $capa = [
+                'sa_id'    => $request->sa_data_id,
+                'rcm_id'   => $plc_capa[0]->rcm_id,
+            ];
+                if(PlcCapa::where('sa_id', $request->sa_data_id)->exists()){
+                    if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
+                        $capa['logdel'] = 0;
+                    }else{
+                        $capa['logdel'] = 1;
+                    }
+
+                    PlcCapa::where('sa_id', $request->sa_data_id)
+                    ->update(
+                        $capa
+                    );
+                }else{
+                    PlcCapa::insert([
+                        $capa
+                    ]);
                 }
-                PlcCapa::insert([
-                    'sa_id' => $request->sa_data_id,
-                ]);
-            }
 
             //START DIC ASSESSMENT DETAILS AND FINDINGS
             $arr_upload_file_dic = array();

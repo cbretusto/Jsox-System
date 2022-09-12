@@ -50,7 +50,7 @@ class PLCModuleSA extends Model
     }
 
     public function rcm_info(){
-        return $this->hasMany(PLCModuleRCMInternalControl::class, 'rcm_id', 'rcm_id');
+        return $this->hasMany(PLCModuleRCMInternalControl::class, 'rcm_id', 'rcm_id')->where('status', 0);
     }
 
     // public function plc_capa_corrective_actions_details(){

@@ -11,7 +11,7 @@
 
     <tr>
         <th>
-            <b>PMI FY{{ $result }}</b>
+            <b>PMI FY</b>
         </th>
         <th>
             <b>Process Level Control (PLC) Assessment Summary</b>

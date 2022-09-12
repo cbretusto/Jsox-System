@@ -16,8 +16,8 @@ class CreateTblPlcCapaTable extends Migration
         Schema::create('tbl_plc_capa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('sa_id')->unsigned();
+            $table->bigInteger('rcm_id')->unsigned();
             $table->longText('analysis');
-            $table->string('statement_of_findings');
             $table->string('in_charge');
             $table->string('prepared_by');
             $table->string('approved_by');

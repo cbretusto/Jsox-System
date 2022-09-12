@@ -212,7 +212,7 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Choose PLC Category:</strong></span>
                                             </div>
-                                            <input type="text" class="form-control" name="edit_plc_category" id="txtEditPlcCategoryId" readonly><br>
+                                            <select class="form-control select2bs4 selectAddPlcCategory" name="edit_plc_category" id="selectEditPlcCategory" required></select>
                                         </div>
                                     </div>
             
@@ -254,7 +254,7 @@
     <script type="text/javascript">
 
             $('.selectAddPlcCategory').select2({
-                            theme: 'bootstrap4'
+                theme: 'bootstrap4'
             });
             GetPlcCategory($(".selectAddPlcCategory"));
 
@@ -263,6 +263,7 @@
                 "processing" : false,
                 "serverSide" : true,
                 "responsive": true,
+                // "order": [[ 0, "desc" ]],
                 // "scrollX": true,
                 // "scrollX": "100%",
                 "language": {
@@ -274,10 +275,10 @@
                 },
                 "columns":[
                     { "data" : "date_uploaded"},
-                    { "data" : "fiscal_year_audit_period" },
-                    { "data" : "plc_category"},
-                    { "data" : "plc_evidences"},
-                    { "data" : "uploaded_by"},
+                    { "data" : "fiscal_year_audit_period", orderable:false },
+                    { "data" : "plc_category", orderable:false },
+                    { "data" : "plc_evidences", orderable:false },
+                    { "data" : "uploaded_by", orderable:false},
                     // { "data" : "updated_a1"},
                     // { "data" : "revised_by"},
                     { "data" : "action", orderable:false, searchable:false }
@@ -366,6 +367,7 @@
 
                 $("#txtEditFiscalYear").attr('disabled', 'disabled');
                 $("#selEditAuditPeriod").attr('disabled', 'disabled');
+                $("#selectEditPlcCategory").attr('disabled', 'disabled');
                 $("#txtEditReportUploaded_File").attr('disabled', 'disabled');
 
 

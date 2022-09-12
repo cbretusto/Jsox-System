@@ -401,6 +401,8 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                     $start_col = 5;
 
                     for($i=0; $i < count($rcm_details); $i++){
+
+
                         $event->sheet->getDelegate()->getStyle('B'.$start_col.':AI'.$start_col)->applyFromArray($styleBorderAll);
 
                         $control_obj = $rcm_details[$i]->control_objective;
@@ -409,7 +411,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                         $debit = $rcm_details[$i]->debit;
                         $credit = $rcm_details[$i]->credit;
                         $control_id = $rcm_details[$i]->control_id;
-                        $internal_control = $rcm_details[$i]->internal_control;
+                        // $internal_control = $rcm_details[$i]->internal_control;
                         $system = $rcm_details[$i]->system;
 
                         $event->sheet->setCellValue('B'.$start_col,$counter);
@@ -510,10 +512,6 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                         $event->sheet->getDelegate()->getStyle('P'.$start_col)->getAlignment()->setWrapText(true);
                         $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($hcv_top);
 
-                        $event->sheet->setCellValue('Q'.$start_col,$internal_control);
-                        $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($arial_font11);
-                        $event->sheet->getDelegate()->getStyle('Q'.$start_col)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($hlv_top);
 
                         if($rcm_details[$i]->preventive != null){
                             $event->sheet->setCellValue('R'.$start_col,'X');
@@ -553,9 +551,39 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                         $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($hcv_top);
 
 
+                        $internal_counter = count($rcm_details[$i]->rcm_info);
+
+                        for($x=0; $x < count($rcm_details[$i]->rcm_info); $x++){
+                            $event->sheet->getDelegate()->getStyle('B'.$start_col.':AI'.$start_col)->applyFromArray($styleBorderAll);
+                            $status = $rcm_details[$i]->rcm_info[$x]->status;
+
+                            if($status == 1){
+                                $event->sheet->getDelegate()->getStyle('N'.$start_col.':AI'.$start_col)
+                                ->getFill()
+                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                ->getStartColor()
+                                ->setARGB('c0c0c0');
+
+                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(60);
+                            }
+
+                            $event->sheet->setCellValue('Q'.$start_col, $rcm_details[$i]->rcm_info[$x]->internal_control);
+                            $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($arial_font11);
+                            $event->sheet->getDelegate()->getStyle('Q'.$start_col)->getAlignment()->setWrapText(true);
+                            $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($hlv_top);
+
+
+                            if($internal_counter > 0){
+                                $internal_counter--;
+                                $start_col++;
+                                // $tempoCounter++;
+                            }
+                        }
+
                         $counter++;
-                        $start_col++;
+                        // $start_col++;
                     }
+
 
 
                 },

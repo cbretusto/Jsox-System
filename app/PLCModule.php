@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\UserManagement;
 use App\PlcCategory;
+use App\RevisionHistoryReasonForRevision;
+use App\RevisionHistoryDetailsOfRevision;
+use App\RevisionHistoryConcernDeptSectIncharge;
 
 class PLCModule extends Model
 {
@@ -25,8 +28,15 @@ class PLCModule extends Model
     {
     	return $this->hasOne(PlcCategory::class, 'id', 'category');
     }
-    // public function rapidx_user_name()
-    // {
-    // 	return $this->hasOne(RapidXUser::class, 'process_owner', 'rapidx_name');
-    // }
+
+    public function reason_for_revision_details(){
+    	return $this->hasMany(RevisionHistoryReasonForRevision::class, 'plc_module_id', 'id');
+    }
+    public function details_of_revision_details(){
+    	return $this->hasMany(RevisionHistoryDetailsOfRevision::class, 'plc_module_id', 'id');
+    }
+    public function concern_dept_sect_inchanrge_details(){
+    	return $this->hasMany(RevisionHistoryConcernDeptSectIncharge::class, 'plc_module_id', 'id');
+    }
+
 }

@@ -183,15 +183,15 @@ class PlcModulesRcmController extends Controller
                         }
                         $add_rcm_internal_control['status'] = $rcm_status;
                     }
-                    $add_rcm_internal_control['counter'] = $index;
-                    $add_rcm_internal_control['internal_control'] = $request->input("internal_control_$index");
+                        $add_rcm_internal_control['counter'] = $index;
+                        $add_rcm_internal_control['internal_control'] = $request->input("internal_control_$index");
 
                     PLCModuleRCMInternalControl::insert([
                         $add_rcm_internal_control
                     ]);
                 }
                 
-                if ($request->add_control_id != null && $request->input("internal_control_2") != null){
+                if ($request->add_control_id != null && $request->input("internal_control_2") != null && $request->internal_control_1 != null){
                     PLCModuleSA::insert([
                         'rcm_id'            => $rcmId,
                         'category'          => $request->category_name,
@@ -259,24 +259,24 @@ class PlcModulesRcmController extends Controller
 
             $edit_rcm_details = [
             'control_objective' => $request->edit_control_objective,
-            'risk_summary' => $request->edit_risk_summary,
-            'risk_detail' => $request->edit_risk_detail,
-            'debit' => $request->edit_debit,
-            'credit' => $request->edit_credit,
-            'validity' => $request->edit_validity,
-            'completeness' => $request->edit_completeness,
-            'accuracy' => $request->edit_accuracy,
-            'cut_off' => $request->edit_cut_off,
-            'valuation' => $request->edit_valuation,
-            'presentation' => $request->edit_presentation,
-            'key_control' => $request->edit_key_control,
-            'it_control' => $request->edit_it_control,
-            'control_id' => $request->edit_control_id,
-            'preventive' => $request->edit_preventive,
-            'defective' => $request->edit_defective,
-            'manual' => $request->edit_manual,
-            'automatic' => $request->edit_automatic,
-            'system' => $request->edit_system
+            'risk_summary'      => $request->edit_risk_summary,
+            'risk_detail'       => $request->edit_risk_detail,
+            'debit'             => $request->edit_debit,
+            'credit'            => $request->edit_credit,
+            'validity'          => $request->edit_validity,
+            'completeness'      => $request->edit_completeness,
+            'accuracy'          => $request->edit_accuracy,
+            'cut_off'           => $request->edit_cut_off,
+            'valuation'         => $request->edit_valuation,
+            'presentation'      => $request->edit_presentation,
+            'key_control'       => $request->edit_key_control,
+            'it_control'        => $request->edit_it_control,
+            'control_id'        => $request->edit_control_id,
+            'preventive'        => $request->edit_preventive,
+            'defective'         => $request->edit_defective,
+            'manual'            => $request->edit_manual,
+            'automatic'         => $request->edit_automatic,
+            'system'            => $request->edit_system
             ];
 
             PLCModuleRCM::where('id', $request->rcm_data_id)
@@ -378,12 +378,8 @@ class PlcModulesRcmController extends Controller
                     if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
                         if($PLCModuleRCM[0]->control_id == null){
                             $rcm_sa['logdel'] = 1;
-                            // return '1';
-                            // exit(0);
                         }else{
                             $rcm_sa['logdel'] = 0;
-                            // return '0';
-                            // exit(0);
                         }
 
                         PLCModuleSA::where('rcm_id', $request->rcm_data_id)

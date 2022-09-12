@@ -20,13 +20,13 @@
                                             <span class="badge badge-success text-white" id="totalNumberOfGood1" style="font-size:15px;">--</span>
                                         </span>
                                     </div>
-                                    
+
                                     <div class="ml-2">
                                         <span class="badge badge-danger text-white shadow">NOT GOOD:&nbsp;
                                             <span class="badge badge-danger text-white" id="totalNumberOfNotGood1" style="font-size:15px;">--</span>
                                         </span>
                                     </div>
-                                    
+
                                     <div class="ml-2">
                                         <span class="badge badge-warning shadow" id="firstHalfPending1">1st HALF STATUS:
                                             <span class="badge badge-warning" id="checkFirstHalfPendingStatus1" style="font-size:14px;"> Pending</span>
@@ -59,13 +59,13 @@
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood10" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
-                                        
+
                                         <div class="col-sm-4">
                                             <span class="badge badge-danger text-white shadow">NOT GOOD:&nbsp;
                                                 <span class="badge badge-danger text-white" id="totalNumberOfNotGood10" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
-                                        
+
                                         <div class="col-sm-4">
                                             <span class="badge badge-warning shadow">STATUS:
                                                 <span class="badge badge-warning" id="checkPendingStatus1" style="font-size:14px;">Pending</span>
@@ -156,7 +156,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood2" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -222,7 +222,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood20" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -257,13 +257,13 @@
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood29" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
-    
+
                                         <div class="col-sm-4">
                                             <span class="badge badge-danger text-white shadow">NOT GOOD:&nbsp;
                                                 <span class="badge badge-danger text-white" id="totalNumberOfNotGood29" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
-    
+
                                         <div class="col-sm-4">
                                             <span class="badge badge-warning shadow">STATUS:
                                                 <span class="badge badge-warning" id="checkPendingStatus1" style="font-size:14px;">Pending</span>
@@ -278,7 +278,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-3 mb-1">
                         <div class="info-box bg-info shadow border border-dark" id="pmi_3" status="3">
                             <div class="info-box-content">
@@ -288,7 +288,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood3" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -344,7 +344,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-3 mb-1">
                         <div class="info-box bg-info shadow border border-dark" id="pmi_21" status="21">
                             <div class="info-box-content">
@@ -418,7 +418,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood4" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -550,7 +550,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood5" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -583,7 +583,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood" style="font-size:15px;">--</span>
-                                            </span>                                           
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -682,7 +682,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood6" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -812,7 +812,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood7" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -901,7 +901,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-3 mb-1">
                         <div class="info-box bg-info shadow border border-dark" id="pmi_34" status="34">
                             <div class="info-box-content">
@@ -944,7 +944,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood8" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -1076,7 +1076,7 @@
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow">GOOD:&nbsp;
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood9" style="font-size:15px;">--</span>
-                                            </span>                                            
+                                            </span>
                                         </div>
 
                                         <div class="col-sm-4">
@@ -1144,13 +1144,13 @@
                                                 <span class="badge badge-success text-white" id="totalNumberOfGood27" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
-    
+
                                         <div class="col-sm-4">
                                             <span class="badge badge-danger text-white shadow ml-2">NOT GOOD:&nbsp;
                                                 <span class="badge badge-danger text-white" id="totalNumberOfNotGood27" style="font-size:15px;">--</span>
                                             </span>
                                         </div>
-    
+
                                         <div class="col-sm-4">
                                             <span class="badge badge-warning shadow">STATUS:
                                                 <span class="badge badge-warning" id="checkPendingStatus1" style="font-size:14px;">Pending</span>
@@ -1165,7 +1165,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-3 mb-1">
                         <div class="info-box bg-info shadow border border-dark" id="pmi_36" status="36">
                             <div class="info-box-content">
@@ -1209,7 +1209,6 @@
 <?php $__env->startSection('js_content'); ?>
     <script type="text/javascript">
         $(document).ready(function () {
-
             //PMI - 01
             setTimeout(() => {
                 let countPmiCategory = $('#count_pmi_1').val();
@@ -1313,10 +1312,10 @@
 
                 countPmiCategoryById(countPmiCategory);
             }, 500);
-            $(document).on('click', '#pmi_9', function(){                    
+            $(document).on('click', '#pmi_9', function(){
                 let useSession = $(this).attr('status');
                 use_session(useSession);
-                console.log(useSession)                
+                console.log(useSession)
             });
 
             //PMI - 10

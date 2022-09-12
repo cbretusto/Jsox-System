@@ -139,6 +139,12 @@ $layout = 'layouts.super_user_layout';
             padding: 5px 5px;
             margin: 3px 3px;
         }
+
+        /* hr {
+            border: none;
+            height: 2px;
+            background-color: #6C757D; /* Modern Browsers */
+        } */
     </style>
 
     <div class="content-wrapper">
@@ -429,87 +435,79 @@ $layout = 'layouts.super_user_layout';
                                         <label>Process Owner</label>
                                         <select class="form-control sel-user-process-owner select2bs4" id="selectAddProcessOwner" name="process_owner[]" multiple></select>
                                     </div>
-
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Revision Date</label>
                                         <input type="date" class="form-control" name="revision_date" id="txtRevisionDate">
                                     </div>
-
+                                    
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Version No.</label>
                                         <input type="number" class="form-control" name="version_no" id="txtVersionNo" autocomplete="off">
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="card" id="cardAddReasonForRevision">
-                                    <div class="card-header">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-sm btn-dark ml-2" id="addAddRowRevisionHistory"><i class="fa fa-plus"></i> ADD ROW</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-sm btn-danger ml-2 d-none" id="removeAddRowRevisionHistory"><i class="fas fa-times"></i> REMOVE ROW</button>
+                                    </div>
+                                </div>
+                                <div class="card" id="cardAddRevisionHistory">
+                                    <input type="text" name="add_revision_history_counter" id="addRevisionHistoryCounter" value="1">
+                                    <div class="card-header bg-light">
+                                        <span class="badge badge-dark"># 1.</span>
+                                        <Strong>Details of Revision History:</Strong>
+                                    </div>
+                                    <div class="card-body">
                                         <div id="divAddReasonForRevision">
-                                            <input type="hidden" name="add_reason_for_revision_counter" id="addReasonForRevisionCounter" value="1">
+                                            <input type="text" name="add_reason_for_revision_counter" id="addReasonForRevisionCounter" value="1">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Reason for Revision:</label>
-                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowReasonForRevision"><i class="fa fa-plus"></i> Add Row</button>
-                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowReasonForRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" name="reason_for_revision1" id="txtAddReasonForRevision"  rows="3" autocomplete= "off"></textarea>
+                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowReasonForRevision"><i class="fa fa-plus"></i> Add Reason for Revision</button>
+                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowReasonForRevision"><i class="fas fa-times"></i> Remove Reason for Revision</button>
+                                                <textarea type="text" class="form-control" name="reason_for_revision_1" id="txtAddReasonForRevision_1"  rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="card" id="cardAddDetailsOfRevision">
-                                    <div class="card-header">
+                                        <hr>
                                         <div id="divAddDetailsOfRevision">
                                             <input type="hidden" name="add_details_of_revision_counter" id="addDetailsOfRevisionCounter" value="1">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Details of Revision:</label>
-                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Row</button>
-                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" name="details_of_revision1" id="txtAddDetailsOfRevision"  rows="3" autocomplete= "off"></textarea>
+                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Details of Revision</button>
+                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Details of Revision</button>
+                                                <textarea type="text" class="form-control" name="details_of_revision_1" id="txtAddDetailsOfRevision_1" rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <hr>
+                                        <div id="divAddConcernDeptSecInCharge">
+                                            <input type="hidden" name="add_dept_sect_incharge_counter" id="addDeptSectInchargeCounter" value="1">
+                                            <div class="row justify-content-between text-left">
+                                                <div class="form-group col-sm-6 flex-column d-flex">
+                                                    <label>Concerned Dept/Section</label>
+                                                    <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_1" name="concerned_dept_1[]" multiple></select>
+                                                </div>
 
-                                <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex">
-                                        <label>Concerned Dept/Section</label>
-                                        <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment" name="concerned_dept[]" multiple></select>
-                                    </div>
-
-                                    <div class="form-group col-sm-6 flex-column d-flex">
-                                        <label>In-Charge</label>
-                                        
-                                        <input type="text" class="form-control" id="txtAddProcessInCharge" name="in_charge">
-                                    </div>
-                                </div>
-
-                                <div class="card" id="cardAddDetailsOfRevision">
-                                    <div class="card-header">
-                                        <h3 class="card-title" style="margin-top: 8px;"><strong>Conformance:</strong></h3>
-                                        <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Row</button>
-                                        <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="divAddDetailsOfRevision">
-                                            <input type="hidden" name="add_details_of_revision_counter" id="addDetailsOfRevisionCounter" value="1">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="input-group input-group-sm">
-                                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                                            <label>Section:</label>
-                                                            <select class="form-control sel-user-concerned-department select2bs4" id="selAddConformanceSection" name="conformance_section"></select>
-                                                        </div>
-                                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                                            <label>Name:</label>
-                                                            <input type="text" class="form-control" id="txtAddConformanceName" name="conformance_name">
-                                                        </div>                                                    
-                                                    </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label>In-Charge</label>
+                                                    <button type="button" class="btn btn-sm btn-dark float-right" id="addAddRowDeptSectInCharge"><i class="fa fa-plus"></i> Add Row</button>
+                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none" id="removeAddRowDeptSectInCharge"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>
+                                                    <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_1" name="in_charge_1"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                
+
+                                
+
+                                
+
                             </div>
                         </div>
                     </div>
@@ -540,7 +538,9 @@ $layout = 'layouts.super_user_layout';
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <p style="text-align: center; font-size: 25px;">Are you sure that there is no revision?</p>
-                        <input type="hidden" class="form-control" name="no_revision" id="txtNoRevisionId" value="">
+                        <input type="text" class="form-control" name="no_revision" id="txtNoRevisionId" value=""><br>
+                        <label>Version No.</label>
+                        <input type="number" class="form-control" name="version_no" id="txtVersionNo" autocomplete="off">                        
                         <input type="hidden" name="category_name" id="txtCategoryNameId"
                             value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
                     </div>
@@ -581,7 +581,6 @@ $layout = 'layouts.super_user_layout';
                                         <input type="hidden" class="form-control" name="revision_history_id" id="txtRevisionHistoryId">
                                         <select class="form-control sel-user-process-owner select2bs4" id="selectEditProcessOwner" name="edit_revision_history_process_owner[]" multiple></select>
                                         
-
                                     </div>
 
                                     <div class="form-group col-sm-4 flex-column d-flex">
@@ -604,13 +603,12 @@ $layout = 'layouts.super_user_layout';
                                                 <label>Reason for Revision:</label>
                                                 <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addEditRowReasonForRevision"><i class="fa fa-plus"></i> Add Row</button>
                                                 <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowReasonForRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" name="reason_for_revision1" id="txtEditReasonForRevision1"  rows="3" autocomplete= "off"></textarea>
+                                                <textarea type="text" class="form-control" name="reason_for_revision_1" id="txtEditReasonForRevision_1"  rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <hr>
-
                                 <div class="card" id="cardEditDetailsOfRevision">
                                     <div class="card-header">
                                         <div id="divEditDetailsOfRevision">
@@ -620,7 +618,7 @@ $layout = 'layouts.super_user_layout';
                                                 <label>Details of Revision:</label>
                                                 <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addEditRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Row</button>
                                                 <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" name="details_of_revision1" id="txtEditDetailsOfRevision1"  rows="3" autocomplete= "off"></textarea>
+                                                <textarea type="text" class="form-control" name="details_of_revision_1" id="txtEditDetailsOfRevision_1"  rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -630,13 +628,13 @@ $layout = 'layouts.super_user_layout';
                                 <div class="row justify-content-between text-left">
                                     <div class="form-group col-sm-6 flex-column d-flex">
                                         <label>Concerned Dept/Section</label>
-                                        <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment" name="edit_revision_history_concerned_dept[]" multiple></select>
+                                        <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment_1" name="edit_revision_history_concerned_dept_1"></select>
                                     </div>
 
                                     <div class="form-group col-sm-6 flex-column d-flex">
                                         <label>In-Charge</label>
                                         
-                                        <input type="text" class="form-control" id="selectEditProcessInCharge" name="edit_revision_history_in_charge">
+                                        <textarea type="text" class="form-control" rows="1" id="selectEditProcessInCharge_1" name="edit_revision_history_in_charge_1"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -698,18 +696,13 @@ $layout = 'layouts.super_user_layout';
                                 <div class="form-group">
                                     <input type="hidden" class="form-control" name="flow_chart_id" id="txtEditFlowChartId">
                                     <label>Process Owner:</label>
-                                    <input type="text" class="form-control" name="edit_process_owner"
-                                        id="txtEditProcessOwnerId" autocomplete="off" readonly><br>
+                                    <input type="text" class="form-control" name="edit_process_owner" id="txtEditProcessOwnerId" autocomplete="off" readonly><br>
                                     <label>Upload Flow Chart:</label><br>
-                                    <input type="file" class="" name="edit_uploaded_flow_chart"
-                                        id="txtEditUploadedFlowChart" accept="image/jpeg , image/jpg, image/gif, image/png"
-                                        required>
-                                    <input type="text" class="form-control d-none" name="reuploaded_flow_chart"
-                                        id="txtEditReuploadedFlowChart" readonly><br>
+                                    <input type="file" class="" name="edit_uploaded_flow_chart" id="txtEditUploadedFlowChart" accept="image/jpeg , image/jpg, image/gif, image/png" required>
+                                    <input type="text" class="form-control d-none" name="reuploaded_flow_chart" id="txtEditReuploadedFlowChart" readonly><br>
                                     <label>Uploaded by:</label>
-                                        <input type="text" class="form-control" name="name_of_uploader_flow_chart" id="txtEditNameofUploaderFlowChart" readonly>
-                                        <input type="hidden" class="" name="revised_date" id="txtRevisedDateId"
-                                        value="<?php echo e(\Carbon\Carbon::now()->format('M. d, Y')); ?>" readonly>
+                                    <input type="text" class="form-control" name="name_of_uploader_flow_chart" id="txtEditNameofUploaderFlowChart" readonly>
+                                    <input type="hidden" name="date_upload" id="txtDateUpload" value="<?php echo e(\Carbon\Carbon::now()->format('M. d, Y')); ?>" readonly>
                                 </div>
 
                                 <div class="form-group form-check d-none show_checkbox">
@@ -798,12 +791,12 @@ $layout = 'layouts.super_user_layout';
                                             <input type="text" class="form-control" name="add_control_id" id="txtAddControlId" autocomplete= "off">
                                         </div>
 
-                                        <div class="form-group col-sm-4 flex-column d-flex">
+                                        <div class="form-group col-sm-6 flex-column d-flex">
                                             <label>Debit:</label>
                                             <input type="text" class="form-control" name="add_debit" id="txtAddDebitId" autocomplete= "off">
                                         </div>
 
-                                        <div class="form-group col-sm-4 flex-column d-flex">
+                                        <div class="form-group col-sm-6 flex-column d-flex">
                                             <label>Credit:</label>
                                             <input type="text" class="form-control" name="add_credit" id="txtAddCreditId" autocomplete= "off">
                                         </div>
@@ -875,6 +868,9 @@ $layout = 'layouts.super_user_layout';
                                     </div>
 
                                     <div class="card" id="cardAddRcmInternalControl">
+                                        <div class="card-header">
+                                            
+                                        </div>
                                         <div class="card-body">
                                             <div id="divAddRcmInternalControl">
                                                 <input type="hidden" name="add_internal_control_counter" id="addAddRcmInternalControlCounter" value="1">
@@ -1070,7 +1066,7 @@ $layout = 'layouts.super_user_layout';
 
                                     <div class="card" id="cardEditRcmInternalControl">
                                         <div class="card-body">
-                                            <input type="text" name="edit_internal_control_counter" id="editRcmInternalControlCounter" value="1">
+                                            <input type="hidden" name="edit_internal_control_counter" id="editRcmInternalControlCounter" value="1">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Internal Control:</label>
@@ -2206,15 +2202,14 @@ $layout = 'layouts.super_user_layout';
                 dataTablePlcModuleSa.draw();
             }
             $("#modalEditRcmData").on('hidden.bs.modal', function () {
-                $("#editRcmDataForm")[0].reset();
-                $("#editRcmInternalControlCounter").val('0');
-                let internalControl = 2;
-                for(let bugok = 2; bugok <= internalControl; bugok++){
-                    $('.divEditInternalControlHeader_'+bugok).remove();
-                    $('#cardEditRcmInternalControl').find('.chrisBugok').remove();
-                    console.log('.divEditInternalControlHeader_'+bugok);
-                }
-                console.log($("#editRcmInternalControlCounter").val('0'));
+                // $("#editRcmDataForm")[0].reset();
+                // let addInternalControlCounter = 1;
+                // for(let index = 1; index <= addInternalControlCounter; index++){
+                //     $('.divAddInternalControlHeader_'+index).remove();
+                //     $('#cardAddRcmInternalControl').find('#row_'+index).remove();
+                //     addInternalControlCounter--;
+                // }
+                // $(".generatedInternalControlDivHeader")[0].reset();
                 console.log('PLC RCM Reload Successfully');
                 reloadDataTablePlcRcm();
             });
@@ -2447,7 +2442,6 @@ $layout = 'layouts.super_user_layout';
             //===== ADD REVISION HISTORY =====//
             $('#btnAddRevision').on('click', function(event) {
                 event.preventDefault(); // to stop the form submission
-                $("#selectAddDepartment").val('').change();
 
                 if($("#selectAddProcessOwner").val().length <= 0){
                     $("#selectAddProcessOwner").addClass('is-invalid');
@@ -2455,10 +2449,10 @@ $layout = 'layouts.super_user_layout';
                     $("#selectAddProcessOwner").removeClass('is-invalid');
                 }
 
-                if($("#selectAddDepartment").val().length <= 0){
-                    $("#selectAddDepartment").addClass('is-invalid');
+                if($("#selectAddDepartment_1").val().length <= 0){
+                    $("#selectAddDepartment_1").addClass('is-invalid');
                 }else{
-                    $("#selectAddDepartment").removeClass('is-invalid');
+                    $("#selectAddDepartment_1").removeClass('is-invalid');
                 }
 
                 if($("#selectEditProcessOwner").val().length <= 0){
@@ -2467,18 +2461,17 @@ $layout = 'layouts.super_user_layout';
                     $("#selectEditProcessOwner").removeClass('is-invalid');
                 }
 
-                if($("#selectEditDepartment").val().length <= 0){
-                    $("#selectEditDepartment").addClass('is-invalid');
+                if($("#selectEditDepartment_1").val().length <= 0){
+                    $("#selectEditDepartment_1").addClass('is-invalid');
                 }else{
-                    $("#selectEditDepartment").removeClass('is-invalid');
+                    $("#selectEditDepartment_1").removeClass('is-invalid');
                 }
 
                 AddRevisionHistory();
-            });//===== ADD REVISION HISTORY END =====//
 
-            $("#modalAddRevision").on('hidden.bs.modal', function () {
-                $("#selectAddDepartment").val('').change();
+                // console.log( $('#formAddRevision').serialize());
             });
+            //===== ADD REVISION HISTORY END =====//
 
             //===== NO REVISION HISTORY =====//
             $('#btnNoRevision').on('click', function(event) {
@@ -2989,7 +2982,7 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('DIC Assesment Details and Findings Row(+):', dicAssessmentDetailsFindingsCounter);
 
-                var html = '<div class="divDicHeader_'+dicAssessmentDetailsFindingsCounter+' generatedDivHeader border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ dicAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
+                var html = '<div class="divDicHeader_'+dicAssessmentDetailsFindingsCounter+' border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ dicAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
                     html += '   <div class="row mt-2 generatedDiv"  id="row_'+dicAssessmentDetailsFindingsCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+dicAssessmentDetailsFindingsCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditSaDicAssessment_'+dicAssessmentDetailsFindingsCounter+'" name="dic_assessment_'+dicAssessmentDetailsFindingsCounter+'"></textarea>';
@@ -3032,7 +3025,7 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('OEC Assesment Details and Findings Row(+):', oecAssessmentDetailsFindingsCounter);
 
-                var html = '<div class="divOecHeader_'+oecAssessmentDetailsFindingsCounter+' generatedDivHeader border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ oecAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
+                var html = '<div class="divOecHeader_'+oecAssessmentDetailsFindingsCounter+' border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ oecAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
                     html += '   <div class="row mt-2 generatedDiv"  id="row_'+oecAssessmentDetailsFindingsCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+oecAssessmentDetailsFindingsCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditSaOecAssessment_'+oecAssessmentDetailsFindingsCounter+'" name="oec_assessment_'+oecAssessmentDetailsFindingsCounter+'"></textarea>';
@@ -3075,7 +3068,7 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('RF Assesment Details and Findings Row(+):', rfAssessmentDetailsFindingsCounter);
 
-                var html = '<div class="divRfHeader_'+rfAssessmentDetailsFindingsCounter+' generatedDivHeader border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ rfAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
+                var html = '<div class="divRfHeader_'+rfAssessmentDetailsFindingsCounter+' border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ rfAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
                     html += '   <div class="row mt-2 generatedDiv"  id="row_'+rfAssessmentDetailsFindingsCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+rfAssessmentDetailsFindingsCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditSaRfAssessment_'+rfAssessmentDetailsFindingsCounter+'" name="rf_assessment_'+rfAssessmentDetailsFindingsCounter+'"></textarea>';
@@ -3118,7 +3111,7 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('FU Assesment Details and Findings Row(+):', fuAssessmentDetailsFindingsCounter);
 
-                var html = '<div class="divFuHeader_'+fuAssessmentDetailsFindingsCounter+' generatedDivHeader border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ fuAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
+                var html = '<div class="divFuHeader_'+fuAssessmentDetailsFindingsCounter+' border-top pt-2 mt-3"><span class="badge badge-secondary"> # '+ fuAssessmentDetailsFindingsCounter +'.</span> <label>Assesment details & Findings:</label></div>';
                     html += '   <div class="row mt-2 generatedDiv"  id="row_'+fuAssessmentDetailsFindingsCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+fuAssessmentDetailsFindingsCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="5" id="txtEditSaFuAssessment_'+fuAssessmentDetailsFindingsCounter+'" name="fu_assessment_'+fuAssessmentDetailsFindingsCounter+'"></textarea>';
@@ -3152,6 +3145,84 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
+            //============================= ADD INTERNAL CONTROL ROW =============================
+            let addInternalControlCounter = 1;
+            $('#addAddRcmInternalControl').click(function(){
+                addInternalControlCounter++;
+                if(addInternalControlCounter > 1){
+                    $('#removeAddRowRcmInternalControl').removeClass('d-none');
+                }
+                console.log('Internal Control Row(+):', addInternalControlCounter);
+
+                var html = '<div class="divAddInternalControlHeader_'+addInternalControlCounter+' generatedInternalControlDivHeader ml-4 mr-4 border-top"><span class="badge badge-secondary"> # '+ addInternalControlCounter +'.</span> <label>Internal Control:</label></div>';
+                    html += '   <div class="row mt-2 generatedDiv"  id="row_'+addInternalControlCounter+'">';
+                    html += '       <div class="col-md-12" id="row_'+addInternalControlCounter+'">';
+                    html += '           <textarea class="form-control ml-4 mb-1" rows="5" id="txtAddRcmIntenralControl_'+addInternalControlCounter+'" name="internal_control_'+addInternalControlCounter+'" style="width:96%;"></textarea>';
+                    html += '           <input type="checkbox" class="form-check-input ml-4 checked" id="internalControlCheckBox_'+addInternalControlCounter+'" name="internal_control_checkbox_'+addInternalControlCounter+'">';
+                    html += '           <label class="mb-4 ml-5" id="txtSupportingInternalControl_'+addInternalControlCounter+'">Supporting Internal Control</label>';
+                    html += '       </div>';
+                    html += '   <div>';
+
+                $('#addAddRcmInternalControlCounter').val(addInternalControlCounter);
+                $('#cardAddRcmInternalControl').append(html);
+            });
+
+            //============================= REMOVE INTERNAL CONTROL ROW =============================
+            $("#cardAddRcmInternalControl").on('click', '#removeAddRowRcmInternalControl', function(e){
+                let assessmentDetailsAndFindings =  $('#removeAddRowRcmInternalControl').val();
+                if(addInternalControlCounter > 1){
+                    $('.divAddInternalControlHeader_'+addInternalControlCounter).remove();
+                    $('#cardAddRcmInternalControl').find('#row_'+addInternalControlCounter).remove();
+                    addInternalControlCounter--;
+                    $('#addAddRcmInternalControlCounter').val(addInternalControlCounter).trigger('change');
+
+                    console.log('Internal Control Row(-):' + addInternalControlCounter);
+                }
+
+                if(addInternalControlCounter < 2){
+                    $('#removeAddRowRcmInternalControl').addClass('d-none');
+                }
+            });
+
+            //============================= EDIT INTERNAL CONTROL ROW =============================
+            let editInternalControlCounter = 1;
+            $('#addEditRowRcmInternalControl').click(function(){
+                editInternalControlCounter++;
+                if(editInternalControlCounter > 1){
+                    $('#removeEditRowRcmInternalControl').removeClass('d-none');
+                }
+                console.log('Internal Control Row(+):', editInternalControlCounter);
+
+                var html = '<div class="divEditInternalControlHeader_'+editInternalControlCounter+' generatedInternalControlDivHeader border-top ml-4 mr-4"><span class="badge badge-secondary"> # '+ editInternalControlCounter +'.</span> <label>Internal Control:</label></div>';
+                    html += '   <div class="row mt-2 generatedDiv"  id="row_'+editInternalControlCounter+'">';
+                    html += '       <div class="col-md-12" id="row_'+editInternalControlCounter+'">';
+                    html += '           <textarea class="form-control ml-4 mb-1" rows="5" id="txtEditRcmIntenralControl_'+editInternalControlCounter+'" name="internal_control_'+editInternalControlCounter+'" style="width:96%;"></textarea>';
+                    html += '           <input type="checkbox" class="form-check-input ml-4 checked" id="internalControlCheckBox_'+editInternalControlCounter+'" name="internal_control_checkbox_'+editInternalControlCounter+'">';
+                    html += '           <label class="mb-4 ml-5" id="txtSupportingInternalControl_'+editInternalControlCounter+'">Supporting Internal Control</label>';
+                    html += '       <div>';
+                    html += '   </div>';
+
+                $('#editRcmInternalControlCounter').val(editInternalControlCounter);
+                $('#cardEditRcmInternalControl').append(html);
+            });
+
+            //============================= REMOVE INTERNAL CONTROL ROW =============================
+            $("#cardEditRcmInternalControl").on('click', '#removeEditRowRcmInternalControl', function(e){
+                let assessmentDetailsAndFindings =  $('#removeEditRowRcmInternalControl').val();
+
+                if(editInternalControlCounter > 1){
+                    $('.divEditInternalControlHeader_'+editInternalControlCounter).remove();
+                    $('#cardEditRcmInternalControl').find('#row_'+editInternalControlCounter).remove();
+                    editInternalControlCounter--;
+                    $('#editRcmInternalControlCounter').val(editInternalControlCounter).trigger('change');
+                    console.log('Internal Control Row(-):' + editInternalControlCounter);
+                }
+
+                if(editInternalControlCounter < 2){
+                    $('#removeEditRowRcmInternalControl').addClass('d-none');
+                }
+            });
+
             //============================= ADD Reason For Revision =============================
             let addReasonForRevisionCounter = 1;
             $('#addAddRowReasonForRevision').click(function(){
@@ -3161,10 +3232,10 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('Reason For Revision Row(+):', addReasonForRevisionCounter);
 
-                var html = '<div class="divAddReasonForRevisionHeader_'+addReasonForRevisionCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ addReasonForRevisionCounter +'.</span> <label>Reason For Revision:</label></div>';
-                    html += '   <div class="row mt-2 generatedDiv"  id="row_'+addReasonForRevisionCounter+'">';
+                var html = '<div class="divAddReasonForRevisionHeader_'+addReasonForRevisionCounter+'"><span class="badge badge-secondary"> # '+ addReasonForRevisionCounter +'.</span> <label></label></div>';
+                    html += '   <div class="row generatedDiv"  id="row_'+addReasonForRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+addReasonForRevisionCounter+'">';
-                    html += '           <textarea class="form-control  mb-3" rows="3" id="txtAddReasonForRevision'+addReasonForRevisionCounter+'" name="reason_for_revision'+addReasonForRevisionCounter+'"></textarea>';
+                    html += '           <textarea class="form-control  mb-3" rows="3" id="txtAddReasonForRevision_'+addReasonForRevisionCounter+'" name="reason_for_revision_'+addReasonForRevisionCounter+'"></textarea>';
                     html += '       <div>';
                     html += '   </div>';
 
@@ -3173,12 +3244,12 @@ $layout = 'layouts.super_user_layout';
             });
 
             //============================= REMOVE Reason For Revision =============================
-            $("#cardAddReasonForRevision").on('click', '#removeAddRowReasonForRevision', function(e){
+            $("#divAddReasonForRevision").on('click', '#removeAddRowReasonForRevision', function(e){
                 let plcSaRevisionHistory =  $('#removeAddRowReasonForRevision').val();
 
                 if(addReasonForRevisionCounter > 1){
                     $('.divAddReasonForRevisionHeader_'+addReasonForRevisionCounter).remove();
-                    $('#cardAddReasonForRevision').find('#row_'+addReasonForRevisionCounter).remove();
+                    $('#divAddReasonForRevision').find('#row_'+addReasonForRevisionCounter).remove();
                     addReasonForRevisionCounter--;
                     $('#addReasonForRevisionCounter').val(addReasonForRevisionCounter).trigger('change');
                     console.log('Reason For Revision Row(-):' + addReasonForRevisionCounter);
@@ -3198,7 +3269,7 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('Reason For Revision Row(+):', editReasonForRevisionCounter);
 
-                var html = '<div class="divEditReasonForRevisionHeader_'+editReasonForRevisionCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ editReasonForRevisionCounter +'.</span> <label>Reason For Revision:</label></div>';
+                var html = '<div class="divEditReasonForRevisionHeader_'+editReasonForRevisionCounter+' pt-2 mt-4"><span class="badge badge-secondary"> # '+ editReasonForRevisionCounter +'.</span> <label></label></div>';
                     html += '   <div class="row mt-2 generatedDiv"  id="row_'+editReasonForRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+editReasonForRevisionCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="3" id="txtEditReasonForRevision'+editReasonForRevisionCounter+'" name="reason_for_revision'+editReasonForRevisionCounter+'"></textarea>';
@@ -3235,10 +3306,10 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('Details of Revision Row(+):', addDetailsOfRevisionCounter);
 
-                var html = '<div class="divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ addDetailsOfRevisionCounter +'.</span> <label>Details of Revision:</label></div>';
-                    html += '   <div class="row mt-2 generatedDiv"  id="row_'+addDetailsOfRevisionCounter+'">';
+                var html = '<div class="divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter+'"><span class="badge badge-secondary"> # '+ addDetailsOfRevisionCounter +'.</span> <label></label></div>';
+                    html += '   <div class="row generatedDiv"  id="row_'+addDetailsOfRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+addDetailsOfRevisionCounter+'">';
-                    html += '           <textarea class="form-control  mb-3" rows="3" id="txtAddDetailsOfRevision'+addDetailsOfRevisionCounter+'" name="details_of_revision'+addDetailsOfRevisionCounter+'"></textarea>';
+                    html += '           <textarea class="form-control mb-3" rows="3" id="txtAddDetailsOfRevision_'+addDetailsOfRevisionCounter+'" name="details_of_revision_'+addDetailsOfRevisionCounter+'"></textarea>';
                     html += '       <div>';
                     html += '   </div>';
 
@@ -3246,12 +3317,12 @@ $layout = 'layouts.super_user_layout';
                 $('#divAddDetailsOfRevision').append(html);
 
                 //============================= REMOVE Details of Revision =============================
-                $("#cardAddDetailsOfRevision").on('click', '#removeAddRowDetailsOfRevision', function(e){
+                $("#divAddDetailsOfRevision").on('click', '#removeAddRowDetailsOfRevision', function(e){
                     let plcSaRevisionHistory =  $('#removeAddRowDetailsOfRevision').val();
 
                     if(addDetailsOfRevisionCounter > 1){
                         $('.divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter).remove();
-                        $('#cardAddDetailsOfRevision').find('#row_'+addDetailsOfRevisionCounter).remove();
+                        $('#divAddDetailsOfRevision').find('#row_'+addDetailsOfRevisionCounter).remove();
                         addDetailsOfRevisionCounter--;
                         $('#addDetailsOfRevisionCounter').val(addDetailsOfRevisionCounter).trigger('change');
                         console.log('Details of Revision Row(-):' + addDetailsOfRevisionCounter);
@@ -3272,10 +3343,10 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('Details of Revision Row(+):', editDetailsOfRevisionCounter);
 
-                var html = '<div class="divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter+' generatedDivHeader border-top pt-2 mt-4"><span class="badge badge-secondary"> # '+ editDetailsOfRevisionCounter +'.</span> <label>Details of Revision:</label></div>';
+                var html = '<div class="divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter+' pt-2 mt-4"><span class="badge badge-secondary"> # '+ editDetailsOfRevisionCounter +'.</span> <label></label></div>';
                     html += '   <div class="row mt-2 generatedDiv" id="row_'+editDetailsOfRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+editDetailsOfRevisionCounter+'">';
-                    html += '           <textarea class="form-control  mb-3" rows="3" id="txtEditDetailsOfRevision'+editDetailsOfRevisionCounter+'" name="details_of_revision'+editDetailsOfRevisionCounter+'"></textarea>';
+                    html += '           <textarea class="form-control  mb-3" rows="3" id="txtEditDetailsOfRevision_'+editDetailsOfRevisionCounter+'" name="details_of_revision_'+editDetailsOfRevisionCounter+'"></textarea>';
                     html += '       <div>';
                     html += '   </div>';
 
@@ -3311,81 +3382,270 @@ $layout = 'layouts.super_user_layout';
                 $('#modalExportSummary').modal('hide');
             });
 
-            //============================= ADD INTERNAL CONTROL ROW =============================
-            let addInternalControlCounter = 1;
-            $('#addAddRcmInternalControl').click(function(){
-                addInternalControlCounter++;
-                if(addInternalControlCounter > 1){
-                    $('#removeAddRowRcmInternalControl').removeClass('d-none');
+            //============================= ADD DEPT / SECT & IN-CHARGE ROW =============================
+            let deptSectInCharge = 1;
+            $('#addAddRowDeptSectInCharge').click(function(){
+                deptSectInCharge++;
+                if(deptSectInCharge > 1){
+                    $('#removeAddRowDeptSectInCharge').removeClass('d-none');
                 }
-                console.log('Internal Control Row(+):', addInternalControlCounter);
+                console.log('Dept/Sect & In-Charge Row(+):', deptSectInCharge);
 
-                var html =  '<div class="divAddInternalControlHeader_'+addInternalControlCounter+' generatedDivHeader ml-4 mr-4 border-top"><span class="badge badge-secondary"> # '+ addInternalControlCounter +'.</span> <label>Internal Control:</label></div>';
-                    html += '   <div class="row mt-2 generatedDiv"  id="rowInternalControl_'+addInternalControlCounter+'">';
-                    html += '       <div class="col-md-12" id="rowInternalControl_'+addInternalControlCounter+'">';
-                    html += '           <textarea class="form-control ml-4 mb-1" rows="5" id="txtAddRcmIntenralControl_'+addInternalControlCounter+'" name="internal_control_'+addInternalControlCounter+'" style="width:96%;"></textarea>';
-                    html += '           <input type="checkbox" class="form-check-input ml-4 checked" id="internalControlCheckBox_'+addInternalControlCounter+'" name="internal_control_checkbox_'+addInternalControlCounter+'">';
-                    html += '           <label class="mb-4 ml-5" id="txtSupportingInternalControl_'+addInternalControlCounter+'">Supporting Internal Control</label>';
+                var html = '   <div class="row generatedDiv"  id="row_'+deptSectInCharge+'">';
+                    html += '       <div class="form-group col-sm-6 flex-column">';
+                    html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_'+deptSectInCharge+'" name="concerned_dept_'+deptSectInCharge+'[]" multiple></select>';
                     html += '       </div>';
-                    html += '   <div>';
-
-                $('#addAddRcmInternalControlCounter').val(addInternalControlCounter);
-                $('#cardAddRcmInternalControl').append(html);
-            });
-
-            //============================= REMOVE INTERNAL CONTROL ROW =============================
-            $("#cardAddRcmInternalControl").on('click', '#removeAddRowRcmInternalControl', function(e){
-                let assessmentDetailsAndFindings =  $('#removeAddRowRcmInternalControl').val();
-                if(addInternalControlCounter > 1){
-                    $('.divAddInternalControlHeader_'+addInternalControlCounter).remove();
-                    $('#cardAddRcmInternalControl').find('#rowInternalControl_'+addInternalControlCounter).remove();
-                    addInternalControlCounter--;
-                    $('#addAddRcmInternalControlCounter').val(addInternalControlCounter).trigger('change');
-
-                    console.log('Internal Control Row(-):' + addInternalControlCounter);
-                }
-
-                if(addInternalControlCounter < 2){
-                    $('#removeAddRowRcmInternalControl').addClass('d-none');
-                }
-            });
-
-            //============================= EDIT INTERNAL CONTROL ROW =============================
-            let editInternalControlCounter = 1;
-            $('#addEditRowRcmInternalControl').click(function(){
-                editInternalControlCounter++;
-                if(editInternalControlCounter > 1){
-                    $('#removeEditRowRcmInternalControl').removeClass('d-none');
-                }
-                console.log('Internal Control Row(+):', editInternalControlCounter);
-
-                var html = '<div class="divEditInternalControlHeader_'+editInternalControlCounter+' generatedDivHeader border-top ml-4 mr-4"><span class="badge badge-secondary"> # '+ editInternalControlCounter +'.</span> <label>Internal Control:</label></div>';
-                    html += '   <div class="row mt-2 generatedDiv"  id="row_'+editInternalControlCounter+'">';
-                    html += '       <div class="col-md-12 chrisBugok" id="row_'+editInternalControlCounter+'">';
-                    html += '           <textarea class="form-control ml-4 mb-1" rows="5" id="txtEditRcmIntenralControl_'+editInternalControlCounter+'" name="internal_control_'+editInternalControlCounter+'" style="width:96%;"></textarea>';
-                    html += '           <input type="checkbox" class="form-check-input ml-4 checked" id="internalControlCheckBox_'+editInternalControlCounter+'" name="internal_control_checkbox_'+editInternalControlCounter+'">';
-                    html += '           <label class="mb-4 ml-5" id="txtSupportingInternalControl_'+editInternalControlCounter+'">Supporting Internal Control</label>';
+                    html += '       <div class="form-group col-sm-6 flex-column">';
+                    html += '           <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_'+deptSectInCharge+'" name="in_charge_'+deptSectInCharge+'"></textarea>';
                     html += '       <div>';
                     html += '   </div>';
 
-                $('#editRcmInternalControlCounter').val(editInternalControlCounter);
-                $('#cardEditRcmInternalControl').append(html);
+                $('#addDeptSectInchargeCounter').val(deptSectInCharge);
+                $('#divAddConcernDeptSecInCharge').append(html);
+
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+                
+                LoadConcernedDepartment($('.sel-user-concerned-department'));
             });
 
-            //============================= REMOVE INTERNAL CONTROL ROW =============================
-            $("#cardEditRcmInternalControl").on('click', '#removeEditRowRcmInternalControl', function(e){
-                let assessmentDetailsAndFindings =  $('#removeEditRowRcmInternalControl').val();
+            //============================= REMOVE DEPT / SECT & IN-CHARGE ROW =============================
+            $("#divAddConcernDeptSecInCharge").on('click', '#removeAddRowDeptSectInCharge', function(e){
+                let deptSectIncharge =  $('#removeAddRowDeptSectInCharge').val();
 
-                if(editInternalControlCounter > 1){
-                    $('.divEditInternalControlHeader_'+editInternalControlCounter).remove();
-                    $('#cardEditRcmInternalControl').find('#row_'+editInternalControlCounter).remove();
-                    editInternalControlCounter--;
-                    $('#editRcmInternalControlCounter').val(editInternalControlCounter).trigger('change');
-                    console.log('Internal Control Row(-):' + editInternalControlCounter);
+                if(deptSectInCharge > 1){
+                    $('#divAddConcernDeptSecInCharge').find('#row_'+deptSectInCharge).remove();
+                    deptSectInCharge--;
+                    $('#addDeptSectInchargeCounter').val(deptSectInCharge).trigger('change');
+                    console.log('Dept/Sect & In-Charge Row(-):' + deptSectInCharge);
                 }
 
-                if(editInternalControlCounter < 2){
-                    $('#removeEditRowRcmInternalControl').addClass('d-none');
+                if(deptSectInCharge < 2){
+                    $('#removeAddRowDeptSectInCharge').addClass('d-none');
+                }
+            });
+            
+            
+            // //============================= ADD CONFORMANCE =============================
+            // let conformanceCounter = 1;
+            // $('#addAddRowConformance').click(function(){
+            //     conformanceCounter++;
+            //     if(conformanceCounter > 1){
+            //         $('#removeAddRowConformance').removeClass('d-none');
+            //     }
+            //     console.log('Conformance Row(+):', conformanceCounter);
+
+            //     var html = '<div class="divConformanceHeader_'+conformanceCounter+' mt-2"></div>';
+            //         html += '   <div class="row generatedDiv"  id="row_'+conformanceCounter+'">';
+            //         html += '       <div class="form-group col-sm-6 flex-column">';
+            //         html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selAddConformanceSection_'+conformanceCounter+'" name="conformance_section_'+conformanceCounter+'"></select>';
+            //         html += '       </div>';
+            //         html += '       <div class="form-group col-sm-6 flex-column">';
+            //         html += '           <input type="text" class="form-control" id="txtAddConformanceName_'+conformanceCounter+'" name="conformance_name_'+conformanceCounter+'">';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#addConformanceCounter').val(conformanceCounter);
+            //     $('#divAddConformance').append(html);
+            //     // LoadConcernedDepartment($('.sel-user-concerned-department'));
+            // });
+
+            //============================= ADD REVISION HISTORY ROW =============================
+            let revisionHistoryCounter = 1;
+            $('#addAddRowRevisionHistory').click(function(){
+                revisionHistoryCounter++;
+
+                if(revisionHistoryCounter > 1){
+                    $('#removeAddRowRevisionHistory').removeClass('d-none');
+                }
+                console.log('Card:', revisionHistoryCounter, '| Revision History Row(+):', revisionHistoryCounter);
+
+                var html = '<div class="divRevisionHistoryHeader_'+revisionHistoryCounter+'" id="chris_bugok_'+revisionHistoryCounter+'">';
+                    html += '   <div class="card-header bg-light border-top">';
+                    html += '       <span class="badge badge-dark"> # '+revisionHistoryCounter+'.</span>';
+                    html += '       <label>Details of Revision History:</label>';
+                    html += '   </div>';
+                    html += '   <div class="card-body" id="card_'+revisionHistoryCounter+'">';
+                    html += '       <div id="divAddMultipleReasonForRevision_'+revisionHistoryCounter+'">';
+                    html += '           <input type="text" name="add_multiple_reason_for_revision_counter_'+revisionHistoryCounter+'" id="addMultipleReasonForRevisionCounter_'+revisionHistoryCounter+'" value="1">';
+                    html += '           <div class="form-group">';
+                    html += '               <span class="badge badge-secondary"># 1.</span>';
+                    html += '               <label>Reason for Revision:</label>';
+                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleReasonForRevision" id="addRowMultipleReasonForRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fa fa-plus"></i> Add Reason for Revision</button>';
+                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleReasonForRevision" id="removeRowMultipleReasonForRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fas fa-times"></i> Remove Reason for Revision</button>';
+                    html += '               <textarea type="text" class="form-control" name="multiple_reason_for_revision_1_'+revisionHistoryCounter+'" id="txtAddMultipleReasonForRevision_1_'+revisionHistoryCounter+'"  rows="3" autocomplete= "off"></textarea>';
+                    html += '           </div>';
+                    html += '       </div>'; 
+                    html += '       <hr>';
+                    html += '       <div id="divAddMultipleDetailsOfRevision_'+revisionHistoryCounter+'">';
+                    html += '           <input type="text" name="add_multiple_details_of_revision_counter_'+revisionHistoryCounter+'" id="addMultipleDetailsOfRevisionCounter_'+revisionHistoryCounter+'" value="1">';
+                    html += '           <div class="form-group mt-3">';
+                    html += '               <span class="badge badge-secondary"># 1.</span>';
+                    html += '               <label>Details of Revision:</label>';
+                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleDetailsOfRevision" id="addRowMultipleDetailsOfRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fa fa-plus"></i> Add Details of Revision</button>';
+                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleDetailsOfRevision" id="removeRowMultipleDetailsOfRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fas fa-times"></i> Remove Details of Revision</button>';
+                    html += '               <textarea type="text" class="form-control" name="multiple_details_of_revision_1_'+revisionHistoryCounter+'" id="txtAddMultipleDetailsOfRevision_1_'+revisionHistoryCounter+'" rows="3" autocomplete= "off"></textarea>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '       <hr>';
+                    html += '       <div id="divAddMultipleConcernDeptSecInCharge_'+revisionHistoryCounter+'">';
+                    html += '           <input type="text" name="add_multiple_dept_sect_incharge_counter_'+revisionHistoryCounter+'" id="addMultipleDeptSectInchargeCounter_'+revisionHistoryCounter+'" value="1">';
+                    html += '           <div class="row justify-content-between text-left">';
+                    html += '               <div class="form-group col-sm-6 flex-column d-flex">';
+                    html += '                   <label>Concerned Dept/Section</label>';
+                    html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_1_'+revisionHistoryCounter+'" name="multiple_concerned_dept_1_'+revisionHistoryCounter+'[]" multiple></select>';
+                    html += '               </div>';
+                    html += '               <div class="form-group col-sm-6">';
+                    html += '                   <label>In-Charge</label>';
+                    html += '                   <button type="button" class="btn btn-sm btn-dark float-right addBtnMultipleDeptSectInCharge" id="addRowMutipleDeptSectInCharge_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fa fa-plus"></i> Add Row</button>';
+                    html += '                   <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none removeBtnMultipleDeptSectInCharge" id="removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>';
+                    html += '                   <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_1_'+revisionHistoryCounter+'" name="multiple_in_charge_1_'+revisionHistoryCounter+'"></textarea>';
+                    html += '               </div>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '   </div>';
+                    html += '</div>';
+                    
+                    $('#addRevisionHistoryCounter').val(revisionHistoryCounter);
+                    $('#cardAddRevisionHistory').append(html);
+                    
+                    $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+                
+                LoadConcernedDepartment($('.sel-user-concerned-department'));
+                
+                //============================= ADD MULTIPLE REASON FOR REVISION =============================
+                let multipleReasonForRevisionCounter = 1;
+                $('#addRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(){
+                // $(document).on('click', '#addRowMultipleReasonForRevision_'+revisionHistoryCounter, function(){
+                    let addRowReasonForRevisionPerCard = $(this).closest('.addBtnMultipleReasonForRevision').val();
+                    multipleReasonForRevisionCounter++;
+                    if(multipleReasonForRevisionCounter > 1){
+                        $('#removeRowMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', addRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(+): ', multipleReasonForRevisionCounter);
+
+                    var x =  '<div class="divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleReasonForRevisionCounter +'.</span> <label></label>';
+                        x += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleReasonForRevisionCounter+'">';
+                        x += '       <div class="col-md-12" id="row_'+multipleReasonForRevisionCounter+'">';
+                        x += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleReasonForRevision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'" name="multiple_reason_for_revision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"></textarea>';
+                        x += '       <div>';
+                        x += '   </div>';
+                        x += '</div>';
+
+                    $('#addMultipleReasonForRevisionCounter_'+addRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter);
+                    $('#divAddMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).append(x);
+                    // return false;
+                    // });
+                });
+                //============================= REMOVE ADD MULTIPLE REASON FOR REVISION =============================
+                $('#removeRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(e){
+                    let removeRowReasonForRevisionPerCard = $(this).closest('.removeBtnMultipleReasonForRevision').val();
+                    if(multipleReasonForRevisionCounter > 1){
+                        $('.divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+removeRowReasonForRevisionPerCard).remove();
+                        multipleReasonForRevisionCounter--;
+                        $('#addMultipleReasonForRevisionCounter_'+removeRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter).trigger('change');
+
+                        console.log('Button per Card:', removeRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(-):', multipleReasonForRevisionCounter);
+                    }
+                    if(multipleReasonForRevisionCounter < 2){
+                        $('#removeRowMultipleReasonForRevision_'+removeRowReasonForRevisionPerCard).addClass('d-none');
+                    }
+                });
+
+                //============================= ADD MULTIPLE DETAILS OF REVISION =============================
+                let multipleDetailsOfRevisionCounter = 1;
+                $('#addRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(){
+                    let addRowDetailsOfRevisionPerCard = $(this).closest('.addBtnMultipleDetailsOfRevision').val();
+                    multipleDetailsOfRevisionCounter++;
+                    if(multipleDetailsOfRevisionCounter > 1){
+                        $('#removeRowMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', addRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(+):', multipleDetailsOfRevisionCounter);
+
+                    var xx = '<div class="divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleDetailsOfRevisionCounter +'.</span> <label></label>';
+                        xx += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleDetailsOfRevisionCounter+'">';
+                        xx += '       <div class="col-md-12" id="row_'+multipleDetailsOfRevisionCounter+'">';
+                        xx += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleDetailsOfRevision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'" name="multiple_details_of_revision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"></textarea>';
+                        xx += '       <div>';
+                        xx += '   </div>';
+                        xx += '</div>';
+                    $('#addMultipleDetailsOfRevisionCounter_'+addRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter);
+                    $('#divAddMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).append(xx);
+                });
+                //============================= REMOVE ADD MULTIPLE DETAILS OF REVISION =============================
+                $('#removeRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(e){
+                    removeRowDetailsOfRevisionPerCard = $(this).closest('.removeBtnMultipleDetailsOfRevision').val();
+                    if(multipleDetailsOfRevisionCounter > 1){
+                        $('.divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+removeRowDetailsOfRevisionPerCard).remove();
+                        multipleDetailsOfRevisionCounter--;
+                        $('#addMultipleDetailsOfRevisionCounter_'+removeRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter).trigger('change');
+
+                        console.log('Button per Card:', removeRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(-):', multipleDetailsOfRevisionCounter);
+                    }
+                    if(multipleDetailsOfRevisionCounter < 2){
+                        $('#removeRowMultipleDetailsOfRevision_'+removeRowDetailsOfRevisionPerCard).addClass('d-none');
+                    }
+                });
+
+                //============================= ADD MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
+                let multipleDeptSectInCharge = 1;
+                $('#addRowMutipleDeptSectInCharge_'+revisionHistoryCounter).click(function(){
+                    addRowDeptSectInChargePerCard = $(this).closest('.addBtnMultipleDeptSectInCharge').val();
+                    multipleDeptSectInCharge++;
+                    if(multipleDeptSectInCharge > 1){
+                        $('#removeRowMultipleDeptSectInCharge_'+addRowDeptSectInChargePerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', addRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(+):', multipleDeptSectInCharge);
+
+                    var xxx = '   <div class="row" id="divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'">';
+                        xxx += '       <div class="form-group col-sm-6 flex-column">';
+                        xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'[]" multiple></select>';
+                        xxx += '       </div>';
+                        xxx += '       <div class="form-group col-sm-6 flex-column">';
+                        xxx += '           <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'"></textarea>';
+                        xxx += '       <div>';
+                        xxx += '   </div>';
+                    $('#addMultipleDeptSectInchargeCounter_'+addRowDeptSectInChargePerCard).val(multipleDeptSectInCharge);
+                    $('#divAddMultipleConcernDeptSecInCharge_'+addRowDeptSectInChargePerCard).append(xxx);
+
+                    $('.select2bs4').select2({
+                        theme: 'bootstrap4'
+                    });
+                
+                    LoadConcernedDepartment($('.sel-user-concerned-department'));
+                });
+                //============================= REMOVE MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
+                $('#removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter).on('click', function(e){
+                    removeRowDeptSectInChargePerCard = $(this).closest('.removeBtnMultipleDeptSectInCharge').val();
+                    if(multipleDeptSectInCharge > 1){
+                        $('#divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInCharge+'_'+removeRowDeptSectInChargePerCard).remove();
+                        multipleDeptSectInCharge--;
+                        $('#addMultipleDeptSectInchargeCounter_'+removeRowDeptSectInChargePerCard).val(multipleDeptSectInCharge).trigger('change');
+
+                        console.log('Button per Card:', removeRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(-):' + multipleDeptSectInCharge);
+                    }
+                    if(multipleDeptSectInCharge < 2){
+                        $('#removeRowMultipleDeptSectInCharge_'+removeRowDeptSectInChargePerCard).addClass('d-none');
+                    }
+                });
+            });            
+
+            //============================= REMOVE REVISION HISTORY ROW =============================
+            $("#removeAddRowRevisionHistory").on('click', function(e){
+                // let revisionHistory =  $('#removeAddRowRevisionHistory').val();
+                if(revisionHistoryCounter > 1){
+                    $('#cardAddRevisionHistory').find('#chris_bugok_'+revisionHistoryCounter).remove();
+                    revisionHistoryCounter--;
+                    $('#addRevisionHistoryCounter').val(revisionHistoryCounter).trigger('change');
+                    
+                    console.log('Card:', revisionHistoryCounter, '| Revision History Row(-):' + revisionHistoryCounter);
+                }
+
+                if(revisionHistoryCounter < 2){
+                    $('#removeAddRowRevisionHistory').addClass('d-none');
                 }
             });
 

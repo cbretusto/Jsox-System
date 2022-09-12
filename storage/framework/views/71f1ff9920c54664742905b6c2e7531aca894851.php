@@ -11,7 +11,7 @@
 
     <tr>
         <th>
-            <b>PMI FY<?php echo e($result); ?></b>
+            <b>PMI FY</b>
         </th>
         <th>
             <b>Process Level Control (PLC) Assessment Summary</b>
