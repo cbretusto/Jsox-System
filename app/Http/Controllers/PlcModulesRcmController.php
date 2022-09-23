@@ -231,7 +231,9 @@ class PlcModulesRcmController extends Controller
 
     //=============== ADD RCM DATA FUNCTION END ===================//
     public function get_rcm_data_id_to_edit(Request $request){
-        $rcm_data = PLCModuleRCM::with('rcm_info')->where('id', $request->rcm_data_id)->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
+        $rcm_data = PLCModuleRCM::with('rcm_info')
+        ->where('id', $request->rcm_data_id)
+        ->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
         $internal_control = PLCModuleRCMInternalControl::where('rcm_id', $rcm_data[0]->id)->get();
         // return $internal_control;
 

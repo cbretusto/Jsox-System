@@ -19,10 +19,10 @@ class CreateTblPLCModules extends Migration
             $table->String('process_owner');
             $table->String('revision_date');
             $table->integer('version_no');
-            $table->String('reason_for_revision');
-            $table->String('concerned_dept');
-            $table->String('details_of_revision');
-            $table->String('In-Charge');
+            // $table->String('reason_for_revision');
+            // $table->String('concerned_dept');
+            // $table->String('details_of_revision');
+            // $table->String('In-Charge');
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

@@ -140,11 +140,11 @@ $layout = 'layouts.super_user_layout';
             margin: 3px 3px;
         }
 
-        /* hr {
+        hr {
             border: none;
             height: 2px;
             background-color: #6C757D; /* Modern Browsers */
-        } */
+        }
     </style>
 
     <div class="content-wrapper">
@@ -219,8 +219,8 @@ $layout = 'layouts.super_user_layout';
                                                         <th style="width: 10%">Revision Date</th>
                                                         <th style="width: 10%">Version No.</th>
                                                         <th style="width: 10%">Reason for Revision</th>
-                                                        <th style="width: 10%">Concerned Dept/Section</th>
                                                         <th style="width: 10%">Details of Revision</th>
+                                                        <th style="width: 10%">Concerned Dept/Section</th>
                                                         <th style="width: 10%">In-Charge</th>
                                                         <th style="width: 10%">Action</th>
                                                     </tr>
@@ -437,9 +437,9 @@ $layout = 'layouts.super_user_layout';
                                     </div>
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Revision Date</label>
-                                        <input type="date" class="form-control" name="revision_date" id="txtRevisionDate">
+                                        <input type="date" class="form-control" name="revision_date" id="txtRevisionDate" value="<?php echo e(\Carbon\Carbon::parse()->format('M. d, Y')); ?>">
                                     </div>
-                                    
+
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Version No.</label>
                                         <input type="number" class="form-control" name="version_no" id="txtVersionNo" autocomplete="off">
@@ -454,56 +454,55 @@ $layout = 'layouts.super_user_layout';
                                         <button type="button" class="btn btn-sm btn-danger ml-2 d-none" id="removeAddRowRevisionHistory"><i class="fas fa-times"></i> REMOVE ROW</button>
                                     </div>
                                 </div>
+
                                 <div class="card" id="cardAddRevisionHistory">
-                                    <input type="text" name="add_revision_history_counter" id="addRevisionHistoryCounter" value="1">
+                                    <input type="hidden" name="add_revision_history_counter" id="addRevisionHistoryCounter" value="0">
                                     <div class="card-header bg-light">
                                         <span class="badge badge-dark"># 1.</span>
                                         <Strong>Details of Revision History:</Strong>
                                     </div>
                                     <div class="card-body">
                                         <div id="divAddReasonForRevision">
-                                            <input type="text" name="add_reason_for_revision_counter" id="addReasonForRevisionCounter" value="1">
+                                            <input type="text" name="add_reason_for_revision_counter" id="addReasonForRevisionCounter" value="0">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Reason for Revision:</label>
                                                 <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowReasonForRevision"><i class="fa fa-plus"></i> Add Reason for Revision</button>
                                                 <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowReasonForRevision"><i class="fas fa-times"></i> Remove Reason for Revision</button>
-                                                <textarea type="text" class="form-control" name="reason_for_revision_1" id="txtAddReasonForRevision_1"  rows="3" autocomplete= "off"></textarea>
+                                                <textarea type="text" class="form-control" name="reason_for_revision_0" id="txtAddReasonForRevision_0"  rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
                                         <hr>
                                         <div id="divAddDetailsOfRevision">
-                                            <input type="hidden" name="add_details_of_revision_counter" id="addDetailsOfRevisionCounter" value="1">
+                                            <input type="hidden" name="add_details_of_revision_counter" id="addDetailsOfRevisionCounter" value="0">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Details of Revision:</label>
                                                 <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Details of Revision</button>
                                                 <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Details of Revision</button>
-                                                <textarea type="text" class="form-control" name="details_of_revision_1" id="txtAddDetailsOfRevision_1" rows="3" autocomplete= "off"></textarea>
+                                                <textarea type="text" class="form-control" name="details_of_revision_0" id="txtAddDetailsOfRevision_0" rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
                                         <hr>
                                         <div id="divAddConcernDeptSecInCharge">
-                                            <input type="hidden" name="add_dept_sect_incharge_counter" id="addDeptSectInchargeCounter" value="1">
+                                            <input type="hidden" name="add_dept_sect_incharge_counter" id="addDeptSectInchargeCounter" value="0">
                                             <div class="row justify-content-between text-left">
                                                 <div class="form-group col-sm-6 flex-column d-flex">
                                                     <label>Concerned Dept/Section</label>
-                                                    <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_1" name="concerned_dept_1[]" multiple></select>
+                                                    <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_0" name="concerned_dept_0[]" multiple required></select>
                                                 </div>
 
                                                 <div class="form-group col-sm-6">
                                                     <label>In-Charge</label>
                                                     <button type="button" class="btn btn-sm btn-dark float-right" id="addAddRowDeptSectInCharge"><i class="fa fa-plus"></i> Add Row</button>
                                                     <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none" id="removeAddRowDeptSectInCharge"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>
-                                                    <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_1" name="in_charge_1"></textarea>
+                                                    <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_0" name="in_charge_0"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                
-
                                 
 
                                 
@@ -530,8 +529,7 @@ $layout = 'layouts.super_user_layout';
                 <div class="modal-header bg-info">
                     <h4 class="modal-title" style="color:white;"><i class="fas fa-exclamation-triangle"></i>&nbsp; No
                         Revision Confirmation</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form id="formNoRevision" enctype="multipart/form-data">
@@ -540,15 +538,16 @@ $layout = 'layouts.super_user_layout';
                         <p style="text-align: center; font-size: 25px;">Are you sure that there is no revision?</p>
                         <input type="text" class="form-control" name="no_revision" id="txtNoRevisionId" value=""><br>
                         <label>Version No.</label>
-                        <input type="number" class="form-control" name="version_no" id="txtVersionNo" autocomplete="off">                        
-                        <input type="hidden" name="category_name" id="txtCategoryNameId"
-                            value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
+                        <input type="number" class="form-control" name="version_no" id="txtVersionNo" autocomplete="off">
+                        <label>Process Owner</label>
+                        <select class="form-control sel-user-process-owner select2bs4" id="nrProcessOwnerId" name="nr_process_owner[]" multiple></select>
+
+
+                        <input type="hidden" name="category_name" id="txtCategoryNameId" value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-info" data-dismiss="modal"
-                            style="padding: 5px 40px;">No</button>
-                        <button type="submit" id="btnNoRevision" class="btn btn-info "
-                            style="padding: 5px 40px;">Yes</button>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" style="padding: 5px 40px;">No</button>
+                        <button type="submit" id="btnNoRevision" class="btn btn-info " style="padding: 5px 40px;">Yes</button>
                     </div>
                 </form>
             </div>
@@ -575,10 +574,10 @@ $layout = 'layouts.super_user_layout';
                         <div class="row">
                             <div class="col-sm-12">
                                 <input type="hidden" name="category_name" id="txtCategoryNameId"value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
+                                <input type="hidden" class="form-control" name="revision_history_id" id="txtRevisionHistoryId">
                                 <div class="row justify-content-between text-left">
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Process Owner</label>
-                                        <input type="hidden" class="form-control" name="revision_history_id" id="txtRevisionHistoryId">
                                         <select class="form-control sel-user-process-owner select2bs4" id="selectEditProcessOwner" name="edit_revision_history_process_owner[]" multiple></select>
                                         
                                     </div>
@@ -594,49 +593,66 @@ $layout = 'layouts.super_user_layout';
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="card" id="cardEditReasonForRevision">
-                                    <div class="card-header">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-sm btn-dark ml-2" id="addEditRowRevisionHistory"><i class="fa fa-plus"></i> ADD ROW</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-sm btn-danger ml-2 d-none" id="removeEditRowRevisionHistory"><i class="fas fa-times"></i> REMOVE ROW</button>
+                                    </div>
+                                </div>
+                            
+                                
+
+                                <div class="card" id="cardEditRevisionHistory">
+                                    <input type="hidden" name="edit_revision_history_counter" id="editRevisionHistoryCounter" value="0">
+                                    
+                                    <div class="card-header bg-light">
+                                        <span class="badge badge-dark"># 1.</span>
+                                        <Strong>Details of Revision History:</Strong>
+                                    </div>
+                                    <div class="card-body">
                                         <div id="divEditReasonForRevision">
-                                            <input type="hidden" name="edit_reason_for_revision_counter" id="editReasonForRevisionCounter" value="1">
+                                            <input type="hidden" name="edit_reason_for_revision_counter" id="editReasonForRevisionCounter" value="0">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Reason for Revision:</label>
-                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addEditRowReasonForRevision"><i class="fa fa-plus"></i> Add Row</button>
-                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowReasonForRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" name="reason_for_revision_1" id="txtEditReasonForRevision_1"  rows="3" autocomplete= "off"></textarea>
+                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addEditRowReasonForRevision"><i class="fa fa-plus"></i> Add Reason for Revision</button>
+                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowReasonForRevision"><i class="fas fa-times"></i> Remove Reason for Revision</button>
+                                                <textarea type="text" class="form-control" name="reason_for_revision_0" id="txtEditReasonForRevision_0"  rows="3" autocomplete= "off"></textarea>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="card" id="cardEditDetailsOfRevision">
-                                    <div class="card-header">
+                                        <hr>
                                         <div id="divEditDetailsOfRevision">
-                                            <input type="hidden" name="edit_details_of_revision_counter" id="editDetailsOfRevisionCounter" value="1">
+                                            <input type="hidden" name="edit_details_of_revision_counter" id="editDetailsOfRevisionCounter" value="0">
                                             <div class="form-group">
                                                 <span class="badge badge-secondary"># 1.</span>
                                                 <label>Details of Revision:</label>
-                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addEditRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Row</button>
-                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" name="details_of_revision_1" id="txtEditDetailsOfRevision_1"  rows="3" autocomplete= "off"></textarea>
+                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addEditRowDetailsOfRevision"><i class="fa fa-plus"></i> Add Details of Revision</button>
+                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowDetailsOfRevision"><i class="fas fa-times"></i> Remove Details of Revision</button>
+                                                <textarea type="text" class="form-control" name="details_of_revision_0" id="txtEditDetailsOfRevision_0" rows="3" autocomplete= "off"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div id="divEditConcernDeptSecInCharge">
+                                            <input type="hidden" name="edit_dept_sect_incharge_counter" id="editDeptSectInchargeCounter" value="0">
+                                            <div class="row justify-content-between text-left">
+                                                <div class="form-group col-sm-6 flex-column d-flex">
+                                                    <label>Concerned Dept/Section</label>
+                                                    <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment_0" name="concerned_dept_0[]" multiple></select>
+                                                </div>
+
+                                                <div class="form-group col-sm-6">
+                                                    <label>In-Charge</label>
+                                                    <button type="button" class="btn btn-sm btn-dark float-right" id="addEditRowDeptSectInCharge"><i class="fa fa-plus"></i> Add Row</button>
+                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none" id="removeEditRowDeptSectInCharge"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>
+                                                    <textarea type="text" class="form-control" rows="1" id="selectEditProcessInCharge_0" name="in_charge_0"></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
 
-                                <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex">
-                                        <label>Concerned Dept/Section</label>
-                                        <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment_1" name="edit_revision_history_concerned_dept_1"></select>
-                                    </div>
-
-                                    <div class="form-group col-sm-6 flex-column d-flex">
-                                        <label>In-Charge</label>
-                                        
-                                        <textarea type="text" class="form-control" rows="1" id="selectEditProcessInCharge_1" name="edit_revision_history_in_charge_1"></textarea>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -884,7 +900,7 @@ $layout = 'layouts.super_user_layout';
                                             </div>
                                         </div>
                                     </div>
-                                    
+
 
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-3 flex-column d-flex">
@@ -2039,8 +2055,7 @@ $layout = 'layouts.super_user_layout';
 
 <?php $__env->startSection('js_content'); ?>
     <script type="text/javascript">
-
-        $(document).ready(function () {
+        $(document).ready(function() {
             bsCustomFileInput.init();
 
             // Initialize Select2 Elements
@@ -2082,7 +2097,7 @@ $layout = 'layouts.super_user_layout';
                         orderable: false
                     },
                     {
-                        "data": "revision_date",
+                        "data": "revision_date"
                     },
                     {
                         "data": "version_no",
@@ -2093,11 +2108,11 @@ $layout = 'layouts.super_user_layout';
                         orderable: false
                     },
                     {
-                        "data": "concerned_dept",
+                        "data": "details_of_revision",
                         orderable: false
                     },
                     {
-                        "data": "details_of_revision",
+                        "data": "concerned_dept",
                         orderable: false
                     },
                     {
@@ -2109,9 +2124,10 @@ $layout = 'layouts.super_user_layout';
                         orderable: false
                     },
                 ],
-                "columnDefs": [
-                    { className: 'align-middle', targets: [0, 8] },
-                ],
+                "columnDefs": [{
+                    className: 'align-middle',
+                    targets: [0, 8]
+                }, ],
             });
             //VIEW PLC MODULES DATATABLES END
 
@@ -2449,23 +2465,23 @@ $layout = 'layouts.super_user_layout';
                     $("#selectAddProcessOwner").removeClass('is-invalid');
                 }
 
-                if($("#selectAddDepartment_1").val().length <= 0){
-                    $("#selectAddDepartment_1").addClass('is-invalid');
-                }else{
-                    $("#selectAddDepartment_1").removeClass('is-invalid');
-                }
+                // if($("#selectAddDepartment_1").val().length <= 0){
+                //     $("#selectAddDepartment_1").addClass('is-invalid');
+                // }else{
+                //     $("#selectAddDepartment_1").removeClass('is-invalid');
+                // }
 
-                if($("#selectEditProcessOwner").val().length <= 0){
-                    $("#selectEditProcessOwner").addClass('is-invalid');
-                }else{
-                    $("#selectEditProcessOwner").removeClass('is-invalid');
-                }
+                // if($("#selectEditProcessOwner").val().length <= 0){
+                //     $("#selectEditProcessOwner").addClass('is-invalid');
+                // }else{
+                //     $("#selectEditProcessOwner").removeClass('is-invalid');
+                // }
 
-                if($("#selectEditDepartment_1").val().length <= 0){
-                    $("#selectEditDepartment_1").addClass('is-invalid');
-                }else{
-                    $("#selectEditDepartment_1").removeClass('is-invalid');
-                }
+                // if($("#selectEditDepartment_1").val().length <= 0){
+                //     $("#selectEditDepartment_1").addClass('is-invalid');
+                // }else{
+                //     $("#selectEditDepartment_1").removeClass('is-invalid');
+                // }
 
                 AddRevisionHistory();
 
@@ -2973,7 +2989,9 @@ $layout = 'layouts.super_user_layout';
                 YecApprovedDate();
             });
 
-            //============================= ADD DIC ASSESSMENT DETAILS AND FINDINGS =============================
+            //=============================================================================================================================================
+            //================================================== ADD DIC ASSESSMENT DETAILS AND FINDINGS ==================================================
+            //=============================================================================================================================================
             let dicAssessmentDetailsFindingsCounter = 1;
             $('#addRowDicAssessmentDetailsAndFindings').click(function(){
                 dicAssessmentDetailsFindingsCounter++;
@@ -2999,7 +3017,7 @@ $layout = 'layouts.super_user_layout';
                 $('#divDicAssessmentDetailsAndFindings').append(html);
             });
 
-            //============================= REMOVE DIC ASSESSMENT DETAILS AND FINDINGS =============================
+            //================================================== REMOVE DIC ASSESSMENT DETAILS AND FINDINGS ==================================================
             $("#cardDicAssessmentDetailsAndFindings").on('click', '#removeRowDicAssessmentDetailsAndFindings', function(e){
                 let assessmentDetailsAndFindings =  $('#removeRowDicAssessmentDetailsAndFindings').val();
 
@@ -3016,7 +3034,9 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
-            //============================= ADD OEC ASSESSMENT DETAILS AND FINDINGS =============================
+            //=============================================================================================================================================
+            //================================================== ADD OEC ASSESSMENT DETAILS AND FINDINGS ==================================================
+            //=============================================================================================================================================
             let oecAssessmentDetailsFindingsCounter = 1;
             $('#addRowOecAssessmentDetailsAndFindings').click(function(){
                 oecAssessmentDetailsFindingsCounter++;
@@ -3040,9 +3060,10 @@ $layout = 'layouts.super_user_layout';
 
                 $('#addOecAssessmentDetailsAndFindingsCounter').val(oecAssessmentDetailsFindingsCounter);
                 $('#divOecAssessmentDetailsAndFindings').append(html);
+
             });
 
-            //============================= REMOVE OEC ASSESSMENT DETAILS AND FINDINGS =============================
+            //================================================== REMOVE OEC ASSESSMENT DETAILS AND FINDINGS ==================================================
             $("#cardOecAssessmentDetailsAndFindings").on('click', '#removeRowOecAssessmentDetailsAndFindings', function(e){
                 let assessmentDetailsAndFindings =  $('#removeRowOecAssessmentDetailsAndFindings').val();
 
@@ -3058,8 +3079,9 @@ $layout = 'layouts.super_user_layout';
                     $('#removeRowOecAssessmentDetailsAndFindings').addClass('d-none');
                 }
             });
-
-            // ============================= ADD RF ASSESSMENT DETAILS AND FINDINGS =============================
+            //=============================================================================================================================================
+            //================================================== ADD RF ASSESSMENT DETAILS AND FINDINGS ===================================================
+            //=============================================================================================================================================
             let rfAssessmentDetailsFindingsCounter = 1;
             $('#addRowRfAssessmentDetailsAndFindings').click(function(){
                 rfAssessmentDetailsFindingsCounter++;
@@ -3085,7 +3107,7 @@ $layout = 'layouts.super_user_layout';
                 $('#divRfAssessmentDetailsAndFindings').append(html);
             });
 
-            //============================= REMOVE RF ASSESSMENT DETAILS AND FINDINGS =============================
+            //================================================= REMOVE RF ASSESSMENT DETAILS AND FINDINGS =================================================
             $("#cardRfAssessmentDetailsAndFindings").on('click', '#removeRowRfAssessmentDetailsAndFindings', function(e){
                 let assessmentDetailsAndFindings =  $('#removeRowRfAssessmentDetailsAndFindings').val();
 
@@ -3102,7 +3124,9 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
-            //============================= ADD FU ASSESSMENT DETAILS AND FINDINGS =============================
+            //=============================================================================================================================================
+            //================================================== ADD FU ASSESSMENT DETAILS AND FINDINGS ===================================================
+            //=============================================================================================================================================
             let fuAssessmentDetailsFindingsCounter = 1;
             $('#addRowFuAssessmentDetailsAndFindings').click(function(){
                 fuAssessmentDetailsFindingsCounter++;
@@ -3128,7 +3152,7 @@ $layout = 'layouts.super_user_layout';
                 $('#divFuAssessmentDetailsAndFindings').append(html);
             });
 
-            //============================= REMOVE FU ASSESSMENT DETAILS AND FINDINGS =============================
+            //================================================== REMOVE FU ASSESSMENT DETAILS AND FINDINGS ===================================================
             $("#cardFuAssessmentDetailsAndFindings").on('click', '#removeRowFuAssessmentDetailsAndFindings', function(e){
                 let assessmentDetailsAndFindings =  $('#removeRowFuAssessmentDetailsAndFindings').val();
 
@@ -3145,7 +3169,9 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
-            //============================= ADD INTERNAL CONTROL ROW =============================
+            //=============================================================================================================================================
+            //========================================================= ADD INTERNAL CONTROL ROW =========================================================
+            //=============================================================================================================================================
             let addInternalControlCounter = 1;
             $('#addAddRcmInternalControl').click(function(){
                 addInternalControlCounter++;
@@ -3167,7 +3193,7 @@ $layout = 'layouts.super_user_layout';
                 $('#cardAddRcmInternalControl').append(html);
             });
 
-            //============================= REMOVE INTERNAL CONTROL ROW =============================
+            //========================================================= REMOVE INTERNAL CONTROL ROW =========================================================
             $("#cardAddRcmInternalControl").on('click', '#removeAddRowRcmInternalControl', function(e){
                 let assessmentDetailsAndFindings =  $('#removeAddRowRcmInternalControl').val();
                 if(addInternalControlCounter > 1){
@@ -3184,7 +3210,9 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
-            //============================= EDIT INTERNAL CONTROL ROW =============================
+            //=============================================================================================================================================
+            //========================================================= EDIT INTERNAL CONTROL ROW =========================================================
+            //=============================================================================================================================================
             let editInternalControlCounter = 1;
             $('#addEditRowRcmInternalControl').click(function(){
                 editInternalControlCounter++;
@@ -3206,7 +3234,7 @@ $layout = 'layouts.super_user_layout';
                 $('#cardEditRcmInternalControl').append(html);
             });
 
-            //============================= REMOVE INTERNAL CONTROL ROW =============================
+            //========================================================= REMOVE INTERNAL CONTROL ROW =========================================================
             $("#cardEditRcmInternalControl").on('click', '#removeEditRowRcmInternalControl', function(e){
                 let assessmentDetailsAndFindings =  $('#removeEditRowRcmInternalControl').val();
 
@@ -3223,16 +3251,38 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
-            //============================= ADD Reason For Revision =============================
-            let addReasonForRevisionCounter = 1;
+            //=============================================================================================================================================
+            //========================================================== ADD Reason For Revision ==========================================================
+            //=============================================================================================================================================
+            // let addReasonForRevisionCounter = 1;
+            // $('#addAddRowReasonForRevision').click(function(){
+            //     addReasonForRevisionCounter++;
+            //     if(addReasonForRevisionCounter > 1){
+            //         $('#removeAddRowReasonForRevision').removeClass('d-none');
+            //     }
+            //     console.log('Reason For Revision Row(+):', addReasonForRevisionCounter);
+
+            //     var html = '<div class="divAddReasonForRevisionHeader_'+addReasonForRevisionCounter+'"><span class="badge badge-secondary"> # '+ addReasonForRevisionCounter +'.</span> <label></label></div>';
+            //         html += '   <div class="row generatedDiv"  id="row_'+addReasonForRevisionCounter+'">';
+            //         html += '       <div class="col-md-12" id="row_'+addReasonForRevisionCounter+'">';
+            //         html += '           <textarea class="form-control  mb-3" rows="3" id="txtAddReasonForRevision_'+addReasonForRevisionCounter+'" name="reason_for_revision_'+addReasonForRevisionCounter+'"></textarea>';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#addReasonForRevisionCounter').val(addReasonForRevisionCounter);
+            //     $('#divAddReasonForRevision').append(html);
+            // });
+            let AddReasonForRevisionNumberPerRow = 1;
+            let addReasonForRevisionCounter = 0;
             $('#addAddRowReasonForRevision').click(function(){
+                AddReasonForRevisionNumberPerRow++;
                 addReasonForRevisionCounter++;
-                if(addReasonForRevisionCounter > 1){
+                if(addReasonForRevisionCounter > 0){
                     $('#removeAddRowReasonForRevision').removeClass('d-none');
                 }
                 console.log('Reason For Revision Row(+):', addReasonForRevisionCounter);
 
-                var html = '<div class="divAddReasonForRevisionHeader_'+addReasonForRevisionCounter+'"><span class="badge badge-secondary"> # '+ addReasonForRevisionCounter +'.</span> <label></label></div>';
+                var html = '<div class="divAddReasonForRevisionHeader_'+addReasonForRevisionCounter+'"><span class="badge badge-secondary"> # '+ AddReasonForRevisionNumberPerRow +'.</span> <label></label></div>';
                     html += '   <div class="row generatedDiv"  id="row_'+addReasonForRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+addReasonForRevisionCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="3" id="txtAddReasonForRevision_'+addReasonForRevisionCounter+'" name="reason_for_revision_'+addReasonForRevisionCounter+'"></textarea>';
@@ -3243,11 +3293,27 @@ $layout = 'layouts.super_user_layout';
                 $('#divAddReasonForRevision').append(html);
             });
 
-            //============================= REMOVE Reason For Revision =============================
+            //========================================================== REMOVE Reason For Revision ==========================================================
+            // $("#divAddReasonForRevision").on('click', '#removeAddRowReasonForRevision', function(e){
+            //     let plcSaRevisionHistory =  $('#removeAddRowReasonForRevision').val();
+
+            //     if(addReasonForRevisionCounter > 1){
+            //         $('.divAddReasonForRevisionHeader_'+addReasonForRevisionCounter).remove();
+            //         $('#divAddReasonForRevision').find('#row_'+addReasonForRevisionCounter).remove();
+            //         addReasonForRevisionCounter--;
+            //         $('#addReasonForRevisionCounter').val(addReasonForRevisionCounter).trigger('change');
+            //         console.log('Reason For Revision Row(-):' + addReasonForRevisionCounter);
+            //     }
+
+            //     if(addReasonForRevisionCounter < 2){
+            //         $('#removeAddRowReasonForRevision').addClass('d-none');
+            //     }
+            // });
+
             $("#divAddReasonForRevision").on('click', '#removeAddRowReasonForRevision', function(e){
                 let plcSaRevisionHistory =  $('#removeAddRowReasonForRevision').val();
 
-                if(addReasonForRevisionCounter > 1){
+                if(addReasonForRevisionCounter > 0){
                     $('.divAddReasonForRevisionHeader_'+addReasonForRevisionCounter).remove();
                     $('#divAddReasonForRevision').find('#row_'+addReasonForRevisionCounter).remove();
                     addReasonForRevisionCounter--;
@@ -3255,24 +3321,47 @@ $layout = 'layouts.super_user_layout';
                     console.log('Reason For Revision Row(-):' + addReasonForRevisionCounter);
                 }
 
-                if(addReasonForRevisionCounter < 2){
+                if(addReasonForRevisionCounter < 1){
                     $('#removeAddRowReasonForRevision').addClass('d-none');
                 }
             });
 
-            //============================= EDIT Reason For Revision =============================
-            let editReasonForRevisionCounter = 1;
+            //=============================================================================================================================================
+            //========================================================= EDIT Reason For Revision ==========================================================
+            //=============================================================================================================================================
+            // let editReasonForRevisionCounter = 1;
+            // $('#addEditRowReasonForRevision').click(function(){
+            //     editReasonForRevisionCounter++;
+            //     if(editReasonForRevisionCounter > 1){
+            //         $('#removeEditRowReasonForRevision').removeClass('d-none');
+            //     }
+            //     // console.log('Reason For Revision Row(+):', editReasonForRevisionCounter);
+
+            //     var html = '<div class="divEditReasonForRevisionHeader_'+editReasonForRevisionCounter+' pt-2 mt-2"><span class="badge badge-secondary"> # '+ editReasonForRevisionCounter +'.</span> <label></label></div>';
+            //         html += '   <div class="row generatedDiv"  id="row_'+editReasonForRevisionCounter+'">';
+            //         html += '       <div class="col-md-12" id="row_'+editReasonForRevisionCounter+'">';
+            //         html += '           <textarea class="form-control  mb-2" rows="3" id="txtEditReasonForRevision_'+editReasonForRevisionCounter+'" name="reason_for_revision_'+editReasonForRevisionCounter+'"></textarea>';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#editReasonForRevisionCounter').val(editReasonForRevisionCounter);
+            //     $('#divEditReasonForRevision').append(html);
+            // });
+
+            let editReasonForRevisionNumberPerRow = 1;
+            let editReasonForRevisionCounter = 0;
             $('#addEditRowReasonForRevision').click(function(){
+                editReasonForRevisionNumberPerRow++;
                 editReasonForRevisionCounter++;
-                if(editReasonForRevisionCounter > 1){
+                if(editReasonForRevisionCounter > 0){
                     $('#removeEditRowReasonForRevision').removeClass('d-none');
                 }
-                console.log('Reason For Revision Row(+):', editReasonForRevisionCounter);
+                // console.log('Reason For Revision Row(+):', editReasonForRevisionCounter);
 
-                var html = '<div class="divEditReasonForRevisionHeader_'+editReasonForRevisionCounter+' pt-2 mt-4"><span class="badge badge-secondary"> # '+ editReasonForRevisionCounter +'.</span> <label></label></div>';
-                    html += '   <div class="row mt-2 generatedDiv"  id="row_'+editReasonForRevisionCounter+'">';
+                var html = '<div class="divEditReasonForRevisionHeader_'+editReasonForRevisionCounter+' pt-2 mt-2"><span class="badge badge-secondary"> # '+ editReasonForRevisionNumberPerRow +'.</span> <label></label></div>';
+                    html += '   <div class="row generatedDiv"  id="row_'+editReasonForRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+editReasonForRevisionCounter+'">';
-                    html += '           <textarea class="form-control  mb-3" rows="3" id="txtEditReasonForRevision'+editReasonForRevisionCounter+'" name="reason_for_revision'+editReasonForRevisionCounter+'"></textarea>';
+                    html += '           <textarea class="form-control  mb-2" rows="3" id="txtEditReasonForRevision_'+editReasonForRevisionCounter+'" name="reason_for_revision_'+editReasonForRevisionCounter+'"></textarea>';
                     html += '       <div>';
                     html += '   </div>';
 
@@ -3280,33 +3369,72 @@ $layout = 'layouts.super_user_layout';
                 $('#divEditReasonForRevision').append(html);
             });
 
-            //============================= REMOVE Reason For Revision =============================
-            $("#cardEditReasonForRevision").on('click', '#removeEditRowReasonForRevision', function(e){
+
+            //========================================================= REMOVE Reason For Revision ==========================================================
+            // $("#removeEditRowReasonForRevision").on('click', function(e){
+            //     let plcSaRevisionHistory =  $('#removeEditRowReasonForRevision').val();
+
+            //     if(editReasonForRevisionCounter > 1){
+            //         $('.divEditReasonForRevisionHeader_'+editReasonForRevisionCounter).remove();
+            //         $('#divEditReasonForRevision').find('#row_'+editReasonForRevisionCounter).remove();
+            //         editReasonForRevisionCounter--;
+            //         $('#editReasonForRevisionCounter').val(editReasonForRevisionCounter).trigger('change');
+            //         console.log('Reason For Revision Row(-):' + editReasonForRevisionCounter);
+            //     }
+
+            //     if(editReasonForRevisionCounter < 2){
+            //         $('#removeEditRowReasonForRevision').addClass('d-none');
+            //     }
+            // });
+
+            $("#removeEditRowReasonForRevision").on('click', function(e){
                 let plcSaRevisionHistory =  $('#removeEditRowReasonForRevision').val();
 
-                if(editReasonForRevisionCounter > 1){
+                if(editReasonForRevisionCounter > 0){
                     $('.divEditReasonForRevisionHeader_'+editReasonForRevisionCounter).remove();
-                    $('#cardEditReasonForRevision').find('#row_'+editReasonForRevisionCounter).remove();
+                    $('#divEditReasonForRevision').find('#row_'+editReasonForRevisionCounter).remove();
                     editReasonForRevisionCounter--;
                     $('#editReasonForRevisionCounter').val(editReasonForRevisionCounter).trigger('change');
                     console.log('Reason For Revision Row(-):' + editReasonForRevisionCounter);
                 }
 
-                if(editReasonForRevisionCounter < 2){
+                if(editReasonForRevisionCounter < 1){
                     $('#removeEditRowReasonForRevision').addClass('d-none');
                 }
             });
 
-           //============================= ADD Details of Revision =============================
-            let addDetailsOfRevisionCounter = 1;
+            //=============================================================================================================================================
+            //========================================================== ADD Details of Revision ==========================================================
+            //=============================================================================================================================================
+            // let addDetailsOfRevisionCounter = 1;
+            // $('#addAddRowDetailsOfRevision').click(function(){
+            //     addDetailsOfRevisionCounter++;
+            //     if(addDetailsOfRevisionCounter > 1){
+            //         $('#removeAddRowDetailsOfRevision').removeClass('d-none');
+            //     }
+            //     console.log('Details of Revision Row(+):', addDetailsOfRevisionCounter);
+
+            //     var html = '<div class="divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter+'"><span class="badge badge-secondary"> # '+ addDetailsOfRevisionCounter +'.</span> <label></label></div>';
+            //         html += '   <div class="row generatedDiv"  id="row_'+addDetailsOfRevisionCounter+'">';
+            //         html += '       <div class="col-md-12" id="row_'+addDetailsOfRevisionCounter+'">';
+            //         html += '           <textarea class="form-control mb-3" rows="3" id="txtAddDetailsOfRevision_'+addDetailsOfRevisionCounter+'" name="details_of_revision_'+addDetailsOfRevisionCounter+'"></textarea>';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#addDetailsOfRevisionCounter').val(addDetailsOfRevisionCounter);
+            //     $('#divAddDetailsOfRevision').append(html);
+
+            let addDetailsOfRevisionNumberPerRow = 1;
+            let addDetailsOfRevisionCounter = 0;
             $('#addAddRowDetailsOfRevision').click(function(){
+                addDetailsOfRevisionNumberPerRow++;
                 addDetailsOfRevisionCounter++;
-                if(addDetailsOfRevisionCounter > 1){
+                if(addDetailsOfRevisionCounter > 0){
                     $('#removeAddRowDetailsOfRevision').removeClass('d-none');
                 }
                 console.log('Details of Revision Row(+):', addDetailsOfRevisionCounter);
 
-                var html = '<div class="divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter+'"><span class="badge badge-secondary"> # '+ addDetailsOfRevisionCounter +'.</span> <label></label></div>';
+                var html = '<div class="divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter+'"><span class="badge badge-secondary"> # '+ addDetailsOfRevisionNumberPerRow +'.</span> <label></label></div>';
                     html += '   <div class="row generatedDiv"  id="row_'+addDetailsOfRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+addDetailsOfRevisionCounter+'">';
                     html += '           <textarea class="form-control mb-3" rows="3" id="txtAddDetailsOfRevision_'+addDetailsOfRevisionCounter+'" name="details_of_revision_'+addDetailsOfRevisionCounter+'"></textarea>';
@@ -3316,11 +3444,27 @@ $layout = 'layouts.super_user_layout';
                 $('#addDetailsOfRevisionCounter').val(addDetailsOfRevisionCounter);
                 $('#divAddDetailsOfRevision').append(html);
 
-                //============================= REMOVE Details of Revision =============================
-                $("#divAddDetailsOfRevision").on('click', '#removeAddRowDetailsOfRevision', function(e){
+            //========================================================== REMOVE Details of Revision ==========================================================
+            // $("#divAddDetailsOfRevision").on('click', '#removeAddRowDetailsOfRevision', function(e){
+            //         let plcSaRevisionHistory =  $('#removeAddRowDetailsOfRevision').val();
+
+            //         if(addDetailsOfRevisionCounter > 1){
+            //             $('.divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter).remove();
+            //             $('#divAddDetailsOfRevision').find('#row_'+addDetailsOfRevisionCounter).remove();
+            //             addDetailsOfRevisionCounter--;
+            //             $('#addDetailsOfRevisionCounter').val(addDetailsOfRevisionCounter).trigger('change');
+            //             console.log('Details of Revision Row(-):' + addDetailsOfRevisionCounter);
+            //         }
+
+            //         if(addDetailsOfRevisionCounter < 2){
+            //             $('#removeAddRowDetailsOfRevision').addClass('d-none');
+            //         }
+            //     });
+            // });
+            $("#divAddDetailsOfRevision").on('click', '#removeAddRowDetailsOfRevision', function(e){
                     let plcSaRevisionHistory =  $('#removeAddRowDetailsOfRevision').val();
 
-                    if(addDetailsOfRevisionCounter > 1){
+                    if(addDetailsOfRevisionCounter > 0){
                         $('.divAddDetailsOfRevisionHeader_'+addDetailsOfRevisionCounter).remove();
                         $('#divAddDetailsOfRevision').find('#row_'+addDetailsOfRevisionCounter).remove();
                         addDetailsOfRevisionCounter--;
@@ -3328,22 +3472,44 @@ $layout = 'layouts.super_user_layout';
                         console.log('Details of Revision Row(-):' + addDetailsOfRevisionCounter);
                     }
 
-                    if(addDetailsOfRevisionCounter < 2){
+                    if(addDetailsOfRevisionCounter < 1){
                         $('#removeAddRowDetailsOfRevision').addClass('d-none');
                     }
                 });
             });
 
-            // =============================== EDIT ===============================
-            let editDetailsOfRevisionCounter = 1;
+            //=============================================================================================================================================
+            //========================================================== EDIT Details of Revision =========================================================
+            //=============================================================================================================================================
+            // let editDetailsOfRevisionCounter = 1;
+            // $('#addEditRowDetailsOfRevision').click(function(){
+            //     editDetailsOfRevisionCounter++;
+            //     if(editDetailsOfRevisionCounter > 1){
+            //         $('#removeEditRowDetailsOfRevision').removeClass('d-none');
+            //     }
+            //     console.log('Details of Revision Row(+):', editDetailsOfRevisionCounter);
+
+            //     var html = '<div class="divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter+' pt-2 mt-4"><span class="badge badge-secondary"> # '+ editDetailsOfRevisionCounter +'.</span> <label></label></div>';
+            //         html += '   <div class="row mt-2 generatedDiv" id="row_'+editDetailsOfRevisionCounter+'">';
+            //         html += '       <div class="col-md-12" id="row_'+editDetailsOfRevisionCounter+'">';
+            //         html += '           <textarea class="form-control  mb-3" rows="3" id="txtEditDetailsOfRevision_'+editDetailsOfRevisionCounter+'" name="details_of_revision_'+editDetailsOfRevisionCounter+'"></textarea>';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#editDetailsOfRevisionCounter').val(editDetailsOfRevisionCounter);
+            //     $('#divEditDetailsOfRevision').append(html);
+            // });
+            let editDetailsOfRevisionNumberPerCounter = 1;
+            let editDetailsOfRevisionCounter = 0;
             $('#addEditRowDetailsOfRevision').click(function(){
+                editDetailsOfRevisionNumberPerCounter++;
                 editDetailsOfRevisionCounter++;
-                if(editDetailsOfRevisionCounter > 1){
+                if(editDetailsOfRevisionCounter > 0){
                     $('#removeEditRowDetailsOfRevision').removeClass('d-none');
                 }
                 console.log('Details of Revision Row(+):', editDetailsOfRevisionCounter);
 
-                var html = '<div class="divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter+' pt-2 mt-4"><span class="badge badge-secondary"> # '+ editDetailsOfRevisionCounter +'.</span> <label></label></div>';
+                var html = '<div class="divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter+' pt-2 mt-4"><span class="badge badge-secondary"> # '+ editDetailsOfRevisionNumberPerCounter +'.</span> <label></label></div>';
                     html += '   <div class="row mt-2 generatedDiv" id="row_'+editDetailsOfRevisionCounter+'">';
                     html += '       <div class="col-md-12" id="row_'+editDetailsOfRevisionCounter+'">';
                     html += '           <textarea class="form-control  mb-3" rows="3" id="txtEditDetailsOfRevision_'+editDetailsOfRevisionCounter+'" name="details_of_revision_'+editDetailsOfRevisionCounter+'"></textarea>';
@@ -3354,19 +3520,45 @@ $layout = 'layouts.super_user_layout';
                 $('#divEditDetailsOfRevision').append(html);
             });
 
-            //============================= REMOVE =============================
-            $("#cardEditDetailsOfRevision").on('click', '#removeEditRowDetailsOfRevision', function(e){
+            //========================================================== REMOVE Details of Revision =========================================================
+            // $("#removeEditRowDetailsOfRevision").on('click', function(e){
+            //     let plcSaRevisionHistory =  $('#removeEditRowDetailsOfRevision').val();
+
+            //     if(editDetailsOfRevisionCounter > 1){
+            //         $('.divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter).remove();
+            //         $('#divEditDetailsOfRevision').find('#row_'+editDetailsOfRevisionCounter).remove();
+            //         editDetailsOfRevisionCounter--;
+            //         $('#editDetailsOfRevisionCounter').val(editDetailsOfRevisionCounter).trigger('change');
+            //         console.log('Details of Revision Row(-):' + editDetailsOfRevisionCounter);
+            //     }
+
+            //     if(editDetailsOfRevisionCounter < 2){
+            //         $('#removeEditRowDetailsOfRevision').addClass('d-none');
+            //     }
+            // });
+
+            // $('#btnExportSummary').on('click', function(){
+            //     // console.log($('#formViewWPRequest').serialize());
+            //     let year_id = $('#selectYearId').val();
+            //     let select_category = $('#selectCategoryId').val();
+
+            //     window.location.href = `export_summary/${year_id}/${select_category}`;
+            //     // console.log(year_id);
+            //     // console.log(select_category);
+            //     $('#modalExportSummary').modal('hide');
+            // });
+            $("#removeEditRowDetailsOfRevision").on('click', function(e){
                 let plcSaRevisionHistory =  $('#removeEditRowDetailsOfRevision').val();
 
-                if(editDetailsOfRevisionCounter > 1){
+                if(editDetailsOfRevisionCounter > 0){
                     $('.divEditDetailsOfRevisionHeader_'+editDetailsOfRevisionCounter).remove();
-                    $('#cardEditDetailsOfRevision').find('#row_'+editDetailsOfRevisionCounter).remove();
+                    $('#divEditDetailsOfRevision').find('#row_'+editDetailsOfRevisionCounter).remove();
                     editDetailsOfRevisionCounter--;
                     $('#editDetailsOfRevisionCounter').val(editDetailsOfRevisionCounter).trigger('change');
                     console.log('Details of Revision Row(-):' + editDetailsOfRevisionCounter);
                 }
 
-                if(editDetailsOfRevisionCounter < 2){
+                if(editDetailsOfRevisionCounter < 1){
                     $('#removeEditRowDetailsOfRevision').addClass('d-none');
                 }
             });
@@ -3382,52 +3574,974 @@ $layout = 'layouts.super_user_layout';
                 $('#modalExportSummary').modal('hide');
             });
 
-            //============================= ADD DEPT / SECT & IN-CHARGE ROW =============================
-            let deptSectInCharge = 1;
+            //=============================================================================================================================================
+            //====================================================== ADD DEPT / SECT & IN-CHARGE ROW ======================================================
+            //=============================================================================================================================================
+            // let deptSectInChargeCounter = 1;
+            // $('#addAddRowDeptSectInCharge').click(function(){
+            //     deptSectInChargeCounter++;
+            //     if(deptSectInChargeCounter > 1){
+            //         $('#removeAddRowDeptSectInCharge').removeClass('d-none');
+            //     }
+            //     console.log('Dept/Sect & In-Charge Row(+):', deptSectInChargeCounter);
+
+            //     var html = '   <div class="row generatedDiv"  id="row_'+deptSectInChargeCounter+'">';
+            //         html += '       <div class="form-group col-sm-6 flex-column">';
+            //         html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_'+deptSectInChargeCounter+'" name="concerned_dept_'+deptSectInChargeCounter+'[]" multiple></select>';
+            //         html += '       </div>';
+            //         html += '       <div class="form-group col-sm-6 flex-column">';
+            //         html += '           <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_'+deptSectInChargeCounter+'" name="in_charge_'+deptSectInChargeCounter+'"></textarea>';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#addDeptSectInchargeCounter').val(deptSectInChargeCounter);
+            //     $('#divAddConcernDeptSecInCharge').append(html);
+
+            //     $('.select2bs4').select2({
+            //         theme: 'bootstrap4'
+            //     });
+
+            //     LoadConcernedDepartment($('.sel-user-concerned-department'));
+            // });
+            let deptSectInChargeNumberPerRow = 1;
+            let deptSectInChargeCounter = 0;
             $('#addAddRowDeptSectInCharge').click(function(){
-                deptSectInCharge++;
-                if(deptSectInCharge > 1){
+                deptSectInChargeCounter++;
+                if(deptSectInChargeCounter > 0){
                     $('#removeAddRowDeptSectInCharge').removeClass('d-none');
                 }
-                console.log('Dept/Sect & In-Charge Row(+):', deptSectInCharge);
+                console.log('Dept/Sect & In-Charge Row(+):', deptSectInChargeCounter);
 
-                var html = '   <div class="row generatedDiv"  id="row_'+deptSectInCharge+'">';
+                var html = '   <div class="row generatedDiv"  id="row_'+deptSectInChargeCounter+'">';
                     html += '       <div class="form-group col-sm-6 flex-column">';
-                    html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_'+deptSectInCharge+'" name="concerned_dept_'+deptSectInCharge+'[]" multiple></select>';
+                    html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_'+deptSectInChargeCounter+'" name="concerned_dept_'+deptSectInChargeCounter+'[]" multiple></select>';
                     html += '       </div>';
                     html += '       <div class="form-group col-sm-6 flex-column">';
-                    html += '           <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_'+deptSectInCharge+'" name="in_charge_'+deptSectInCharge+'"></textarea>';
+                    html += '           <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_'+deptSectInChargeCounter+'" name="in_charge_'+deptSectInChargeCounter+'"></textarea>';
                     html += '       <div>';
                     html += '   </div>';
 
-                $('#addDeptSectInchargeCounter').val(deptSectInCharge);
+                $('#addDeptSectInchargeCounter').val(deptSectInChargeCounter);
                 $('#divAddConcernDeptSecInCharge').append(html);
 
                 $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 });
-                
+
                 LoadConcernedDepartment($('.sel-user-concerned-department'));
             });
 
-            //============================= REMOVE DEPT / SECT & IN-CHARGE ROW =============================
-            $("#divAddConcernDeptSecInCharge").on('click', '#removeAddRowDeptSectInCharge', function(e){
+            //====================================================== REMOVE DEPT / SECT & IN-CHARGE ROW ======================================================
+            // $("#removeAddRowDeptSectInCharge").on('click', function(e){
+            //     let deptSectIncharge =  $('#removeAddRowDeptSectInCharge').val();
+
+            //     if(deptSectInChargeCounter > 1){
+            //         $('#divAddConcernDeptSecInCharge').find('#row_'+deptSectInChargeCounter).remove();
+            //         deptSectInChargeCounter--;
+            //         $('#addDeptSectInchargeCounter').val(deptSectInChargeCounter).trigger('change');
+            //         console.log('Dept/Sect & In-Charge Row(-):' + deptSectInChargeCounter);
+            //     }
+
+            //     if(deptSectInChargeCounter < 2){
+            //         $('#removeAddRowDeptSectInCharge').addClass('d-none');
+            //     }
+            // });
+            $("#removeAddRowDeptSectInCharge").on('click', function(e){
                 let deptSectIncharge =  $('#removeAddRowDeptSectInCharge').val();
 
-                if(deptSectInCharge > 1){
-                    $('#divAddConcernDeptSecInCharge').find('#row_'+deptSectInCharge).remove();
-                    deptSectInCharge--;
-                    $('#addDeptSectInchargeCounter').val(deptSectInCharge).trigger('change');
-                    console.log('Dept/Sect & In-Charge Row(-):' + deptSectInCharge);
+                if(deptSectInChargeCounter > 0){
+                    $('#divAddConcernDeptSecInCharge').find('#row_'+deptSectInChargeCounter).remove();
+                    deptSectInChargeCounter--;
+                    $('#addDeptSectInchargeCounter').val(deptSectInChargeCounter).trigger('change');
+                    console.log('Dept/Sect & In-Charge Row(-):' + deptSectInChargeCounter);
                 }
 
-                if(deptSectInCharge < 2){
+                if(deptSectInChargeCounter < 1){
                     $('#removeAddRowDeptSectInCharge').addClass('d-none');
                 }
             });
-            
-            
-            // //============================= ADD CONFORMANCE =============================
+
+            //=============================================================================================================================================
+            //===================================================== EDIT DEPT / SECT & IN-CHARGE ROW ======================================================
+            //=============================================================================================================================================
+            // let editDeptSectInChargeCounter = 1;
+            // $('#addEditRowDeptSectInCharge').click(function(){
+            //     editDeptSectInChargeCounter++;
+            //     if(editDeptSectInChargeCounter > 1){
+            //         $('#removeEditRowDeptSectInCharge').removeClass('d-none');
+            //     }
+            //     console.log('Dept/Sect & In-Charge Row(+):', editDeptSectInChargeCounter);
+
+            //     var html = '   <div class="row generatedDiv"  id="row_'+editDeptSectInChargeCounter+'">';
+            //         html += '       <div class="form-group col-sm-6 flex-column">';
+            //         html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment_'+editDeptSectInChargeCounter+'" name="concerned_dept_'+editDeptSectInChargeCounter+'[]" multiple></select>';
+            //         html += '       </div>';
+            //         html += '       <div class="form-group col-sm-6 flex-column">';
+            //         html += '           <textarea type="text" class="form-control" rows="1" id="selectEditProcessInCharge_'+editDeptSectInChargeCounter+'" name="in_charge_'+editDeptSectInChargeCounter+'"></textarea>';
+            //         html += '       <div>';
+            //         html += '   </div>';
+
+            //     $('#editDeptSectInchargeCounter').val(editDeptSectInChargeCounter);
+            //     $('#divEditConcernDeptSecInCharge').append(html);
+
+            //     $('.select2bs4').select2({
+            //         theme: 'bootstrap4'
+            //     });
+
+            //     LoadConcernedDepartment($('.sel-user-concerned-department'));
+            // });
+            let editDeptSectInChargeNumberPerCounter = 1;
+            let editDeptSectInChargeCounter = 0;
+            $('#addEditRowDeptSectInCharge').click(function(){
+                editDeptSectInChargeCounter++;
+                if(editDeptSectInChargeCounter > 0){
+                    $('#removeEditRowDeptSectInCharge').removeClass('d-none');
+                }
+                console.log('Dept/Sect & In-Charge Row(+):', editDeptSectInChargeCounter);
+
+                var html = '   <div class="row generatedDiv"  id="row_'+editDeptSectInChargeCounter+'">';
+                    html += '       <div class="form-group col-sm-6 flex-column">';
+                    html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment_'+editDeptSectInChargeCounter+'" name="concerned_dept_'+editDeptSectInChargeCounter+'[]" multiple></select>';
+                    html += '       </div>';
+                    html += '       <div class="form-group col-sm-6 flex-column">';
+                    html += '           <textarea type="text" class="form-control" rows="1" id="selectEditProcessInCharge_'+editDeptSectInChargeCounter+'" name="in_charge_'+editDeptSectInChargeCounter+'"></textarea>';
+                    html += '       <div>';
+                    html += '   </div>';
+
+                $('#editDeptSectInchargeCounter').val(editDeptSectInChargeCounter);
+                $('#divEditConcernDeptSecInCharge').append(html);
+
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+
+                LoadConcernedDepartment($('.sel-user-concerned-department'));
+            });
+
+            //====================================================== REMOVE DEPT / SECT & IN-CHARGE ROW ======================================================
+            // $("#removeEditRowDeptSectInCharge").on('click', function(e){
+            //     let deptSectIncharge =  $('#removeEditRowDeptSectInCharge').val();
+
+            //     if(editDeptSectInChargeCounter > 1){
+            //         $('#divEditConcernDeptSecInCharge').find('#row_'+editDeptSectInChargeCounter).remove();
+            //         editDeptSectInChargeCounter--;
+            //         $('#editDeptSectInchargeCounter').val(editDeptSectInChargeCounter).trigger('change');
+            //         console.log('Dept/Sect & In-Charge Row(-):' + editDeptSectInChargeCounter);
+            //     }
+
+            //     if(editDeptSectInChargeCounter < 2){
+            //         $('#removeEditRowDeptSectInCharge').addClass('d-none');
+            //     }
+            // });
+            $("#removeEditRowDeptSectInCharge").on('click', function(e){
+                let deptSectIncharge =  $('#removeEditRowDeptSectInCharge').val();
+
+                if(editDeptSectInChargeCounter > 0){
+                    $('#divEditConcernDeptSecInCharge').find('#row_'+editDeptSectInChargeCounter).remove();
+                    editDeptSectInChargeCounter--;
+                    $('#editDeptSectInchargeCounter').val(editDeptSectInChargeCounter).trigger('change');
+                    console.log('Dept/Sect & In-Charge Row(-):' + editDeptSectInChargeCounter);
+                }
+
+                if(editDeptSectInChargeCounter < 1){
+                    $('#removeEditRowDeptSectInCharge').addClass('d-none');
+                }
+            });
+
+            //=================================================================================================================================================================
+            //=================================================================== ADD REVISION HISTORY ROW ====================================================================
+            //=================================================================================================================================================================
+            // let revisionHistoryCounter = 1;
+            // $('#addAddRowRevisionHistory').click(function() {
+            //     revisionHistoryCounter++;
+
+            //     if (revisionHistoryCounter > 1) {
+            //         $('#removeAddRowRevisionHistory').removeClass('d-none');
+            //     }
+            //     console.log('Card:', revisionHistoryCounter, '| Revision History Row(+):',
+            //         revisionHistoryCounter);
+
+            //     var html = '<div class="divRevisionHistoryHeader_' + revisionHistoryCounter +'" id="chris_bugok_' + revisionHistoryCounter + '">';
+            //         html += '   <div class="card-header bg-light border-top">';
+            //         html += '       <span class="badge badge-dark"> # ' + revisionHistoryCounter + '.</span>';
+            //         html += '       <label>Details of Revision History:</label>';
+            //         html += '   </div>';
+            //         html += '   <div class="card-body" id="card_' + revisionHistoryCounter + '">';
+            //         html += '       <div id="divAddMultipleReasonForRevision_' + revisionHistoryCounter + '">';
+            //         html += '           <input type="text" name="add_multiple_reason_for_revision_counter" id="addMultipleReasonForRevisionCounter_' +revisionHistoryCounter + '" value="1">';
+            //         html += '           <div class="form-group">';
+            //         html += '               <span class="badge badge-secondary"># 1.</span>';
+            //         html += '               <label>Reason for Revision:</label>';
+            //         html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleReasonForRevision" id="addRowMultipleReasonForRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Reason for Revision</button>';
+            //         html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleReasonForRevision" id="removeRowMultipleReasonForRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Reason for Revision</button>';
+            //         html += '               <textarea type="text" class="form-control" name="multiple_reason_for_revision_1_' +revisionHistoryCounter + '" id="txtAddMultipleReasonForRevision_1_' +revisionHistoryCounter + '"  rows="3" autocomplete= "off"></textarea>';
+            //         html += '           </div>';
+            //         html += '       </div>';
+            //         html += '       <hr>';
+            //         html += '       <div id="divAddMultipleDetailsOfRevision_' + revisionHistoryCounter + '">';
+            //         html += '           <input type="text" name="add_multiple_details_of_revision_counter" id="addMultipleDetailsOfRevisionCounter_' +revisionHistoryCounter + '" value="1">';
+            //         html += '           <div class="form-group mt-3">';
+            //         html += '               <span class="badge badge-secondary"># 1.</span>';
+            //         html += '               <label>Details of Revision:</label>';
+            //         html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleDetailsOfRevision" id="addRowMultipleDetailsOfRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Details of Revision</button>';
+            //         html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleDetailsOfRevision" id="removeRowMultipleDetailsOfRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Details of Revision</button>';
+            //         html += '               <textarea type="text" class="form-control" name="multiple_details_of_revision_1_' +revisionHistoryCounter + '" id="txtAddMultipleDetailsOfRevision_1_' +revisionHistoryCounter + '" rows="3" autocomplete= "off"></textarea>';
+            //         html += '           </div>';
+            //         html += '       </div>';
+            //         html += '       <hr>';
+            //         html += '       <div id="divAddMultipleConcernDeptSecInCharge_' + revisionHistoryCounter +'">';
+            //         html += '           <input type="text" name="add_multiple_dept_sect_incharge_counter" id="addMultipleDeptSectInchargeCounter_' +revisionHistoryCounter + '" value="1">';
+            //         html += '           <div class="row justify-content-between text-left">';
+            //         html += '               <div class="form-group col-sm-6 flex-column d-flex">';
+            //         html += '                   <label>Concerned Dept/Section</label>';
+            //         html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_1_' +revisionHistoryCounter + '" name="multiple_concerned_dept_1_' + revisionHistoryCounter +'[]" multiple></select>';
+            //         html += '               </div>';
+            //         html += '               <div class="form-group col-sm-6">';
+            //         html += '                   <label>In-Charge</label>';
+            //         html += '                   <button type="button" class="btn btn-sm btn-dark float-right addBtnMultipleDeptSectInCharge" id="addRowMutipleDeptSectInCharge_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Row</button>';
+            //         html += '                   <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none removeBtnMultipleDeptSectInCharge" id="removeRowMultipleDeptSectInCharge_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>';
+            //         html += '                   <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_1_' +revisionHistoryCounter + '" name="multiple_in_charge_1_' + revisionHistoryCounter +'"></textarea>';
+            //         html += '               </div>';
+            //         html += '           </div>';
+            //         html += '       </div>';
+            //         html += '   </div>';
+            //         html += '</div>';
+
+            //     $('#addRevisionHistoryCounter').val(revisionHistoryCounter);
+            //     $('#cardAddRevisionHistory').append(html);
+
+            //     $('.select2bs4').select2({
+            //         theme: 'bootstrap4'
+            //     });
+
+            //     LoadConcernedDepartment($('.sel-user-concerned-department'));
+            let revisionHistoryNumberPerCard = 1;
+            let revisionHistoryCounter = 0;
+            $('#addAddRowRevisionHistory').click(function() {
+                revisionHistoryNumberPerCard++;
+                revisionHistoryCounter++;
+
+                if (revisionHistoryCounter > 0) {
+                    $('#removeAddRowRevisionHistory').removeClass('d-none');
+                }
+                console.log('Card:', revisionHistoryCounter, '| Revision History Row(+):',
+                revisionHistoryCounter);
+                
+                // $("#selectMultipleRowAddDepartment_0_"+revisionHistoryCounter).prop('required', true);
+
+                var html = '<div class="divRevisionHistoryHeader_' + revisionHistoryCounter +'" id="chris_bugok_' + revisionHistoryCounter + '">';
+                    html += '   <div class="card-header bg-light border-top">';
+                    html += '       <span class="badge badge-dark"> # ' + revisionHistoryNumberPerCard + '.</span>';
+                    html += '       <label>Details of Revision History:</label>';
+                    html += '   </div>';
+                    html += '   <div class="card-body" id="card_' + revisionHistoryCounter + '">';
+                    html += '       <div id="divAddMultipleReasonForRevision_' + revisionHistoryCounter + '">';
+                    html += '           <input type="text" name="add_multiple_reason_for_revision_counter" id="addMultipleReasonForRevisionCounter_' +revisionHistoryCounter + '" value="1">';
+                    html += '           <div class="form-group">';
+                    html += '               <span class="badge badge-secondary"># 1.</span>';
+                    html += '               <label>Reason for Revision:</label>';
+                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleReasonForRevision" id="addRowMultipleReasonForRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Reason for Revision</button>';
+                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleReasonForRevision" id="removeRowMultipleReasonForRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Reason for Revision</button>';
+                    html += '               <textarea type="text" class="form-control" name="multiple_reason_for_revision_0_' +revisionHistoryCounter + '" id="txtAddMultipleReasonForRevision_0_' +revisionHistoryCounter + '"  rows="3" autocomplete= "off"></textarea>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '       <hr>';
+                    html += '       <div id="divAddMultipleDetailsOfRevision_' + revisionHistoryCounter + '">';
+                    html += '           <input type="text" name="add_multiple_details_of_revision_counter" id="addMultipleDetailsOfRevisionCounter_' +revisionHistoryCounter + '" value="1">';
+                    html += '           <div class="form-group mt-3">';
+                    html += '               <span class="badge badge-secondary"># 1.</span>';
+                    html += '               <label>Details of Revision:</label>';
+                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleDetailsOfRevision" id="addRowMultipleDetailsOfRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Details of Revision</button>';
+                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleDetailsOfRevision" id="removeRowMultipleDetailsOfRevision_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Details of Revision</button>';
+                    html += '               <textarea type="text" class="form-control" name="multiple_details_of_revision_0_' +revisionHistoryCounter + '" id="txtAddMultipleDetailsOfRevision_0_' +revisionHistoryCounter + '" rows="3" autocomplete= "off"></textarea>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '       <hr>';
+                    html += '       <div id="divAddMultipleConcernDeptSecInCharge_' + revisionHistoryCounter +'">';
+                    html += '           <input type="text" name="add_multiple_dept_sect_incharge_counter" id="addMultipleDeptSectInchargeCounter_' +revisionHistoryCounter + '" value="1">';
+                    html += '           <div class="row justify-content-between text-left">';
+                    html += '               <div class="form-group col-sm-6 flex-column d-flex">';
+                    html += '                   <label>Concerned Dept/Section</label>';
+                    html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_0_' +revisionHistoryCounter + '" name="multiple_concerned_dept_0_' + revisionHistoryCounter +'[]" multiple></select>';
+                    html += '               </div>';
+                    html += '               <div class="form-group col-sm-6">';
+                    html += '                   <label>In-Charge</label>';
+                    html += '                   <button type="button" class="btn btn-sm btn-dark float-right addBtnMultipleDeptSectInCharge" id="addRowMutipleDeptSectInCharge_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Row</button>';
+                    html += '                   <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none removeBtnMultipleDeptSectInCharge" id="removeRowMultipleDeptSectInCharge_' +revisionHistoryCounter + '" value="' + revisionHistoryCounter +'"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>';
+                    html += '                   <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_0_' +revisionHistoryCounter + '" name="multiple_in_charge_0_' + revisionHistoryCounter +'"></textarea>';
+                    html += '               </div>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '   </div>';
+                    html += '</div>';
+
+                $('#addRevisionHistoryCounter').val(revisionHistoryCounter);
+                $('#cardAddRevisionHistory').append(html);
+                
+                
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+
+                LoadConcernedDepartment($('.sel-user-concerned-department'));
+
+                //=================================================================================================================================================================
+                //=============================================================== ADD MULTIPLE REASON FOR REVISION ================================================================
+                //=================================================================================================================================================================
+                // let multipleReasonForRevisionCounter = 1;
+                // $('#addRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(){
+                // // $(document).on('click', '#addRowMultipleReasonForRevision_'+revisionHistoryCounter, function(){
+                //     let addRowReasonForRevisionPerCard = $(this).closest('.addBtnMultipleReasonForRevision').val();
+                //     multipleReasonForRevisionCounter++;
+                //     if(multipleReasonForRevisionCounter > 1){
+                //         $('#removeRowMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).removeClass('d-none');
+                //     }
+                //     console.log('Button per Card:', addRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(+): ', multipleReasonForRevisionCounter);
+
+                //     var x =  '<div class="divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleReasonForRevisionCounter +'.</span> <label></label>';
+                //         x += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleReasonForRevisionCounter+'">';
+                //         x += '       <div class="col-md-12" id="row_'+multipleReasonForRevisionCounter+'">';
+                //         x += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleReasonForRevision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'" name="multiple_reason_for_revision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"></textarea>';
+                //         x += '       <div>';
+                //         x += '   </div>';
+                //         x += '</div>';
+
+                //     $('#addMultipleReasonForRevisionCounter_'+addRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter);
+                //     $('#divAddMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).append(x);
+                //     // return false;
+                //     // });
+                // });
+                let multipleReasonForRevisionNumberPerRow = 1;
+                let multipleReasonForRevisionCounter = 0;
+                $('#addRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(){
+                    // $(document).on('click', '#addRowMultipleReasonForRevision_'+revisionHistoryCounter, function(){
+                    let addRowReasonForRevisionPerCard = $(this).closest('.addBtnMultipleReasonForRevision').val();
+                    multipleReasonForRevisionNumberPerRow++;
+                    multipleReasonForRevisionCounter++;
+
+                    if(multipleReasonForRevisionCounter > 0){
+                        $('#removeRowMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', addRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(+): ', multipleReasonForRevisionCounter);
+
+                    var x =  '<div class="divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleReasonForRevisionNumberPerRow +'.</span> <label></label>';
+                        x += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleReasonForRevisionCounter+'">';
+                        x += '       <div class="col-md-12" id="row_'+multipleReasonForRevisionCounter+'">';
+                        x += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleReasonForRevision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'" name="multiple_reason_for_revision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"></textarea>';
+                        x += '       <div>';
+                        x += '   </div>';
+                        x += '</div>';
+
+                    $('#addMultipleReasonForRevisionCounter_'+addRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter);
+                    $('#divAddMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).append(x);
+                    // return false;
+                    // });
+                });
+                //=================================================================== REMOVE ADD MULTIPLE REASON FOR REVISION ===================================================================
+                // $('#removeRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(e){
+                //     let removeRowReasonForRevisionPerCard = $(this).closest('.removeBtnMultipleReasonForRevision').val();
+                //     if(multipleReasonForRevisionCounter > 1){
+                //         $('.divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+removeRowReasonForRevisionPerCard).remove();
+                //         multipleReasonForRevisionCounter--;
+                //         $('#addMultipleReasonForRevisionCounter_'+removeRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter).trigger('change');
+
+                //         console.log('Button per Card:', removeRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(-):', multipleReasonForRevisionCounter);
+                //     }
+                //     if(multipleReasonForRevisionCounter < 2){
+                //         $('#removeRowMultipleReasonForRevision_'+removeRowReasonForRevisionPerCard).addClass('d-none');
+                //     }
+                // });
+                $('#removeRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(e){
+                    let removeRowReasonForRevisionPerCard = $(this).closest('.removeBtnMultipleReasonForRevision').val();
+                    if(multipleReasonForRevisionCounter > 0){
+                        $('.divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+removeRowReasonForRevisionPerCard).remove();
+                        multipleReasonForRevisionCounter--;
+                        $('#addMultipleReasonForRevisionCounter_'+removeRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter).trigger('change');
+
+                        console.log('Button per Card:', removeRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(-):', multipleReasonForRevisionCounter);
+                    }
+                    if(multipleReasonForRevisionCounter < 1){
+                        $('#removeRowMultipleReasonForRevision_'+removeRowReasonForRevisionPerCard).addClass('d-none');
+                    }
+                });
+
+                //============================= ADD MULTIPLE DETAILS OF REVISION =============================
+                // let multipleDetailsOfRevisionCounter = 1;
+                // $('#addRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(){
+                //     let addRowDetailsOfRevisionPerCard = $(this).closest('.addBtnMultipleDetailsOfRevision').val();
+                //     multipleDetailsOfRevisionCounter++;
+                //     if(multipleDetailsOfRevisionCounter > 1){
+                //         $('#removeRowMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).removeClass('d-none');
+                //     }
+                //     console.log('Button per Card:', addRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(+):', multipleDetailsOfRevisionCounter);
+
+                //     var xx = '<div class="divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleDetailsOfRevisionCounter +'.</span> <label></label>';
+                //         xx += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleDetailsOfRevisionCounter+'">';
+                //         xx += '       <div class="col-md-12" id="row_'+multipleDetailsOfRevisionCounter+'">';
+                //         xx += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleDetailsOfRevision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'" name="multiple_details_of_revision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"></textarea>';
+                //         xx += '       <div>';
+                //         xx += '   </div>';
+                //         xx += '</div>';
+                //     $('#addMultipleDetailsOfRevisionCounter_'+addRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter);
+                //     $('#divAddMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).append(xx);
+                // });
+                let multipleDetailsOfRevisionNumberPerRow = 1;
+                let multipleDetailsOfRevisionCounter = 0;
+                $('#addRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(){
+                    let addRowDetailsOfRevisionPerCard = $(this).closest('.addBtnMultipleDetailsOfRevision').val();
+                    multipleDetailsOfRevisionNumberPerRow++;
+                    multipleDetailsOfRevisionCounter++;
+
+                    if(multipleDetailsOfRevisionCounter > 0){
+                        $('#removeRowMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', addRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(+):', multipleDetailsOfRevisionCounter);
+
+                    var xx = '<div class="divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleDetailsOfRevisionNumberPerRow +'.</span> <label></label>';
+                        xx += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleDetailsOfRevisionCounter+'">';
+                        xx += '       <div class="col-md-12" id="row_'+multipleDetailsOfRevisionCounter+'">';
+                        xx += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleDetailsOfRevision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'" name="multiple_details_of_revision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"></textarea>';
+                        xx += '       <div>';
+                        xx += '   </div>';
+                        xx += '</div>';
+                    $('#addMultipleDetailsOfRevisionCounter_'+addRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter);
+                    $('#divAddMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).append(xx);
+                });
+                //============================= REMOVE ADD MULTIPLE DETAILS OF REVISION =============================
+                // $('#removeRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(e){
+                //     removeRowDetailsOfRevisionPerCard = $(this).closest('.removeBtnMultipleDetailsOfRevision').val();
+                //     if(multipleDetailsOfRevisionCounter > 1){
+                //         $('.divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+removeRowDetailsOfRevisionPerCard).remove();
+                //         multipleDetailsOfRevisionCounter--;
+                //         $('#addMultipleDetailsOfRevisionCounter_'+removeRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter).trigger('change');
+
+                //         console.log('Button per Card:', removeRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(-):', multipleDetailsOfRevisionCounter);
+                //     }
+                //     if(multipleDetailsOfRevisionCounter < 2){
+                //         $('#removeRowMultipleDetailsOfRevision_'+removeRowDetailsOfRevisionPerCard).addClass('d-none');
+                //     }
+                // });
+                $('#removeRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(e){
+                    removeRowDetailsOfRevisionPerCard = $(this).closest('.removeBtnMultipleDetailsOfRevision').val();
+                    if(multipleDetailsOfRevisionCounter > 0){
+                        $('.divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+removeRowDetailsOfRevisionPerCard).remove();
+                        multipleDetailsOfRevisionCounter--;
+                        $('#addMultipleDetailsOfRevisionCounter_'+removeRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter).trigger('change');
+
+                        console.log('Button per Card:', removeRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(-):', multipleDetailsOfRevisionCounter);
+                    }
+                    if(multipleDetailsOfRevisionCounter < 1){
+                        $('#removeRowMultipleDetailsOfRevision_'+removeRowDetailsOfRevisionPerCard).addClass('d-none');
+                    }
+                });
+
+                //============================= ADD MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
+                // let multipleDeptSectInChargeCounter = 1;
+                // $('#addRowMutipleDeptSectInCharge_'+revisionHistoryCounter).click(function(){
+                //     addRowDeptSectInChargePerCard = $(this).closest('.addBtnMultipleDeptSectInCharge').val();
+                //     multipleDeptSectInChargeCounter++;
+                //     if(multipleDeptSectInChargeCounter > 1){
+                //         $('#removeRowMultipleDeptSectInCharge_'+addRowDeptSectInChargePerCard).removeClass('d-none');
+                //     }
+                //     console.log('Button per Card:', addRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(+):', multipleDeptSectInChargeCounter);
+
+                //     var xxx = '   <div class="row" id="divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'">';
+                //         xxx += '       <div class="form-group col-sm-6 flex-column">';
+                //         xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'[]" multiple></select>';
+                //         xxx += '       </div>';
+                //         xxx += '       <div class="form-group col-sm-6 flex-column">';
+                //         xxx += '           <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'"></textarea>';
+                //         xxx += '       <div>';
+                //         xxx += '   </div>';
+                //     $('#addMultipleDeptSectInchargeCounter_'+addRowDeptSectInChargePerCard).val(multipleDeptSectInChargeCounter);
+                //     $('#divAddMultipleConcernDeptSecInCharge_'+addRowDeptSectInChargePerCard).append(xxx);
+
+                //     $('.select2bs4').select2({
+                //         theme: 'bootstrap4'
+                //     });
+
+                //     LoadConcernedDepartment($('.sel-user-concerned-department'));
+                // });
+                let multipleDeptSectInChargeNumberPerRow = 1;
+                let multipleDeptSectInChargeCounter = 0;
+                $('#addRowMutipleDeptSectInCharge_'+revisionHistoryCounter).click(function(){
+                    addRowDeptSectInChargePerCard = $(this).closest('.addBtnMultipleDeptSectInCharge').val();
+                    multipleDeptSectInChargeCounter++;
+                    if(multipleDeptSectInChargeCounter > 0){
+                        $('#removeRowMultipleDeptSectInCharge_'+addRowDeptSectInChargePerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', addRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(+):', multipleDeptSectInChargeCounter);
+
+                    var xxx = '   <div class="row" id="divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'">';
+                        xxx += '       <div class="form-group col-sm-6 flex-column">';
+                        xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'[]" multiple></select>';
+                        xxx += '       </div>';
+                        xxx += '       <div class="form-group col-sm-6 flex-column">';
+                        xxx += '           <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'"></textarea>';
+                        xxx += '       <div>';
+                        xxx += '   </div>';
+                    $('#addMultipleDeptSectInchargeCounter_'+addRowDeptSectInChargePerCard).val(multipleDeptSectInChargeCounter);
+                    $('#divAddMultipleConcernDeptSecInCharge_'+addRowDeptSectInChargePerCard).append(xxx);
+
+                    $('.select2bs4').select2({
+                        theme: 'bootstrap4'
+                    });
+
+                    LoadConcernedDepartment($('.sel-user-concerned-department'));
+                });
+                //============================= REMOVE MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
+                // $('#removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter).on('click', function(e){
+                //     removeRowDeptSectInChargePerCard = $(this).closest('.removeBtnMultipleDeptSectInCharge').val();
+                //     if(multipleDeptSectInChargeCounter > 1){
+                //         $('#divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInChargeCounter+'_'+removeRowDeptSectInChargePerCard).remove();
+                //         multipleDeptSectInChargeCounter--;
+                //         $('#addMultipleDeptSectInchargeCounter_'+removeRowDeptSectInChargePerCard).val(multipleDeptSectInChargeCounter).trigger('change');
+
+                //         console.log('Button per Card:', removeRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(-):' + multipleDeptSectInChargeCounter);
+                //     }
+                //     if(multipleDeptSectInChargeCounter < 2){
+                //         $('#removeRowMultipleDeptSectInCharge_'+removeRowDeptSectInChargePerCard).addClass('d-none');
+                //     }
+                // });
+                $('#removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter).on('click', function(e){
+                    removeRowDeptSectInChargePerCard = $(this).closest('.removeBtnMultipleDeptSectInCharge').val();
+                    if(multipleDeptSectInChargeCounter > 0){
+                        $('#divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInChargeCounter+'_'+removeRowDeptSectInChargePerCard).remove();
+                        multipleDeptSectInChargeCounter--;
+                        $('#addMultipleDeptSectInchargeCounter_'+removeRowDeptSectInChargePerCard).val(multipleDeptSectInChargeCounter).trigger('change');
+
+                        console.log('Button per Card:', removeRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(-):' + multipleDeptSectInChargeCounter);
+                    }
+                    if(multipleDeptSectInChargeCounter < 1){
+                        $('#removeRowMultipleDeptSectInCharge_'+removeRowDeptSectInChargePerCard).addClass('d-none');
+                    }
+                });
+            });
+
+            //============================= REMOVE REVISION HISTORY ROW =============================
+            // $("#removeAddRowRevisionHistory").on('click', function(e){
+            //     // let revisionHistory =  $('#removeAddRowRevisionHistory').val();
+            //     if(revisionHistoryCounter > 1){
+            //         $('#cardAddRevisionHistory').find('#chris_bugok_'+revisionHistoryCounter).remove();
+            //         revisionHistoryCounter--;
+            //         $('#addRevisionHistoryCounter').val(revisionHistoryCounter).trigger('change');
+
+            //         console.log('Card:', revisionHistoryCounter, '| Revision History Row(-):' + revisionHistoryCounter);
+            //     }
+
+            //     if(revisionHistoryCounter < 2){
+            //         $('#removeAddRowRevisionHistory').addClass('d-none');
+            //     }
+            // });
+            $("#removeAddRowRevisionHistory").on('click', function(e){
+                // let revisionHistory =  $('#removeAddRowRevisionHistory').val();
+                if(revisionHistoryCounter > 0){
+                    $('#cardAddRevisionHistory').find('#chris_bugok_'+revisionHistoryCounter).remove();
+                    revisionHistoryCounter--;
+                    $('#addRevisionHistoryCounter').val(revisionHistoryCounter).trigger('change');
+
+                    console.log('Card:', revisionHistoryCounter, '| Revision History Row(-):' + revisionHistoryCounter);
+                }
+
+                if(revisionHistoryCounter < 1){
+                    $('#removeAddRowRevisionHistory').addClass('d-none');
+                }
+            });
+
+            //=================================================================================================================================================================
+            //=================================================================== EDIT REVISION HISTORY ROW ===================================================================
+            //=================================================================================================================================================================
+            // let editRevisionHistoryCounter = 1;
+            // $('#addEditRowRevisionHistory').click(function() {
+            //     editRevisionHistoryCounter++;
+
+            //     if (editRevisionHistoryCounter > 1) {
+            //         $('#removeEditRowRevisionHistory').removeClass('d-none');
+            //     }
+            //     console.log('Card:', editRevisionHistoryCounter, '| Revision History Row(+):',editRevisionHistoryCounter);
+
+            //     var html = '<div class="divEditRevisionHistoryHeader_' + editRevisionHistoryCounter +'" id="divEditRevisionHistoryHeader_' + editRevisionHistoryCounter + '">';
+            //         html += '   <div class="card-header bg-light border-top">';
+            //         html += '       <span class="badge badge-dark"> # ' + editRevisionHistoryCounter + '.</span>';
+            //         html += '       <label>Details of Revision History:</label>';
+            //         html += '   </div>';
+            //         html += '   <div class="card-body" id="editCard_' + editRevisionHistoryCounter + '">';
+            //         html += '       <div id="divEditMultipleReasonForRevision_' + editRevisionHistoryCounter + '">';
+            //         html += '           <input type="text" name="edit_multiple_reason_for_revision_counter" id="editMultipleReasonForRevisionCounter_' +editRevisionHistoryCounter + '" value="1">';
+            //         html += '           <div class="form-group">';
+            //         html += '               <span class="badge badge-secondary"># 1.</span>';
+            //         html += '               <label>Reason for Revision:</label>';
+            //         html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 editBtnMultipleReasonForRevision" id="addEditRowMultipleReasonForRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Reason for Revision</button>';
+            //         html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeEditBtnMultipleReasonForRevision" id="removeEditRowMultipleReasonForRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Reason for Revision</button>';
+            //         html += '               <textarea type="text" class="form-control" name="multiple_reason_for_revision_1_' +editRevisionHistoryCounter + '" id="txtEditMultipleReasonForRevision_1_' +editRevisionHistoryCounter + '"  rows="3" autocomplete= "off"></textarea>';
+            //         html += '           </div>';
+            //         html += '       </div>';
+            //         html += '       <hr>';
+            //         html += '       <div id="divEditMultipleDetailsOfRevision_' + editRevisionHistoryCounter + '">';
+            //         html += '           <input type="text" name="edit_multiple_details_of_revision_counter" id="addEditMultipleDetailsOfRevisionCounter_' +editRevisionHistoryCounter + '" value="1">';
+            //         html += '           <div class="form-group mt-3">';
+            //         html += '               <span class="badge badge-secondary"># 1.</span>';
+            //         html += '               <label>Details of Revision:</label>';
+            //         html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 editBtnMultipleDetailsOfRevision" id="editRowMultipleDetailsOfRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Details of Revision</button>';
+            //         html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeEditBtnMultipleDetailsOfRevision" id="removeEditRowMultipleDetailsOfRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Details of Revision</button>';
+            //         html += '               <textarea type="text" class="form-control" name="multiple_details_of_revision_1_' +editRevisionHistoryCounter + '" id="txtEditMultipleDetailsOfRevision_1_' +editRevisionHistoryCounter + '" rows="3" autocomplete= "off"></textarea>';
+            //         html += '           </div>';
+            //         html += '       </div>';
+            //         html += '       <hr>';
+            //         html += '       <div id="divEditMultipleConcernDeptSecInCharge_' + editRevisionHistoryCounter +'">';
+            //         html += '           <input type="text" name="edit_multiple_dept_sect_incharge_counter" id="editMultipleDeptSectInchargeCounter_' +editRevisionHistoryCounter + '" value="1">';
+            //         html += '           <div class="row justify-content-between text-left">';
+            //         html += '               <div class="form-group col-sm-6 flex-column d-flex">';
+            //         html += '                   <label>Concerned Dept/Section</label>';
+            //         html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowEditDepartment_1_' +editRevisionHistoryCounter + '" name="multiple_concerned_dept_1_' + editRevisionHistoryCounter +'[]" multiple></select>';
+            //         html += '               </div>';
+            //         html += '               <div class="form-group col-sm-6">';
+            //         html += '                   <label>In-Charge</label>';
+            //         html += '                   <button type="button" class="btn btn-sm btn-dark float-right editBtnMultipleDeptSectInCharge" id="editRowMutipleDeptSectInCharge_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Row</button>';
+            //         html += '                   <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none editRemoveBtnMultipleDeptSectInCharge" id="removeEditRowMultipleDeptSectInCharge_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>';
+            //         html += '                   <textarea type="text" class="form-control" rows="1" id="selectEditMultipleProcessInCharge_1_' +editRevisionHistoryCounter + '" name="multiple_in_charge_1_' + editRevisionHistoryCounter +'"></textarea>';
+            //         html += '               </div>';
+            //         html += '           </div>';
+            //         html += '       </div>';
+            //         html += '   </div>';
+            //         html += '</div>';
+
+            //     $('#editRevisionHistoryCounter').val(editRevisionHistoryCounter);
+            //     $('#cardEditRevisionHistory').append(html);
+
+            //     $('.select2bs4').select2({
+            //         theme: 'bootstrap4'
+            //     });
+
+            //     LoadConcernedDepartment($('.sel-user-concerned-department'));
+            let editRevisionHistoryNumberPerCard = 1;
+            let editRevisionHistoryCounter = 0;
+            $('#addEditRowRevisionHistory').click(function() {
+                editRevisionHistoryNumberPerCard++;
+                editRevisionHistoryCounter++;
+
+                if (editRevisionHistoryCounter > 0) {
+                    $('#removeEditRowRevisionHistory').removeClass('d-none');
+                }
+                // console.log('Card:', editRevisionHistoryCounter, '| Revision History Row(+):',editRevisionHistoryCounter);
+
+                var html = '<div class="divEditRevisionHistoryHeader_' + editRevisionHistoryCounter +'" id="divEditRevisionHistoryHeader_' + editRevisionHistoryCounter + '">';
+                    html += '   <div class="card-header bg-light border-top">';
+                    html += '       <span class="badge badge-dark"> # ' + editRevisionHistoryNumberPerCard + '.</span>';
+                    html += '       <label>Details of Revision History:</label>';
+                    html += '   </div>';
+                    html += '   <div class="card-body" id="editCard_' + editRevisionHistoryCounter + '">';
+                    html += '       <div id="divEditMultipleReasonForRevision_' + editRevisionHistoryCounter + '">';
+                    html += '           <input type="text" name="edit_multiple_reason_for_revision_counter" id="editMultipleReasonForRevisionCounter_' +editRevisionHistoryCounter + '" value="0">';
+                    html += '           <div class="form-group">';
+                    html += '               <span class="badge badge-secondary"># 1.</span>';
+                    html += '               <label>Reason for Revision:</label>';
+                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 editBtnMultipleReasonForRevision" id="addEditRowMultipleReasonForRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Reason for Revision</button>';
+                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeEditBtnMultipleReasonForRevision" id="removeEditRowMultipleReasonForRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Reason for Revision</button>';
+                    html += '               <textarea type="text" class="form-control" name="multiple_reason_for_revision_0_' +editRevisionHistoryCounter + '" id="txtEditMultipleReasonForRevision_0_' +editRevisionHistoryCounter + '"  rows="3" autocomplete= "off"></textarea>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '       <hr>';
+                    html += '       <div id="divEditMultipleDetailsOfRevision_' + editRevisionHistoryCounter + '">';
+                    html += '           <input type="text" name="edit_multiple_details_of_revision_counter" id="addEditMultipleDetailsOfRevisionCounter_' +editRevisionHistoryCounter + '" value="0">';
+                    html += '           <div class="form-group mt-3">';
+                    html += '               <span class="badge badge-secondary"># 1.</span>';
+                    html += '               <label>Details of Revision:</label>';
+                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 editBtnMultipleDetailsOfRevision" id="editRowMultipleDetailsOfRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Details of Revision</button>';
+                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeEditBtnMultipleDetailsOfRevision" id="removeEditRowMultipleDetailsOfRevision_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fas fa-times"></i> Remove Details of Revision</button>';
+                    html += '               <textarea type="text" class="form-control" name="multiple_details_of_revision_0_' +editRevisionHistoryCounter + '" id="txtEditMultipleDetailsOfRevision_0_' +editRevisionHistoryCounter + '" rows="3" autocomplete= "off"></textarea>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '       <hr>';
+                    html += '       <div id="divEditMultipleConcernDeptSecInCharge_' + editRevisionHistoryCounter +'">';
+                    html += '           <input type="text" name="edit_multiple_dept_sect_incharge_counter" id="editMultipleDeptSectInchargeCounter_' +editRevisionHistoryCounter + '" value="0">';
+                    html += '           <div class="row justify-content-between text-left">';
+                    html += '               <div class="form-group col-sm-6 flex-column d-flex">';
+                    html += '                   <label>Concerned Dept/Section</label>';
+                    html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowEditDepartment_0_' +editRevisionHistoryCounter + '" name="multiple_concerned_dept_0_' + editRevisionHistoryCounter +'[]" multiple></select>';
+                    html += '               </div>';
+                    html += '               <div class="form-group col-sm-6">';
+                    html += '                   <label>In-Charge</label>';
+                    html += '                   <button type="button" class="btn btn-sm btn-dark float-right editBtnMultipleDeptSectInCharge" id="editRowMutipleDeptSectInCharge_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fa fa-plus"></i> Add Row</button>';
+                    html += '                   <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none editRemoveBtnMultipleDeptSectInCharge" id="removeEditRowMultipleDeptSectInCharge_' +editRevisionHistoryCounter + '" value="' + editRevisionHistoryCounter +'"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>';
+                    html += '                   <textarea type="text" class="form-control" rows="1" id="selectEditMultipleProcessInCharge_0_' +editRevisionHistoryCounter + '" name="multiple_in_charge_0_' + editRevisionHistoryCounter +'"></textarea>';
+                    html += '               </div>';
+                    html += '           </div>';
+                    html += '       </div>';
+                    html += '   </div>';
+                    html += '</div>';
+
+                $('#editRevisionHistoryCounter').val(editRevisionHistoryCounter);
+                $('#cardEditRevisionHistory').append(html);
+
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+
+                LoadConcernedDepartment($('.sel-user-concerned-department'));
+
+                //============================= EDIT MULTIPLE REASON FOR REVISION =============================
+                // let editMultipleReasonForRevisionCounter = 1;
+                // $('#addEditRowMultipleReasonForRevision_'+editRevisionHistoryCounter).on('click', function(){
+                // // $(document).on('click', '#addEditRowMultipleReasonForRevision_'+editRevisionHistoryCounter, function(){
+                //     let editRowReasonForRevisionPerCard = $(this).closest('.editBtnMultipleReasonForRevision').val();
+                //     editMultipleReasonForRevisionCounter++;
+                //     if(editMultipleReasonForRevisionCounter > 1){
+                //         $('#removeEditRowMultipleReasonForRevision_'+editRowReasonForRevisionPerCard).removeClass('d-none');
+                //     }
+                //     console.log('Button per Card:', editRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(+): ', editMultipleReasonForRevisionCounter);
+
+                //     var x =  '<div class="divEditMultipleReasonForRevisionHeader_'+editMultipleReasonForRevisionCounter+'_'+editRowReasonForRevisionPerCard+'"><span class="badge badge-secondary"> # '+ editMultipleReasonForRevisionCounter +'.</span> <label></label>';
+                //         x += '   <div class="row generatedDiv"  id="editReasonForRevisionRow_'+editMultipleReasonForRevisionCounter+'">';
+                //         x += '       <div class="col-md-12" id="row_'+editMultipleReasonForRevisionCounter+'">';
+                //         x += '           <textarea class="form-control  mb-3" rows="3" id="txtEditMultipleReasonForRevision_'+editMultipleReasonForRevisionCounter+'_'+editRowReasonForRevisionPerCard+'" name="multiple_reason_for_revision_'+editMultipleReasonForRevisionCounter+'_'+editRowReasonForRevisionPerCard+'"></textarea>';
+                //         x += '       <div>';
+                //         x += '   </div>';
+                //         x += '</div>';
+
+                //     $('#editMultipleReasonForRevisionCounter_'+editRowReasonForRevisionPerCard).val(editMultipleReasonForRevisionCounter);
+                //     $('#divEditMultipleReasonForRevision_'+editRowReasonForRevisionPerCard).append(x);
+                //     // return false;
+                //     // });
+                // });
+                let editMultipleReasonForRevisionNumberPerRow = 1;
+                let editMultipleReasonForRevisionCounter = 0;
+                $('#addEditRowMultipleReasonForRevision_'+editRevisionHistoryCounter).on('click', function(){
+                // $(document).on('click', '#addEditRowMultipleReasonForRevision_'+editRevisionHistoryCounter, function(){
+                    let editRowReasonForRevisionPerCard = $(this).closest('.editBtnMultipleReasonForRevision').val();
+                    editMultipleReasonForRevisionCounter++;
+                    if(editMultipleReasonForRevisionCounter > 0){
+                        $('#removeEditRowMultipleReasonForRevision_'+editRowReasonForRevisionPerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', editRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(+): ', editMultipleReasonForRevisionCounter);
+
+                    var x =  '<div class="divEditMultipleReasonForRevisionHeader_'+editMultipleReasonForRevisionCounter+'_'+editRowReasonForRevisionPerCard+'"><span class="badge badge-secondary"> # '+ editMultipleReasonForRevisionNumberPerRow +'.</span> <label></label>';
+                        x += '   <div class="row generatedDiv"  id="editReasonForRevisionRow_'+editMultipleReasonForRevisionCounter+'">';
+                        x += '       <div class="col-md-12" id="row_'+editMultipleReasonForRevisionCounter+'">';
+                        x += '           <textarea class="form-control  mb-3" rows="3" id="txtEditMultipleReasonForRevision_'+editMultipleReasonForRevisionCounter+'_'+editRowReasonForRevisionPerCard+'" name="multiple_reason_for_revision_'+editMultipleReasonForRevisionCounter+'_'+editRowReasonForRevisionPerCard+'"></textarea>';
+                        x += '       <div>';
+                        x += '   </div>';
+                        x += '</div>';
+
+                    $('#editMultipleReasonForRevisionCounter_'+editRowReasonForRevisionPerCard).val(editMultipleReasonForRevisionCounter);
+                    $('#divEditMultipleReasonForRevision_'+editRowReasonForRevisionPerCard).append(x);
+                    // return false;
+                    // });
+                });
+                //============================= REMOVE EDIT MULTIPLE REASON FOR REVISION =============================
+                // $('#removeEditRowMultipleReasonForRevision_'+editRevisionHistoryCounter).on('click', function(e){
+                //     let editRemoveRowReasonForRevisionPerCard = $(this).closest('.removeEditBtnMultipleReasonForRevision').val();
+                //     if(editMultipleReasonForRevisionCounter > 1){
+                //         $('.divEditMultipleReasonForRevisionHeader_'+editMultipleReasonForRevisionCounter+'_'+editRemoveRowReasonForRevisionPerCard).remove();
+                //         editMultipleReasonForRevisionCounter--;
+                //         $('#editMultipleReasonForRevisionCounter_'+editRemoveRowReasonForRevisionPerCard).val(editMultipleReasonForRevisionCounter).trigger('change');
+
+                //         console.log('Button per Card:', editRemoveRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(-):', editMultipleReasonForRevisionCounter);
+                //     }
+                //     if(editMultipleReasonForRevisionCounter < 2){
+                //         $('#removeEditRowMultipleReasonForRevision_'+editRemoveRowReasonForRevisionPerCard).addClass('d-none');
+                //     }
+                // });
+                $('#removeEditRowMultipleReasonForRevision_'+editRevisionHistoryCounter).on('click', function(e){
+                    let editRemoveRowReasonForRevisionPerCard = $(this).closest('.removeEditBtnMultipleReasonForRevision').val();
+                    if(editMultipleReasonForRevisionCounter > 0){
+                        $('.divEditMultipleReasonForRevisionHeader_'+editMultipleReasonForRevisionCounter+'_'+editRemoveRowReasonForRevisionPerCard).remove();
+                        editMultipleReasonForRevisionCounter--;
+                        $('#editMultipleReasonForRevisionCounter_'+editRemoveRowReasonForRevisionPerCard).val(editMultipleReasonForRevisionCounter).trigger('change');
+
+                        console.log('Button per Card:', editRemoveRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(-):', editMultipleReasonForRevisionCounter);
+                    }
+                    if(editMultipleReasonForRevisionCounter < 1){
+                        $('#removeEditRowMultipleReasonForRevision_'+editRemoveRowReasonForRevisionPerCard).addClass('d-none');
+                    }
+                });
+
+                //============================= EDIT MULTIPLE DETAILS OF REVISION =============================
+                // let editMultipleDetailsOfRevisionCounter = 1;
+                // $('#editRowMultipleDetailsOfRevision_'+editRevisionHistoryCounter).on('click', function(){
+                //     let editRowDetailsOfRevisionPerCard = $(this).closest('.editBtnMultipleDetailsOfRevision').val();
+                //     editMultipleDetailsOfRevisionCounter++;
+                //     if(editMultipleDetailsOfRevisionCounter > 1){
+                //         $('#removeEditRowMultipleDetailsOfRevision_'+editRowDetailsOfRevisionPerCard).removeClass('d-none');
+                //     }
+                //     console.log('Button per Card:', editRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(+):', editMultipleDetailsOfRevisionCounter);
+
+                //     var xx = '<div class="divEditMultipleDetailsOfRevisionHeader_'+editMultipleDetailsOfRevisionCounter+'_'+editRowDetailsOfRevisionPerCard+'"><span class="badge badge-secondary"> # '+ editMultipleDetailsOfRevisionCounter +'.</span> <label></label>';
+                //         xx += '   <div class="row generatedDiv"  id="editReasonForRevisionRow_'+editMultipleDetailsOfRevisionCounter+'">';
+                //         xx += '       <div class="col-md-12" id="row_'+editMultipleDetailsOfRevisionCounter+'">';
+                //         xx += '           <textarea class="form-control  mb-3" rows="3" id="txtEditMultipleDetailsOfRevision_'+editMultipleDetailsOfRevisionCounter+'_'+editRowDetailsOfRevisionPerCard+'" name="multiple_details_of_revision_'+editMultipleDetailsOfRevisionCounter+'_'+editRowDetailsOfRevisionPerCard+'"></textarea>';
+                //         xx += '       <div>';
+                //         xx += '   </div>';
+                //         xx += '</div>';
+                //     $('#addEditMultipleDetailsOfRevisionCounter_'+editRowDetailsOfRevisionPerCard).val(editMultipleDetailsOfRevisionCounter);
+                //     $('#divEditMultipleDetailsOfRevision_'+editRowDetailsOfRevisionPerCard).append(xx);
+                // });
+                let editMultipleDetailsOfRevisionNumberPerRow = 0;
+                let editMultipleDetailsOfRevisionCounter = 0;
+                $('#editRowMultipleDetailsOfRevision_'+editRevisionHistoryCounter).on('click', function(){
+                    let editRowDetailsOfRevisionPerCard = $(this).closest('.editBtnMultipleDetailsOfRevision').val();
+                    editMultipleDetailsOfRevisionNumberPerRow++;
+                    editMultipleDetailsOfRevisionCounter++;
+
+                    if(editMultipleDetailsOfRevisionCounter > 0){
+                        $('#removeEditRowMultipleDetailsOfRevision_'+editRowDetailsOfRevisionPerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', editRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(+):', editMultipleDetailsOfRevisionCounter);
+
+                    var xx = '<div class="divEditMultipleDetailsOfRevisionHeader_'+editMultipleDetailsOfRevisionCounter+'_'+editRowDetailsOfRevisionPerCard+'"><span class="badge badge-secondary"> # '+ editMultipleDetailsOfRevisionNumberPerRow +'.</span> <label></label>';
+                        xx += '   <div class="row generatedDiv"  id="editReasonForRevisionRow_'+editMultipleDetailsOfRevisionCounter+'">';
+                        xx += '       <div class="col-md-12" id="row_'+editMultipleDetailsOfRevisionCounter+'">';
+                        xx += '           <textarea class="form-control  mb-3" rows="3" id="txtEditMultipleDetailsOfRevision_'+editMultipleDetailsOfRevisionCounter+'_'+editRowDetailsOfRevisionPerCard+'" name="multiple_details_of_revision_'+editMultipleDetailsOfRevisionCounter+'_'+editRowDetailsOfRevisionPerCard+'"></textarea>';
+                        xx += '       <div>';
+                        xx += '   </div>';
+                        xx += '</div>';
+                    $('#addEditMultipleDetailsOfRevisionCounter_'+editRowDetailsOfRevisionPerCard).val(editMultipleDetailsOfRevisionCounter);
+                    $('#divEditMultipleDetailsOfRevision_'+editRowDetailsOfRevisionPerCard).append(xx);
+                });
+                //============================= REMOVE EDIT MULTIPLE DETAILS OF REVISION =============================
+                // $('#removeEditRowMultipleDetailsOfRevision_'+editRevisionHistoryCounter).on('click', function(e){
+                //     removeEditRowDetailsOfRevisionPerCard = $(this).closest('.removeEditBtnMultipleDetailsOfRevision').val();
+                //     if(editMultipleDetailsOfRevisionCounter > 1){
+                //         $('.divEditMultipleDetailsOfRevisionHeader_'+editMultipleDetailsOfRevisionCounter+'_'+removeEditRowDetailsOfRevisionPerCard).remove();
+                //         editMultipleDetailsOfRevisionCounter--;
+                //         $('#addEditMultipleDetailsOfRevisionCounter_'+removeEditRowDetailsOfRevisionPerCard).val(editMultipleDetailsOfRevisionCounter).trigger('change');
+
+                //         console.log('Button per Card:', removeEditRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(-):', editMultipleDetailsOfRevisionCounter);
+                //     }
+                //     if(editMultipleDetailsOfRevisionCounter < 2){
+                //         $('#removeEditRowMultipleDetailsOfRevision_'+removeEditRowDetailsOfRevisionPerCard).addClass('d-none');
+                //     }
+                // });
+                $('#removeEditRowMultipleDetailsOfRevision_'+editRevisionHistoryCounter).on('click', function(e){
+                    removeEditRowDetailsOfRevisionPerCard = $(this).closest('.removeEditBtnMultipleDetailsOfRevision').val();
+                    if(editMultipleDetailsOfRevisionCounter > 0){
+                        $('.divEditMultipleDetailsOfRevisionHeader_'+editMultipleDetailsOfRevisionCounter+'_'+removeEditRowDetailsOfRevisionPerCard).remove();
+                        editMultipleDetailsOfRevisionCounter--;
+                        $('#addEditMultipleDetailsOfRevisionCounter_'+removeEditRowDetailsOfRevisionPerCard).val(editMultipleDetailsOfRevisionCounter).trigger('change');
+
+                        console.log('Button per Card:', removeEditRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(-):', editMultipleDetailsOfRevisionCounter);
+                    }
+                    if(editMultipleDetailsOfRevisionCounter < 1){
+                        $('#removeEditRowMultipleDetailsOfRevision_'+removeEditRowDetailsOfRevisionPerCard).addClass('d-none');
+                    }
+                });
+
+                //============================= EDIT MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
+                // let editMultipleDeptSectInChargeCounter = 1;
+                // $('#editRowMutipleDeptSectInCharge_'+editRevisionHistoryCounter).click(function(){
+                //     editRowDeptSectInChargePerCard = $(this).closest('.editBtnMultipleDeptSectInCharge').val();
+                //     editMultipleDeptSectInChargeCounter++;
+                //     if(editMultipleDeptSectInChargeCounter > 1){
+                //         $('#removeEditRowMultipleDeptSectInCharge_'+editRowDeptSectInChargePerCard).removeClass('d-none');
+                //     }
+                //     console.log('Button per Card:', editRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(+):', editMultipleDeptSectInChargeCounter);
+
+                //     var xxx = '   <div class="row" id="divMultipleEditDeptSectInChargeHeader_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'">';
+                //         xxx += '       <div class="form-group col-sm-6 flex-column">';
+                //         xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowEditDepartment_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'[]" multiple></select>';
+                //         xxx += '       </div>';
+                //         xxx += '       <div class="form-group col-sm-6 flex-column">';
+                //         xxx += '           <textarea type="text" class="form-control" rows="1" id="selectEditMultipleProcessInCharge_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'"></textarea>';
+                //         xxx += '       <div>';
+                //         xxx += '   </div>';
+                //     $('#editMultipleDeptSectInchargeCounter_'+editRowDeptSectInChargePerCard).val(editMultipleDeptSectInChargeCounter);
+                //     $('#divEditMultipleConcernDeptSecInCharge_'+editRowDeptSectInChargePerCard).append(xxx);
+
+                //     $('.select2bs4').select2({
+                //         theme: 'bootstrap4'
+                //     });
+
+                //     LoadConcernedDepartment($('.sel-user-concerned-department'));
+                // });
+                let editMultipleDeptSectInChargeNumberPerRow = 1;
+                let editMultipleDeptSectInChargeCounter = 0;
+                $('#editRowMutipleDeptSectInCharge_'+editRevisionHistoryCounter).click(function(){
+                    editRowDeptSectInChargePerCard = $(this).closest('.editBtnMultipleDeptSectInCharge').val();
+                    editMultipleDeptSectInChargeNumberPerRow++;
+                    editMultipleDeptSectInChargeCounter++;
+
+                    if(editMultipleDeptSectInChargeCounter > 0){
+                        $('#removeEditRowMultipleDeptSectInCharge_'+editRowDeptSectInChargePerCard).removeClass('d-none');
+                    }
+                    console.log('Button per Card:', editRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(+):', editMultipleDeptSectInChargeCounter);
+
+                    var xxx = '   <div class="row" id="divMultipleEditDeptSectInChargeHeader_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'">';
+                        xxx += '       <div class="form-group col-sm-6 flex-column">';
+                        xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowEditDepartment_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'[]" multiple></select>';
+                        xxx += '       </div>';
+                        xxx += '       <div class="form-group col-sm-6 flex-column">';
+                        xxx += '           <textarea type="text" class="form-control" rows="1" id="selectEditMultipleProcessInCharge_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'"></textarea>';
+                        xxx += '       <div>';
+                        xxx += '   </div>';
+                    $('#editMultipleDeptSectInchargeCounter_'+editRowDeptSectInChargePerCard).val(editMultipleDeptSectInChargeCounter);
+                    $('#divEditMultipleConcernDeptSecInCharge_'+editRowDeptSectInChargePerCard).append(xxx);
+
+                    $('.select2bs4').select2({
+                        theme: 'bootstrap4'
+                    });
+
+                    LoadConcernedDepartment($('.sel-user-concerned-department'));
+                });
+                //============================= REMOVE MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
+                // $('#removeEditRowMultipleDeptSectInCharge_'+editRevisionHistoryCounter).on('click', function(e){
+                //     editRemoveRowDeptSectInChargePerCard = $(this).closest('.editRemoveBtnMultipleDeptSectInCharge').val();
+                //     if(editMultipleDeptSectInChargeCounter > 1){
+                //         $('#divMultipleEditDeptSectInChargeHeader_'+editMultipleDeptSectInChargeCounter+'_'+editRemoveRowDeptSectInChargePerCard).remove();
+                //         editMultipleDeptSectInChargeCounter--;
+                //         $('#editMultipleDeptSectInchargeCounter_'+editRemoveRowDeptSectInChargePerCard).val(editMultipleDeptSectInChargeCounter).trigger('change');
+
+                //         console.log('Button per Card:', editRemoveRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(-):' + editMultipleDeptSectInChargeCounter);
+                //     }
+                //     if(editMultipleDeptSectInChargeCounter < 2){
+                //         $('#removeEditRowMultipleDeptSectInCharge_'+editRemoveRowDeptSectInChargePerCard).addClass('d-none');
+                //     }
+                // });
+                $('#removeEditRowMultipleDeptSectInCharge_'+editRevisionHistoryCounter).on('click', function(e){
+                    editRemoveRowDeptSectInChargePerCard = $(this).closest('.editRemoveBtnMultipleDeptSectInCharge').val();
+                    if(editMultipleDeptSectInChargeCounter > 0){
+                        $('#divMultipleEditDeptSectInChargeHeader_'+editMultipleDeptSectInChargeCounter+'_'+editRemoveRowDeptSectInChargePerCard).remove();
+                        editMultipleDeptSectInChargeCounter--;
+                        $('#editMultipleDeptSectInchargeCounter_'+editRemoveRowDeptSectInChargePerCard).val(editMultipleDeptSectInChargeCounter).trigger('change');
+
+                        console.log('Button per Card:', editRemoveRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(-):' + editMultipleDeptSectInChargeCounter);
+                    }
+                    if(editMultipleDeptSectInChargeCounter < 1){
+                        $('#removeEditRowMultipleDeptSectInCharge_'+editRemoveRowDeptSectInChargePerCard).addClass('d-none');
+                    }
+                });
+            });
+
+            //============================= REMOVE REVISION HISTORY ROW =============================
+            // $("#removeEditRowRevisionHistory").on('click', function(e){
+            //     // let revisionHistory =  $('#removeEditRowRevisionHistory').val();
+            //     if(editRevisionHistoryCounter > 1){
+            //         $('#cardEditRevisionHistory').find('#divEditRevisionHistoryHeader_'+editRevisionHistoryCounter).remove();
+            //         editRevisionHistoryCounter--;
+            //         $('#editRevisionHistoryCounter').val(editRevisionHistoryCounter).trigger('change');
+
+            //         console.log('Card:', editRevisionHistoryCounter, '| Revision History Row(-):' + editRevisionHistoryCounter);
+            //     }
+
+            //     if(editRevisionHistoryCounter < 2){
+            //         $('#removeEditRowRevisionHistory').addClass('d-none');
+            //     }
+            // });
+            $("#removeEditRowRevisionHistory").on('click', function(e){
+                // let revisionHistory =  $('#removeEditRowRevisionHistory').val();
+                if(editRevisionHistoryCounter > 0){
+                    $('#cardEditRevisionHistory').find('#divEditRevisionHistoryHeader_'+editRevisionHistoryCounter).remove();
+                    editRevisionHistoryCounter--;
+                    $('#editRevisionHistoryCounter').val(editRevisionHistoryCounter).trigger('change');
+
+                    console.log('Card:', editRevisionHistoryCounter, '| Revision History Row(-):' + editRevisionHistoryCounter);
+                }
+
+                if(editRevisionHistoryCounter < 1){
+                    $('#removeEditRowRevisionHistory').addClass('d-none');
+                }
+            });
+
+             // //============================= ADD CONFORMANCE =============================
             // let conformanceCounter = 1;
             // $('#addAddRowConformance').click(function(){
             //     conformanceCounter++;
@@ -3450,204 +4564,6 @@ $layout = 'layouts.super_user_layout';
             //     $('#divAddConformance').append(html);
             //     // LoadConcernedDepartment($('.sel-user-concerned-department'));
             // });
-
-            //============================= ADD REVISION HISTORY ROW =============================
-            let revisionHistoryCounter = 1;
-            $('#addAddRowRevisionHistory').click(function(){
-                revisionHistoryCounter++;
-
-                if(revisionHistoryCounter > 1){
-                    $('#removeAddRowRevisionHistory').removeClass('d-none');
-                }
-                console.log('Card:', revisionHistoryCounter, '| Revision History Row(+):', revisionHistoryCounter);
-
-                var html = '<div class="divRevisionHistoryHeader_'+revisionHistoryCounter+'" id="chris_bugok_'+revisionHistoryCounter+'">';
-                    html += '   <div class="card-header bg-light border-top">';
-                    html += '       <span class="badge badge-dark"> # '+revisionHistoryCounter+'.</span>';
-                    html += '       <label>Details of Revision History:</label>';
-                    html += '   </div>';
-                    html += '   <div class="card-body" id="card_'+revisionHistoryCounter+'">';
-                    html += '       <div id="divAddMultipleReasonForRevision_'+revisionHistoryCounter+'">';
-                    html += '           <input type="text" name="add_multiple_reason_for_revision_counter_'+revisionHistoryCounter+'" id="addMultipleReasonForRevisionCounter_'+revisionHistoryCounter+'" value="1">';
-                    html += '           <div class="form-group">';
-                    html += '               <span class="badge badge-secondary"># 1.</span>';
-                    html += '               <label>Reason for Revision:</label>';
-                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleReasonForRevision" id="addRowMultipleReasonForRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fa fa-plus"></i> Add Reason for Revision</button>';
-                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleReasonForRevision" id="removeRowMultipleReasonForRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fas fa-times"></i> Remove Reason for Revision</button>';
-                    html += '               <textarea type="text" class="form-control" name="multiple_reason_for_revision_1_'+revisionHistoryCounter+'" id="txtAddMultipleReasonForRevision_1_'+revisionHistoryCounter+'"  rows="3" autocomplete= "off"></textarea>';
-                    html += '           </div>';
-                    html += '       </div>'; 
-                    html += '       <hr>';
-                    html += '       <div id="divAddMultipleDetailsOfRevision_'+revisionHistoryCounter+'">';
-                    html += '           <input type="text" name="add_multiple_details_of_revision_counter_'+revisionHistoryCounter+'" id="addMultipleDetailsOfRevisionCounter_'+revisionHistoryCounter+'" value="1">';
-                    html += '           <div class="form-group mt-3">';
-                    html += '               <span class="badge badge-secondary"># 1.</span>';
-                    html += '               <label>Details of Revision:</label>';
-                    html += '               <button type="button" class="btn btn-sm btn-dark float-right mb-2 addBtnMultipleDetailsOfRevision" id="addRowMultipleDetailsOfRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fa fa-plus"></i> Add Details of Revision</button>';
-                    html += '               <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none removeBtnMultipleDetailsOfRevision" id="removeRowMultipleDetailsOfRevision_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fas fa-times"></i> Remove Details of Revision</button>';
-                    html += '               <textarea type="text" class="form-control" name="multiple_details_of_revision_1_'+revisionHistoryCounter+'" id="txtAddMultipleDetailsOfRevision_1_'+revisionHistoryCounter+'" rows="3" autocomplete= "off"></textarea>';
-                    html += '           </div>';
-                    html += '       </div>';
-                    html += '       <hr>';
-                    html += '       <div id="divAddMultipleConcernDeptSecInCharge_'+revisionHistoryCounter+'">';
-                    html += '           <input type="text" name="add_multiple_dept_sect_incharge_counter_'+revisionHistoryCounter+'" id="addMultipleDeptSectInchargeCounter_'+revisionHistoryCounter+'" value="1">';
-                    html += '           <div class="row justify-content-between text-left">';
-                    html += '               <div class="form-group col-sm-6 flex-column d-flex">';
-                    html += '                   <label>Concerned Dept/Section</label>';
-                    html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_1_'+revisionHistoryCounter+'" name="multiple_concerned_dept_1_'+revisionHistoryCounter+'[]" multiple></select>';
-                    html += '               </div>';
-                    html += '               <div class="form-group col-sm-6">';
-                    html += '                   <label>In-Charge</label>';
-                    html += '                   <button type="button" class="btn btn-sm btn-dark float-right addBtnMultipleDeptSectInCharge" id="addRowMutipleDeptSectInCharge_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fa fa-plus"></i> Add Row</button>';
-                    html += '                   <button type="button" class="btn btn-sm btn-danger float-right mr-2 d-none removeBtnMultipleDeptSectInCharge" id="removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter+'" value="'+revisionHistoryCounter+'"><i class="fas fa-times"></i> &nbsp;Remove&nbsp;</button>';
-                    html += '                   <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_1_'+revisionHistoryCounter+'" name="multiple_in_charge_1_'+revisionHistoryCounter+'"></textarea>';
-                    html += '               </div>';
-                    html += '           </div>';
-                    html += '       </div>';
-                    html += '   </div>';
-                    html += '</div>';
-                    
-                    $('#addRevisionHistoryCounter').val(revisionHistoryCounter);
-                    $('#cardAddRevisionHistory').append(html);
-                    
-                    $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                });
-                
-                LoadConcernedDepartment($('.sel-user-concerned-department'));
-                
-                //============================= ADD MULTIPLE REASON FOR REVISION =============================
-                let multipleReasonForRevisionCounter = 1;
-                $('#addRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(){
-                // $(document).on('click', '#addRowMultipleReasonForRevision_'+revisionHistoryCounter, function(){
-                    let addRowReasonForRevisionPerCard = $(this).closest('.addBtnMultipleReasonForRevision').val();
-                    multipleReasonForRevisionCounter++;
-                    if(multipleReasonForRevisionCounter > 1){
-                        $('#removeRowMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).removeClass('d-none');
-                    }
-                    console.log('Button per Card:', addRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(+): ', multipleReasonForRevisionCounter);
-
-                    var x =  '<div class="divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleReasonForRevisionCounter +'.</span> <label></label>';
-                        x += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleReasonForRevisionCounter+'">';
-                        x += '       <div class="col-md-12" id="row_'+multipleReasonForRevisionCounter+'">';
-                        x += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleReasonForRevision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'" name="multiple_reason_for_revision_'+multipleReasonForRevisionCounter+'_'+addRowReasonForRevisionPerCard+'"></textarea>';
-                        x += '       <div>';
-                        x += '   </div>';
-                        x += '</div>';
-
-                    $('#addMultipleReasonForRevisionCounter_'+addRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter);
-                    $('#divAddMultipleReasonForRevision_'+addRowReasonForRevisionPerCard).append(x);
-                    // return false;
-                    // });
-                });
-                //============================= REMOVE ADD MULTIPLE REASON FOR REVISION =============================
-                $('#removeRowMultipleReasonForRevision_'+revisionHistoryCounter).on('click', function(e){
-                    let removeRowReasonForRevisionPerCard = $(this).closest('.removeBtnMultipleReasonForRevision').val();
-                    if(multipleReasonForRevisionCounter > 1){
-                        $('.divMultipleAddReasonForRevisionHeader_'+multipleReasonForRevisionCounter+'_'+removeRowReasonForRevisionPerCard).remove();
-                        multipleReasonForRevisionCounter--;
-                        $('#addMultipleReasonForRevisionCounter_'+removeRowReasonForRevisionPerCard).val(multipleReasonForRevisionCounter).trigger('change');
-
-                        console.log('Button per Card:', removeRowReasonForRevisionPerCard, '| Multiple Reason For Revision Row(-):', multipleReasonForRevisionCounter);
-                    }
-                    if(multipleReasonForRevisionCounter < 2){
-                        $('#removeRowMultipleReasonForRevision_'+removeRowReasonForRevisionPerCard).addClass('d-none');
-                    }
-                });
-
-                //============================= ADD MULTIPLE DETAILS OF REVISION =============================
-                let multipleDetailsOfRevisionCounter = 1;
-                $('#addRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(){
-                    let addRowDetailsOfRevisionPerCard = $(this).closest('.addBtnMultipleDetailsOfRevision').val();
-                    multipleDetailsOfRevisionCounter++;
-                    if(multipleDetailsOfRevisionCounter > 1){
-                        $('#removeRowMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).removeClass('d-none');
-                    }
-                    console.log('Button per Card:', addRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(+):', multipleDetailsOfRevisionCounter);
-
-                    var xx = '<div class="divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"><span class="badge badge-secondary"> # '+ multipleDetailsOfRevisionCounter +'.</span> <label></label>';
-                        xx += '   <div class="row generatedDiv"  id="reasonForRevisionRow_'+multipleDetailsOfRevisionCounter+'">';
-                        xx += '       <div class="col-md-12" id="row_'+multipleDetailsOfRevisionCounter+'">';
-                        xx += '           <textarea class="form-control  mb-3" rows="3" id="txtAddMultipleDetailsOfRevision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'" name="multiple_details_of_revision_'+multipleDetailsOfRevisionCounter+'_'+addRowDetailsOfRevisionPerCard+'"></textarea>';
-                        xx += '       <div>';
-                        xx += '   </div>';
-                        xx += '</div>';
-                    $('#addMultipleDetailsOfRevisionCounter_'+addRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter);
-                    $('#divAddMultipleDetailsOfRevision_'+addRowDetailsOfRevisionPerCard).append(xx);
-                });
-                //============================= REMOVE ADD MULTIPLE DETAILS OF REVISION =============================
-                $('#removeRowMultipleDetailsOfRevision_'+revisionHistoryCounter).on('click', function(e){
-                    removeRowDetailsOfRevisionPerCard = $(this).closest('.removeBtnMultipleDetailsOfRevision').val();
-                    if(multipleDetailsOfRevisionCounter > 1){
-                        $('.divMultipleAddDetailsOfRevisionHeader_'+multipleDetailsOfRevisionCounter+'_'+removeRowDetailsOfRevisionPerCard).remove();
-                        multipleDetailsOfRevisionCounter--;
-                        $('#addMultipleDetailsOfRevisionCounter_'+removeRowDetailsOfRevisionPerCard).val(multipleDetailsOfRevisionCounter).trigger('change');
-
-                        console.log('Button per Card:', removeRowDetailsOfRevisionPerCard,'| Multiple Details of Revision Row(-):', multipleDetailsOfRevisionCounter);
-                    }
-                    if(multipleDetailsOfRevisionCounter < 2){
-                        $('#removeRowMultipleDetailsOfRevision_'+removeRowDetailsOfRevisionPerCard).addClass('d-none');
-                    }
-                });
-
-                //============================= ADD MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
-                let multipleDeptSectInCharge = 1;
-                $('#addRowMutipleDeptSectInCharge_'+revisionHistoryCounter).click(function(){
-                    addRowDeptSectInChargePerCard = $(this).closest('.addBtnMultipleDeptSectInCharge').val();
-                    multipleDeptSectInCharge++;
-                    if(multipleDeptSectInCharge > 1){
-                        $('#removeRowMultipleDeptSectInCharge_'+addRowDeptSectInChargePerCard).removeClass('d-none');
-                    }
-                    console.log('Button per Card:', addRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(+):', multipleDeptSectInCharge);
-
-                    var xxx = '   <div class="row" id="divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'">';
-                        xxx += '       <div class="form-group col-sm-6 flex-column">';
-                        xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'[]" multiple></select>';
-                        xxx += '       </div>';
-                        xxx += '       <div class="form-group col-sm-6 flex-column">';
-                        xxx += '           <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+multipleDeptSectInCharge+'_'+addRowDeptSectInChargePerCard+'"></textarea>';
-                        xxx += '       <div>';
-                        xxx += '   </div>';
-                    $('#addMultipleDeptSectInchargeCounter_'+addRowDeptSectInChargePerCard).val(multipleDeptSectInCharge);
-                    $('#divAddMultipleConcernDeptSecInCharge_'+addRowDeptSectInChargePerCard).append(xxx);
-
-                    $('.select2bs4').select2({
-                        theme: 'bootstrap4'
-                    });
-                
-                    LoadConcernedDepartment($('.sel-user-concerned-department'));
-                });
-                //============================= REMOVE MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
-                $('#removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter).on('click', function(e){
-                    removeRowDeptSectInChargePerCard = $(this).closest('.removeBtnMultipleDeptSectInCharge').val();
-                    if(multipleDeptSectInCharge > 1){
-                        $('#divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInCharge+'_'+removeRowDeptSectInChargePerCard).remove();
-                        multipleDeptSectInCharge--;
-                        $('#addMultipleDeptSectInchargeCounter_'+removeRowDeptSectInChargePerCard).val(multipleDeptSectInCharge).trigger('change');
-
-                        console.log('Button per Card:', removeRowDeptSectInChargePerCard, '| Multiple Dept/Sect & In-Charge Row(-):' + multipleDeptSectInCharge);
-                    }
-                    if(multipleDeptSectInCharge < 2){
-                        $('#removeRowMultipleDeptSectInCharge_'+removeRowDeptSectInChargePerCard).addClass('d-none');
-                    }
-                });
-            });            
-
-            //============================= REMOVE REVISION HISTORY ROW =============================
-            $("#removeAddRowRevisionHistory").on('click', function(e){
-                // let revisionHistory =  $('#removeAddRowRevisionHistory').val();
-                if(revisionHistoryCounter > 1){
-                    $('#cardAddRevisionHistory').find('#chris_bugok_'+revisionHistoryCounter).remove();
-                    revisionHistoryCounter--;
-                    $('#addRevisionHistoryCounter').val(revisionHistoryCounter).trigger('change');
-                    
-                    console.log('Card:', revisionHistoryCounter, '| Revision History Row(-):' + revisionHistoryCounter);
-                }
-
-                if(revisionHistoryCounter < 2){
-                    $('#removeAddRowRevisionHistory').addClass('d-none');
-                }
-            });
 
         });// JQUERY DOCUMENT READY END
     </script>

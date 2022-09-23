@@ -65,11 +65,18 @@
                         <p>Evidences</p>
                     </a>
                 </li>
-                
+
                 <li class="nav-item has-treeview">
                     <a href="{{ route('plc_capa') }}" class="nav-link">
                         <i class="nav-icon fas fa-folder"></i>
                         <span>Corrective/Preventive <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action (CAPA)</span>
+                    </a>
+                </li>
+
+                <li class="nav-item has-treeview d-none" id="analytics_id">
+                    <a href="{{ route('analytics') }}" class="nav-link">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>Analytics</p>
                     </a>
                 </li>
 

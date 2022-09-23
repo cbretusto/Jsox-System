@@ -12,7 +12,7 @@
 <?php if($isLogin): ?>
     <!--
         *These are the sessions in RapidX System(for reference only)
-        
+
         $_SESSION["rapidx_user_id"] = Auth::user()->id;
         $_SESSION["rapidx_user_level_id"] = Auth::user()->user_level_id;
         $_SESSION["rapidx_username"] = Auth::user()->username;
@@ -44,8 +44,8 @@
                     you are free to change below module_id equals to your module_id
                 -->
                 <?php if($_SESSION['rapidx_user_accesses'][$index]['module_id'] == 20): ?> <!-- 20-JSOX System Module -->
-                    <?php 
-                        $isAuthorized = true; 
+                    <?php
+                        $isAuthorized = true;
                         $user_level = $_SESSION['rapidx_user_accesses'][$index]['user_level_id']; // Collect the user_level_id
                         $_SESSION["rapidx_name"] = Auth::user()->name;
                     ?>
@@ -99,7 +99,7 @@
                             <p>This is an On-Going Feature</p>
                         </div>
                         <div class="modal-footer">
-                            
+
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
             function verifyUser(){
                 var loginName = $('#login_name').val();
                 console.log('Session(Admin/User):', loginName);
-        
+
                 $.ajax({
                     url: "get_user_log",
                     method: "get",
@@ -130,7 +130,7 @@
                         loginName : loginName
                     },
                     dataType: "json",
-                
+
                     success: function(response){
                         if(response['result'].length == 0){
                             window.location.href = 'error';
@@ -143,10 +143,11 @@
                                     $('#plc_category_id').removeClass('d-none');
                                     $('#plc_evidences_id').removeClass('d-none');
                                     $('#jsox_plc_matrix_id').removeClass('d-none');
-                                    
+
                                     $('#clc_dashboard_id').removeClass('d-none');
                                     $('#clc_category_id').removeClass('d-none');
                                     $('#clc_evidences_id').removeClass('d-none');
+                                    $('#analytics_id').removeClass('d-none');
                                 }
                                 if(response['result'][i]['user_level_id'] == 2){
                                     $('#user_management_id').removeClass('d-none');
@@ -154,28 +155,31 @@
                                     $('#plc_category_id').removeClass('d-none');
                                     $('#plc_evidences_id').removeClass('d-none');
                                     $('#jsox_plc_matrix_id').removeClass('d-none');
-                                    
+
                                     $('#clc_dashboard_id').removeClass('d-none');
                                     $('#clc_category_id').removeClass('d-none');
                                     $('#clc_evidences_id').removeClass('d-none');
+                                    $('#analytics_id').removeClass('d-none');
+
                                 }
                                 if(response['result'][i]['user_level_id'] == 3){
                                     $('#plc_dashboard_id').removeClass('d-none');
                                     $('#clc_dashboard_id').removeClass('d-none');
                                 }
                             }
-                        } 
+                        }
                     }
                 });
             }
         </script>
         
+
         
-        
-        
+
     </html>
 <?php else: ?>
     <script type="text/javascript">
         window.location = "../RapidX/";
     </script>
-<?php endif; ?><?php /**PATH /var/www/Jsox_test/resources/views/layouts/super_user_layout.blade.php ENDPATH**/ ?>
+<?php endif; ?>
+<?php /**PATH /var/www/Jsox_test/resources/views/layouts/super_user_layout.blade.php ENDPATH**/ ?>

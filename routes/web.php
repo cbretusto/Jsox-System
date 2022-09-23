@@ -35,6 +35,11 @@ Route::get('/plc_category', function () {
     return view('plc_category');
 })->name('plc_category');
 
+
+Route::get('/analytics', function () {
+    return view('analytics');
+})->name('analytics');
+
 Route::get('/plc_evidences', function () {
     return view('plc_evidences');
 })->name('plc_evidences');
@@ -242,10 +247,11 @@ Route::get('/export_fcrp_clc_summary/{year_id}', 'ExportFcrpClcController@export
 Route::get('/export_summary/{year_id}/{select_category}', 'ExportSummaryController@export_summary');
 
 
-
-
-
-
+Route::get('/get_ppc_section_data', 'AnalyticsController@get_ppc_section_data');
+Route::get('/get_ppc_whse_tscn_data', 'AnalyticsController@get_ppc_whse_tscn_data');
+Route::get('/get_ppc_whse_pps_data', 'AnalyticsController@get_ppc_whse_pps_data');
+Route::get('/get_finance_data', 'AnalyticsController@get_finance_data');
+Route::get('/get_logistics_data', 'AnalyticsController@get_logistics_data');
 
 
 

@@ -59,5 +59,6 @@
 <script src="{{ asset('public/js/my_js/ClcCategoryPmiFcrp.js?n=3') }}"></script>
 <script src="{{ asset('public/js/my_js/ClcCategoryPmiItClc.js?n=2') }}"></script>
 <script src="{{ asset('public/js/my_js/ClcCategoryPmiItClc.js?n=2') }}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 

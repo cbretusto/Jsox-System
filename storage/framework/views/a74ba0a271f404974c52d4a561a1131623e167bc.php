@@ -57,6 +57,7 @@
 <script src="<?php echo e(asset('public/js/my_js/ClcCategoryPmiFcrp.js?n=3')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/ClcCategoryPmiItClc.js?n=2')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/ClcCategoryPmiItClc.js?n=2')); ?>"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
 <?php /**PATH /var/www/Jsox_test/resources/views/shared/js_links/js_links.blade.php ENDPATH**/ ?>

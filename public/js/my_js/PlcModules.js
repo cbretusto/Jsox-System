@@ -210,13 +210,16 @@ function GetRevisionHistoryId(revisionHistoryId){
         beforeSend: function(){
         },
         success: function(response){
+            let formEditRevisionHistory = $('#editRevisionHistoryForm');
             let history_revision = response['revision_history'];
+            let reason_for_revision_array = response['reason_for_revision_array'];
+            let details_of_revision_array = response['details_of_revision_array'];
+            let concern_Dept_sect_incharge_array = response['concern_Dept_sect_incharge_array'];
 
             if(history_revision.length > 0){
-            let editRevisionHistoryForm = $('#editRevisionHistoryForm');
-            let process_owner_splitted = history_revision[0].process_owner.split('/')
-                // console.log(history_revision[0].process_owner);
-                // console.log(process_owner_splitted);
+                let editRevisionHistoryForm = $('#editRevisionHistoryForm');
+                let process_owner_splitted = history_revision[0].process_owner.split('/')
+
                 $("#selectEditProcessOwner").val('');
                 for(i = 0; i<process_owner_splitted.length; i++){
                     let process_owner = '<option selected value="' + process_owner_splitted[i] + '">' + process_owner_splitted[i] + '</option>';
@@ -224,28 +227,121 @@ function GetRevisionHistoryId(revisionHistoryId){
                 }
                 $("#txtEditVersionNo").val(history_revision[0].version_no);
                 $("#txtEditRevisionHistoryDate").val(history_revision[0].revision_date);
-                // $("#selectEditDepartment").val(history_revision[0].concerned_dept).trigger('change');
-                // $("#selectEditProcessInCharge").val(history_revision[0].in_charge);
 
-
-                // //DETAILS OF REVISION
-                // let detailsOfRevisionCounter = 0;
-                // // To remove auto counting of row in multiple (EDIT)
-                // for(let dor = 0; dor <= response['explodeDetailsOfRevision'].length; dor++){
-                //     $('#removeEditRowDetailsOfRevision')[0].click();
-                // }
-                // for(let y = 1; y <= response['explodeDetailsOfRevision'].length; y++){
-                //     console.log(response['explodeDetailsOfRevision'])
+                // |===============================================================================================================================================================|
+                // |==================================================================== START COUNT PER CARD =====================================================================|
+                // |===============================================================================================================================================================|
+                console.log('**Console** Reason For Revison:', reason_for_revision_array);
+                console.log('**Console** Details of Revision:', details_of_revision_array);
+                console.log('**Console** Concern Dept/Sect & In-Charge:', concern_Dept_sect_incharge_array);
+                for(let countPerCard = 0; countPerCard < reason_for_revision_array.length; countPerCard++){
+                    console.log('|=========================== CARD ===========================|');
+                    console.log('|================= CONSOLE Count Per Card:', countPerCard,'================|');
+                    console.log('|============================ ROW ===========================|');
+                    if(countPerCard > 0){
+                        $('#addEditRowRevisionHistory')[0].click();
+                    }
                     
-                //     if(y!=1){
-                //         $('#addEditRowDetailsOfRevision')[0].click();
-                //     }
-                //     $("#txtEditDetailsOfRevision"+y).val(response['explodeDetailsOfRevision'][detailsOfRevisionCounter]);
+                    // |===============================================================================================================================================================|
+                    // |============================================================== START REASON FOR REVISION GET DATA =============================================================|
+                    // |===============================================================================================================================================================|
+                    for (let reasonForRevisionCounterPerCard = 0; reasonForRevisionCounterPerCard < reason_for_revision_array[countPerCard].length; reasonForRevisionCounterPerCard++) {
+                        if(reasonForRevisionCounterPerCard > 0){
+                            if(countPerCard > 0){
+                                $(`#addEditRowMultipleReasonForRevision_${countPerCard}`)[0].click();
+                            }else{
+                                $('#addEditRowReasonForRevision')[0].click();
+                            }
+                        }
+                        
+                        setTimeout(() => {
+                            if(countPerCard > 0){
+                                $(`#txtEditMultipleReasonForRevision_${reasonForRevisionCounterPerCard}_${countPerCard}`).val(reason_for_revision_array[countPerCard][reasonForRevisionCounterPerCard].reason_for_revision);
+                            }else{
+                                $(`#txtEditReasonForRevision_${reasonForRevisionCounterPerCard}`).val(reason_for_revision_array[countPerCard][reasonForRevisionCounterPerCard].reason_for_revision);
+                            }
+                        }, 250);
 
-                //     detailsOfRevisionCounter = detailsOfRevisionCounter + 1;
-                // }
-            }
-            else{
+                        console.log('*CONSOLE COUNT ROW: reasonForRevisionCounterPerCard', reasonForRevisionCounterPerCard);
+                        if(countPerCard > 0){
+                            console.log(`*CONSOLE Reason For Revision per ID:\n #txtEditMultipleReasonForRevision_${reasonForRevisionCounterPerCard}_${countPerCard}`, reason_for_revision_array[countPerCard][reasonForRevisionCounterPerCard].reason_for_revision)
+                        }else{
+                            console.log(`*CONSOLE Reason For Revision per ID:\n #txtEditReasonForRevision_${reasonForRevisionCounterPerCard}`, reason_for_revision_array[countPerCard][reasonForRevisionCounterPerCard].reason_for_revision)
+                        }
+                        console.log('\n');
+                    }
+
+                    // |===============================================================================================================================================================|
+                    // |============================================================== START DETAILS OF REVISION GET DATA =============================================================|
+                    // |===============================================================================================================================================================|
+                    for (let detailsOfRevisionCounterPerCard = 0; detailsOfRevisionCounterPerCard < details_of_revision_array[countPerCard].length; detailsOfRevisionCounterPerCard++) {
+                        if(detailsOfRevisionCounterPerCard > 0){
+                            if(countPerCard > 0){
+                                $(`#editRowMultipleDetailsOfRevision_${countPerCard}`)[0].click();
+                            }else{
+                                $('#addEditRowDetailsOfRevision')[0].click();
+                            }
+                        }
+                        
+                        setTimeout(() => {
+                            if(countPerCard > 0){
+                                $(`#txtEditMultipleDetailsOfRevision_${detailsOfRevisionCounterPerCard}_${countPerCard}`).val(details_of_revision_array[countPerCard][detailsOfRevisionCounterPerCard].details_of_revision);
+                            }else{
+                                $(`#txtEditDetailsOfRevision_${detailsOfRevisionCounterPerCard}`).val(details_of_revision_array[countPerCard][detailsOfRevisionCounterPerCard].details_of_revision);
+                            }
+                        }, 250);
+
+                        console.log('**CONSOLE COUNT ROW: detailsOfRevisionCounterPerCard', detailsOfRevisionCounterPerCard);
+                        if(countPerCard > 0){
+                            console.log(`**CONSOLE Details of Revision per ID:\n  #txtEditMultipleDetailsOfRevision_${detailsOfRevisionCounterPerCard}_${countPerCard}`, details_of_revision_array[countPerCard][detailsOfRevisionCounterPerCard].details_of_revision)
+                        }else{
+                            console.log(`**CONSOLE Details of Revision per ID:\n  #txtEditDetailsOfRevision_${detailsOfRevisionCounterPerCard}`, details_of_revision_array[countPerCard][detailsOfRevisionCounterPerCard].details_of_revision)
+                        }
+                        console.log('\n');
+                    }
+
+                    // |===============================================================================================================================================================|
+                    // |======================================================== START COCNERN DEPT/SECT AND INCHARGE GET DATA ========================================================|
+                    // |===============================================================================================================================================================|
+                    for (let concernDeptSectInchargeCounterPerCard = 0; concernDeptSectInchargeCounterPerCard < concern_Dept_sect_incharge_array[countPerCard].length; concernDeptSectInchargeCounterPerCard++) {
+                        let concernDeptSectSplitted = concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].concern_dept_sect.split('/')
+                        console.log('CONSOLE Split Concern Dept/Sect:',concernDeptSectSplitted);
+                        
+                        if(concernDeptSectInchargeCounterPerCard > 0){
+                            if(countPerCard > 0){
+                                $(`#editRowMutipleDeptSectInCharge_${countPerCard}`)[0].click();
+                            }else{
+                                $('#addEditRowDeptSectInCharge')[0].click();
+                            }
+                        }
+                        
+                        for(let x = 0; x < concernDeptSectSplitted.length; x++){
+                            setTimeout(() => {
+                                if(countPerCard > 0){
+                                    let result = '<option selected value="' + concernDeptSectSplitted[x] + '">' + concernDeptSectSplitted[x] + '</option>';
+                                    $(`select[name="multiple_concerned_dept_${concernDeptSectInchargeCounterPerCard}_${countPerCard}[]"]`, formEditRevisionHistory).append(result);          
+                                    $(`#selectEditMultipleProcessInCharge_${concernDeptSectInchargeCounterPerCard}_${countPerCard}`).val(concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].in_charge);
+                                }else{
+                                    let result = '<option selected value="' + concernDeptSectSplitted[x] + '">' + concernDeptSectSplitted[x] + '</option>';
+                                    $(`select[name="concerned_dept_${concernDeptSectInchargeCounterPerCard}[]"]`, formEditRevisionHistory).append(result);          
+                                    $(`#selectEditProcessInCharge_${concernDeptSectInchargeCounterPerCard}`).val(concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].in_charge);
+                                }
+                            }, 250);
+                        }
+
+                        console.log('**CONSOLE COUNT ROW: concernDeptSectInchargeCounterPerCard', concernDeptSectInchargeCounterPerCard);
+                        if(countPerCard > 0){
+                            console.log(`***CONSOLE Concern Dept/Sect per ID:\n   #selectMultipleRowEditDepartment_${concernDeptSectInchargeCounterPerCard}_${countPerCard}`, concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].concern_dept_sect)
+                            console.log(`***CONSOLE In-Charge per ID:\n   #selectEditMultipleProcessInCharge_${concernDeptSectInchargeCounterPerCard}_${countPerCard}`, concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].in_charge)
+                        }else{
+                            console.log(`***CONSOLE Concern Dept/Sect per ID:\n   #selectEditDepartment_${concernDeptSectInchargeCounterPerCard}`, concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].concern_dept_sect)
+                            console.log(`***CONSOLE In-Charge per ID:\n   #selectEditProcessInCharge_${concernDeptSectInchargeCounterPerCard}`, concern_Dept_sect_incharge_array[countPerCard][concernDeptSectInchargeCounterPerCard].in_charge)
+                        }
+                        console.log('\n');
+                    }
+                }
+
+            }else{
                 toastr.warning('No Revision History Record Found!');
             }
         },
@@ -254,8 +350,6 @@ function GetRevisionHistoryId(revisionHistoryId){
         }
     });
 }
-
-
 
 //============================== EDIT Revision History ==============================
 function EditRevisionHistory(){

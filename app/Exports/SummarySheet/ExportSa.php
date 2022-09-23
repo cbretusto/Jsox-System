@@ -526,13 +526,13 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                 // $tempoCounter++;
                             }
 
-                            $event->sheet->getDelegate()->mergeCells('K'.$array[0].':K'.end($array));
-                            $event->sheet->getDelegate()->mergeCells('B'.$array[0].':B'.end($array));
-                            $event->sheet->getDelegate()->mergeCells('C'.$array[0].':C'.end($array));
-                            $event->sheet->getDelegate()->mergeCells('D'.$array[0].':D'.end($array));
-                            $event->sheet->getDelegate()->mergeCells('G'.$array[0].':G'.end($array));
-                            $event->sheet->getDelegate()->mergeCells('H'.$array[0].':H'.end($array));
-                            $event->sheet->getDelegate()->mergeCells('I'.$array[0].':I'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('K'.$array[0].':K'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('B'.$array[0].':B'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('C'.$array[0].':C'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('D'.$array[0].':D'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('G'.$array[0].':G'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('H'.$array[0].':H'.end($array));
+                            // $event->sheet->getDelegate()->mergeCells('I'.$array[0].':I'.end($array));
 
 
                             $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);

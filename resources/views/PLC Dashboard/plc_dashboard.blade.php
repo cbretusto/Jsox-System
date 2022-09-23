@@ -28,17 +28,21 @@
                                     </div>
 
                                     <div class="ml-2">
-                                        <span class="badge badge-warning shadow" id="firstHalfPending1">1st HALF STATUS:
+                                        {{-- <span class="badge badge-warning shadow" id="firstHalfPending1">1st HALF STATUS: --}}
+                                        <span class="badge badge-warning shadow" id="firstHalfPending1">STATUS:
                                             <span class="badge badge-warning" id="checkFirstHalfPendingStatus1" style="font-size:14px;"> Pending</span>
                                         </span>
-                                        <span class="badge badge-success shadow  d-none" id="firstHalfDone1">1st HALF STATUS:
+                                        {{-- <span class="badge badge-success shadow  d-none" id="firstHalfDone1">1st HALF STATUS: --}}
+                                        <span class="badge badge-success shadow  d-none" id="firstHalfDone1">STATUS:
                                             <span class="badge badge-success text-white" id="checkFirstHalfDoneStatus1" style="font-size:13px;">Done</span>
                                         </span>
 
-                                        <span class="badge badge-warning shadow d-none" id="secondHalfPending1">2nd HALF STATUS:
+                                        {{-- <span class="badge badge-warning shadow d-none" id="secondHalfPending1">2nd HALF STATUS: --}}
+                                        <span class="badge badge-warning shadow d-none" id="secondHalfPending1">STATUS:
                                             <span class="badge badge-warning" id="checkSecondHalfDoneStatus1" style="font-size:14px;"> Pending</span>
                                         </span>
-                                        <span class="badge badge-success text-white shadow d-none" id="secondHalfDone1">2nd HALF STATUS:
+                                        {{-- <span class="badge badge-success text-white shadow d-none" id="secondHalfDone1">2nd HALF STATUS: --}}
+                                        <span class="badge badge-success text-white shadow d-none" id="secondHalfDone1">STATUS:
                                             <span class="badge badge-success text-white" id="checkSecondHalfDoneStatus1" style="font-size:14px;">Done</span>
                                         </span>
                                     </div>
