@@ -285,65 +285,10 @@
                                         </div>
                                     </div>
 
-                                    {{-- <button type="button" class="btn btn-success" name="add_statement_findings" id="addStatementFindings"><i
-                                        class="fa fa-plus">&nbsp;Statement of Findings</i>
-                                    </button><br><br> --}}
-
-                                    {{-- <div class="card-header">
-                                        <h3 class="card-title" style="margin-top: 8px;"><strong>Statement of Findig(s)</strong></h3>
-                                        <button type="button" class="btn btn-sm btn-info float-right" id="add_row_statement_of_findings"><i class="fa fa-plus"></i> Add Row</button>
-                                        <button type="button" class="btn btn-sm btn-danger float-right mr-2  d-none" id="remove_row_statement_of_findings"><i class="fas fa-times"></i> Remove Row</button>
-                                    </div> --}}
-
-
-                                    {{-- <div class="form-group">
-                                        <div class = "row">
-                                            <div class="form-group col-md-12" id="dynamic_field2" value="0">
-                                                <input type="hidden" name="txt_max_row" id="txtMaxRowID" value="0">
-                                                <!-- Auto generated-->
-                                            </div>
-                                        </div>
-                                    </div> --}}
-
-                                    <!-- Statement of Findings -->
-
-                                    {{-- <div class="card" id="statementOfFindingsCard">
-                                        <div class="card-header">
-                                            <h3 class="card-title" style="margin-top: 8px;"><strong>Statement of Finding(s)</strong></h3>
-                                            <input type="text" class="form-control form-control-sm" placeholder="Edit Data" name="edit_data" id="editData" value="" style="display: none;">
-                                            <button type="button" class="btn btn-sm btn-info float-right" id="add_row_statement_of_findings"><i class="fa fa-plus"></i> Add Row</button>
-                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2  d-none" id="remove_row_statement_of_findings"><i class="fas fa-times"></i> Remove Row</button>
-                                        </div>
-                                        <div class="card-body">
-                                            <div id="divStatementOfFindings"> --}}
-                                                {{-- <input type="hidden" name="txt_max_row" id="txt_max_row" value="1"> --}}
-                                                {{-- <input type="hidden" name="escapee_cause_action_code" id="escapee_cause_action_code" value="1"> --}}
-                                                {{-- <input type="text" name="add_statement_of_findings_counter" id="statement_of_findings_counter" value="1">
-                                                <h6><span class="badge badge-secondary"># 1.</span></h6>
-                                                <div class="row">
-
-                                                    <div class="col-md-12">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <div class="input-group-prepend" style="width: 30%;">
-                                                                <span class="input-group-text w-100" id="basic-addon1">Statement of Finding(s)</i></span>
-                                                            </div>
-                                                            <textarea type="text" class="form-control form-control-sm" id="addStatementOfFindings" name="add_statement_of_findings" placeholder="required"></textarea><br>
-                                                        </div>
-                                                        <div>
-                                                            <input type="file" class="" id="addStatementOfFindingsEvidence" name="add_statement_of_findings_evidence[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple><br><br>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-
-
-
-                                    {{-- <div class="form-group">
-                                        <label class="col-form-label">CAPA Analysis:</label>
-                                        <textarea type="text" class="form-control" rows="5" name="plc_capa_analysis" id="txtPlcCapaAnalysisId"></textarea>
-                                    </div> --}}
+                                    <div class="form-group">
+                                        <label class="col-form-label">Statement of Finding(s):</label>
+                                        <textarea type="text" class="form-control" rows="5" name="plc_capa_statement_of_findings" id="txtPlcCapaStatementOfFindings"></textarea>
+                                    </div>
                                     <hr>
                                     <h5><strong>Capa Analysis</strong></h5>
                                     <div class="card" id="cardCapaAnalysis">

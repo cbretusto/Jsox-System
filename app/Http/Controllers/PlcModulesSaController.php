@@ -34,6 +34,18 @@ class PlcModulesSaController extends Controller
 
         return DataTables::of($plc_module_sa)
 
+        ->addColumn('control_no', function($plc_module_sa){
+            $get_rcm_control_no = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('status', 0)->get();
+            $result = '';
+            for($x = 0; $x < count($get_rcm_control_no); $x++){
+                $result .= $get_rcm_control_no[$x]->control_id;
+                $result .= '<br>';
+                $result .= '<br>';
+            }
+            // return $plc_module_sa->rcm_id;
+            return $result;
+        })
+
         ->addColumn('internal_control', function($plc_module_sa){
             $get_rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('status', 0)->get();
             $result = '';
@@ -43,6 +55,36 @@ class PlcModulesSaController extends Controller
                 $result .= '<br>';
             }
             // return $plc_module_sa->rcm_id;
+            return $result;
+        })
+        ->addColumn('key_control', function($plc_module_sa){
+            $key_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->get();
+            $result = "<center>";
+            for ($b=0; $b < count($key_control); $b++) { 
+                if($key_control[$b]->key_control != null){
+                    $result .= 'Key Control';
+                    $result .= '<br>';
+                    $result .= '<br>';
+                }else{
+
+                }
+            }
+            $result .= '</center>';
+            return $result;
+        })
+        ->addColumn('it_control', function($plc_module_sa){
+            $it_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->get();
+            $result = "<center>";
+            for ($b=0; $b < count($it_control); $b++) { 
+                if($it_control[$b]->it_control != null){
+                    $result .= 'IT Control';
+                    $result .= '<br>';
+                    $result .= '<br>';
+                }else{
+
+                }
+            }
+            $result .= '</center>';
             return $result;
         })
 
@@ -305,7 +347,20 @@ class PlcModulesSaController extends Controller
             $result .= '</center>';
             return $result;
         })
-            ->rawColumns(['action', 'internal_control', 'dic_assessment','oec_assessment', 'rf_assessment', 'fu_assessment', 'dic_status', 'oec_status', 'rf_status', 'fu_status', 'approval_status'])
+            ->rawColumns(['action', 
+                'control_no',
+                'key_control',
+                'it_control',
+                'internal_control', 
+                'dic_assessment',
+                'oec_assessment', 
+                'rf_assessment', 
+                'fu_assessment', 
+                'dic_status', 
+                'oec_status', 
+                'rf_status', 
+                'fu_status', 
+                'approval_status'])
             ->make(true);
     }
 
@@ -327,13 +382,34 @@ class PlcModulesSaController extends Controller
         $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('status', 0)->get();
 
-        return response()->json(['sa_data' => $sa_data,
-            'dic_details' => $dic_assesment_details_and_finding_details,
-            'oec_details' => $oec_assesment_details_and_finding_details,
-            'rf_details' => $rf_assesment_details_and_finding_details,
-            'fu_details' => $fu_assesment_details_and_finding_details,
-            'rcm_internal_coctrol' => $rcm_internal_control
-        ]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
+        $saModule = array(
+            'sa_data' => $sa_data
+        );
+        if(isset($dic_assesment_details_and_finding_details)){
+            $saModule['dic_details'] = $dic_assesment_details_and_finding_details;
+        }
+        if(isset($oec_assesment_details_and_finding_details)){
+            $saModule['oec_details'] = $oec_assesment_details_and_finding_details;
+        }
+        if(isset($rf_assesment_details_and_finding_details)){
+            $saModule['rf_details'] = $rf_assesment_details_and_finding_details;
+        }
+        if(isset($fu_assesment_details_and_finding_details)){
+            $saModule['fu_details'] = $fu_assesment_details_and_finding_details;
+        }
+        if(isset($rcm_internal_control)){
+            $saModule['rcm_internal_control'] = $rcm_internal_control;
+        }
+        return response()->json(
+            $saModule
+            // ['sa_data' => $sa_data,
+            //     'dic_details' => $dic_assesment_details_and_finding_details,
+            //     'oec_details' => $oec_assesment_details_and_finding_details,
+            //     'rf_details' => $rf_assesment_details_and_finding_details,
+            //     'fu_details' => $fu_assesment_details_and_finding_details,
+            //     'rcm_internal_control' => $rcm_internal_control
+            // ]
+        );  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
     // ========================================= EDIT SA MODULE ===================================================
@@ -399,21 +475,6 @@ class PlcModulesSaController extends Controller
             }
             //End Approver Status
 
-            // if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
-                
-            //     $get_plc_capa = PlcCapa::where('sa_id', $request->sa_data_id)
-            //     ->get();
-
-            //     if(count($get_plc_capa) > 0 ){
-            //         PlcCapa::where('sa_id', $request->sa_data_id)->delete();
-            //     }
-            //     PlcCapa::insert([
-            //         'sa_id' => $request->sa_data_id,
-            //         // 'rcm_id' => $get_plc_capa->rcm_id
-            //     ]);
-            //     // return $get_plc_capa;
-            // }
-
             $plc_capa = PLCModuleSA::where('id', $request->sa_data_id)->get();
             $capa = [
                 'sa_id'    => $request->sa_data_id,
@@ -431,9 +492,9 @@ class PlcModulesSaController extends Controller
                         $capa
                     );
                 }else{
-                    PlcCapa::insert([
+                    PlcCapa::insert(
                         $capa
-                    ]);
+                    );
                 }
 
             //START DIC ASSESSMENT DETAILS AND FINDINGS

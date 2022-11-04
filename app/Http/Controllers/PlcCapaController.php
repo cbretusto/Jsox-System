@@ -58,22 +58,25 @@ class PlcCapaController extends Controller{
         })
 
         ->addColumn('statement_of_findings',function($get_plc_capa){
-            $get_dic_ng = PLCModuleSADicAssessmentDetailsAndFindings::where('sa_id', $get_plc_capa->sa_id)->where('dic_status', 'NG')->get();
-            $get_oec_ng = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $get_plc_capa->sa_id)->where('oec_status', 'NG')->get();
             $result = '';
-            for($x = 0; $x < count($get_dic_ng); $x++){
-                $result .= $get_dic_ng[$x]->dic_assessment_details_findings. PHP_EOL . PHP_EOL;
-            }
-
-            for($y = 0; $y < count($get_oec_ng); $y++){
-                $result .= $get_oec_ng[$y]->oec_assessment_details_findings. PHP_EOL . PHP_EOL;
+            if($get_plc_capa->statement_of_findings == null){
+                $get_dic_ng = PLCModuleSADicAssessmentDetailsAndFindings::where('sa_id', $get_plc_capa->sa_id)->where('dic_status', 'NG')->get();
+                $get_oec_ng = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $get_plc_capa->sa_id)->where('oec_status', 'NG')->get();
+                for($x = 0; $x < count($get_dic_ng); $x++){
+                    $result .= $get_dic_ng[$x]->dic_assessment_details_findings. PHP_EOL . PHP_EOL;
+                }
+    
+                for($y = 0; $y < count($get_oec_ng); $y++){
+                    $result .= $get_oec_ng[$y]->oec_assessment_details_findings. PHP_EOL . PHP_EOL;
+                }
+            }else{
+                $result .= $get_plc_capa->statement_of_findings;
             }
             return $result;
         })
 
         ->addColumn('capa_analysis',function($get_plc_capa){
             $get_capa_analysis_module_by_id = PLCCAPACapaAnalysis::where('plc_capa_id', $get_plc_capa->id)->get();
-            $category = '';
             $result = '';
             for($x = 0; $x < count($get_capa_analysis_module_by_id); $x++){
                 if($get_capa_analysis_module_by_id[$x]->capa_analysis_attachment != null){
@@ -96,7 +99,6 @@ class PlcCapaController extends Controller{
 
         ->addColumn('corrective_action',function($get_plc_capa){
             $get_corrective_action_module_by_id = PLCCAPACorrectiveAction::where('plc_capa_id', $get_plc_capa->id)->get();
-            $category = '';
             $result = '';
             for($x = 0; $x < count($get_corrective_action_module_by_id); $x++){
                 if($get_corrective_action_module_by_id[$x]->corrective_action_attachment != null){
@@ -119,7 +121,6 @@ class PlcCapaController extends Controller{
 
         ->addColumn('preventive_action',function($get_plc_capa){
             $get_preventive_action_module_by_id = PLCCAPAPreventiveAction::where('plc_capa_id', $get_plc_capa->id)->get();
-            $category = '';
             $result = '';
             for($x = 0; $x < count($get_preventive_action_module_by_id); $x++){
                 if($get_preventive_action_module_by_id[$x]->preventive_action_attachment != null){
@@ -185,17 +186,19 @@ class PlcCapaController extends Controller{
         // })
 
             // ->rawColumns(['action','statement_of_findings'])
-            ->rawColumns(['action', 'capa_analysis', 'corrective_action', 'preventive_action'])
+            ->rawColumns(['action', 'statement_of_findings', 'capa_analysis', 'corrective_action', 'preventive_action'])
             ->make(true);
     }
 
-    //============================== GET USER BY ID TO EDIT ==============================
+    //============================== GET CAPA BY ID TO EDIT ==============================
     public function  get_plc_capa_id_to_edit(Request $request){
         $get_sa_plca_capa = PlcCapa::with([
             'plc_sa_info',
             'plc_sa_capa_analysis_details',
             'plc_sa_corrective_action_details',
-            'plc_sa_preventive_action_details'
+            'plc_sa_preventive_action_details',
+            'plc_sa_dic_assessment_details_findings_details',
+            'plc_sa_oec_assessment_details_findings_details'
         ])
         ->where('id', $request->plc_capa_id)
         ->get();
@@ -204,11 +207,31 @@ class PlcCapaController extends Controller{
         $capa_analysis_details = PLCCAPACapaAnalysis::where('plc_capa_id', $get_sa_plca_capa[0]->id)->get();
         $corrective_action_details = PLCCAPACorrectiveAction::where('plc_capa_id', $get_sa_plca_capa[0]->id)->get();
         $preventive_action_details = PLCCAPAPreventiveAction::where('plc_capa_id', $get_sa_plca_capa[0]->id)->get();
-            // return $preventive_action_details;
+        
+        $dic = [];
+        $countDic = 0;
+        $dic_assessment_details_findings_details = PLCModuleSADicAssessmentDetailsAndFindings::where('sa_id', $get_sa_plca_capa[0]->sa_id)->where('dic_status', 'NG')->get('dic_assessment_details_findings');
+        for ($i=0; $i < count($dic_assessment_details_findings_details); $i++) { 
+            $dic[$countDic] = $dic_assessment_details_findings_details[$i]['dic_assessment_details_findings'];
+            $countDic++;
+        }
+        
+        $oec = [];
+        $countOec = 0;
+        $oec_assessment_details_findings_details = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $get_sa_plca_capa[0]->sa_id)->where('oec_status', 'NG')->get('oec_assessment_details_findings');
+        for ($ii=0; $ii < count($oec_assessment_details_findings_details); $ii++) { 
+            $oec[$countOec] = $oec_assessment_details_findings_details[$ii]['oec_assessment_details_findings'];
+            $countOec++;
+        }
+
+        $dicOecAssessmentFindings = array_merge($dic,$oec);
+        // return $dic;
+        
         return response()->json(['get_sa_plca_capa' => $get_sa_plca_capa,
         'capa_analysis_details' => $capa_analysis_details,
         'corrective_action_details' => $corrective_action_details,
-        'preventive_action_details' => $preventive_action_details
+        'preventive_action_details' => $preventive_action_details,
+        'dicOecAssessmentFindings' => $dicOecAssessmentFindings
         ]);
     }
 
@@ -228,12 +251,13 @@ class PlcCapaController extends Controller{
         if($validator->passes()){
 
             $update_plc_capa = [
-                'prepared_by'       => $request->prepared_by,
-                'approved_by'       => $request->approved_by,
-                'issued_date'       => $request->issued_date,
-                'due_date'          => $request->due_date,
-                'commitment_date'   => $request->commitment_date,
-                'updated_at'        => date('Y-m-d H:i:s')
+                'prepared_by'           => $request->prepared_by,
+                'approved_by'           => $request->approved_by,
+                'issued_date'           => $request->issued_date,
+                'due_date'              => $request->due_date,
+                'commitment_date'       => $request->commitment_date,
+                'statement_of_findings' => $request->plc_capa_statement_of_findings,
+                'updated_at'            => date('Y-m-d H:i:s')
             ];
 
             //Start Update query
@@ -256,19 +280,19 @@ class PlcCapaController extends Controller{
                 );
                 $capa_analysis_files = $request->file("capa_analysis_attachment");
                 if(isset($request->capa_analysis_checkbox)){
-                        for($i = 0; $i < count($capa_analysis_files); $i++){
-                            $original_filename_capa_analysis = $capa_analysis_files[$i]->getClientOriginalName();
-                            array_push($arr_upload_file_capa_analysis, $original_filename_capa_analysis);
-                            Storage::putFileAs('public/plc_sa_capa_analysis_attachment', $capa_analysis_files[$i],  $original_filename_capa_analysis);
-                        }
-                        $multiple_file_uploaded_capa_analysis = implode(', ', $arr_upload_file_capa_analysis);
+                    for($i = 0; $i < count($capa_analysis_files); $i++){
+                        $original_filename_capa_analysis = $capa_analysis_files[$i]->getClientOriginalName();
+                        array_push($arr_upload_file_capa_analysis, $original_filename_capa_analysis);
+                        Storage::putFileAs('public/plc_sa_capa_analysis_attachment', $capa_analysis_files[$i],  $original_filename_capa_analysis);
+                    }
+                    $multiple_file_uploaded_capa_analysis = implode(', ', $arr_upload_file_capa_analysis);
 
-                        $edit_capa_analysis_array['capa_analysis'] = $request->capa_analysis;
-                        $edit_capa_analysis_array['capa_analysis_attachment'] = $multiple_file_uploaded_capa_analysis;
+                    $edit_capa_analysis_array['capa_analysis'] = $request->capa_analysis;
+                    $edit_capa_analysis_array['capa_analysis_attachment'] = $multiple_file_uploaded_capa_analysis;
 
-                        PLCCAPACapaAnalysis::insert([
-                            $edit_capa_analysis_array
-                        ]);
+                    PLCCAPACapaAnalysis::insert([
+                        $edit_capa_analysis_array
+                    ]);
                 }else{
                     if(isset($capa_analysis_files)){
                         for($i = 0; $i < count($capa_analysis_files); $i++){

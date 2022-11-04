@@ -76,12 +76,7 @@
 
             <!-- CSS LINKS -->
             <?php echo $__env->make('shared.css_links.css_links', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            <style>
-                .modal-xl-custom{
-                    width: 95% !important;
-                    min-width: 90% !important;
-                }
-            </style>
+            
         </head>
         <body class="hold-transition sidebar-mini">
             <input type="hidden" id="login_id" value="<?php echo $_SESSION['rapidx_user_id']; ?>">

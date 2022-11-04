@@ -365,13 +365,12 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents
                                     $event->sheet->getDelegate()->getStyle('H'.$char_col)->applyFromArray($hlv_top);
                                     $event->sheet->getDelegate()->getStyle('H'.$char_col)->applyFromArray($arial_font12);
 
-                                    if($dept_counter > 1){
+                                    if($reason_counter > 1){
                                         $char_col++;
-                                        $dept_counter--;
+                                        $reason_counter--;
 
                                     }
                             }
-
 
                             if($reason_counter > 1){
                                 $start_col++;

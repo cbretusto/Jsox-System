@@ -18,12 +18,32 @@
 
 <?php $__env->startSection('title', 'Analytics'); ?>
 <?php $__env->startSection('content_page'); ?>
+
+            
+
+            <div style="float: left; margin-left:250px; margin-top:10px;" class="row">
+                <div class="col">
+                    <select id="selectGraphToDisplayId" name="select_graph_to_display">
+                        <option disabled selected>Select Graph to Display</option>
+                        <option value="PPC">PPC</option>
+                        <option value="PPC Warehouse">PPC WHSE - TS/CN</option>
+                        <option value="PPS PPC">PPC WHSE - PPS</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Logistics">Logistics</option>
+
+                    </select><br><br>
+
+                    <button class="btn btn-primary margin-top: -200px;" data-toggle="modal" data-target="#modalExportNgReport"><i class="fas fa-download"></i> Export NG Report
+                    </button>
+                </div>
+            </div>
+
+
         <div class="content-wrapper">
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
 
-                    
                     <div style="margin-left: 200px;" id="allSectionChartId"></div>
                     <div style="row">
                         <div style="margin-left: 20px; margin-top: 10px;" id="ppcChartId"></div>
@@ -33,10 +53,100 @@
                         <div style="margin-left: 850px; margin-top: -200px;" id="logisticsChartId"></div>
                     </div>
 
-
                 </div>
+
             </section>
         </div>
+
+         <!-- MODALS -->
+    <div class="modal fade" id="modalExportNgReport">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export NG Report</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Select Year:</label>
+                                <select name="select_year" id="selectYearWithNgId">
+                                    <?php
+                                        $year_now = date('Y');
+
+                                        for($i = 2018; $i <= $year_now; $i++){
+                                            echo "<option value =".$i.">
+                                                ".$i."
+                                                </option>";
+                                        }
+                                    ?>
+                                </select>
+                                <select name="select_dept" id="selectDeptId">
+                                    <option value="PPC">PPC</option>
+                                    <option value="PPC Warehouse">PPC WHSE - TS/CN</option>
+                                    <option value="PPS PPC">PPC WHSE - PPS</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Logistics">Logistics</option>
+                                </select>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnExportNgReport" class="btn btn-dark"><i id="BtnExportNgReportIcon" class="fa fa-check"></i> Export</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+         <!-- MODALS -->
+         <div class="modal fade" id="modalShowGraph">
+            <div class="modal-dialog modal-xl-custom">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark">
+                        <h4 class="modal-title"><i class='far fa-chart-bar'></i>  <span id="section_title"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                    
+                                        <div id="ppcChartId2"></div>
+                                        <div id="ppcWhseTsCnChartId2"></div>
+                                        <div id="ppcWhsePpsChartId2"></div>
+                                        <div id="financeChartId2"></div>
+                                        <div id="logisticsChartId2"></div>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <table id="viewPPSData" class="table table-lg table-bordered table-striped table-hover w-100">
+                                    <thead>
+                                        <tr style="text-align:center">
+                                        <th>Year</th>
+                                        <th>Control No</th>
+                                        <th>Summary of Findings</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
 
 <?php $__env->stopSection(); ?>
 
@@ -117,7 +227,7 @@
                 // },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
                     data_ppc = response['ppc_section_data'];
                     ppc_year = response['ppc_year'];
                 }
@@ -151,8 +261,19 @@
                 bar: {groupWidth: "95%"},
                 legend: { position: "none" },
             };
+
+            var options2 = {
+                // title: "PPC Section",
+                width: 800,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                backgroundColor: '#f1f8e9',
+            };
             var chart = new google.visualization.ColumnChart(document.getElementById("ppcChartId"));
+            var chart2 = new google.visualization.ColumnChart(document.getElementById("ppcChartId2"));
             chart.draw(view, options);
+            chart2.draw(view, options2);
             }, 1000);
 
         }
@@ -167,7 +288,7 @@
                 // },
                 dataType: "json",
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
                     data_ppc_whse_tscn = response['ppc_whse_tscn_data'];
                     tscn_year = response['ppc_whse_tscn_year'];
                 }
@@ -203,8 +324,18 @@
                 bar: {groupWidth: "95%"},
                 legend: { position: "none" },
             };
+            var options2 = {
+                // title: "PPC WHSE - TS/CN",
+                width: 800,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                backgroundColor: '#f1f8e9',
+            };
             var chart = new google.visualization.ColumnChart(document.getElementById("ppcWhseTsCnChartId"));
+            var chart2 = new google.visualization.ColumnChart(document.getElementById("ppcWhseTsCnChartId2"));
             chart.draw(view, options);
+            chart2.draw(view, options2);
             }, 1000);
 
         }
@@ -255,8 +386,18 @@
                 bar: {groupWidth: "95%"},
                 legend: { position: "none" },
             };
+            var options2 = {
+                // title: "PPC WHSE - PPS",
+                width: 800,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                backgroundColor: '#f1f8e9',
+            };
             var chart = new google.visualization.ColumnChart(document.getElementById("ppcWhsePpsChartId"));
+            var chart2 = new google.visualization.ColumnChart(document.getElementById("ppcWhsePpsChartId2"));
             chart.draw(view, options);
+            chart2.draw(view, options2);
             }, 1000);
 
             }
@@ -306,8 +447,18 @@
                     bar: {groupWidth: "95%"},
                     legend: { position: "none" },
                 };
+                var options2 = {
+                // title: "Finance",
+                width: 800,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                backgroundColor: '#f1f8e9',
+                };
                 var chart = new google.visualization.ColumnChart(document.getElementById("financeChartId"));
+                var chart2 = new google.visualization.ColumnChart(document.getElementById("financeChartId2"));
                 chart.draw(view, options);
+                chart2.draw(view, options2);
                 }, 1000);
 
             }
@@ -355,7 +506,7 @@
                     //     // var random_color = "rgb(" + colorR + "," + colorG + "," + colorB + ")";
 
 
-                    data.addRows(arrayTo);
+                data.addRows(arrayTo);
 
                 var view = new google.visualization.DataView(data);
 
@@ -366,11 +517,121 @@
                     bar: {groupWidth: "95%"},
                     legend: { position: "none" },
                 };
+                var options2 = {
+                // title: "Logistics",
+                width: 800,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                backgroundColor: '#f1f8e9',
+                };
                 var chart = new google.visualization.ColumnChart(document.getElementById("logisticsChartId"));
+                var chart2 = new google.visualization.ColumnChart(document.getElementById("logisticsChartId2"));
                 chart.draw(view, options);
+                chart2.draw(view, options2);
                 }, 1000);
 
             }
+
+            $('#btnExportNgReport').on('click', function(){
+
+            // console.log($('#formViewWPRequest').serialize());
+            let year_id = $('#selectYearWithNgId').val();
+            let dept_id = $('#selectDeptId').val();
+            // let selected_month = $('#selectMonthId').val();
+
+            window.location.href = `export_ng_report/${year_id}/${dept_id}`;
+            // console.log(year_id);
+            // console.log(selected_month);
+            $('#modalExportNgReport').modal('hide');
+
+
+            });
+            let section = "";
+            $(function() {
+
+                $('#selectGraphToDisplayId').on('change',function(e){
+                    // $(this).val('');
+                    let first = $("#selectGraphToDisplayId option:first").val();
+                    $("#section_title").text($(this).find(":selected").val());
+                    section = ($(this).find(":selected").val());
+                    console.log(section);
+                    $('#modalShowGraph').modal("show");
+                    if($('#selectGraphToDisplayId').val() == 'PPC') {
+                        $(this).val(first);
+                        $(this).find(":selected").text($(this).find(":selected").val());
+                        // $(this).val('PPC');
+                        $('#ppcChartId2').show();
+                        $('#ppcWhseTsCnChartId2').hide();
+                        $('#ppcWhsePpsChartId2').hide();
+                        $('#financeChartId2').hide();
+                        $('#logisticsChartId2').hide();
+
+                    } else if($('#selectGraphToDisplayId').val() == 'PPC Warehouse'){
+                        $(this).val(first);
+                        $(this).find(":selected").text($(this).find(":selected").val());
+                        $('#ppcWhseTsCnChartId2').show();
+                        $('#ppcChartId2').hide();
+                        $('#ppcWhsePpsChartId2').hide();
+                        $('#financeChartId2').hide();
+                        $('#logisticsChartId2').hide();
+                    }
+                    else if($('#selectGraphToDisplayId').val() == 'PPS PPC'){
+                        $(this).val(first);
+                        $(this).find(":selected").text($(this).find(":selected").val());
+                        $('#ppcWhsePpsChartId2').show();
+                        $('#ppcChartId2').hide();
+                        $('#ppcWhseTsCnChartId2').hide();
+                        $('#financeChartId2').hide();
+                        $('#logisticsChartId2').hide();
+                    } else if($('#selectGraphToDisplayId').val() == 'Finance'){
+                        $(this).val(first);
+                        $(this).find(":selected").text($(this).find(":selected").val());
+                        $('#financeChartId2').show();
+                        $('#ppcChartId2').hide();
+                        $('#ppcWhsePpsChartId2').hide();
+                        $('#ppcWhseTsCnChartId2').hide();
+                        $('#logisticsChartId2').hide();
+                    } else if($('#selectGraphToDisplayId').val() == 'Logistics'){
+                        $(this).val(first);
+                        // console.log($('#selectGraphToDisplayId').val());
+                        $(this).find(":selected").text($(this).find(":selected").val());
+                        $('#logisticsChartId2').show();
+                        $('#ppcWhsePpsChartId2').hide();
+                        $('#ppcChartId2').hide();
+                        $('#ppcWhseTsCnChartId2').hide();
+                        $('#financeChartId2').hide();
+
+                    }
+
+                    dataTablePpcData.draw();
+                });
+            });
+
+            // $('#modalShowGraph').on('hidden.bs.modal', function () {
+            //     location.reload();
+            // })
+
+
+            dataTablePpcData = $("#viewPPSData").DataTable({
+                "processing" : false,
+                "serverSide" : true,
+                "ajax" : {
+                    url: "view_pps_data",
+
+                    data: function (param){
+                        param.id = section;
+                        // param.buttonid = $('#txtAssessmentDetailsAndFindingsId').val();
+
+                        // console.log(param.id);
+                    },
+                },
+                "columns":[
+                    { "data" : "year" },
+                    { "data" : "control_no" },
+                    { "data" : "summary_of_findings" },
+                ],
+            });// END OF DATATABLE
 
     </script>
 <?php $__env->stopSection(); ?>

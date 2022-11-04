@@ -16,7 +16,7 @@
 
 {{-- Here I removed the @auth because the dashboard isn't loading properly --}}
 @extends($layout)
-@section('title', 'Blank Page')
+@section('title', 'CLC Module')
 
 @section('content_page')
 

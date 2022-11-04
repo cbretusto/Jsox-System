@@ -757,10 +757,10 @@
 
                 // html ='<div class="form-group col-sm-12">';
                     html ='<div class="input-group divDocumentHeader_'+documentCounter+'">';
-                        html +='<div class="input-group-prepend ">';
-                        html +='-<span class="input-group-text ml-2 mt-2" id="inputGroup-sizing-default"><strong>'+documentCounter+'. Document: &nbsp;&nbsp;&nbsp; </strong></span>';
-                        html +='</div>';
-                        html +=' <input type="text" class="form-control mt-2" id="txtAddDocument_'+documentCounter+'" name="document_'+documentCounter+'" autocomplete="off"> ';
+                    html +='    <div class="input-group-prepend ">';
+                    html +='        -<span class="input-group-text ml-2 mt-2" id="inputGroup-sizing-default"><strong>'+documentCounter+'. Document: &nbsp;&nbsp;&nbsp; </strong></span>';
+                    html +='    </div>';
+                    html +='    <input type="text" class="form-control mt-2" id="txtAddDocument_'+documentCounter+'" name="document_'+documentCounter+'" autocomplete="off"> ';
                     html +='</div>';
                 // html +='</div>';
 

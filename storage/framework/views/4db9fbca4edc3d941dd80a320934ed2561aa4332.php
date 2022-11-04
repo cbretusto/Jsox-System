@@ -45,4 +45,6 @@
 <link href="<?php echo e(asset('public/css/flash.css')); ?>" rel="stylesheet">
 
 <link href="<?php echo e(asset('public/css/custom.css')); ?>" rel="stylesheet">
+
+
 <?php /**PATH /var/www/Jsox_test/resources/views/shared/css_links/css_links.blade.php ENDPATH**/ ?>

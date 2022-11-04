@@ -10,6 +10,8 @@ use App\PLCCAPACapaAnalysis;
 use App\PLCCAPACorrectiveAction;
 use App\PLCCAPAPreventiveAction;
 use App\PLCModuleRCMInternalControl;
+use App\PLCModuleSADicAssessmentDetailsAndFindings;
+use App\PLCModuleSAOecAssessmentDetailsAndFindings;
 use Illuminate\Database\Eloquent\Model;
 
 class PLCModuleSA extends Model

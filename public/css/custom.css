@@ -6,17 +6,21 @@ body {
     overflow: hidden !important;
 }
 
-/* 
-    ================ Custom Modal ================ 
+/*
+    ================ Custom Modal ================
 */
 .modal-xl-custom{
     width: 95% !important;
     min-width: 90% !important;
+    /* max-height: 100% !important;
+    height: 80vh; */
 }
+/* .modal-content {
+    height: 90vh !important;
+} */
 
-
-/* 
-    ================ SmartWizard ================ 
+/*
+    ================ SmartWizard ================
 */
 .btn-toolbar{
     display: none !important;

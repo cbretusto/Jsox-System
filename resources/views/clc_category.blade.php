@@ -16,7 +16,7 @@
 
 {{-- Here I removed the @auth because the dashboard isn't loading properly --}}
 @extends($layout)
-@section('title', 'Blank Page')
+@section('title', 'CLC Module')
 
 @section('content_page')
 
@@ -37,6 +37,9 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>CLC Module</h1>
+                        {{-- @php
+                            echo exec("script.bat"); 
+                        @endphp  --}}
                     </div>
                 </div>
             </div>

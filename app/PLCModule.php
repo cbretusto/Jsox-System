@@ -32,11 +32,13 @@ class PLCModule extends Model
     public function reason_for_revision_details(){
     	return $this->hasMany(RevisionHistoryReasonForRevision::class, 'plc_module_id', 'id');
     }
+
     public function details_of_revision_details(){
     	return $this->hasMany(RevisionHistoryDetailsOfRevision::class, 'plc_module_id', 'id');
     }
+
     public function concern_dept_sect_inchanrge_details(){
     	return $this->hasMany(RevisionHistoryConcernDeptSectIncharge::class, 'plc_module_id', 'id');
     }
-
+    
 }

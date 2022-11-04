@@ -1,6 +1,8 @@
 <?php
 
 namespace App;
+use App\PLCModuleSADicAssessmentDetailsAndFindings;
+use App\PLCModuleSAOecAssessmentDetailsAndFindings;
 use App\PLCCAPACapaAnalysis;
 use App\PLCCAPACorrectiveAction;
 use App\PLCCAPAPreventiveAction;
@@ -18,6 +20,13 @@ class PlcCapa extends Model
 
     public function plc_rev_history(){
         return $this->hasOne(PLCModule::class, 'id', 'sa_id');
+    }
+
+    public function plc_sa_dic_assessment_details_findings_details(){
+        return $this->hasMany(PLCModuleSADicAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id');
+    }
+    public function plc_sa_oec_assessment_details_findings_details(){
+        return $this->hasMany(PLCModuleSAOecAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id');
     }
 
     public function plc_sa_capa_analysis_details(){

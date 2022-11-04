@@ -34,7 +34,11 @@ function GetSaData(saDataId){
             let oec_details = response['oec_details'];
             let rf_details  = response['rf_details'];
             let fu_details  = response['fu_details'];
-            let rcm_internal_coctrol  = response['rcm_internal_coctrol'];
+            let rcm_internal_control  = response['rcm_internal_control'];
+            console.log('dic_details',dic_details);
+            console.log('oec_details',oec_details);
+            console.log('rf_details',rf_details);
+            console.log('fu_details',fu_details);
             // console.log('test', sa_data);
             if(sa_data.length > 0){
                 $("#selectEditDept").val(sa_data[0].concerned_dept).trigger('change');
@@ -42,201 +46,221 @@ function GetSaData(saDataId){
                 $("#txtEditSaRfImprovement").val(sa_data[0].rf_improvement);
                 $("#txtEditSaFuImprovement").val(sa_data[0].fu_improvement);
                 
-                let bugok = "";
-                for (let index = 0; index < rcm_internal_coctrol.length; index++) {
-                    bugok += rcm_internal_coctrol[index].internal_control + "\n\n";
-                    console.log(rcm_internal_coctrol);
-                    // $("#txtEditSaInternalControl").val(rcm_internal_coctrol[index].internal_control);
+                let getControlIdFromRCM = "";
+                let getInternalControlFromRCM = "";
+                for (let index = 0; index < rcm_internal_control.length; index++) {
+                    getControlIdFromRCM         += rcm_internal_control[index].control_id  + '\n';
+                    getInternalControlFromRCM   += rcm_internal_control[index].internal_control + "\n\n";
+                    console.log(rcm_internal_control);
                 }
-                $("#txtEditSaInternalControl").val(bugok);
+                $("#txtEditSaInternalControl").val(getInternalControlFromRCM);
+                $("#txtEditSaControlNo").val(getControlIdFromRCM);
 
 
                 //START DIC GET DATA
-                $("#txtEditSaDicAssessment").val(dic_details[0].dic_assessment_details_findings);
-                $("#txtDicEditOrigFile").val(dic_details[0].dic_attachment);
-
-                // To remove auto counting of row in multiple (EDIT)
-                for(let dic = 2; dic <= dic_details.length; dic++){
-                    $('#removeRowDicAssessmentDetailsAndFindings')[0].click();
-                }
-                let dic_counter = 1;
-                // To automatic add row in edit base on how many the DIC is
-                for(let dic = 2; dic <= dic_details.length; dic++){
-                    $('#addRowDicAssessmentDetailsAndFindings')[0].click();
-
-                    $('#txtEditSaDicAssessment_'+dic).val(dic_details[dic_counter].dic_assessment_details_findings)
-                    $('#txtDicEditOrigFile_'+dic).val(dic_details[dic_counter].dic_attachment)
-
-                    if(dic_details[dic_counter].dic_attachment != ''){
-                        $("#DicAttachment_"+dic).addClass('d-none');
-                        $("#DicCheckBox_"+dic).removeClass('d-none');
-                        $("#DicReuploadFile_"+dic).removeClass('d-none');
-                        $("#txtDicEditOrigFile_"+dic).removeClass('d-none');
+                if(dic_details.length != '0'){
+                    $("#txtEditSaDicAssessment").val(dic_details[0].dic_assessment_details_findings);
+                    console.log('DIC:',dic_details[0].dic_assessment_details_findings);
+                    $("#txtDicEditOrigFile").val(dic_details[0].dic_attachment);
+    
+                    // To remove auto counting of row in multiple (EDIT)
+                    for(let dic = 2; dic <= dic_details.length; dic++){
+                        $('#removeRowDicAssessmentDetailsAndFindings')[0].click();
                     }
-                    dic_counter = dic_counter+1;
-                }
-                // DIC
-                if($('#txtDicEditOrigFile').val() != ''){
-                    $("#DicAttachment").addClass('d-none');
-                    $("#txtDicEditOrigFile").removeClass('d-none');
-                    $("#DicCheckBox").removeClass('d-none');
-                    $("#DicReuploadFile").removeClass('d-none');
-                    console.log('DIC Attachment not null');
+                    let dic_counter = 1;
+                    // To automatic add row in edit base on how many the DIC is
+                    for(let dic = 2; dic <= dic_details.length; dic++){
+                        $('#addRowDicAssessmentDetailsAndFindings')[0].click();
+    
+                        $('#txtEditSaDicAssessment_'+dic).val(dic_details[dic_counter].dic_assessment_details_findings)
+                        $('#txtDicEditOrigFile_'+dic).val(dic_details[dic_counter].dic_attachment)
+    
+                        if(dic_details[dic_counter].dic_attachment != ''){
+                            $("#DicAttachment_"+dic).addClass('d-none');
+                            $("#DicCheckBox_"+dic).removeClass('d-none');
+                            $("#DicReuploadFile_"+dic).removeClass('d-none');
+                            $("#txtDicEditOrigFile_"+dic).removeClass('d-none');
+                        }
+                        dic_counter = dic_counter+1;
+                    }
+                    // DIC
+                    if($('#txtDicEditOrigFile').val() != ''){
+                        $("#DicAttachment").addClass('d-none');
+                        $("#txtDicEditOrigFile").removeClass('d-none');
+                        $("#DicCheckBox").removeClass('d-none');
+                        $("#DicReuploadFile").removeClass('d-none');
+                        console.log('DIC Attachment not null');
+                    }else{
+                        $("#DicAttachment").removeClass('d-none');
+                        $("#txtDicEditOrigFile").addClass('d-none');
+                        $("#DicCheckBox").addClass('d-none');
+                        $("#DicReuploadFile").addClass('d-none');
+                        console.log('DIC Attachment null');
+                    }
                 }else{
-                    $("#DicAttachment").removeClass('d-none');
-                    $("#txtDicEditOrigFile").addClass('d-none');
-                    $("#DicCheckBox").addClass('d-none');
-                    $("#DicReuploadFile").addClass('d-none');
-                    console.log('DIC Attachment null');
-                }//END DIC GET DATA
+
+                }
+                //END DIC GET DATA
 
                 //START OEC GET DATA
-                $("#txtEditSaOecAssessment").val(oec_details[0].oec_assessment_details_findings);
-                $("#txtOecAttachment").val(oec_details[0].oec_attachment);
+                if(oec_details.length != '0'){
+                    $("#txtEditSaOecAssessment").val(oec_details[0].oec_assessment_details_findings);
+                    $("#txtOecAttachment").val(oec_details[0].oec_attachment);
 
-                // To remove auto counting of row in multiple (EDIT)
-                for(let oec = 2; oec <= oec_details.length; oec++){
-                    $('#removeRowOecAssessmentDetailsAndFindings')[0].click();
-                }
-                let oec_counter = 1;
-                // To automatic add row in edit base on how many the DIC is
-                for(let oec = 2; oec <= oec_details.length; oec++){
-                    $('#addRowOecAssessmentDetailsAndFindings')[0].click();
-                    $('#txtEditSaOecAssessment_'+oec).val(oec_details[oec_counter].oec_assessment_details_findings)
-                    $('#txtOecAttachment_'+oec).val(oec_details[oec_counter].oec_attachment)
-
-                    if(oec_details[oec_counter].oec_attachment != ''){
-                        $("#OecAttachment_"+oec).addClass('d-none');
-                        $("#OecCheckBox_"+oec).removeClass('d-none');
-                        $("#OecReuploadFile_"+oec).removeClass('d-none');
-                        $("#txtOecAttachment_"+oec).removeClass('d-none');
+                    // To remove auto counting of row in multiple (EDIT)
+                    for(let oec = 2; oec <= oec_details.length; oec++){
+                        $('#removeRowOecAssessmentDetailsAndFindings')[0].click();
                     }
-                    oec_counter = oec_counter+1;
-                }
-                
-                // OEC
-                if($('#txtOecAttachment').val() != ''){
-                    $("#OecAttachment").addClass('d-none');
-                    $("#txtOecAttachment").removeClass('d-none');
-                    $("#OecCheckBox").removeClass('d-none');
-                    $("#OecReuploadFile").removeClass('d-none');
-                    console.log('OEC Attachment not null');
+                    let oec_counter = 1;
+                    // To automatic add row in edit base on how many the DIC is
+                    for(let oec = 2; oec <= oec_details.length; oec++){
+                        $('#addRowOecAssessmentDetailsAndFindings')[0].click();
+                        $('#txtEditSaOecAssessment_'+oec).val(oec_details[oec_counter].oec_assessment_details_findings)
+                        $('#txtOecAttachment_'+oec).val(oec_details[oec_counter].oec_attachment)
+
+                        if(oec_details[oec_counter].oec_attachment != ''){
+                            $("#OecAttachment_"+oec).addClass('d-none');
+                            $("#OecCheckBox_"+oec).removeClass('d-none');
+                            $("#OecReuploadFile_"+oec).removeClass('d-none');
+                            $("#txtOecAttachment_"+oec).removeClass('d-none');
+                        }
+                        oec_counter = oec_counter+1;
+                    }
+                    
+                    // OEC
+                    if($('#txtOecAttachment').val() != ''){
+                        $("#OecAttachment").addClass('d-none');
+                        $("#txtOecAttachment").removeClass('d-none');
+                        $("#OecCheckBox").removeClass('d-none');
+                        $("#OecReuploadFile").removeClass('d-none');
+                        console.log('OEC Attachment not null');
+                    }else{
+                        $("#OecAttachment").removeClass('d-none');
+                        $("#txtOecAttachment").addClass('d-none');
+                        $("#OecCheckBox").addClass('d-none');
+                        $("#OecReuploadFile").addClass('d-none');
+                        console.log('OEC Attachment null');
+                    }
                 }else{
-                    $("#OecAttachment").removeClass('d-none');
-                    $("#txtOecAttachment").addClass('d-none');
-                    $("#OecCheckBox").addClass('d-none');
-                    $("#OecReuploadFile").addClass('d-none');
-                    console.log('OEC Attachment null');
+                
                 }//END OEC GET DATA
 
                 //START RF GET DATA
-                $("#txtEditSaRfAssessment").val(rf_details[0].rf_assessment_details_findings);
-                $("#txtRfAttachment").val(rf_details[0].rf_attachment);
+                if(rf_details.length != '0'){
+                    $("#txtEditSaRfAssessment").val(rf_details[0].rf_assessment_details_findings);
+                    $("#txtRfAttachment").val(rf_details[0].rf_attachment);
 
-                // To remove auto counting of row in multiple (EDIT)
-                for(let rf = 2; rf <= rf_details.length; rf++){
-                    $('#removeRowRfAssessmentDetailsAndFindings')[0].click();
-                }
-                let rf_counter = 1;
-                // To automatic add row in edit base on how many the DIC is
-                for(let rf = 2; rf <= rf_details.length; rf++){
-                    $('#addRowRfAssessmentDetailsAndFindings')[0].click();
-                    // $("#txtEditSaDicAssessment").val(sa_data[0].plc_sa_dic_assessment_details_finding.dic_assessment_details_findings);
-
-                    $('#txtEditSaRfAssessment_'+rf).val(rf_details[rf_counter].rf_assessment_details_findings)
-                    $('#txtRfAttachment_'+rf).val(rf_details[rf_counter].rf_attachment)
-
-                    if(rf_details[rf_counter].rf_attachment != ''){
-                        $("#RfAttachment_"+rf).addClass('d-none');
-                        $("#chckRfCheckBox_"+rf).removeClass('d-none');
-                        $("#txtRfReuploadFile_"+rf).removeClass('d-none');
-                        $("#txtRfAttachment_"+rf).removeClass('d-none');
+                    // To remove auto counting of row in multiple (EDIT)
+                    for(let rf = 2; rf <= rf_details.length; rf++){
+                        $('#removeRowRfAssessmentDetailsAndFindings')[0].click();
                     }
-                    rf_counter = rf_counter+1;
-                }
-                // RF
-                if($('#txtRfAttachment').val() != ''){
-                    $("#RfAttachment").addClass('d-none');
-                    $("#txtRfAttachment").removeClass('d-none');
-                    $("#chckRfCheckBox").removeClass('d-none');
-                    $("#txtRfReuploadFile").removeClass('d-none');
-                    console.log('RF Attachment not null');
+                    let rf_counter = 1;
+                    // To automatic add row in edit base on how many the DIC is
+                    for(let rf = 2; rf <= rf_details.length; rf++){
+                        $('#addRowRfAssessmentDetailsAndFindings')[0].click();
+                        // $("#txtEditSaDicAssessment").val(sa_data[0].plc_sa_dic_assessment_details_finding.dic_assessment_details_findings);
+
+                        $('#txtEditSaRfAssessment_'+rf).val(rf_details[rf_counter].rf_assessment_details_findings)
+                        $('#txtRfAttachment_'+rf).val(rf_details[rf_counter].rf_attachment)
+
+                        if(rf_details[rf_counter].rf_attachment != ''){
+                            $("#RfAttachment_"+rf).addClass('d-none');
+                            $("#chckRfCheckBox_"+rf).removeClass('d-none');
+                            $("#txtRfReuploadFile_"+rf).removeClass('d-none');
+                            $("#txtRfAttachment_"+rf).removeClass('d-none');
+                        }
+                        rf_counter = rf_counter+1;
+                    }
+                    // RF
+                    if($('#txtRfAttachment').val() != ''){
+                        $("#RfAttachment").addClass('d-none');
+                        $("#txtRfAttachment").removeClass('d-none');
+                        $("#chckRfCheckBox").removeClass('d-none');
+                        $("#txtRfReuploadFile").removeClass('d-none');
+                        console.log('RF Attachment not null');
+                    }else{
+                        $("#RfAttachment").removeClass('d-none');
+                        $("#txtRfAttachment").addClass('d-none');
+                        $("#chckRfCheckBox").addClass('d-none');
+                        $("#txtRfReuploadFile").addClass('d-none');
+                        console.log('RF Attachment null');
+                    }
                 }else{
-                    $("#RfAttachment").removeClass('d-none');
-                    $("#txtRfAttachment").addClass('d-none');
-                    $("#chckRfCheckBox").addClass('d-none');
-                    $("#txtRfReuploadFile").addClass('d-none');
-                    console.log('RF Attachment null');
+
                 }
 
                 //START FU GET DATA
-                $("#txtEditSaFuAssessment").val(fu_details[0].fu_assessment_details_findings);
-                $("#txtFuAttachment").val(fu_details[0].fu_attachment);
+                if(fu_details.length != '0'){
+                    $("#txtEditSaFuAssessment").val(fu_details[0].fu_assessment_details_findings);
+                    $("#txtFuAttachment").val(fu_details[0].fu_attachment);
 
-                // To remove auto counting of row in multiple (EDIT)
-                for(let fu = 2; fu <= fu_details.length; fu++){
-                    $('#removeRowFuAssessmentDetailsAndFindings')[0].click();
-                }
-                let fu_counter = 1;
-                // To automatic add row in edit base on how many the DIC is
-                for(let fu = 2; fu <= fu_details.length; fu++){
-                    $('#addRowFuAssessmentDetailsAndFindings')[0].click();
-
-                    $('#txtEditSaFuAssessment_'+fu).val(fu_details[fu_counter].fu_assessment_details_findings)
-                    $('#txtFuAttachment_'+fu).val(fu_details[fu_counter].fu_attachment)
-
-                    if(fu_details[fu_counter].fu_attachment != ''){
-                        $("#FuAttachment_"+fu).addClass('d-none');
-                        $("#chckFuCheckBox_"+fu).removeClass('d-none');
-                        $("#txtFuReuploadFile_"+fu).removeClass('d-none');
-                        $("#txtFuAttachment_"+fu).removeClass('d-none');
+                    // To remove auto counting of row in multiple (EDIT)
+                    for(let fu = 2; fu <= fu_details.length; fu++){
+                        $('#removeRowFuAssessmentDetailsAndFindings')[0].click();
                     }
-                    fu_counter = fu_counter+1;
-                }
-                // FU
-                if($('#txtFuAttachment').val() != ''){
-                    $("#FuAttachment").addClass('d-none');
-                    $("#txtFuAttachment").removeClass('d-none');
-                    $("#chckFuCheckBox").removeClass('d-none');
-                    $("#txtFuReuploadFile").removeClass('d-none');
-                    console.log('FU Attachment not null');
+                    let fu_counter = 1;
+                    // To automatic add row in edit base on how many the DIC is
+                    for(let fu = 2; fu <= fu_details.length; fu++){
+                        $('#addRowFuAssessmentDetailsAndFindings')[0].click();
+
+                        $('#txtEditSaFuAssessment_'+fu).val(fu_details[fu_counter].fu_assessment_details_findings)
+                        $('#txtFuAttachment_'+fu).val(fu_details[fu_counter].fu_attachment)
+
+                        if(fu_details[fu_counter].fu_attachment != ''){
+                            $("#FuAttachment_"+fu).addClass('d-none');
+                            $("#chckFuCheckBox_"+fu).removeClass('d-none');
+                            $("#txtFuReuploadFile_"+fu).removeClass('d-none');
+                            $("#txtFuAttachment_"+fu).removeClass('d-none');
+                        }
+                        fu_counter = fu_counter+1;
+                    }
+                    // FU
+                    if($('#txtFuAttachment').val() != ''){
+                        $("#FuAttachment").addClass('d-none');
+                        $("#txtFuAttachment").removeClass('d-none');
+                        $("#chckFuCheckBox").removeClass('d-none');
+                        $("#txtFuReuploadFile").removeClass('d-none');
+                        console.log('FU Attachment not null');
+                    }else{
+                        $("#FuAttachment").removeClass('d-none');
+                        $("#txtFuAttachment").addClass('d-none');
+                        $("#chckFuCheckBox").addClass('d-none');
+                        $("#txtFuReuploadFile").addClass('d-none');
+                        console.log('FU Attachment null');
+                    }
                 }else{
-                    $("#FuAttachment").removeClass('d-none');
-                    $("#txtFuAttachment").addClass('d-none');
-                    $("#chckFuCheckBox").addClass('d-none');
-                    $("#txtFuReuploadFile").addClass('d-none');
-                    console.log('FU Attachment null');
+
                 }
 
-                if(sa_data[0].key_control != null){
-                    $("#txtEditSaKeyControl").prop("checked",true);
-                    $("#txtEditSaItControl").prop("disabled",true);
-                    $("#txtEditSaNonKeyControl").prop("disabled",true);
-                }else{
-                    $("#txtEditSaKeyControl").prop("disabled",true);
-                    $("#txtEditSaItControl").prop("disabled",true);
-                    $("#txtEditSaNonKeyControl").prop("checked",false);
-                }
+                // if(sa_data[0].key_control != null){
+                //     $("#txtEditSaKeyControl").prop("checked",true);
+                //     $("#txtEditSaItControl").prop("disabled",true);
+                //     $("#txtEditSaNonKeyControl").prop("disabled",true);
+                // }else{
+                //     $("#txtEditSaKeyControl").prop("disabled",true);
+                //     $("#txtEditSaItControl").prop("disabled",true);
+                //     $("#txtEditSaNonKeyControl").prop("checked",false);
+                // }
 
-                if(sa_data[0].it_control != null){
-                    $("#txtEditSaKeyControl").prop("disabled",true);
-                    $("#txtEditSaItControl").prop("checked",true);
-                    $("#txtEditSaNonKeyControl").prop("disabled",true);
-                }else{
-                    $("#txtEditSaKeyControl").prop("disabled",true);
-                    $("#txtEditSaItControl").prop("disabled",true);
-                    $("#txtEditSaNonKeyControl").prop("checked",false);
-                }
+                // if(sa_data[0].it_control != null){
+                //     $("#txtEditSaKeyControl").prop("disabled",true);
+                //     $("#txtEditSaItControl").prop("checked",true);
+                //     $("#txtEditSaNonKeyControl").prop("disabled",true);
+                // }else{
+                //     $("#txtEditSaKeyControl").prop("disabled",true);
+                //     $("#txtEditSaItControl").prop("disabled",true);
+                //     $("#txtEditSaNonKeyControl").prop("checked",false);
+                // }
 
-                if(sa_data[0].non_key_control != null){
-                    $("#txtEditSaKeyControl").prop("disabled",true);
-                    $("#txtEditSaItControl").prop("disabled",true);
-                    $("#txtEditSaNonKeyControl").prop("checked",true);
-                }else{
-                    $("#txtEditSaKeyControl").prop("disabled",true);
-                    $("#txtEditSaItControl").prop("disabled",true);
-                    $("#txtEditSaNonKeyControl").prop("checked",false);
-                }
+                // if(sa_data[0].non_key_control != null){
+                //     $("#txtEditSaKeyControl").prop("disabled",true);
+                //     $("#txtEditSaItControl").prop("disabled",true);
+                //     $("#txtEditSaNonKeyControl").prop("checked",true);
+                // }else{
+                //     $("#txtEditSaKeyControl").prop("disabled",true);
+                //     $("#txtEditSaItControl").prop("disabled",true);
+                //     $("#txtEditSaNonKeyControl").prop("checked",false);
+                // }
 
                 if(sa_data[0].dic_status == 'G'){
                     $("#txtEditSaDicGStatus").prop("checked",true);

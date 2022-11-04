@@ -283,23 +283,10 @@
                                         </div>
                                     </div>
 
-                                    
-
-                                    
-
-
-                                    
-
-                                    <!-- Statement of Findings -->
-
-                                    
-                                                
-                                                
-                                                
-
-
-
-                                    
+                                    <div class="form-group">
+                                        <label class="col-form-label">Statement of Finding(s):</label>
+                                        <textarea type="text" class="form-control" rows="5" name="plc_capa_statement_of_findings" id="txtPlcCapaStatementOfFindings"></textarea>
+                                    </div>
                                     <hr>
                                     <h5><strong>Capa Analysis</strong></h5>
                                     <div class="card" id="cardCapaAnalysis">

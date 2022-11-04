@@ -19,6 +19,8 @@ use App\PLCModuleFlowChart;
 use App\RevisionHistoryReasonForRevision;
 use App\RevisionHistoryDetailsOfRevision;
 use App\RevisionHistoryConcernDeptSectIncharge;
+use App\RevisionHistoryConformance;
+use App\RevisionHistoryDeptSectConformance;
 
 class PlcModulesController extends Controller
 {
@@ -28,9 +30,6 @@ class PlcModulesController extends Controller
             'rapidx_user_details1'
             ])
         ->where('category', $request->session)->where('logdel', 0) ->orderBy('id', 'desc')->get();
-
-        // return $plc_module;
-
         return DataTables::of($plc_module)
 
         ->addColumn('status', function($plc_module){
@@ -45,6 +44,16 @@ class PlcModulesController extends Controller
                 return $result;
         })
 
+        ->addColumn('revision_date', function($plc_module){
+            $result = "<center>";
+            $result .= $plc_module->revision_date;
+            $result .= "<br>";
+            $result .= "<br>";
+            $result .= $plc_module->no_revision;
+            $result .= '</br>';
+            return $result;
+        })
+
         ->addColumn('reason_for_revision', function($plc_module){
             $reasonForRevision = RevisionHistoryReasonForRevision::where('plc_module_id', $plc_module->id)->get();
             $result = "";
@@ -55,7 +64,6 @@ class PlcModulesController extends Controller
             }
                 return $result;
         })
-
 
         ->addColumn('details_of_revision', function($plc_module){
             $detailsOfRevision = RevisionHistoryDetailsOfRevision::where('plc_module_id', $plc_module->id)->get();
@@ -87,7 +95,6 @@ class PlcModulesController extends Controller
                     $result .= "\n";
                     $result .= "\n";
                 }
-
             return $result;
         })
 
@@ -101,7 +108,6 @@ class PlcModulesController extends Controller
                 $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangePlcRevisionHistoryStat" style="width:105px;margin:2%;" revision_history-id="' . $plc_module->id . '" status="1" data-toggle="modal" data-target="#modalChangePlcRevisionHistoryStat" data-keyboard="false"><i class ="fa fa-key">  Activate</button>';
             }
             $result .= '</center>';
-
             return $result;
         })
 
@@ -131,6 +137,80 @@ class PlcModulesController extends Controller
         ->make(true);
     }
 
+    public function view_plc_modules_conformance(Request $request){
+        $plc_module_conformance = RevisionHistoryConformance::with(['conformance_details'])
+            ->where('category', $request->session)
+            ->where('logdel', 0)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return DataTables::of($plc_module_conformance)
+        ->addColumn('status', function($plc_module_conformance){
+            $result = "<center>";
+            if($plc_module_conformance->status == 1){
+                $result .= '<span class="badge badge-pill badge-success">Active</span>';
+            }
+            else{
+                $result .= '<span class="badge badge-pill badge-danger">Inactive</span>';
+            }
+                $result .= '</center>';
+                return $result;
+        })
+
+        // ->addColumn('year', function ($plc_module_conformance){
+        //     $result = "";
+        //     $result .= "<center>";
+        //     $result .= '</center>';
+        //     return $result;
+        // })
+
+        ->addColumn('dept_sect', function($plc_module_conformance){
+            $conformanceDeptSect = RevisionHistoryDeptSectConformance::where('conformance_id', $plc_module_conformance->id)->get();
+            $result = "";
+            $result .= "<center>";
+            for ($i=0; $i < count($conformanceDeptSect); $i++){ 
+                $result .= $conformanceDeptSect[$i]->dept_sect;
+                $result .= "<br>";
+            }
+            $result .= "</center>";
+            return $result;
+        })
+
+        ->addColumn('name', function($plc_module_conformance){
+            $conformanceName = RevisionHistoryDeptSectConformance::where('conformance_id', $plc_module_conformance->id)->get();
+            $result = "";
+            $result .= "<center>";
+            for ($ii=0; $ii < count($conformanceName); $ii++) { 
+                $result .= $conformanceName[$ii]->name;
+                $result .= "<br>";
+            }            
+            $result .= '</center>';
+            return $result;
+        })
+
+        ->addColumn('action', function ($plc_module_conformance){
+            $result = "";
+            $result = "<center>";
+            if ($plc_module_conformance->status == 1) {
+                $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditRevisionHistoryConformance" style="width:105px;margin:2%;" revision_history_conformance-id="' . $plc_module_conformance->id . '" data-toggle="modal" data-target="#editConformanceModal" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangePlcRevisionHistoryConformanceStat" style="width:105px;margin:2%;" revision_history_conformance-id="' . $plc_module_conformance->id . '" status="2" data-toggle="modal" data-target="#modalChangePlcRevisionHistoryConformanceStat" data-keyboard="false"><i class="nav-icon fas fa-ban"></i> Deactivate</button>&nbsp;';
+            } else {
+                $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangePlcRevisionHistoryConformanceStat" style="width:105px;margin:2%;" revision_history_conformance-id="' . $plc_module_conformance->id . '" status="1" data-toggle="modal" data-target="#modalChangePlcRevisionHistoryConformanceStat" data-keyboard="false"><i class ="fa fa-key">  Activate</button>';
+            }
+            $result .= '</center>';
+            return $result;
+        })
+
+        ->rawColumns([
+            'status',
+            // 'year',
+            'dept_sect',
+            'name',
+            'action'
+        ])
+        ->make(true);
+    }
+
     //===== ADD REVISION HISTORY FUNCTION ====//
     public function add_revision_history(Request $request){
         date_default_timezone_set('Asia/Manila');
@@ -152,40 +232,31 @@ class PlcModulesController extends Controller
             $add_revision_process_owner = implode(" / ", $request->process_owner);
             // return $add_revision_process_owner;
 
-            //START REASON FOR REVISION
-            // if($request->add_revision_history_counter > 1){ // Multiple Insert
+            $add_revision_history_array = [
+                'category'      => $request->category_name,
+                'process_owner' => $add_revision_process_owner,
+                'revision_date' => $request->revision_date,
+                'version_no'    => $request->version_no,
+                'created_at'    => date('Y-m-d H:i:s')
+            ];
+
+            $get_rev_history_id = PLCModule::insertGetId(
+                $add_revision_history_array
+            );
+
+            //ADD FLOW CHART
+            $add_revision_history_array['rev_history_id'] =  $get_rev_history_id;
+
+            //ADD FLOW CHART
+            PLCModuleFlowChart::insert([
+                $add_revision_history_array
+            ]);
+            
+            $multiple_revision_history_details_array = [
+                'plc_module_id' =>  $get_rev_history_id,
+                'category'      =>  $request->category_name,
+            ];
             if($request->add_revision_history_counter > 0){ // Multiple Insert
-                $add_revision_history_array = [
-                    'category'      => $request->category_name,
-                    'process_owner' => $add_revision_process_owner,
-                    'revision_date' => $request->revision_date,
-                    'version_no'    => $request->version_no,
-                    'created_at'    => date('Y-m-d H:i:s')
-                ];
-
-                $get_rev_history_id = PLCModule::insertGetId(
-                    $add_revision_history_array
-                );
-
-                $multiple_revision_history_details_array = [
-                    'plc_module_id' =>  $get_rev_history_id,
-                    'category'      =>  $request->category_name,
-                ];
-
-                // for($reason_rev = 1; $reason_rev <= $request->add_reason_for_revision_counter; $reason_rev++){
-                //     if($request->input("reason_for_revision_$reason_rev") != null){
-                //         $add_reason_for_revision_array =  $multiple_revision_history_details_array;
-                //         $add_reason_for_revision_array['counter'] = $reason_rev;
-                //         $add_reason_for_revision_array['groupby'] = 1;
-                //         $add_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$reason_rev");
-
-                //         RevisionHistoryReasonForRevision::insert(
-                //             $add_reason_for_revision_array
-                //         );
-                //     }else{
-
-                //     }
-                // }
                 for($reason_rev = 0; $reason_rev <= $request->add_reason_for_revision_counter; $reason_rev++){
                     if($request->input("reason_for_revision_$reason_rev") != null){
                         $add_reason_for_revision_array =  $multiple_revision_history_details_array;
@@ -201,20 +272,6 @@ class PlcModulesController extends Controller
                     }
                 }
 
-                // for($details_rev = 1; $details_rev <= $request->add_reason_for_revision_counter; $details_rev++){
-                //     if($request->input("details_of_revision_$details_rev") != null){
-                //         $add_details_of_revision_array = $multiple_revision_history_details_array;
-                //         $add_details_of_revision_array['counter'] = $details_rev;
-                //         $add_details_of_revision_array['groupby'] = 1;
-                //         $add_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$details_rev");
-
-                //         RevisionHistoryDetailsOfRevision::insert(
-                //             $add_details_of_revision_array
-                //         );
-                //     }else{
-
-                //     }
-                // }
                 for($details_rev = 0; $details_rev <= $request->add_reason_for_revision_counter; $details_rev++){
                     if($request->input("details_of_revision_$details_rev") != null){
                         $add_details_of_revision_array = $multiple_revision_history_details_array;
@@ -230,27 +287,10 @@ class PlcModulesController extends Controller
                     }
                 }
 
-                // $add_concerned_department = "concerned_dept_";
-                // for($dept_sect_incharge = 1; $dept_sect_incharge <= $request->add_dept_sect_incharge_counter; $dept_sect_incharge++){
-                //     $impload_concerned_department = implode(" / ", $request[$add_concerned_department.$dept_sect_incharge]);
-                //     if($request->input("in_charge_$dept_sect_incharge") != null && $impload_concerned_department != null){
-                //         $add_concern_dept_sect_incharge_array = $multiple_revision_history_details_array;
-                //         $add_concern_dept_sect_incharge_array['counter'] = $dept_sect_incharge;
-                //         $add_concern_dept_sect_incharge_array['groupby'] = 1;
-                //         $add_concern_dept_sect_incharge_array['concern_dept_sect'] = $impload_concerned_department;
-                //         $add_concern_dept_sect_incharge_array['in_charge'] = $request->input("in_charge_$dept_sect_incharge");
-
-                //         RevisionHistoryConcernDeptSectIncharge::insert(
-                //             $add_concern_dept_sect_incharge_array
-                //         );
-                //     }else{
-
-                //     }
-                // }
                 $add_concerned_department = "concerned_dept_";
                 for($dept_sect_incharge = 0; $dept_sect_incharge <= $request->add_dept_sect_incharge_counter; $dept_sect_incharge++){
-                    $impload_concerned_department = implode(" / ", $request[$add_concerned_department.$dept_sect_incharge]);
-                    if($request->input("in_charge_$dept_sect_incharge") != null && $impload_concerned_department != null){
+                    if($request->input("in_charge_$dept_sect_incharge") != null){
+                        $impload_concerned_department = implode(" / ", $request[$add_concerned_department.$dept_sect_incharge]);
                         $add_concern_dept_sect_incharge_array = $multiple_revision_history_details_array;
                         $add_concern_dept_sect_incharge_array['counter'] = $dept_sect_incharge;
                         $add_concern_dept_sect_incharge_array['groupby'] = 0;
@@ -265,24 +305,7 @@ class PlcModulesController extends Controller
                     }
                 }
 
-                // for($index = 2; $index <= $request->add_revision_history_counter; $index++){
                 for($index = 1; $index <= $request->add_revision_history_counter; $index++){
-                    // $add_multiple_reason_for_revision = "multiple_reason_for_revision_";
-                    // for($multiple_reason_rev = 1; $multiple_reason_rev <= $request->add_multiple_reason_for_revision_counter; $multiple_reason_rev++){
-                    //     if($request[$add_multiple_reason_for_revision.$multiple_reason_rev.'_'.$index] != null){
-                    //         $add_multiple_reason_for_revision_array = $multiple_revision_history_details_array;
-                    //         $add_multiple_reason_for_revision_array['counter'] = $multiple_reason_rev;
-                    //         $add_multiple_reason_for_revision_array['groupby'] = $index;
-                    //         $add_multiple_reason_for_revision_array['reason_for_revision'] = $request[$add_multiple_reason_for_revision.$multiple_reason_rev.'_'.$index];
-
-                    //         RevisionHistoryReasonForRevision::insert([
-                    //             $add_multiple_reason_for_revision_array
-                    //         ]);
-                    //         // return $request[$add_multiple_reason_for_revision.$multiple_reason_rev.'_'.$index];
-                    //     }else{
-
-                    //     }
-                    // }
                     $add_multiple_reason_for_revision = "multiple_reason_for_revision_";
                     for($multiple_reason_rev = 0; $multiple_reason_rev <= $request->add_multiple_reason_for_revision_counter; $multiple_reason_rev++){
                         if($request[$add_multiple_reason_for_revision.$multiple_reason_rev.'_'.$index] != null){
@@ -294,28 +317,11 @@ class PlcModulesController extends Controller
                             RevisionHistoryReasonForRevision::insert([
                                 $add_multiple_reason_for_revision_array
                             ]);
-                            // return $request[$add_multiple_reason_for_revision.$multiple_reason_rev.'_'.$index];
                         }else{
 
                         }
                     }
 
-                    // $add_multiple_details_of_revision = "multiple_details_of_revision_";
-                    // for($multiple_details_rev = 1; $multiple_details_rev <= $request->add_multiple_details_of_revision_counter; $multiple_details_rev++){
-                    //     if ($request[$add_multiple_details_of_revision.$multiple_details_rev.'_'.$index] != null) {
-                    //         $add_multiple_details_of_revision_array = $multiple_revision_history_details_array;
-                    //         $add_multiple_details_of_revision_array['counter'] = $multiple_details_rev;
-                    //         $add_multiple_details_of_revision_array['groupby'] = $index;
-                    //         $add_multiple_details_of_revision_array['details_of_revision'] = $request[$add_multiple_details_of_revision.$multiple_details_rev.'_'.$index];
-
-                    //         RevisionHistoryDetailsOfRevision::insert([
-                    //             $add_multiple_details_of_revision_array
-                    //         ]);
-                    //         // return $request[$add_multiple_details_of_revision.$multiple_details_rev.'_'.$index];
-                    //     }else{
-
-                    //     }
-                    // }
                     $add_multiple_details_of_revision = "multiple_details_of_revision_";
                     for($multiple_details_rev = 0; $multiple_details_rev <= $request->add_multiple_details_of_revision_counter; $multiple_details_rev++){
                         if ($request[$add_multiple_details_of_revision.$multiple_details_rev.'_'.$index] != null) {
@@ -327,125 +333,39 @@ class PlcModulesController extends Controller
                             RevisionHistoryDetailsOfRevision::insert([
                                 $add_multiple_details_of_revision_array
                             ]);
-                            // return $request[$add_multiple_details_of_revision.$multiple_details_rev.'_'.$index];
                         }else{
 
                         }
                     }
-                //     // $add_multiple_concerned_department_array = array();
-                //     $add_multiple_concerned_department = "multiple_concerned_dept_";
-                //     $add_multiple_incharge = "multiple_in_charge_";
-                //     for($multiple_dept_sect_incharge = 1; $multiple_dept_sect_incharge <= $request->add_multiple_dept_sect_incharge_counter; $multiple_dept_sect_incharge++){
-                //         // array_push($add_multiple_concerned_department_array, $request[$add_multiple_concerned_department.$multiple_dept_sect_incharge.'_'.$index]);
-                //         $impload_multiple_concerned_department = implode(" / ", $request[$add_multiple_concerned_department.$multiple_dept_sect_incharge.'_'.$index]);
 
-                //         if ($request[$add_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index] != null && $impload_multiple_concerned_department != null) {
-                //             $add_multiple_concern_dept_sect_incharge_array = $multiple_revision_history_details_array;
-                //             $add_multiple_concern_dept_sect_incharge_array['counter'] = $multiple_dept_sect_incharge;
-                //             $add_multiple_concern_dept_sect_incharge_array['groupby'] = $index;
-                //             $add_multiple_concern_dept_sect_incharge_array['concern_dept_sect'] = $impload_multiple_concerned_department;
-                //             $add_multiple_concern_dept_sect_incharge_array['in_charge'] = $request[$add_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index];
+                    $add_multiple_concerned_department = "multiple_concerned_dept_";
+                    $add_multiple_incharge = "multiple_in_charge_";
+                    for($multiple_dept_sect_incharge = 0; $multiple_dept_sect_incharge <= $request->add_multiple_dept_sect_incharge_counter; $multiple_dept_sect_incharge++){
+                        if ($request[$add_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index] != null) {
+                            $impload_multiple_concerned_department = implode(" / ", $request[$add_multiple_concerned_department.$multiple_dept_sect_incharge.'_'.$index]);
+                            $add_multiple_concern_dept_sect_incharge_array = $multiple_revision_history_details_array;
+                            $add_multiple_concern_dept_sect_incharge_array['counter'] = $multiple_dept_sect_incharge;
+                            $add_multiple_concern_dept_sect_incharge_array['groupby'] = $index;
+                            $add_multiple_concern_dept_sect_incharge_array['concern_dept_sect'] = $impload_multiple_concerned_department;
+                            $add_multiple_concern_dept_sect_incharge_array['in_charge'] = $request[$add_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index];
 
-                //             RevisionHistoryConcernDeptSectIncharge::insert(
-                //                 $add_multiple_concern_dept_sect_incharge_array
-                //             );
-                //         } else {
+                            RevisionHistoryConcernDeptSectIncharge::insert(
+                                $add_multiple_concern_dept_sect_incharge_array
+                            );
+                        } else {
 
-                //         }
-                //         // return $add_multiple_concerned_department_array;
-                //     }
-                // }
-                 // $add_multiple_concerned_department_array = array();
-                $add_multiple_concerned_department = "multiple_concerned_dept_";
-                $add_multiple_incharge = "multiple_in_charge_";
-                for($multiple_dept_sect_incharge = 0; $multiple_dept_sect_incharge <= $request->add_multiple_dept_sect_incharge_counter; $multiple_dept_sect_incharge++){
-                    // array_push($add_multiple_concerned_department_array, $request[$add_multiple_concerned_department.$multiple_dept_sect_incharge.'_'.$index]);
-                    $impload_multiple_concerned_department = implode(" / ", $request[$add_multiple_concerned_department.$multiple_dept_sect_incharge.'_'.$index]);
-
-                    if ($request[$add_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index] != null && $impload_multiple_concerned_department != null) {
-                        $add_multiple_concern_dept_sect_incharge_array = $multiple_revision_history_details_array;
-                        $add_multiple_concern_dept_sect_incharge_array['counter'] = $multiple_dept_sect_incharge;
-                        $add_multiple_concern_dept_sect_incharge_array['groupby'] = $index;
-                        $add_multiple_concern_dept_sect_incharge_array['concern_dept_sect'] = $impload_multiple_concerned_department;
-                        $add_multiple_concern_dept_sect_incharge_array['in_charge'] = $request[$add_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index];
-
-                        RevisionHistoryConcernDeptSectIncharge::insert(
-                            $add_multiple_concern_dept_sect_incharge_array
-                        );
-                    } else {
-
+                        }
                     }
-                    // return $add_multiple_concerned_department_array;
                 }
-            }
-                // print_r($impload_multiple_concerned_department);
-                // exit();
-                    // for($grr = 1; $grr <= $request->add_multiple_details_of_revision_counter; $grr++){
-                    //     // $add_details_of_revision_array = $xoxo;
-                    //     $add_details_of_revision_array['counter'] = $grr;
-                    //     $add_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$grr");
-
-                    //     RevisionHistoryDetailsOfRevision::insert([
-                    //         $add_details_of_revision_array
-                    //     ]);
-                    // }
-                    // $detailsOfRevisionArray = array();
-                    // $detailsOfRevision = "multiple_row_concerned_dept_";
-                    // for($hmp = 1; $hmp <= $request->add_multiple_dept_sect_incharge_counter; $hmp++){
-                    //     array_push($detailsOfRevisionArray, $request[$detailsOfRevision.$hmp]);
-                    //     $imploded_details_of_revision = implode(" / ", $request[$detailsOfRevision.$hmp]);
-                    //     // $add_dept_sect_array = $xoxo;
-                    //     $add_dept_sect_array['counter'] = $hmp;
-                    //     $add_dept_sect_array['concern_dept_sect'] = $imploded_details_of_revision;
-                    //     $add_dept_sect_array['in_charge'] = $request->input("in_charge_$hmp");
-
-                    //     RevisionHistoryConcernDeptSectIncharge::insert(
-                    //         $add_dept_sect_array
-                    //     );
-                    // }
             }else{ // Single Insert
-                $add_revision_history_array = [
-                    'category'      => $request->category_name,
-                    'process_owner' => $add_revision_process_owner,
-                    'revision_date' => $request->revision_date,
-                    'version_no'    => $request->version_no,
-                    'created_at'    => date('Y-m-d H:i:s')
-                ];
-
-                $get_rev_history_id = PLCModule::insertGetId(
-                    $add_revision_history_array
-                );
-
                 $single_revision_history_details_array = [
                     'plc_module_id' =>  $get_rev_history_id,
                     'category'      =>  $request->category_name,
-                    // 'groupby'       => 1,
                     'groupby'       => 0,
                 ];
 
-                // for($x = 1; $x <= $request->add_reason_for_revision_counter; $x++){
-                //     if ($request->input("reason_for_revision_$x") != null) {
-                //         $add_reason_for_revision_array = $single_revision_history_details_array;
-                //         $add_reason_for_revision_array['counter'] = $x;
-                //         $add_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
-
-                //         RevisionHistoryReasonForRevision::insert([
-                //             $add_reason_for_revision_array
-                //         ]);
-                //     } else {
-
-                //     }
-                // }
-
                 for($x = 0; $x <= $request->add_reason_for_revision_counter; $x++){
-                    // $singleReason = [
-                    //     'reason_for_revision' => 'required',
-                    // ];
                     if ($request->input("reason_for_revision_$x") != null) {
-
-                        $singleReason = [
-
-                        ];
                         $add_reason_for_revision_array = $single_revision_history_details_array;
                         $add_reason_for_revision_array['counter'] = $x;
                         $add_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
@@ -457,20 +377,6 @@ class PlcModulesController extends Controller
 
                     }
                 }
-
-                // for($y = 1; $y <= $request->add_details_of_revision_counter; $y++){
-                //     if ($request->input("details_of_revision_$y") != null) {
-                //         $add_details_of_revision_array = $single_revision_history_details_array;
-                //         $add_details_of_revision_array['counter'] = $y;
-                //         $add_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
-
-                //         RevisionHistoryDetailsOfRevision::insert([
-                //             $add_details_of_revision_array
-                //         ]);
-                //     } else {
-
-                //     }
-                // }
 
                 for($y = 0; $y <= $request->add_details_of_revision_counter; $y++){
                     if ($request->input("details_of_revision_$y") != null) {
@@ -486,27 +392,10 @@ class PlcModulesController extends Controller
                     }
                 }
 
-                // $add_concerned_department = "concerned_dept_";
-                // for($z = 1; $z <= $request->add_dept_sect_incharge_counter; $z++){
-                //     $impload_concerned_department = implode(" / ", $request[$add_concerned_department.$z]);
-                //     if($request->input("in_charge_$z") != null && $impload_concerned_department != null){
-                //         $add_dept_sect_array = $single_revision_history_details_array;
-                //         $add_dept_sect_array['counter'] = $z;
-                //         $add_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
-                //         $add_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
-
-                //         RevisionHistoryConcernDeptSectIncharge::insert([
-                //             $add_dept_sect_array
-                //         ]);
-                //     }else{
-
-                //     }
-                // }
-
                 $add_concerned_department = "concerned_dept_";
                 for($z = 0; $z <= $request->add_dept_sect_incharge_counter; $z++){
-                    $impload_concerned_department = implode(" / ", $request[$add_concerned_department.$z]);
-                    if($request->input("in_charge_$z") != null && $impload_concerned_department != null){
+                    if($request->input("in_charge_$z") != null){
+                        $impload_concerned_department = implode(" / ", $request[$add_concerned_department.$z]);
                         $add_dept_sect_array = $single_revision_history_details_array;
                         $add_dept_sect_array['counter'] = $z;
                         $add_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
@@ -520,7 +409,7 @@ class PlcModulesController extends Controller
                     }
                 }
 
-                 //ADD FLOW CHART
+                //ADD FLOW CHART
                 $add_flowchart = array(
                     'category'          => $request->category_name,
                     'process_owner'     => $add_revision_process_owner,
@@ -554,13 +443,13 @@ class PlcModulesController extends Controller
             // $get_rev_history_id = PLCModule::insertGetId(
             //     $add_revision_history_array
             // );
-            $data = Validator::make([$singleReason, 
-                $singleDetails, 
-                $singleConcernIncharge, 
-                $multipleReason, 
-                $multipleDetails, 
-                $multipleConcernIncharge
-            ]);
+            // $data = Validator::make([$singleReason, 
+            //     $singleDetails, 
+            //     $singleConcernIncharge, 
+            //     $multipleReason, 
+            //     $multipleDetails, 
+            //     $multipleConcernIncharge
+            // ]);
             return response()->json(['result' => "1"]);
         }
     }//===== ADD REVISION HISTORY FUNCTION END ====//
@@ -581,15 +470,27 @@ class PlcModulesController extends Controller
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
 
         }else{
-            $add_revision_process_owner = implode(" / ", $request->nr_process_owner);
-
-            $get_id = PLCModule::insertGetId([
-                'revision_date' => $request->no_revision,
+            $no_revision = [
+                'no_revision' => $request->no_revision,
                 'category'      => $request->category_name,
-                'process_owner' => $add_revision_process_owner,
+                // 'process_owner' => $add_revision_process_owner,
                 'version_no'    => $request->version_no,
                 'logdel'        => 0
-            ]);
+            ];
+            if($request->nr_process_owner != null){
+                $add_revision_process_owner = implode(" / ", $request->nr_process_owner);
+                $add_process_owner['process_owner'] = $add_revision_process_owner;
+
+                PLCModule::insert(
+                    $add_process_owner
+                );
+            }else{
+
+            }
+
+            $get_id = PLCModule::insertGetId(
+                $no_revision
+            );
 
             PLCModuleFlowChart::insert([
                 'rev_history_id'    => $get_id,
@@ -603,49 +504,63 @@ class PlcModulesController extends Controller
         }
     }//=====NO REVISION HISTORY FUNCTION END ====//
 
-    //============================== GET PLC CATEGORY BY ID TO EDIT ==============================
+    //============================== GET PLC REVISION HISTORY BY ID TO EDIT ==============================
     public function get_revision_history_id_to_edit(Request $request){
         $revision_history = PLCModule::with([
             'reason_for_revision_details',
             'details_of_revision_details',
-            'concern_dept_sect_inchanrge_details'
-            ])
-            ->where('id', $request->revision_history_id)
-            ->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
-
+            'concern_dept_sect_inchanrge_details',
+        ])
+        ->where('id', $request->revision_history_id)
+        ->where('logdel', 0)->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
+        
         $reason_for_revision_groupby = RevisionHistoryReasonForRevision::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
-        $reason_for_revision_details = RevisionHistoryReasonForRevision::where('plc_module_id', $revision_history[0]->id)->get();
-        
-        $details_of_revision_groupby =RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
-        $details_of_revision_details = RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->get();
-        
-        $concern_Dept_sect_incharge_groupby = RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
-        $concern_Dept_sect_incharge_details = RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $revision_history[0]->id)->get();
-        
+        $reason_for_revision_details = RevisionHistoryReasonForRevision::where('plc_module_id', $revision_history[0]->id)->where('logdel', 0)->get();
         for ($i=0; $i < $reason_for_revision_groupby ; $i++) {
             $reason_for_revision_array[] = collect($reason_for_revision_details)->where('groupby', $i)->flatten(0)->toArray();
         }
-
+        
+        $details_of_revision_groupby =RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
+        $details_of_revision_details = RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->where('logdel', 0)->get();
         for ($ii=0; $ii < $details_of_revision_groupby ; $ii++) {
             $details_of_revision_array[] = collect($details_of_revision_details)->where('groupby', $ii)->flatten(0)->toArray();
         }
 
+
+        $concern_Dept_sect_incharge_groupby = RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
+        $concern_Dept_sect_incharge_details = RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $revision_history[0]->id)->where('logdel', 0)->get();
         for ($iii=0; $iii < $concern_Dept_sect_incharge_groupby ; $iii++) {
             $concern_Dept_sect_incharge_array[] = collect($concern_Dept_sect_incharge_details)->where('groupby', $iii)->flatten(0)->toArray();
         }
 
-        // return $reason_for_revision_array;
+        // return $conformance_details;
         // $revisionHistory = $revision_history[0]->reason_for_revision;
         // $explodeDetailsOfRevision = explode ("\n\n", $revision_history[0]->details_of_revision);
-
         // print_r($explodeDetailsForRevision);
-        // return  $reason_for_revision_details;
-        return response()->json([
-            'revision_history' => $revision_history,
-            'reason_for_revision_array' =>  $reason_for_revision_array,
-            'details_of_revision_array' =>  $details_of_revision_array,
-            'concern_Dept_sect_incharge_array' => $concern_Dept_sect_incharge_array,
-        ]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
+
+        $rev_history = array(
+            'revision_history' => $revision_history
+        );
+        if(isset($reason_for_revision_array)){
+            $rev_history['reason_for_revision_array'] = $reason_for_revision_array;
+        }
+        if(isset($details_of_revision_array)){
+            $rev_history['details_of_revision_array'] = $details_of_revision_array;
+        }
+        if(isset($concern_Dept_sect_incharge_array)){
+            $rev_history['concern_Dept_sect_incharge_array'] = $concern_Dept_sect_incharge_array;
+        }
+        // if(isset($conformance_details)){
+        //     $rev_history['conformance_details'] = $conformance_details;
+        // }
+        return response()->json(
+            $rev_history
+            // 'revision_history' => $revision_history,
+            // 'reason_for_revision_array' =>  $reason_for_revision_array,
+            // 'details_of_revision_array' =>  $details_of_revision_array,
+            // 'concern_Dept_sect_incharge_array' => $concern_Dept_sect_incharge_array,
+            // 'conformance_details' => $conformance_details,
+        );  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
     //============================== EDIT REVISION HISTORY ==============================
@@ -673,97 +588,116 @@ class PlcModulesController extends Controller
                 'version_no'    => $request->edit_version_no,
             );
 
+            //UPDATE REVISION HISTORY
             PLCModule::where('id', $request->revision_history_id)
             ->update(
                 $edit_revision_history_array
             );
 
+            //UPDATE FLOW CHART
+            if(PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)->exists()){
+                PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)
+                ->update([
+                    'category'          => $request->category_name,
+                    'process_owner'     => $edit_revision_process_owner,
+                    'revision_date'     => $request->edit_revision_history_date,
+                    'version_no'        => $request->edit_version_no,
+                ]);
+            }else{
+                //ADD FLOW CHART
+                PLCModuleFlowChart::insert([
+                    'rev_history_id'    => $request->revision_history_id,
+                    'category'          => $request->category_name,
+                    'process_owner'     => $edit_revision_process_owner,
+                    'revision_date'     => $request->edit_revision_history_date,
+                    'version_no'        => $request->edit_version_no,
+                ]);
+            }
+
             if($request->edit_revision_history_counter > 0){ // Multiple Insert
+                $insert_multiple_rev_history = [
+                    'plc_module_id' =>  $request->revision_history_id,
+                    'category'      =>  $request->category_name,
+                ];
+
+                RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)->delete();
+                RevisionHistoryDetailsOfRevision::where('plc_module_id', $request->revision_history_id)->delete();
+                RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)->delete();
+
                 for($x = 0; $x <= $request->edit_reason_for_revision_counter; $x++){
+                    $edit_multiple_reason_for_revision_array = $insert_multiple_rev_history;
+                    $edit_multiple_reason_for_revision_array['counter'] = $x;
+                    $edit_multiple_reason_for_revision_array['groupby'] = 0;
+                    $edit_multiple_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
 
-                    $insert_multiple_rev_history = [
-                        'plc_module_id' =>  $request->revision_history_id,
-                        'category'      =>  $request->category_name,
-                    ];
-
-                    if ($request->input("reason_for_revision_$x") != null) {
-                        RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)->delete();
-                        $edit_multiple_reason_for_revision_array = $insert_multiple_rev_history;
-                        $edit_multiple_reason_for_revision_array['counter'] = $x;
-                        $edit_multiple_reason_for_revision_array['groupby'] = 0;
-                        $edit_multiple_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
-                        // return $edit_multiple_reason_for_revision_array;
-                        // exit (0);
-
-                        RevisionHistoryReasonForRevision::insert(
-                            $edit_multiple_reason_for_revision_array
-                        );
-                        // return 'IF: TANG INA MO';
-                    }else{
-                        $edit_multiple_reason_for_revision_array = $insert_multiple_rev_history;
-                        $edit_multiple_reason_for_revision_array['counter'] = $x;
-                        $edit_multiple_reason_for_revision_array['groupby'] = 0;
-                        $edit_multiple_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
-
-                        RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)
-                        ->update(
-                            $edit_multiple_reason_for_revision_array
-                        );   
-                        // return 'ELSE: DIMUNYO KA';
-                    }
+                    RevisionHistoryReasonForRevision::insert(
+                        $edit_multiple_reason_for_revision_array
+                    );
                 }
 
                 for($y = 0; $y <= $request->edit_details_of_revision_counter; $y++){
-                    if ($request->input("details_of_revision_$y") != null) {
-                        RevisionHistoryDetailsOfRevision::where('plc_module_id', $request->revision_history_id)->delete();
-                        $edit_multiple_details_of_revision_array = $insert_multiple_rev_history;
-                        $edit_multiple_details_of_revision_array['counter'] = $y;
-                        $edit_multiple_details_of_revision_array['groupby'] = 0;
-                        $edit_multiple_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
-    
-                        RevisionHistoryDetailsOfRevision::insert([
-                            $edit_multiple_details_of_revision_array
-                        ]);                    
-                    }else{
-                        $edit_multiple_details_of_revision_array = $insert_multiple_rev_history;
-                        $edit_multiple_details_of_revision_array['counter'] = $y;
-                        $edit_multiple_details_of_revision_array['groupby'] = 0;
-                        $edit_multiple_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
-    
-                        RevisionHistoryDetailsOfRevision::where('plc_module_id', $request->revision_history_id)
-                        ->update(
-                            $edit_multiple_details_of_revision_array
-                        );                 
-                    }
+                    $edit_multiple_details_of_revision_array = $insert_multiple_rev_history;
+                    $edit_multiple_details_of_revision_array['counter'] = $y;
+                    $edit_multiple_details_of_revision_array['groupby'] = 0;
+                    $edit_multiple_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
+
+                    RevisionHistoryDetailsOfRevision::insert([
+                        $edit_multiple_details_of_revision_array
+                    ]);                    
                 }
 
                 $edit_multiple_concerned_department = "concerned_dept_";
                 for($z = 0; $z <= $request->edit_dept_sect_incharge_counter; $z++){
-                    $impload_concerned_department = $request->concerned_dept_.$z;
-                    if($request->input("in_charge_$z") != null && $impload_concerned_department != null){
-                        RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)->delete();
-                        $impload_concerned_department = implode(" / ", $request[$edit_multiple_concerned_department.$z]);
-                        $edit_multiple_dept_sect_array = $insert_multiple_rev_history;
-                        $edit_multiple_dept_sect_array['counter'] = $z;
-                        $edit_multiple_dept_sect_array['groupby'] = 0;
-                        $edit_multiple_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
-                        $edit_multiple_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
+                    $impload_concerned_department = implode(" / ", $request[$edit_multiple_concerned_department.$z]);
+                    $edit_multiple_dept_sect_array = $insert_multiple_rev_history;
+                    $edit_multiple_dept_sect_array['counter'] = $z;
+                    $edit_multiple_dept_sect_array['groupby'] = 0;
+                    $edit_multiple_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
+                    $edit_multiple_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
 
-                        RevisionHistoryConcernDeptSectIncharge::insert([
-                            $edit_multiple_dept_sect_array
+                    RevisionHistoryConcernDeptSectIncharge::insert([
+                        $edit_multiple_dept_sect_array
+                    ]);
+                }
+
+                for($index = 1; $index <= $request->edit_revision_history_counter; $index++){
+                    $edit_multiple_reason_for_revision = "multiple_reason_for_revision_";
+                    for($multiple_reason_rev = 0; $multiple_reason_rev <= $request->edit_multiple_reason_for_revision_counter; $multiple_reason_rev++){
+                        $edit_multiple_card_reason_for_revision_array = $insert_multiple_rev_history;
+                        $edit_multiple_card_reason_for_revision_array['counter'] = $multiple_reason_rev;
+                        $edit_multiple_card_reason_for_revision_array['groupby'] = $index;
+                        $edit_multiple_card_reason_for_revision_array['reason_for_revision'] = $request[$edit_multiple_reason_for_revision.$multiple_reason_rev.'_'.$index];
+
+                        RevisionHistoryReasonForRevision::insert([
+                            $edit_multiple_card_reason_for_revision_array
                         ]);
-                    }else{
-                        $impload_concerned_department = $request->concerned_dept_.$z;
-                        $impload_concerned_department = implode(" / ", $request[$edit_multiple_concerned_department.$z]);
-                        $edit_multiple_dept_sect_array = $insert_multiple_rev_history;
-                        $edit_multiple_dept_sect_array['counter'] = $z;
-                        $edit_multiple_dept_sect_array['groupby'] = 0;
-                        $edit_multiple_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
-                        $edit_multiple_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
+                    }
 
-                        RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)
-                        ->update(
-                            $edit_multiple_dept_sect_array
+                    $edit_multiple_card_details_of_revision = "multiple_details_of_revision_";
+                    for($multiple_details_rev = 0; $multiple_details_rev <= $request->edit_multiple_details_of_revision_counter; $multiple_details_rev++){
+                        $edit_multiple_card_details_of_revision_array = $insert_multiple_rev_history;
+                        $edit_multiple_card_details_of_revision_array['counter'] = $multiple_details_rev;
+                        $edit_multiple_card_details_of_revision_array['groupby'] = $index;
+                        $edit_multiple_card_details_of_revision_array['details_of_revision'] = $request[$edit_multiple_card_details_of_revision.$multiple_details_rev.'_'.$index];
+
+                        RevisionHistoryDetailsOfRevision::insert([
+                            $edit_multiple_card_details_of_revision_array
+                        ]);
+                    }
+
+                    $edit_multiple_concerned_department = "multiple_concerned_dept_";
+                    $edit_multiple_incharge = "multiple_in_charge_";
+                    for($multiple_dept_sect_incharge = 0; $multiple_dept_sect_incharge <= $request->edit_multiple_dept_sect_incharge_counter; $multiple_dept_sect_incharge++){
+                        $impload_multiple_concerned_department = implode(" / ", $request[$edit_multiple_concerned_department.$multiple_dept_sect_incharge.'_'.$index]);
+
+                        $edit_multiple_card_concern_dept_sect_incharge_array = $insert_multiple_rev_history;
+                        $edit_multiple_card_concern_dept_sect_incharge_array['counter'] = $multiple_dept_sect_incharge;
+                        $edit_multiple_card_concern_dept_sect_incharge_array['groupby'] = $index;
+                        $edit_multiple_card_concern_dept_sect_incharge_array['concern_dept_sect'] = $impload_multiple_concerned_department;
+                        $edit_multiple_card_concern_dept_sect_incharge_array['in_charge'] = $request[$edit_multiple_incharge.$multiple_dept_sect_incharge.'_'.$index];
+
+                        RevisionHistoryConcernDeptSectIncharge::insert(
+                            $edit_multiple_card_concern_dept_sect_incharge_array
                         );
                     }
                 }
@@ -786,110 +720,72 @@ class PlcModulesController extends Controller
                 ];
 
                 for($x = 0; $x <= $request->edit_reason_for_revision_counter; $x++){
-                    if ($request->input("reason_for_revision_$x") != null) {
-                        RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)->delete();
-                        $edit_single_reason_for_revision_array = $insert_single_rev_history;
-                        $edit_single_reason_for_revision_array['counter'] = $x;
-                        $edit_single_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
-                        // return $edit_single_reason_for_revision_array;
-                        // exit (0);
+                    RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)->delete();
 
-                        RevisionHistoryReasonForRevision::insert(
-                            $edit_single_reason_for_revision_array
-                        );
-                        // return 'IF: TANG INA MO';
-                    }else{
-                        $edit_single_reason_for_revision_array = $insert_single_rev_history;
-                        $edit_single_reason_for_revision_array['counter'] = $x;
-                        $edit_single_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
+                    $edit_single_reason_for_revision_array = $insert_single_rev_history;
+                    $edit_single_reason_for_revision_array['counter'] = $x;
+                    $edit_single_reason_for_revision_array['reason_for_revision'] = $request->input("reason_for_revision_$x");
 
-                        RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)
-                        ->update(
-                            $edit_single_reason_for_revision_array
-                        );   
-                        // return 'ELSE: DIMUNYO KA';
-                    }
+                    RevisionHistoryReasonForRevision::insert(
+                        $edit_single_reason_for_revision_array
+                    );
                 }
 
                 for($y = 0; $y <= $request->edit_details_of_revision_counter; $y++){
-                    if ($request->input("details_of_revision_$y") != null) {
-                        RevisionHistoryDetailsOfRevision::where('plc_module_id', $request->revision_history_id)->delete();
-                        $edit_single_details_of_revision_array = $insert_single_rev_history;
-                        $edit_single_details_of_revision_array['counter'] = $y;
-                        $edit_single_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
-    
-                        RevisionHistoryDetailsOfRevision::insert([
-                            $edit_single_details_of_revision_array
-                        ]);                    
-                    }else{
-                        $edit_single_details_of_revision_array = $insert_single_rev_history;
-                        $edit_single_details_of_revision_array['counter'] = $y;
-                        $edit_single_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
-    
-                        RevisionHistoryDetailsOfRevision::where('plc_module_id', $request->revision_history_id)
-                        ->update(
-                            $edit_single_details_of_revision_array
-                        );                 
-                    }
+                    RevisionHistoryDetailsOfRevision::where('plc_module_id', $request->revision_history_id)->delete();
+
+                    $edit_single_details_of_revision_array = $insert_single_rev_history;
+                    $edit_single_details_of_revision_array['counter'] = $y;
+                    $edit_single_details_of_revision_array['details_of_revision'] = $request->input("details_of_revision_$y");
+
+                    RevisionHistoryDetailsOfRevision::insert([
+                        $edit_single_details_of_revision_array
+                    ]);                    
                 }
 
                 $edit_single_concerned_department = "concerned_dept_";
                 for($z = 0; $z <= $request->edit_dept_sect_incharge_counter; $z++){
                     $impload_concerned_department = $request->concerned_dept_.$z;
-                    if($request->input("in_charge_$z") != null && $impload_concerned_department != null){
-                        RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)->delete();
-                        $impload_concerned_department = implode(" / ", $request[$edit_single_concerned_department.$z]);
-                        $edit_single_dept_sect_array = $insert_single_rev_history;
-                        $edit_single_dept_sect_array['counter'] = $z;
-                        $edit_single_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
-                        $edit_single_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
+                    RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)->delete();
 
-                        RevisionHistoryConcernDeptSectIncharge::insert([
-                            $edit_single_dept_sect_array
-                        ]);
-                    }else{
-                        $impload_concerned_department = $request->concerned_dept_.$z;
-                        $impload_concerned_department = implode(" / ", $request[$edit_single_concerned_department.$z]);
-                        $edit_single_dept_sect_array = $insert_single_rev_history;
-                        $edit_single_dept_sect_array['counter'] = $z;
-                        $edit_single_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
-                        $edit_single_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
+                    $impload_concerned_department = implode(" / ", $request[$edit_single_concerned_department.$z]);
+                    $edit_single_dept_sect_array = $insert_single_rev_history;
+                    $edit_single_dept_sect_array['counter'] = $z;
+                    $edit_single_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
+                    $edit_single_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
 
-                        RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)
-                        ->update(
-                            $edit_single_dept_sect_array
-                        );
-                    }
+                    RevisionHistoryConcernDeptSectIncharge::insert([
+                        $edit_single_dept_sect_array
+                    ]);
                 }
             }
 
-                //UPDATE REVISION HISTORY
-                PLCModule::where('id', $request->revision_history_id)
-                ->update(
-                    $edit_revision_history_array
-                );
+            //UPDATE REVISION HISTORY
+            PLCModule::where('id', $request->revision_history_id)
+            ->update(
+                $edit_revision_history_array
+            );
 
-                //UPDATE FLOW CHART
-                if(PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)->exists()){
-                    PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)
-                    ->update([
-                        'category'          => $request->category_name,
-                        'process_owner'     => $edit_revision_process_owner,
-                        'revision_date'     => $request->edit_revision_history_date,
-                        'version_no'        => $request->edit_version_no,
-                    ]);
-                }else{
-                    //ADD FLOW CHART
-                    PLCModuleFlowChart::insert([
-                        'rev_history_id'    => $request->revision_history_id,
-                        'category'          => $request->category_name,
-                        'process_owner'     => $edit_revision_process_owner,
-                        'revision_date'     => $request->edit_revision_history_date,
-                        'version_no'        => $request->edit_version_no,
-                    ]);
-                }
+            //UPDATE FLOW CHART
+            if(PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)->exists()){
+                PLCModuleFlowChart::where('rev_history_id', $request->revision_history_id)
+                ->update([
+                    'category'          => $request->category_name,
+                    'process_owner'     => $edit_revision_process_owner,
+                    'revision_date'     => $request->edit_revision_history_date,
+                    'version_no'        => $request->edit_version_no,
+                ]);
+            }else{
+                //ADD FLOW CHART
+                PLCModuleFlowChart::insert([
+                    'rev_history_id'    => $request->revision_history_id,
+                    'category'          => $request->category_name,
+                    'process_owner'     => $edit_revision_process_owner,
+                    'revision_date'     => $request->edit_revision_history_date,
+                    'version_no'        => $request->edit_version_no,
+                ]);
+            }
             return response()->json(['result' => "1"]);
-
         }
     }
 
@@ -911,7 +807,7 @@ class PlcModulesController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-            PLCModuleFlowChart::where('id', $request->plc_revision_history_id)
+            PLCModuleFlowChart::where('rev_history_id', $request->plc_revision_history_id)
             ->update([
                 'flow_chart_status' => $request->status,
                 'updated_at' => date('Y-m-d H:i:s'),
@@ -945,6 +841,161 @@ class PlcModulesController extends Controller
     public function load_concerned_department(Request $request){
         $users_department = RapidXDepartment::where('department_stat', 1)->get();
         return response()->json(['users_department' => $users_department]);
+    }
+
+    // ========================================= ADD CONFORMANCE ===================================================
+    public function add_conformance(Request $request){
+        date_default_timezone_set('Asia/Manila');
+        
+        $data = $request->all();
+
+        $rules = [
+            // 'conformance_dept_sect_0[]'    => 'required|string|max:255',
+            // 'conformance_name_0'            => 'required|string|max:255',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if($validator->passes()){
+            $conformance = [
+                'category'              => $request->category_name,
+                'year'                  => $request->year,
+                'conformance_period'    => $request->conformance_period,
+                'created_at'            => date('Y-m-d H:i:s')
+            ];
+            // return $request->add_conformance_counter;
+            // exit (0);
+            $getConformanceId = RevisionHistoryConformance::insertGetId(
+                $conformance
+            );
+            if($request->add_conformance_counter > 0){
+                $add_multiple_dept_sect = "conformance_dept_sect_";
+                for($i = 0; $i <= $request->add_conformance_counter; $i++){
+                    if($request->input("conformance_dept_sect_$i") != null || $impload_multiple_concerned_department != null){
+                        $impload_multiple_concerned_department = implode(" / ", $request[$add_multiple_dept_sect.$i]);
+                        $multiple_add_dept_sect_conformance['conformance_id'] = $getConformanceId;
+                        $multiple_add_dept_sect_conformance['category'] = $request->category_name;
+                        $multiple_add_dept_sect_conformance['counter'] = $i;
+                        $multiple_add_dept_sect_conformance['dept_sect'] = $impload_multiple_concerned_department;
+                        $multiple_add_dept_sect_conformance['name'] = $request->input("conformance_name_$i");
+
+                        RevisionHistoryDeptSectConformance::insert(
+                            $multiple_add_dept_sect_conformance
+                        );
+                    }else{
+
+                    }
+                }
+            }else{
+                if($request->input("conformance_dept_sect_0") != null){
+                    $impload_single_concerned_department = implode(" / ", $request["conformance_dept_sect_0"]);
+                    $single_add_dept_sect_conformance['conformance_id'] = $getConformanceId;
+                    $single_add_dept_sect_conformance['category'] = $request->category_name;
+                    $single_add_dept_sect_conformance['counter'] = 0;
+                    $single_add_dept_sect_conformance['dept_sect'] = $impload_single_concerned_department;
+                    $single_add_dept_sect_conformance['name'] = $request->input("conformance_name_0");
+
+                    RevisionHistoryDeptSectConformance::insert(
+                        $single_add_dept_sect_conformance
+                    );
+                }else{
+
+                }
+            }
+            return response()->json(['result' => "1"]);
+        }
+        else{
+            return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
+        }
+    }
+
+    //============================== GET CONFORMANCE BY ID TO EDIT ==============================
+    public function get_revision_history_conformance_id_to_edit(Request $request){
+        $revision_history_conformance = RevisionHistoryConformance::with('conformance_details')
+        ->where('id', $request->revision_history_conformance_id)
+        ->where('logdel', 0)
+        ->get();
+        $conformance_details = RevisionHistoryDeptSectConformance::where('conformance_id', $revision_history_conformance[0]->id)->where('logdel', 0)->get();
+        // return $conformance_details;
+
+        $rev_history_conformance = array(
+            'revision_history_conformance' => $revision_history_conformance
+        );
+        if(isset($conformance_details)){
+            $rev_history_conformance['conformance_details'] = $conformance_details;
+        }
+
+        // return $rev_history_conformance;
+        return response()->json(
+            $rev_history_conformance
+        );
+    }
+    
+    //============================== EDIT CONFORMANCE ==============================
+    public function edit_revision_history_conformance(Request $request){
+        date_default_timezone_set('Asia/Manila');
+
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            // 'edit_plc_category' => 'required|string|max:255'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
+        }
+        else{
+            $conformance = [
+                'year'                  => $request->year,
+                'conformance_period'    => $request->conformance_period,
+                'updated_at'            => date('Y-m-d H:i:s')
+            ];
+            // return $request->add_conformance_counter;
+            // exit (0);
+            RevisionHistoryConformance::where('id', $request->revision_history_conformance_id)->update(
+                $conformance
+            );
+
+            $edit_dept_sect_conformance = [
+                'conformance_id'    => $request->revision_history_conformance_id,
+                'category'          => $request->category_name,
+                'created_at'        => date('Y-m-d H:i:s'),
+            ];
+            if($request->edit_conformance_counter > 0){
+                $edit_multiple_dept_sect = "edit_conformance_dept_sect_";
+                for($i = 0; $i < $request->edit_conformance_counter; $i++){
+                    if($request->input("edit_conformance_dept_sect_$i") != null){
+                        RevisionHistoryDeptSectConformance::where('conformance_id', $request->revision_history_conformance_id)->delete();
+                        $impload_multiple_concerned_department = implode(" / ", $request[$edit_multiple_dept_sect.$i]);
+                        $multiple_edit_dept_sect_conformance = $edit_dept_sect_conformance;
+                        $multiple_edit_dept_sect_conformance['dept_sect'] = $impload_multiple_concerned_department;
+                        $multiple_edit_dept_sect_conformance['counter'] = $i;
+                        $multiple_edit_dept_sect_conformance['name'] = $request->input("conformance_name_$i");
+
+                        RevisionHistoryDeptSectConformance::insert(
+                            $multiple_edit_dept_sect_conformance
+                        );
+                    }else{
+                        
+                    }
+                }
+            }else{
+                if($request->input("edit_conformance_dept_sect_0") != null){
+                    RevisionHistoryDeptSectConformance::where('conformance_id', $request->revision_history_conformance_id)->delete();
+                    $impload_single_concerned_department = implode(" / ", $request["edit_conformance_dept_sect_0"]);
+                    $single_edit_dept_sect_conformance = $edit_dept_sect_conformance;
+                    $single_edit_dept_sect_conformance['dept_sect'] = $impload_single_concerned_department;
+                    $single_edit_dept_sect_conformance['counter'] = 0;
+                    $single_edit_dept_sect_conformance['name'] = $request->input("conformance_name_0");
+
+                    RevisionHistoryDeptSectConformance::insert(
+                        $single_edit_dept_sect_conformance
+                    );
+                }else{
+
+                }
+            }
+            return response()->json(['result' => "1"]);
+        }
     }
 
 }

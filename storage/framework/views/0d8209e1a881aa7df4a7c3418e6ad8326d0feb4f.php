@@ -16,7 +16,7 @@
 
 
 
-<?php $__env->startSection('title', 'Blank Page'); ?>
+<?php $__env->startSection('title', 'CLC Module'); ?>
 
 <?php $__env->startSection('content_page'); ?>
 

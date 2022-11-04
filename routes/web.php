@@ -127,10 +127,14 @@ Route::post('/change_jsox_plc_matrix_stat', 'JsoxPlcMatrixController@change_jsox
 //========================== PLC MODULES CONTROLLER =============================
 Route::get('/go_to_plc_category_session', 'PlcModulesController@go_to_plc_category_session');
 Route::get('/view_plc_modules', 'PlcModulesController@view_plc_modules');
+Route::get('/view_plc_modules_conformance', 'PlcModulesController@view_plc_modules_conformance');
 Route::post('/add_revision_history', 'PlcModulesController@add_revision_history');
 Route::post('/no_revision_history', 'PlcModulesController@no_revision_history');
+Route::post('/add_conformance', 'PlcModulesController@add_conformance');
 Route::get('/get_revision_history_id_to_edit', 'PlcModulesController@get_revision_history_id_to_edit');
+Route::get('/get_revision_history_conformance_id_to_edit', 'PlcModulesController@get_revision_history_conformance_id_to_edit');
 Route::post('/edit_revision_history', 'PlcModulesController@edit_revision_history');
+Route::post('/edit_revision_history_conformance', 'PlcModulesController@edit_revision_history_conformance');
 // Route::post('/delete_revision_history', 'PlcModulesController@delete_revision_history');
 // Route::post('/deactivate_revision_history', 'PlcModulesController@deactivate_revision_history');
 // Route::post('/activate_revision_history', 'PlcModulesController@activate_revision_history');
@@ -253,6 +257,8 @@ Route::get('/get_ppc_whse_pps_data', 'AnalyticsController@get_ppc_whse_pps_data'
 Route::get('/get_finance_data', 'AnalyticsController@get_finance_data');
 Route::get('/get_logistics_data', 'AnalyticsController@get_logistics_data');
 
+Route::get('/export_ng_report/{year_id}/{dept_id}', 'AnalyticsController@export_ng_report');
+Route::get('/view_pps_data', 'AnalyticsController@view_pps_data');
 
 
 

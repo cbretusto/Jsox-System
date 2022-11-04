@@ -76,12 +76,12 @@
 
             <!-- CSS LINKS -->
             @include('shared.css_links.css_links')
-            <style>
+            {{-- <style>
                 .modal-xl-custom{
                     width: 95% !important;
                     min-width: 90% !important;
                 }
-            </style>
+            </style> --}}
         </head>
         <body class="hold-transition sidebar-mini">
             <input type="hidden" id="login_id" value="<?php echo $_SESSION['rapidx_user_id']; ?>">

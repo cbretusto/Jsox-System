@@ -45,3 +45,5 @@
 <link href="{{ asset('public/css/flash.css') }}" rel="stylesheet">
 
 <link href="{{ asset('public/css/custom.css') }}" rel="stylesheet">
+
+
