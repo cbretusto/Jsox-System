@@ -34,6 +34,7 @@ function AddClcEvidences(){
         success: function(response){
             if(response['validation'] == 'hasError'){
                 toastr.error('Saving Failed!');
+                
                 if(response['error']['date_uploaded'] === undefined){
                     $("#txtAddDate").removeClass('is-invalid');
                     $("#txtAddDate").attr('title', '');
@@ -115,7 +116,7 @@ function GetClcEvidencesByIdToEdit(clc_evidencesId){
             let clc_evidences_id = response['clc_evidences_id'];
             if(clc_evidences_id.length > 0){
                 $("#txtEditDate").val(clc_evidences_id[0].date_uploaded);
-                $("#txtEditFiscalYear").val(clc_evidences_id[0].fiscal_year);
+                $("#txtEditFiscalYear").val(clc_evidences_id[0].fiscal_year).trigger('change');
                 $("#selEditAuditPeriod").val(clc_evidences_id[0].audit_period).trigger('change');
                 $("#selEditClcCategory").val(clc_evidences_id[0].clc_category).trigger('change');
                 $("#EditClcEvidenceFile").val(clc_evidences_id[0].uploaded_file);
@@ -187,14 +188,14 @@ function EditClcEvidences(){
                     $("#selEditClcCategory").addClass('is-invalid');
                     $("#selEditClcCategory").attr('title', response['error']['clc_category']);
                 }
-                if(response['error']['uploaded_file'] === undefined){
-                    $("#txtEditClcEvidenceFile").removeClass('is-invalid');
-                    $("#txtEditClcEvidenceFile").attr('title', '');
-                }
-                else{
-                    $("#txtEditClcEvidenceFile").addClass('is-invalid');
-                    $("#txtEditClcEvidenceFile").attr('title', response['error']['uploaded_file']);
-                }
+                // if(response['error']['uploaded_file'] === undefined){
+                //     $("#txtEditClcEvidenceFile").removeClass('is-invalid');
+                //     $("#txtEditClcEvidenceFile").attr('title', '');
+                // }
+                // else{
+                //     $("#txtEditClcEvidenceFile").addClass('is-invalid');
+                //     $("#txtEditClcEvidenceFile").attr('title', response['error']['uploaded_file']);
+                // }
             }
             else if(response['result'] == 1){
                 $("#modalEditClcEvidences").modal('hide');

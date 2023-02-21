@@ -192,6 +192,7 @@ function GetRevisionHistoryId(revisionHistoryId){
                 }else{
 
                 }
+                $("#selectEditDepartment_0").val(history_revision[0].concern_dept_sect).trigger('change');
                 $("#txtEditVersionNo").val(history_revision[0].version_no);
                 $("#txtEditRevisionHistoryDate").val(history_revision[0].revision_date);
                 $("#txtEditNoRevisionHistory").val(history_revision[0].no_revision);
@@ -518,14 +519,6 @@ function LoadUserListProcessOwner(cboElement)
                 for(let index = 0; index < response['users'].length; index++){
                     // let disabled = '';
                     result += '<option value="' + response['users'][index].rapidx_name + '">' + response['users'][index].rapidx_name + '</option>';
-
-                    // if(JsonObject['users'][index].status == 2){
-                    //     disabled = 'disabled';
-                    // }
-                    // else{
-                    //     disabled = '';
-                    // }
-                    // result += '<option data-code="' + JsonObject['users'][index].id + '" ' + disabled + '>' + JsonObject['users'][index].name + '</option>';
                 }
             }
             else{
@@ -561,7 +554,7 @@ function LoadConcernedDepartment(cboElement){
                     // console.log(selectDept);
                     // console.log(typeof selectDept);
                     // result += '<option selected disabled>-- Select Concerned Department -- </option>';
-                    result += '<option value="">-- Select -- </option>';
+                    // result += '<option value="">-- Select -- </option>';
                 }
 
                 for(let index = 0; index < response['users_department'].length; index++){
@@ -684,18 +677,21 @@ function GetRevisionHistoryConformanceId(revisionHistoryConformanceId){
             console.log('Conformance', revision_history_conformance);
 
             if(revision_history_conformance.length > 0){
-                $("#txtEditYear").val(revision_history_conformance[0].year);
-                $("#selEditConformancePeriod").val(revision_history_conformance[0].conformance_period).trigger('change');;
+                $("#selEditConformanceSection_0").val(revision_history_conformance[0].dept_sect).trigger('change');
+                $("#selectEditConformanceName_0").val(revision_history_conformance[0].name).trigger('change');
+                $("#selEditFiscalYearRevHistory").val(revision_history_conformance[0].year).trigger('change');
+                $("#selEditConformancePeriod").val(revision_history_conformance[0].conformance_period).trigger('change');
             
                 console.log('Conformance Details:', conformance_details);
+                for (let x = 0; x <= revision_history_conformance.length; x++) {
+                    $('#removeEditRowConformance')[0].click();
+                }
                 for (let conformanceCounter = 0; conformanceCounter < conformance_details.length; conformanceCounter++) {
                     if(conformanceCounter > 0){
                         $('#addEditRowConformance')[0].click();
                     }
                     console.log('|================ CONSOLE Conformance Counter:', conformanceCounter,'===============|');
-                    $(`#txtEditConformanceName_${conformanceCounter}`).val(conformance_details[conformanceCounter].name);
-                    console.log(`***CONSOLE: #txtEditConformanceName_${conformanceCounter}`,conformance_details[conformanceCounter].name);
-
+                    //GET CONFORMANCE DEPARTMENT / SECTION
                     let conformance_dept_sect_splitted = conformance_details[conformanceCounter].dept_sect.split(' / ');
                     for (let index = 0; index < conformance_dept_sect_splitted.length; index++) {
                         setTimeout(() => {
@@ -705,6 +701,17 @@ function GetRevisionHistoryConformanceId(revisionHistoryConformanceId){
                     }
                     console.log(`***CONSOLE: edit_conformance_dept_sect_${conformanceCounter}`,conformance_dept_sect_splitted);
                     console.log('***CONSOLE GET DEPT SECT:', conformance_details[conformanceCounter].dept_sect);
+
+                    //GET CONFORMANCE NAME
+                    let conformance_conformance_name_splitted = conformance_details[conformanceCounter].name.split(' / ');
+                    for (let y = 0; y < conformance_conformance_name_splitted.length; y++) {
+                        setTimeout(() => {
+                            let name = '<option selected value="' + conformance_conformance_name_splitted[y] + '">' + conformance_conformance_name_splitted[y] + '</option>';
+                            $(`select[name="conformance_name_${conformanceCounter}[]"]`, editConformanceForm).append(name);
+                        }, 500);
+                    }
+                    console.log(`***CONSOLE: conformance_name_${conformanceCounter}`,conformance_conformance_name_splitted);
+                    console.log('***CONSOLE GET CONFORMANCE NAME:', conformance_details[conformanceCounter].name);
                 }
             }else{
                 toastr.warning('No Revision History Conformance Record Found!');
@@ -714,7 +721,6 @@ function GetRevisionHistoryConformanceId(revisionHistoryConformanceId){
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
         }
-
     });
 }
 
@@ -751,12 +757,12 @@ function EditConformance(){
                 toastr.error('Saving Conformance Failed!');
 
                 if(response['error']['year'] === undefined){
-                    $("#txtEditYear").removeClass('is-invalid');
-                    $("#txtEditYear").attr('title', '');
+                    $("#selEditFiscalYearRevHistory").removeClass('is-invalid');
+                    $("#selEditFiscalYearRevHistory").attr('title', '');
                 }
                 else{
-                    $("#txtEditYear").addClass('is-invalid');
-                    $("#txtEditYear").attr('title', response['error']['year']);
+                    $("#selEditFiscalYearRevHistory").addClass('is-invalid');
+                    $("#selEditFiscalYearRevHistory").attr('title', response['error']['year']);
                 }
                 if(response['error']['conformance_period'] === undefined){
                     $("#selEditConformancePeriod").removeClass('is-invalid');

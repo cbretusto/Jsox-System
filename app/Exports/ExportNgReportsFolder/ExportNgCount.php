@@ -138,7 +138,6 @@ class ExportNgCount implements  FromView, WithTitle, WithEvents
             );
 
 
-
             return [
                 AfterSheet::class => function(AfterSheet $event) use (
                     $arial_font12,
@@ -199,8 +198,6 @@ class ExportNgCount implements  FromView, WithTitle, WithEvents
                 $event->sheet->setCellValue('A37',"PMI-36");
 
                 $event->sheet->setCellValue('B1',"Year");
-
-
 
                   //==================== Data =========================
 

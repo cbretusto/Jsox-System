@@ -23,225 +23,312 @@ function GetPlcCapaIdToEdit(plcCapaID){
         method: "get",
         data: {
             plc_capa_id: plcCapaID,
-            // plc_evidences_uploadedby: plcEvidencesUplodedBy
         },
         dataType: "json",
         beforeSend: function(){
         },
         success: function(response){
-            let get_sa_plca_capa = response['get_sa_plca_capa'];
-            let capa_analysis_details = response['capa_analysis_details'];
-            let corrective_action_details = response['corrective_action_details'];
-            let preventive_action_details = response['preventive_action_details'];
-            let dicOecAssessmentFindings = response['dicOecAssessmentFindings'];
-            console.log('get_sa_plca_capa',get_sa_plca_capa);
-            if(get_sa_plca_capa.length > 0){
-                $("#txtPreparedById").val(get_sa_plca_capa[0].prepared_by);
-                $("#txtApprovedById").val(get_sa_plca_capa[0].approved_by);
-                $("#txtIssuedDateId").val(get_sa_plca_capa[0].issued_date);
-                $("#txtDueDateId").val(get_sa_plca_capa[0].due_date);
-                $("#txtCommitmentDateId").val(get_sa_plca_capa[0].commitment_date);
+            let get_sa_plc_capa = response['get_sa_plc_capa'];
+            let get_plc_capa_dic_statement_of_findings = response['get_plc_capa_dic_statement_of_findings'];
+            let get_plc_capa_oec_statement_of_findings = response['get_plc_capa_oec_statement_of_findings'];
+            let rcm_internal_control = response['rcm_internal_control'];
 
-                if(get_sa_plca_capa[0].statement_of_findings == null){
-                    let dicOecCommas = dicOecAssessmentFindings.join('\n\n');
-                    $("#txtPlcCapaStatementOfFindings").val(dicOecCommas);
-                }else{
-                    $("#txtPlcCapaStatementOfFindings").val(get_sa_plca_capa[0].statement_of_findings);
+            if(get_sa_plc_capa.length > 0){
+                $("#txtCategoryId").val(get_sa_plc_capa[0].category);
+                $("#txtIssuedDateId").val(get_sa_plc_capa[0].issued_date);
+                $("#txtDueDateId").val(get_sa_plc_capa[0].due_date);
+                $("#selPreparedBy").val(get_sa_plc_capa[0].prepared_by).trigger('change');
+                $("#selApprovedBy").val(get_sa_plc_capa[0].approved_by).trigger('change');
+                $("#txtProcessName").val(get_sa_plc_capa[0].plc_category_info['plc_category']);
+
+                $("#txtControlId").val(rcm_internal_control[0].control_id);
+                $("#txtInternalControl").val(rcm_internal_control[0].internal_control);
+                                
+                if(get_sa_plc_capa[0].plc_sa_dic_assessment_details_findings_details != ''){
+                    $("#btnDesignImplementationControls").removeClass('d-none');
+                    $("#btnOperatingEffectivenessControls").addClass('d-none');
+                    console.log('**SHOW DIC BUTTON')
+                } 
+
+                if(get_sa_plc_capa[0].plc_sa_oec_assessment_details_findings_details != ''){
+                    $("#btnOperatingEffectivenessControls").removeClass('d-none');
+                    $("#btnDesignImplementationControls").addClass('d-none');
+                    console.log('**SHOW OEC BUTTON')
                 }
+
+                if(get_sa_plc_capa[0].plc_sa_dic_assessment_details_findings_details != '' && get_sa_plc_capa[0].plc_sa_oec_assessment_details_findings_details != ''){
+                    $("#btnDesignImplementationControls").removeClass('d-none');
+                    $("#btnOperatingEffectivenessControls").removeClass('d-none');
+                    console.log('**SHOW DIC BUTTON')
+                    console.log('**SHOW OEC BUTTON')
+                }
+                // ========================================== DIC STATEMENT OF FINDINGS ==========================================
+                for(let dicadf = 0; dicadf < get_sa_plc_capa[0].plc_sa_dic_assessment_details_findings_details.length; dicadf++){
+                    console.log('Statement of Findings', dicadf);
+                    if(dicadf < 1){
+                        $('#removeRowDicStatementOfFindings')[0].click();
+                    }else{
+                        $('#addRowDicStatementOfFindings')[0].click();
+                    }
+                    if(get_sa_plc_capa[0].capa_details[dicadf] == undefined){
+                        $(`#txtDicStatementOfFindings_${dicadf}`).val(get_sa_plc_capa[0].plc_sa_dic_assessment_details_findings_details[dicadf]['dic_assessment_details_findings']);
+                    }else{
+                        for(let index = 0; index < get_plc_capa_dic_statement_of_findings.length; index++) {
+                            console.log('\x1B[47m*DIC Statement of Findings',index,'\n', get_plc_capa_dic_statement_of_findings[index]['dic_statement_of_findings']);
+                            $(`#txtDicStatementOfFindings_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['dic_statement_of_findings']);
+                            $(`#txtDicStatementOfFindingsAttachment_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['dic_attachment']);
+                            $(`#txtDicCapaAnalysis_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['capa_analysis']);
+                            $(`#txtDicCapaAnalysisAttachment_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['capa_analysis_attachment']);
+                            $(`#txtDicCorrectiveAction_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['corrective_action']);
+                            $(`#txtDicCorrectiveActionAttachment_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['corrective_action_attachment']);
+                            $(`#txtDicPrentiveAction_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['preventive_action']);
+                            $(`#txtDicPreventiveActionAttachment_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['preventive_action_attachment']);
+                            $(`#txtDicCommitmentDate_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['commitment_date']);
+                            $(`#dicCapaInCharge_${index}`).val(get_plc_capa_dic_statement_of_findings[index]['in_charge']).trigger('change');
+
+                            if(get_plc_capa_dic_statement_of_findings[index]['capa_analysis_attachment'] != null){
+                                $(`#fileDicCapaAnalysisAttachment_${index}`).addClass('d-none');
+                                $(`#txtDicCapaAnalysisAttachment_${index}`).removeClass('d-none');
+                                $(`#chckDicCapaAnalysis_${index}`).removeClass('d-none');
+                                $(`#txtDicCapaAnalysisReuploadFile_${index}`).removeClass('d-none');
+                                console.log('DIC CAPA Analysis Attachment not null');
+
+                                setTimeout(() => {
+                                    $('#chckDicCapaAnalysis_'+index).on('click', function(){
+                                        $('#chckDicCapaAnalysis_'+index).attr('checked', 'checked');
+                                            if($(this).is(':checked')){
+                                                console.log('DIC CAPA ANALYSIS checked');
+                                                $("#fileDicCapaAnalysisAttachment_"+index).removeClass('d-none');
+                                                $('#txtDicCapaAnalysisAttachment_'+index).addClass('d-none');
+                                            }
+                                            else{
+                                                console.log('DIC CAPA ANALYSIS not checked');
+                                                $("#fileDicCapaAnalysisAttachment_"+index).addClass('d-none');
+                                                $('#txtDicCapaAnalysisAttachment_'+index).removeClass('d-none');
+                                            }
+                                        });
+                                }, 500);
+                            }else{
+                                console.log('DIC CAPA Analysis Attachment null');
+                            }
+
+                            if(get_plc_capa_dic_statement_of_findings[index]['corrective_action_attachment'] != null){
+                                $(`#fileDicCorrectiveActionAttachment_${index}`).addClass('d-none');
+                                $(`#txtDicCorrectiveActionAttachment_${index}`).removeClass('d-none');
+                                $(`#chckDicCorrectiveAction_${index}`).removeClass('d-none');
+                                $(`#txtDicCorrectiveActionReuploadFile_${index}`).removeClass('d-none');
+                                console.log('DIC CORRECTIVE ACTION not null');
+
+                                setTimeout(() => {
+                                    $('#chckDicCorrectiveAction_'+index).on('click', function(){
+                                        $('#chckDicCorrectiveAction_'+index).attr('checked', 'checked');
+                                        if($(this).is(':checked')){
+                                            console.log('DIC CORRECTIVE ACTION checked');
+                                            $("#fileDicCorrectiveActionAttachment_"+index).removeClass('d-none');
+                                            $('#txtDicCorrectiveActionAttachment_'+index).addClass('d-none');
+                                        }
+                                        else{
+                                            console.log('DIC CORRECTIVE ACTION not checked');
+                                            $("#fileDicCorrectiveActionAttachment_"+index).addClass('d-none');
+                                            $('#txtDicCorrectiveActionAttachment_'+index).removeClass('d-none');
+                                        }
+                                    });
+                                }, 500);
+                            }else{
+                                console.log('DIC CORRECTIVE ACTION null');
+                            }
+
+                            if(get_plc_capa_dic_statement_of_findings[index]['preventive_action_attachment'] != null){
+                                $(`#fileDicPreventiveActionAttachment_${index}`).addClass('d-none');
+                                $(`#txtDicPreventiveActionAttachment_${index}`).removeClass('d-none');
+                                $(`#chckDicPreventiveAction_${index}`).removeClass('d-none');
+                                $(`#txtDicPreventiveActionReuploadFile_${index}`).removeClass('d-none');
+                                console.log('DIC PREVENTIVE ACTION not null');
+
+                                setTimeout(() => {
+                                    $('#chckDicPreventiveAction_'+index).on('click', function(){
+                                        $('#chckDicPreventiveAction_'+index).attr('checked', 'checked');
+                                        if($(this).is(':checked')){
+                                            console.log('DIC PREVENTIVE ACTION checked');
+                                            $("#fileDicPreventiveActionAttachment_"+index).removeClass('d-none');
+                                            $('#txtDicPreventiveActionAttachment_'+index).addClass('d-none');
+                                        }
+                                        else{
+                                            console.log('DIC PREVENTIVE ACTION not checked');
+                                            $("#fileDicPreventiveActionAttachment_"+index).addClass('d-none');
+                                            $('#txtDicPreventiveActionAttachment_'+index).removeClass('d-none');
+                                        }
+                                    });
+                                }, 500);
+                            }else{
+                                console.log('DIC PREVENTIVE ACTION null');
+                            }
+
+                            if(get_plc_capa_dic_statement_of_findings[index]['dic_attachment'] != null){
+                                $(`#fileDicStatementOfFindingsAttachment_${index}`).addClass('d-none');
+                                $(`#txtDicStatementOfFindingsAttachment_${index}`).removeClass('d-none');
+                                $(`#chckDicStatementOfFindings_${index}`).removeClass('d-none');
+                                $(`#txtDicStatementOfFindingsReuploadFile_${index}`).removeClass('d-none');
+                                console.log('DIC STATEMENT OF FINDINGS Attachment not null');
+
+                                setTimeout(() => {
+                                    $('#chckDicStatementOfFindings_'+index).on('click', function(){
+                                        $('#chckDicStatementOfFindings_'+index).attr('checked', 'checked');
+                                            if($(this).is(':checked')){
+                                                console.log('DIC STATEMENT OF FINDINGS checked');
+                                                $("#fileDicStatementOfFindingsAttachment_"+index).removeClass('d-none');
+                                                $('#txtDicStatementOfFindingsAttachment_'+index).addClass('d-none');
+                                            }
+                                            else{
+                                                console.log('DIC STATEMENT OF FINDINGS not checked');
+                                                $("#fileDicStatementOfFindingsAttachment_"+index).addClass('d-none');
+                                                $('#txtDicStatementOfFindingsAttachment_'+index).removeClass('d-none');
+                                            }
+                                        });
+                                }, 500);
+                            }else{
+                                console.log('DIC STATEMENT OF FINDINGS Attachment null');
+                            }
+                        }
+                    }
+                    $('#modalEditPlcCapa').on('hidden.bs.modal', function () {
+                        $("#editPlcCapaForm")[0].reset();
+                        console.log('DIC RESET ATTACHMENT')
+                    });
+                }
+
+                // ========================================== OEC STATEMENT OF FINDINGS ==========================================
+                for(let oecadf = 0; oecadf < get_sa_plc_capa[0].plc_sa_oec_assessment_details_findings_details.length; oecadf++){
+                    console.log('Statement of Findings', oecadf);
+                    if(oecadf < 1){
+                        $('#removeRowOecStatementOfFindings')[0].click();
+                    }else{
+                        $('#addRowOecStatementOfFindings')[0].click();
+                    }
                     
-                //START CAPA ANALYSIS GET DATA
-                if(capa_analysis_details.length != '0'){
-                    $("#txtEditCapaAnalysis").val(capa_analysis_details[0].capa_analysis);
-                    $("#txtEditCapaAnalysisAttachment").val(capa_analysis_details[0].capa_analysis_attachment);
-
-                    // To remove auto counting of row in multiple (EDIT)
-                    for(let ca = 2; ca <= capa_analysis_details.length; ca++){
-                        $('#removeRowCapaAnalysis')[0].click();
-                    }
-                    let capa_analysis_counter = 1;
-                    // To automatic add row in edit base on how many the CAPA ANALYSIS is
-                    for(let ca = 2; ca <= capa_analysis_details.length; ca++){
-                        $('#addRowCapaAnalysis')[0].click();
-
-                        $('#txtEditCapaAnalysis_'+ca).val(capa_analysis_details[capa_analysis_counter].capa_analysis)
-                        $('#txtEditCapaAnalysisAttachment_'+ca).val(capa_analysis_details[capa_analysis_counter].capa_analysis_attachment)
-
-                        if(capa_analysis_details[capa_analysis_counter].capa_analysis_attachment != ''){
-                            $("#fileEditCapaAnalysisAttachment_"+ca).addClass('d-none');
-                            $("#txtEditCapaAnalysisAttachment_"+ca).removeClass('d-none');
-                            $("#chckCapaAnalysis_"+ca).removeClass('d-none');
-                            $("#txtCapaAnalysisReuploadFile_"+ca).removeClass('d-none');
-                        }
-
-                        capa_analysis_counter = capa_analysis_counter+1;
-                    }
-                    // CAPA Analysis
-                    if($('#txtEditCapaAnalysisAttachment').val() != ''){
-                        $("#fileEditCapaAnalysisAttachment").addClass('d-none');
-                        $("#txtEditCapaAnalysisAttachment").removeClass('d-none');
-                        $("#chckCapaAnalysis").removeClass('d-none');
-                        $("#txtCapaAnalysisReuploadFile").removeClass('d-none');
-                        console.log('CAPA Analysis Attachment not null');
+                    if( get_sa_plc_capa[0].capa_details[oecadf] == undefined){
+                        $(`#txtOecStatementOfFindings_${oecadf}`).val(get_sa_plc_capa[0].plc_sa_oec_assessment_details_findings_details[oecadf]['oec_assessment_details_findings']);
                     }else{
-                        $("#DicAttachment").removeClass('d-none');
-                        $("#txtEditCapaAnalysisAttachment").addClass('d-none');
-                        $("#chckCapaAnalysis").addClass('d-none');
-                        $("#txtCapaAnalysisReuploadFile").addClass('d-none');
-                        console.log('CAPA Analysis Attachment null');
-                    }//END CAPA Analysis GET DATA
+                        for (let endex = 0; endex < get_plc_capa_oec_statement_of_findings.length; endex++) {                            
+                            console.log('\x1B[46m*OEC Statement of Findings',endex,'\n', get_plc_capa_oec_statement_of_findings[endex]['oec_statement_of_findings']);
+                            $(`#txtOecStatementOfFindings_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['oec_statement_of_findings']);
+                            $(`#txtOecStatementOfFindingsAttachment_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['oec_attachment']);
+                            $(`#txtOecCapaAnalysis_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['capa_analysis']);
+                            $(`#txtOecCapaAnalysisAttachment_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['capa_analysis_attachment']);
+                            $(`#txtOecCorrectiveAction_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['corrective_action']);
+                            $(`#txtOecCorrectiveActionAttachment_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['corrective_action_attachment']);
+                            $(`#txtOecPrentiveAction_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['preventive_action']);
+                            $(`#txtOecPreventiveActionAttachment_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['preventive_action_attachment']);
+                            $(`#txtOecCommitmentDate_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['commitment_date']);
+                            $(`#oecCapaInCharge_${endex}`).val(get_plc_capa_oec_statement_of_findings[endex]['in_charge']).trigger('change');
 
-                    //CAPA Analysis CHECKBOX
-                    $('#chckCapaAnalysis').on('click', function() {
-                        $('#chckCapaAnalysis').attr('checked', 'checked');
-                        if($(this).is(":checked")){
-                            $("#fileEditCapaAnalysisAttachment").removeClass('d-none');
-                            $("#txtEditCapaAnalysisAttachment").addClass('d-none');
-                            console.log('CAPA Analysis Show Upload File')
+                            if(get_plc_capa_oec_statement_of_findings[endex]['capa_analysis_attachment'] != null){
+                                $(`#fileOecCapaAnalysisAttachment_${endex}`).addClass('d-none');
+                                $(`#txtOecCapaAnalysisAttachment_${endex}`).removeClass('d-none');
+                                $(`#chckOecCapaAnalysis_${endex}`).removeClass('d-none');
+                                $(`#txtOecCapaAnalysisReuploadFile_${endex}`).removeClass('d-none');
+                                console.log('OEC CAPA Analysis Attachment not null');
+
+                                setTimeout(() => {
+                                    $('#chckOecCapaAnalysis_'+endex).on('click', function(){
+                                        $('#chckOecCapaAnalysis_'+endex).attr('checked', 'checked');
+                                        if($(this).is(':checked')){
+                                            console.log('OEC CAPA ANALYSIS checked');
+                                            $("#fileOecCapaAnalysisAttachment_"+endex).removeClass('d-none');
+                                            $('#txtOecCapaAnalysisAttachment_'+endex).addClass('d-none');
+                                        }
+                                        else{
+                                            console.log('OEC CAPA ANALYSIS not checked');
+                                            $("#fileOecCapaAnalysisAttachment_"+endex).addClass('d-none');
+                                            $('#txtOecCapaAnalysisAttachment_'+endex).removeClass('d-none');
+                                        }
+                                    });
+                                }, 500);
+                            }else{
+                                console.log('OEC CAPA Analysis Attachment null');
+                            }
+
+                            if(get_plc_capa_oec_statement_of_findings[endex]['corrective_action_attachment'] != null){
+                                $(`#fileOecCorrectiveActionAttachment_${endex}`).addClass('d-none');
+                                $(`#txtOecCorrectiveActionAttachment_${endex}`).removeClass('d-none');
+                                $(`#chckOecCorrectiveAction_${endex}`).removeClass('d-none');
+                                $(`#txtOecCorrectiveActionReuploadFile_${endex}`).removeClass('d-none');
+                                console.log('OEC CORRECTIVE ACTION not null');
+
+                                setTimeout(() => {
+                                    $('#chckOecCorrectiveAction_'+endex).on('click', function(){
+                                        $('#chckOecCorrectiveAction_'+endex).attr('checked', 'checked');
+                                        if($(this).is(':checked')){
+                                            console.log('OEC CAPA ANALYSIS checked');
+                                            $("#fileOecCorrectiveActionAttachment_"+endex).removeClass('d-none');
+                                            $('#txtOecCorrectiveActionAttachment_'+endex).addClass('d-none');
+                                        }
+                                        else{
+                                            console.log('OEC CAPA ANALYSIS not checked');
+                                            $("#fileOecCorrectiveActionAttachment_"+endex).addClass('d-none');
+                                            $('#txtOecCorrectiveActionAttachment_'+endex).removeClass('d-none');
+                                        }
+                                    });
+                                }, 500);
+                            }else{
+                                console.log('OEC CORRECTIVE ACTION null');
+                            }
+
+                            if(get_plc_capa_oec_statement_of_findings[endex]['preventive_action_attachment'] != null){
+                                $(`#fileOecPreventiveActionAttachment_${endex}`).addClass('d-none');
+                                $(`#txtOecPreventiveActionAttachment_${endex}`).removeClass('d-none');
+                                $(`#chckOecPreventiveAction_${endex}`).removeClass('d-none');
+                                $(`#txtOecPreventiveActionReuploadFile_${endex}`).removeClass('d-none');
+                                console.log('OEC PREVENTIVE ACTION not null');
+
+                                setTimeout(() => {
+                                    $('#chckOecPreventiveAction_'+endex).on('click', function(){
+                                        $('#chckOecPreventiveAction_'+endex).attr('checked', 'checked');
+                                        if($(this).is(':checked')){
+                                            $("#fileOecPreventiveActionAttachment_"+endex).removeClass('d-none');
+                                            $('#txtOecPreventiveActionAttachment_'+endex).addClass('d-none');
+                                        }else{
+                                            console.log('OEC PREVENTIVE ACTION not checked');
+                                            $("#fileOecPreventiveActionAttachment_"+endex).addClass('d-none');
+                                            $('#txtOecPreventiveActionAttachment_'+endex).removeClass('d-none');
+                                        }
+                                    });
+                                }, 500);
+                            }else{
+                                console.log('OEC PREVENTIVE ACTION null');
+                            }
+
+                            if(get_plc_capa_oec_statement_of_findings[endex]['oec_attachment'] != null){
+                                $(`#fileOecStatementOfFindingsAttachment_${endex}`).addClass('d-none');
+                                $(`#txtOecStatementOfFindingsAttachment_${endex}`).removeClass('d-none');
+                                $(`#chckOecStatementOfFindings_${endex}`).removeClass('d-none');
+                                $(`#txtOecStatementOfFindingsReuploadFile_${endex}`).removeClass('d-none');
+                                console.log('OEC STATEMENT OF FINDINGS Attachment not null');
+
+                                setTimeout(() => {
+                                    $('#chckOecStatementOfFindings_'+endex).on('click', function(){
+                                        $('#chckOecStatementOfFindings_'+endex).attr('checked', 'checked');
+                                            if($(this).is(':checked')){
+                                                console.log('OEC STATEMENT OF FINDINGS checked');
+                                                $("#fileOecStatementOfFindingsAttachment_"+endex).removeClass('d-none');
+                                                $('#txtOecStatementOfFindingsAttachment_'+endex).addClass('d-none');
+                                            }
+                                            else{
+                                                console.log('OEC STATEMENT OF FINDINGS not checked');
+                                                $("#fileOecStatementOfFindingsAttachment_"+endex).addClass('d-none');
+                                                $('#txtOecStatementOfFindingsAttachment_'+endex).removeClass('d-none');
+                                            }
+                                        });
+                                }, 500);
+                            }else{
+                                console.log('OEC STATEMENT OF FINDINGS Attachment null');
+                            }
                         }
-                        else{
-                            $("#txtEditCapaAnalysisAttachment").removeClass('d-none');
-                            $("#fileEditCapaAnalysisAttachment").addClass('d-none');
-                            console.log('CAPA Analysis Show Text Filename')
-                        }
-                        $(document).ready(function(){
-                            $('#editPlcCapaForm').on('hide.bs.modal', function() {
-                                $('#chckCapaAnalysis').attr('checked', false);
-                                dataTablePlcCapa.draw();
-                            });
-                        });
+                    }
+                    $('#modalEditPlcCapa').on('hidden.bs.modal', function () {
+                        $("#editPlcCapaForm")[0].reset();
+                        console.log('OEC RESET ATTACHMENT')
                     });
-                }else{
-                        
-                }
-
-                //START Corrective Action GET DATA
-                if(corrective_action_details.length != '0'){
-                    $("#txtEditCorrectiveAction").val(corrective_action_details[0].corrective_action);
-                    $("#txtEditCorrectiveActionAttachment").val(corrective_action_details[0].corrective_action_attachment);
-
-                    // To remove auto counting of row in multiple (EDIT)
-                    for(let cac = 2; cac <= corrective_action_details.length; cac++){
-                        $('#removeRowCorrectiveAction')[0].click();
-                    }
-                    let corrective_action_counter = 1;
-                    // To automatic add row in edit base on how many the Corrective Action is
-                    for(let cac = 2; cac <= corrective_action_details.length; cac++){
-                        $('#addRowCorrectiveAction')[0].click();
-
-                        $('#txtEditCorrectiveAction_'+cac).val(corrective_action_details[corrective_action_counter].corrective_action)
-                        $('#txtEditCorrectiveActionAttachment_'+cac).val(corrective_action_details[corrective_action_counter].corrective_action_attachment)
-
-                        if(corrective_action_details[corrective_action_counter].corrective_action_attachment != ''){
-                            $("#fileEditCorrectiveActionAttachment_"+cac).addClass('d-none');
-                            $("#txtEditCorrectiveActionAttachment_"+cac).removeClass('d-none');
-                            $("#chckCorrectiveAction_"+cac).removeClass('d-none');
-                            $("#txtCorrectiveActionReuploadFile_"+cac).removeClass('d-none');
-                        }
-
-                        corrective_action_counter = corrective_action_counter+1;
-                    }
-                    // Corrective Action
-                    if($('#txtEditCorrectiveActionAttachment').val() != ''){
-                        $("#fileEditCorrectiveActionAttachment").addClass('d-none');
-                        $("#txtEditCorrectiveActionAttachment").removeClass('d-none');
-                        $("#chckCorrectiveAction").removeClass('d-none');
-                        $("#txtCorrectiveActionReuploadFile").removeClass('d-none');
-                        console.log('Corrective Action Attachment not null');
-                    }else{
-                        $("#DicAttachment").removeClass('d-none');
-                        $("#txtEditCorrectiveActionAttachment").addClass('d-none');
-                        $("#chckCorrectiveAction").addClass('d-none');
-                        $("#txtCorrectiveActionReuploadFile").addClass('d-none');
-                        console.log('Corrective Action Attachment null');
-                    }//END Corrective Action GET DATA
-
-                    //Corrective Action CHECKBOX
-                    $('#chckCorrectiveAction').on('click', function() {
-                        $('#chckCorrectiveAction').attr('checked', 'checked');
-                        if($(this).is(":checked")){
-                            $("#fileEditCorrectiveActionAttachment").removeClass('d-none');
-                            $("#txtEditCorrectiveActionAttachment").addClass('d-none');
-                            console.log('Corrective Action Show Upload File')
-                        }
-                        else{
-                            $("#txtEditCorrectiveActionAttachment").removeClass('d-none');
-                            $("#fileEditCorrectiveActionAttachment").addClass('d-none');
-                            console.log('Corrective Action Show Text Filename')
-                        }
-                        $(document).ready(function(){
-                            $('#editPlcCapaForm').on('hide.bs.modal', function() {
-                                $('#chckCorrectiveAction').attr('checked', false);
-                                dataTablePlcCapa.draw();
-                            });
-                        });
-                    });
-                }else{
-
-                }
-
-                //START Preventive Action GET DATA
-                if(preventive_action_details.length != '0'){
-                    $("#txtEditPrentiveAction").val(preventive_action_details[0].preventive_action);
-                    $("#txtEditPreventiveActionAttachment").val(preventive_action_details[0].preventive_action_attachment);
-
-                    // To remove auto counting of row in multiple (EDIT)
-                    for(let pa = 2; pa <= preventive_action_details.length; pa++){
-                        $('#removeRowPreventiveAction')[0].click();
-                    }
-                    let preventive_action_counter = 1;
-                    // To automatic add row in edit base on how many the Preventive Action is
-                    for(let pa = 2; pa <= preventive_action_details.length; pa++){
-                        $('#addRowPreventiveAction')[0].click();
-
-                        $('#txtEditPreventiveAction_'+pa).val(preventive_action_details[preventive_action_counter].preventive_action)
-                        $('#txtEditPreventiveActionAttachment_'+pa).val(preventive_action_details[preventive_action_counter].preventive_action_attachment)
-
-                        if(preventive_action_details[preventive_action_counter].preventive_action_attachment != ''){
-                            $("#fileEditPreventiveActionAttachment_"+pa).addClass('d-none');
-                            $("#txtEditPreventiveActionAttachment_"+pa).removeClass('d-none');
-                            $("#chckPreventiveAction_"+pa).removeClass('d-none');
-                            $("#txtPreventiveActionReuploadFile_"+pa).removeClass('d-none');
-                        }
-
-                        preventive_action_counter = preventive_action_counter+1;
-                    }
-                        // Preventive Action
-                    if($('#txtEditPreventiveActionAttachment').val() != ''){
-                        $("#fileEditPreventiveActionAttachment").addClass('d-none');
-                        $("#txtEditPreventiveActionAttachment").removeClass('d-none');
-                        $("#chckPreventiveAction").removeClass('d-none');
-                        $("#txtPreventiveActionReuploadFile").removeClass('d-none');
-                        console.log('Preventive Action Attachment not null');
-                    }else{
-                        $("#DicAttachment").removeClass('d-none');
-                        $("#txtEditPreventiveActionAttachment").addClass('d-none');
-                        $("#chckPreventiveAction").addClass('d-none');
-                        $("#txtPreventiveActionReuploadFile").addClass('d-none');
-                        console.log('Preventive Action Attachment null');
-                    }//END Preventive Action GET DATA
-
-                    //Preventive Action CHECKBOX
-                    $('#chckPreventiveAction').on('click', function() {
-                        $('#chckPreventiveAction').attr('checked', 'checked');
-                        if($(this).is(":checked")){
-                            $("#fileEditPreventiveActionAttachment").removeClass('d-none');
-                            $("#txtEditPreventiveActionAttachment").addClass('d-none');
-                            console.log('Preventive Action Show Upload File')
-                        }
-                        else{
-                            $("#txtEditPreventiveActionAttachment").removeClass('d-none');
-                            $("#fileEditPreventiveActionAttachment").addClass('d-none');
-                            console.log('Preventive Action Show Text Filename')
-                        }
-                        $(document).ready(function(){
-                            $('#editPlcCapaForm').on('hide.bs.modal', function() {
-                                $('#chckPreventiveAction').attr('checked', false);
-                                dataTablePlcCapa.draw();
-                            });
-                        });
-                    });
-                }else{
-
                 }
 
             }
@@ -305,7 +392,7 @@ function EditPlcCapa(){
             else if(response['result'] == 1){
                 $("#modalEditPlcCapa").modal('hide');
                 $("#editPlcCapaForm")[0].reset();
-                toastr.success('User was succesfully saved!');
+                toastr.success('Succesfully saved!');
                 dataTablePlcCapa.draw(); // reload the tables after insertion
             }
 
@@ -319,5 +406,38 @@ function EditPlcCapa(){
             $("#btnEditPlcCapa").removeAttr('disabled');
             $("#iBtnEditPlcCapaIcon").addClass('fa fa-check');
         }
+    });
+}
+
+function LoadJsoxUserList(cboElement){
+    let result = '<option value="">N/A</option>';
+    $.ajax({
+        url: "load_jsox_user_list",
+        method: "get",
+        dataType: "json",
+        beforeSend: function(){
+            result = '<option value=""> -- Loading -- </option>';
+            cboElement.html(result);
+        },
+        success: function(response){
+            result = '';
+            if(response['users'].length > 0){
+                result = '<option selected disabled>-- Select User -- </option>';
+                for(let index = 0; index < response['users'].length; index++){
+                    result += '<option value="' + response['users'][index].rapidx_name + '">' + response['users'][index].rapidx_name + '</option>';
+                }
+            }
+            else{
+                result = '<option value=""> -- No record found -- </option>';
+            }
+
+            cboElement.html(result);
+        },
+        error: function(data, xhr, status){
+            result = '<option value=""> -- Reload Again -- </option>';
+            cboElement.html(result);
+            toastr.error('Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+
     });
 }

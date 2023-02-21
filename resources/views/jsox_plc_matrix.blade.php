@@ -28,7 +28,6 @@
         table.table tbody td{
             /* white-space:nowrap; */
             vertical-align: middle;
-
         }
         table.table thead th{
             text-align: center;
@@ -824,6 +823,13 @@
 
                 if(documentCounterEdit < 2){
                     $('#removeRowDocumentEdit').addClass('d-none');
+                }
+            });
+
+            //==================================== DISABLED ENTER KEY SUBMITTING FORMS, ALLOW ENTER KEY ON TEXTAREA'S ONLY ====================================
+            $(document).on("keydown", ":input:not(textarea)", function(event) {
+                if(event.key == "Enter") {
+                    event.preventDefault();
                 }
             });
 

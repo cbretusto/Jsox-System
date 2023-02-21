@@ -17,7 +17,7 @@
 
 
 
-<?php $__env->startSection('title', 'PMI FCRP'); ?>
+<?php $__env->startSection('title', 'PMI IT-CLC'); ?>
 
 <?php $__env->startSection('content_page'); ?>
 
@@ -34,7 +34,7 @@
         }
 
         table.table thead th{
-            padding-top: 5px; 
+            padding-top: 5px;
             padding-bottom: 5px;
             padding-right: 5px;
             padding-left: 5px;
@@ -64,32 +64,73 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">PMI IT-CLC</h3>
-                            </div>
+                            
 
-                            <div class="card-body table-responsive">                            
-                                <div style="float: right;">                   
-                                    <button class="btn btn-info" data-toggle="modal" data-target="#modalAddPmiItClcCategory" id="btnShowAddPmiItClcCategoryModal"><i class="fa fa-plus"></i>  Add PMI IT-CLC  </button>
-                                </div> <br><br>
-                                <div class="table-responsive">
-                                    <table id="tblClcCategoryPmiItClc" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
-                                        <thead>
-                                            <tr style="text-align:center">
-                                                <th>ID</th>
-                                                <th style="width: 5%"></th>
-                                                <th>Control Objectives</th>
-                                                <th>Internal Controls</th>
-                                                <th>Status</th>
-                                                <th>Detected Problems <br> & Improvemnent Plans</th>
-                                                <th>Review Findings</th>
-                                                <th>Follow-ups</th>
-                                                <th>Status</th>
-                                                
-                                                <th style="width: 8%">Action</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                            <div class="card-body table-responsive">
+                                <ul class="nav nav-tabs" id="tabPmiItClcCategory" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tabPmiItClc" data-toggle="tab" href="#pmiItClc" role="tab" aria-controls="pmiItClc" aria-selected="false">PMI IT-CLC</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tabPmiItClcAssessment" data-toggle="tab" href="#pmiItClcAssessment" role="tab" aria-controls="pmiItClcAssessment" aria-selected="true">Assessment</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content table-responsive" id="tabPmiItClcCategory">
+                                    <div class="tab-pane fade show active" id="pmiItClc" role="tabpanel" aria-labelledby="tabPmiItClc">
+                                        <div style="float: right;">
+                                            <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddPmiItClc" id=""><i class="fa fa-plus"></i>  Add PMI IT-CLC </button>
+                                        </div> <br><br>
+                                        <div class="table responsive">
+                                            <table id="tblPmiItClc" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
+                                                <thead>
+                                                    <tr style="text-align:center">
+                                                        <th>&nbsp;</th>
+                                                        <th>No.</th>
+                                                        <th>Fiscal Year</th>
+                                                        <th>Control Objectives</th>
+                                                        <th>Internal Control</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pmiItClcAssessment" role="tabpanel" aria-labelledby="tabPmiItClcAssessment">
+
+                                    <div class="row">
+                                        <div class="col-sm-3 mr-2">
+                                            <label><strong>Fiscal Year:</strong></label>
+                                            <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                                <!-- Code generated -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div style="float: right;">
+                                        <button class="btn btn-info" data-toggle="modal" data-target="#modalExportItClcSummary"><i class="fa fa-download"></i>  Export IT-CLC Summary  </button>
+                                        <button class="btn btn-dark" data-toggle="modal" data-target="#modalAddPmiItClcAssessment" id="btnShowAddPmiItClcAssessmentModal"><i class="fa fa-plus"></i>  Add PMI IT-CLC  </button>
+                                    </div> <br><br>
+                                    <div class="table-responsive">
+                                        <table id="tblPmiItClcAssessment" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
+                                            <thead>
+                                                <tr style="text-align:center">
+                                                    <th>ID</th>
+                                                    <th style="width: 5%"></th>
+                                                    <th>Fiscal Year</th>
+                                                    <th>Control Objectives</th>
+                                                    <th>Internal Controls</th>
+                                                    <th>Status</th>
+                                                    <th>Detected Problems <br> & Improvemnent Plans</th>
+                                                    <th>Review Findings</th>
+                                                    <th>Follow-ups</th>
+                                                    <th>Status</th>
+                                                    <th style="width: 8%">Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -100,85 +141,55 @@
     </div>
 
     <!-- ADD MODAL START -->
-    <div class="modal fade" id="modalAddPmiItClcCategory">
+    <div class="modal fade" id="modalAddPmiItClc">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC CATEGORY</h4>
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC </h4>
                     <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formAddPmiItClcCategory" enctype="multipart/form-data">
+                <form method="post" id="formAddPmiItClc" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Control Objective:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcControlObjectives" name="control_objectives"></textarea>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <input input type="number" class="form-control" name="no" id="txtAddNo">
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Internal Control:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcInternalControls" name="internal_controls"></textarea>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="pmi_it_clc_fiscal_year" id="txtAddPmiItClcFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
                                 </div>
                             </div>
 
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Status:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcStatus" name="status"></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Detected Problems & Improvement Plans:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Review Findings:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcReviewFindings" name="review_findings"></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Follow up:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcFollowups" name="follow_up"></textarea>
-                                </div>
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Control Objective:</label>
+                                <input type="hidden" class="form-control" name="" rows="4" cols="50">
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcControlObjectives" name="control_objectives"></textarea>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Status:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" id="txtAddPmiItClcStatusLast" name="status_last"></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                
-                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>       
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Internal Control:</label>
+                                <input type="hidden" class="form-control" name="" rows="4">
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcInternalControls" name="internal_controls"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" id="btnAddPmiItClcCategory" class="btn btn-dark"><i id="iBtnAddPmiItClcCategoryIcon" class="fa fa-check"></i> Save</button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnAddPmiItClc" class="btn btn-dark"><i id="iBtnAddPmiItClcIcon" class="fa fa-check"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -186,88 +197,56 @@
     </div><!-- ADD MODAL END -->
 
     <!-- EDIT MODAL START -->
-    <div class="modal fade" id="modalEditPmiItClcCategory">
+    <div class="modal fade" id="modalEditPmiItClc">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC CATEGORY</h4>
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC </h4>
                     <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formEditPmiItClcCategory" enctype="multipart/form-data">
+                <form method="post" id="formEditPmiItClc" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
-                        <input type="hidden" class="form-control" name="pmi_it_clc_category_id" id="txtEditPmiItClcCategoryId"> 
+                        <input type="hidden" class="form-control" name="pmi_it_clc_id" id="txtEditPmiItClcId">
                         <div class="row">
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Control Objective:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcControlObjectives" name="control_objectives" readonly></textarea>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <input input type="number" class="form-control" name="no" id="txtEditNo">
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Internal Control:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
-                                    <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcInternalControls" name="internal_controls"></textarea>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="pmi_it_clc_fiscal_year" id="selectEditPmiItClcFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Status:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
-                                    <textarea type="text" class="form-control" id="txtEditPmiItClcStatus" name="status"></textarea>
-                                </div>
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Control Objective:</label>
+                                <input type="hidden" class="form-control" name="" rows="4" cols="50">
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcControlObjectives" name="control_objectives"></textarea>
                             </div>
 
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Detected Problems & Improvement Plans:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Review Findings:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcReviewFindings" name="review_findings"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Follow up:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
-                                    <textarea type="text" class="form-control" rows="5" id="txtEditPmiItClcFollowups" name="follow_ups"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                <div class="form-group col-sm-12"> 
-                                    <label class="col-form-label">Status:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
-                                    <textarea type="text" class="form-control" id="txtEditPmiItClcStatusLast" name="status_last"></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group col-sm-12 flex-column d-flex"> 
-                                
-                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>    
-                                <div class="form-group form-check">
-                                    <input type="checkbox" class="form-check-input" name="checkbox" id="check_box">
-                                    <label >Do you wish to continue editing?</label>
-                                </div>   
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Internal Control:</label>
+                                <input type="hidden" class="form-control" name="" rows="4">
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcInternalControls" name="internal_controls"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" id="btnEditPmiItClcCategory" class="btn btn-dark d-none"><i id="iBtnEditPmiItClcCategoryIcon" class="fa fa-check"></i> Save</button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnEditPmiItClc" class="btn btn-dark"><i id="iBtnEditPmiItClcIcon" class="fa fa-check"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -275,44 +254,309 @@
     </div><!-- EDIT MODAL END -->
 
     <!-- CHANGE STAT MODAL START -->
-    <div class="modal fade" id="modalChangeClcCategoryPmiItClcStat">
+    <div class="modal fade" id="modalChangePmiItClcStat">
         <div class="modal-dialog">
             <div class="modal-content modal-sm">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title" id="h4ChangeClcCategoryPmiItClcStat"><i class="fa fa-user"></i> Change Status</h4>
+                    <h4 class="modal-title" id="h4ChangePmiItClcStat"><i class="fa fa-check"></i> Change Status</h4>
                     <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formChangeClcCategoryPmiItClcStat">
+                <form method="post" id="formChangePmiItClcStat">
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
-                        <label id="lblChangeClcCategoryPmiItClcStatLabel"></label>
-                        <input type="hidden" name="clc_category_pmi_it_clc_id" id="txtChangeClcCategoryPmiItClcId">
-                        <input type="hidden" name="it_clc_status" id="txtChangeClcCategoryPmiItClcStat">
+                        <label id="lblChangePmiItClcStatLabel"></label>
+                        <input type="hidden" name="pmi_it_clc_id" id="txtChangePmiItClcId">
+                        <input type="hidden" name="pmi_it_clc_status" id="txtChangePmiItClcStat">
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                        <button type="submit" id="btnChangeClcCategoryPmiItClcStat" class="btn btn-dark"><i id="iBtnChangeClcCategoryPmiItClcStatIcon" class="fa fa-check"></i> Yes</button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+                        <button type="submit" id="btnChangePmiItClcStat" class="btn btn-dark"><i id="iBtnChangePmiItClcStatIcon" class="fa fa-check"></i> Yes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div> <!-- CHANGE STAT MODAL END -->
 
-    
+    <!-- MODALS -->
+    <div class="modal fade" id="modalExportItClcSummary">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export IT-CLC Summary</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-12">
+                    <div class="row">
+                            <div class="col-sm-6">
+                                <select class="form-control selectFiscalYear position-absolute select2bs4" name="select_year" id="selectYearId" aria-controls="">
+                                    <!-- Code generated -->
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Audit Period:</label>
+                                <select name="select_audit_period" id="selectAuditPeriod">
+                                    <option value="1">First Half</option>
+                                    <option value="2">Second Half</option>
+                                </select>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                <button type="submit" id="btnExportItClcSummary" class="btn btn-dark"><i id="BtnExportItClcSummaryIcon" class="fa fa-check"></i> Export</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
+    <!-- ADD MODAL ASSESSMENT START -->
+    <div class="modal fade" id="modalAddPmiItClcAssessment">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC ASSESSMENT</h4>
+                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formAddPmiItClcAssessment" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Control Objective:</label>
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentControlObjectives" name="control_objectives"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Internal Control:</label>
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcInternalAssessmentControls" name="internal_controls"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Good or Not Good: </strong></span>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" id="txtAddPmiItClcAssessmentGood" name="g_ng" value="Good">
+                                        <label class="form-check-label" for="inlineRadio1">GOOD</label>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" id="txtAddPmiItClcAssessmentNotGood" name="g_ng" value="Not Good">
+                                        <label class="form-check-label" for="inlineRadio2">NOT GOOD</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" id="txtAddPmiItClcAssessmentNA" name="g_ng" value="N/A">
+                                        <label class="form-check-label" for="inlineRadio2">N/A</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Detected Problems & Improvement Plans:</label>
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Review Findings:</label>
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentReviewFindings" name="review_findings"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Follow up:</label>
+                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentFollowups" name="follow_up"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Good or Not Good: </strong></span>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="AddPmiItClcAssessmentGoodLast" value="Good">
+                                        <label class="form-check-label" for="inlineRadio1">GOOD</label>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="AddPmiItClcAssessmentNotGoodLast" value="Not Good">
+                                        <label class="form-check-label" for="inlineRadio2">NOT GOOD</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="AddPmiItClcAssessmentNALast" value="N/A">
+                                        <label class="form-check-label" for="inlineRadio2">N/A</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnAddPmiItClcAssessment" class="btn btn-dark"><i id="iBtnAddPmiItClcAssessmentIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- ADD MODAL ASSESSMENT END -->
+
+    <!-- EDIT MODAL ASSESSMENT START -->
+    <div class="modal fade" id="modalEditPmiItClcAssessment">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC ASSESSMENT</h4>
+                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formEditPmiItClcAssessment" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control" name="pmi_it_clc_assessment_id" id="txtEditPmiItClcAssessmentId">
+                        <div class="row">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="selectEditFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Control Objective:</label>
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcAssessmentControlObjectives" name="control_objectives"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Internal Control:</label>
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcAssessmentInternalControls" name="internal_controls"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Good or Not Good: </strong></span>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" id="txtEditPmiItClcAssessmentGood" name="g_ng" value="Good">
+                                        <label class="form-check-label" for="inlineRadio1">GOOD</label>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" id="txtEditPmiItClcAssessmentNotGood" name="g_ng" value="Not Good">
+                                        <label class="form-check-label" for="inlineRadio2">NOT GOOD</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" id="txtEditPmiItClcAssessmentNA" name="g_ng" value="N/A">
+                                        <label class="form-check-label" for="inlineRadio2">N/A</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Detected Problems & Improvement Plans:</label>
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcAssessmentDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Review Findings:</label>
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcAssessmentReviewFindings" name="review_findings"></textarea>
+                            </div>
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="col-form-label">Follow up:</label>
+                                <textarea type="text" class="form-control" rows="3" id="txtEditPmiItClcAssessmentFollowups" name="follow_ups"></textarea>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Good or Not Good: </strong></span>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="txtEditPmiItClcAssessmentGoodLast" value="Good">
+                                        <label class="form-check-label" for="inlineRadio1">GOOD</label>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="txtEditPmiItClcAssessmentNotGoodLast" value="Not Good">
+                                        <label class="form-check-label" for="inlineRadio2">NOT GOOD</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="txtEditPmiItClcAssessmentNALast" value="N/A">
+                                        <label class="form-check-label" for="inlineRadio2">N/A</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnEditPmiItClcAssessment" class="btn btn-dark"><i id="iBtnEditPmiItClcAssessmentIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- EDIT MODAL ASSESSMENT END -->
+
+    <!-- CHANGE STAT MODAL ASSESSMENT START -->
+    <div class="modal fade" id="modalChangePmiItClcAssessmentStat">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title" id="h4ChangePmiItClcAssessmentStat"><i class="fa fa-user"></i> Change Status</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formChangePmiItClcAssessmentStat">
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body">
+                        <label id="lblChangePmiItClcAssessmentStatLabel"></label>
+                        <input type="hidden" name="pmi_it_clc_assessment_id" id="txtChangePmiItClcAssessmentId">
+                        <input type="hidden" name="pmi_it_clc_assessment_status" id="txtChangePmiItClcAssessmentStat">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+                        <button type="submit" id="btnChangePmiItClcAssessmentStat" class="btn btn-dark"><i id="iBtnChangePmiItClcAssessmentStatIcon" class="fa fa-check"></i> Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- CHANGE STAT MODAL ASSESSMENT END -->
 <?php $__env->stopSection(); ?>
 
 <!--  -->
 <?php $__env->startSection('js_content'); ?>
 
     <script type="text/javascript">
-        let dataTableClcCategoryPmiItClc;
+        let dataTablePmiItClcAssessment;
+        let dataTablePmiItClc;
         let dataTableClcEvidences;
 
         $(document).ready(function () {
-            
+
             bsCustomFileInput.init();
             //Initialize Select2 Elements
             $('.select2').select2();
@@ -322,77 +566,110 @@
                 theme: 'bootstrap4'
             });
 
-            $(document).on('click','#tblClcCategoryPmiItClc tbody tr',function(e){
+            $(document).on('click','#tblPmiItClcAssessment tbody tr',function(e){
                 $(this).closest('tbody').find('tr').removeClass('table-active');
                 $(this).closest('tr').addClass('table-active');
             });
 
-            // ======================= CLC CATEGORY DATA TABLE =======================        
-            dataTableClcCategoryPmiItClc = $("#tblClcCategoryPmiItClc").DataTable({ 
+            GetFiscalYear($(".selectFiscalYear"));
+
+            // ======================= PMI IT-CLC DATA TABLE =======================
+            dataTablePmiItClc = $("#tblPmiItClc").DataTable({
                 "processing" : false,
                 "serverSide" : true,
                 "ordering" : false,
                 "ajax" : {
-                    url: "view_clc_category_pmi_it_clc",
+                    url: "view_pmi_it_clc",
+                },
+
+                "columns":[
+                    { "data" : "status" },
+                    { "data" : "no" },
+                    { "data" : "fiscal_year" },
+                    { "data" : "control_objectives" },
+                    { "data" : "internal_controls" },
+                    { "data" : "action", orderable:false, searchable:false }
+                ],
+                "columnDefs": [
+                    { className: 'text-center', targets: [0, 1] },
+                    // { className: 'align-middle', targets: [1]},
+                ],
+            });// END OF DATATABLE
+
+            // ======================= PMI IT-CLC ASSESSMENT DATA TABLE =======================
+            dataTablePmiItClcAssessment = $("#tblPmiItClcAssessment").DataTable({
+                "processing" : false,
+                "serverSide" : true,
+                "ordering" : false,
+                "ajax" : {
+                    url: "view_pmi_it_clc_assessment",
                 },
 
                 "columns":[
                     { "data" : "id" },
-                    { "data" : "it_clc_status" },
+                    { "data" : "pmi_it_clc_assessment_status" },
+                    { "data" : "fiscal_year" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
-                    { "data" : "status" },
+                    { "data" : "g_ng" },
                     { "data" : "detected_problems_improvement_plans" },
                     { "data" : "review_findings" },
                     { "data" : "follow_ups" },
-                    { "data" : "status_last" },
-                    // { "data" : "uploaded_file" },
+                    { "data" : "g_ng_last" },
                     { "data" : "action", orderable:false, searchable:false }
                 ],
             });// END OF DATATABLE
 
-            // // ======================= CLC EVIDENCES DATA TABLE =======================        
-            // dataTableClcEvidences = $("#tblClcEvidences").DataTable({ 
-            //     "processing" : false,
-            //     "serverSide" : true,
-            //     "ajax" : {
-            //         url: "view_pmi_it_clc_evidences_file",
-            //         data: {
-            //             category : "PMI IT-CLC",
-            //         }
-            //     },
+            //============================ ADD PMI IT-CLC ============================
+            $("#formAddPmiItClc").submit(function(event){
+                event.preventDefault();
+                AddPmiItClc();
+                dataTablePmiItClc.draw();
+            });
 
-            //     "columns":[
-            //         { "data" : "clc_category" },
-            //         { "data" : "uploaded_file" }
-            //     ],
-            // });// END OF DATATABLE
+            //============================== EDIT PMI IT-CLC  ==============================
+            $(document).on('click', '.actionEditPmiItClc', function(){
+            let pmiItClcId = $(this).attr('pmi_it_clc-id');
 
-            // // ======================= CLC EVIDENCES DATA TABLE =======================        
-            // dataTableSelectClcEvidences = $("#tblSelectClcEvidences").DataTable({ 
-            //     "processing" : false,
-            //     "serverSide" : true,
-            //     "ajax" : {
-            //         url: "view_select_pmi_it_clc_evidences_file",
-            //         data: {
-            //             category : "PMI IT-CLC",
-            //         }
-            //     },
+                $("#txtEditPmiItClcId").val(pmiItClcId);
 
-            //     "columns":[
-            //         { "data" : "clc_category" },
-            //         { "data" : "uploaded_file" },
-            //         { "data" : "action", orderable:false, searchable:false }
-            //     ],
-            // });// END OF DATATABLE
+                GetPmiItClcByIdToEdit(pmiItClcId);
+
+            });
+            $("#formEditPmiItClc").submit(function(event){
+                event.preventDefault();
+                EditPmiItClc();
+            });
+
+            //============================== CHANGE PMI IT CLC STATUS ==============================
+            $(document).on('click', '.actionChangePmiItClcStat', function(){
+                let pmiItClcStat = $(this).attr('pmi_it_clc_status');
+                let pmiItClcId = $(this).attr('pmi_it_clc-id');
+                console.log(pmiItClcStat);
+                $("#txtChangePmiItClcStat").val(pmiItClcStat);
+                $("#txtChangePmiItClcId").val(pmiItClcId);
+
+                if(pmiItClcStat == 1){
+                    $("#lblChangePmiItClcStatLabel").text('Are you sure to activate?');
+                    $("#h4ChangePmiItClcStat").html('<i class="fa fa-check"></i> Activate!');
+                }
+                else{
+                    $("#lblChangePmiItClcStatLabel").text('Are you sure to deactivate?');
+                    $("#h4ChangePmiItClcStat").html('<i class="fas fa-ban"></i> Deactivate!');
+                }
+            });
+            $("#formChangePmiItClcStat").submit(function(event){
+                event.preventDefault();
+                ChangePmiItClcStatus();
+            });
 
             // ============================ AUTO ADD CREATED BY USER ============================
-            $(document).on('click', '#btnShowAddPmiItClcCategoryModal, .actionEditPmiItClcCategory', function() {
+            $(document).on('click', '#btnShowAddPmiItClcAssessmentModal, .actionEditPmiItClcAssessment', function() {
                 $.ajax({
                     url: "get_rapidx_user",
                     method: "get",
                     dataType: "json",
-                    beforeSend: function(){    
+                    beforeSend: function(){
                     },
                     success: function(response){
                         let result = response['get_user'];
@@ -403,156 +680,114 @@
                 });
             });
 
-            //============================ ADD CLC CATEGORY ============================
-            $("#formAddPmiItClcCategory").submit(function(event){
-                event.preventDefault(); // to stop the form submission
-                AddPmiItClcCategory();
-                dataTableClcCategoryPmiItClc.draw(); // reload datatables asynchronously
-                // console.log($("#selectAddPmiClcStatus").val())
+            //============================ ADD PMI IT-CLC ASSESSMENT ============================
+            $("#formAddPmiItClcAssessment").submit(function(event){
+                event.preventDefault();
+                AddPmiItClcAssessment();
+                dataTablePmiItClcAssessment.draw();
             });
             // VALIDATION(errors)
-            $("#txtAddPmiItClcControlObjectives").removeClass('is-invalid');
-            $("#txtAddPmiItClcControlObjectives").attr('title', '');
-            $("#txtAddPmiItClcInternalControls").removeClass('is-invalid');
-            $("#txtAddPmiItClcInternalControls").attr('title', '');
+            $("#txtAddPmiItClcAssessmentControlObjectives").removeClass('is-invalid');
+            $("#txtAddPmiItClcAssessmentControlObjectives").attr('title', '');
+            $("#txtAddPmiItClcInternalAssessmentControls").removeClass('is-invalid');
+            $("#txtAddPmiItClcInternalAssessmentControls").attr('title', '');
             $("#txtAddPmiItClcStatus").removeClass('is-invalid');
             $("#txtAddPmiItClcStatus").attr('title', '');
-            $("#txtAddPmiItClcDetectedProblemsImprovementPlans").removeClass('is-invalid');
-            $("#txtAddPmiItClcDetectedProblemsImprovementPlans").attr('title', '');
-            $("#txtAddPmiItClcReviewFindings").removeClass('is-invalid');
-            $("#txtAddPmiItClcReviewFindings").attr('title', '');
-            $("#txtAddPmiItClcFollowups").removeClass('is-invalid');
-            $("#txtAddPmiItClcFollowups").attr('title', '');
-            $("#txtAddPmiItClcStatusLast").removeClass('is-invalid');
-            $("#txtAddPmiItClcStatusLast").attr('title', '');
-            $("#txtAddPmiItClcFollowups").removeClass('is-invalid');
-            $("#txtAddPmiItClcFollowups").attr('title', '');
+            $("#txtAddPmiItClcAssessmentDetectedProblemsImprovementPlans").removeClass('is-invalid');
+            $("#txtAddPmiItClcAssessmentDetectedProblemsImprovementPlans").attr('title', '');
+            $("#txtAddPmiItClcAssessmentReviewFindings").removeClass('is-invalid');
+            $("#txtAddPmiItClcAssessmentReviewFindings").attr('title', '');
+            $("#txtAddPmiItClcAssessmentFollowups").removeClass('is-invalid');
+            $("#txtAddPmiItClcAssessmentFollowups").attr('title', '');
+            $("#txtAddPmiItClcAssessmentStatusLast").removeClass('is-invalid');
+            $("#txtAddPmiItClcAssessmentStatusLast").attr('title', '');
+            $("#txtAddPmiItClcAssessmentFollowups").removeClass('is-invalid');
+            $("#txtAddPmiItClcAssessmentFollowups").attr('title', '');
             $("#txtAddPmiItClcFile").removeClass('is-invalid');
             $("#txtAddPmiItClcFile").attr('title', '');
 
-            //============================== EDIT REPORT ==============================
-            // actionEditClcCategory is generated by datatables and open the modalEditClcCategory(modal) to collect the id of the specified rows
-            $(document).on('click', '.actionEditPmiItClcCategory', function(){
-                // the clc_categories-id(attr) is inside the datatables of ClcCategoryController that will be use to collect the clc_categories-id
-                let pmi_itclcId = $(this).attr('pmi_it_clc-id'); 
+            //============================== EDIT PMI IT-CLC ASSESSMENT ==============================
+            $(document).on('click', '.actionEditPmiItClcAssessment', function(){
+                let pmiItClcAssessmentId = $(this).attr('pmi_it_clc-id');
 
-                // after clicking the actionEditClcCategory(button) the pmi_itclcId will be pass to the txtEditClcCategoryId(input=hidden) and when the form is submitted this 
-                // will be pass to ajax and collect clc_categories-id that will be use to query the clc_categories-id in the ClcCategoryController to update the report
-                $("#txtEditPmiItClcCategoryId").val(pmi_itclcId);
+                $("#txtEditPmiItClcAssessmentId").val(pmiItClcAssessmentId);
 
-                // COLLECT THE file_recordId AND PASS TO INPUTS, BASED ON THE CLICKED ROWS //
-                    //GetClcCategoryByIdToEdit() function is inside ClcCategory.js and pass the pmi_itclcId as an argument when passing the ajax that will be use to query 
-                    // the clc_categories-id of get_clc_category_by_id() method inside ClcCategoryController and pass the fetched report based on that query as $clc_category_id(variable) 
-                    // to pass the values in the inputs of modalEditClcCategory and also to validate the fetched values, inside GetClcCategoryByIdToEdit under ClcCategory.js
-                    GetPmiItClcByIdToEdit(pmi_itclcId); 
+                GetPmiItClcAssessmentByIdToEdit(pmiItClcAssessmentId);
 
                 // READ ONLY
-                $("#txtEditPmiItClcStatus").attr('disabled', 'disabled');
-                $("#txtEditPmiItClcInternalControls").attr('disabled', 'disabled');
-                $("#txtEditPmiItClcDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
-                $("#txtEditPmiItClcReviewFindings").attr('disabled', 'disabled');
-                $("#txtEditPmiItClcFollowups").attr('disabled', 'disabled');
-                $("#txtEditPmiItClcStatusLast").attr('disabled', 'disabled');
-                $("#EditPmiItClcFile").attr('disabled', 'disabled');
+                // $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                // $("#selectEditAuditPeriod").attr('disabled', 'disabled');
+                // $("#txtEditPmiItClcAssessmentStatus").attr('disabled', 'disabled');
+                // $("#txtEditPmiItClcAssessmentInternalControls").attr('disabled', 'disabled');
+                // $("#txtEditPmiItClcAssessmentDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
+                // $("#txtEditPmiItClcAssessmentReviewFindings").attr('disabled', 'disabled');
+                // $("#txtEditPmiItClcAssessmentFollowups").attr('disabled', 'disabled');
+                // $("#txtEditPmiItClcAssessmentStatusLast").attr('disabled', 'disabled');
+                // $("#EditPmiItClcFile").attr('disabled', 'disabled');
             });
-                // The EditClcCategory(); function is inside public/js/my_js/ClcCategory.js
-                // after the submission, the ajax request will pass the formEditClcCategory(form) of its data(input) in the uri(edit_cls_category)
-                // then the controller will handle that uri to use specific method called edit_cls_category() inside ClcCategoryController
-            $("#formEditPmiItClcCategory").submit(function(event){
+            $("#formEditPmiItClcAssessment").submit(function(event){
                 event.preventDefault();
-                EditPmiItClcCategory();
+                EditPmiItClcAssessment();
             });
 
-            // ================================= RE-UPLOAD FILE =================================
-            $('#check_box').on('click', function() {
-                $('#check_box').attr('checked', 'checked');
-                if($(this).is(":checked")){
-                    $("#txtEditPmiItClcStatus").removeAttr('disabled', false);
-                    $("#txtEditPmiItClcInternalControls").removeAttr('disabled', false);
-                    $("#txtEditPmiItClcDetectedProblemsImprovementPlans").removeAttr('disabled', false);
-                    $("#txtEditPmiItClcReviewFindings").removeAttr('disabled', false);
-                    $("#txtEditPmiItClcFollowups").removeAttr('disabled', false);
-                    $("#txtEditPmiItClcStatusLast").removeAttr('disabled', false);
-                    $("#txtEditPmiItClcFile").removeClass('d-none');
-                    $("#EditPmiItClcFile").addClass('d-none');
-                    $("#btnEditPmiItClcCategory").removeClass('d-none');
-                }
-                else{
-                    $("#txtEditPmiItClcStatus").attr('disabled', 'disabled');
-                    $("#txtEditPmiItClcInternalControls").attr('disabled', 'disabled');
-                    $("#txtEditPmiItClcDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
-                    $("#txtEditPmiItClcReviewFindings").attr('disabled', 'disabled');
-                    $("#txtEditPmiItClcFollowups").attr('disabled', 'disabled');
-                    $("#txtEditPmiItClcStatusLast").attr('disabled', 'disabled');
-                    $("#txtEditPmiItClcFile").addClass('d-none');
-                    $("#EditPmiItClcFile").removeClass('d-none');
-                    $("#btnEditPmiItClcCategory").addClass('d-none');
-                }
-                $(document).ready(function(){
-                    $('#modalEditPmiItClcCategory').on('hide.bs.modal', function() {
-                        $('#check_box').attr('checked', false);
-                        window.location.reload();
-                    });
-                });
-            });
+            // // ================================= RE-UPLOAD FILE =================================
+            // $('#check_box').on('click', function() {
+            //     $('#check_box').attr('checked', 'checked');
+            //     if($(this).is(":checked")){
+            //         $("#selectEditFiscalYear").removeAttr('disabled', false);
+            //         $("#selectEditAuditPeriod").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcAssessmentStatus").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcAssessmentInternalControls").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcAssessmentDetectedProblemsImprovementPlans").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcAssessmentReviewFindings").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcAssessmentFollowups").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcAssessmentStatusLast").removeAttr('disabled', false);
+            //         $("#txtEditPmiItClcFile").removeClass('d-none');
+            //         $("#EditPmiItClcFile").addClass('d-none');
+            //         $("#btnEditPmiItClcAssessment").removeClass('d-none');
+            //     }
+            //     else{
+            //         $("#selectEditFiscalYear").attr('disabled', 'disabled');
+            //         $("#selectEditAuditPeriod").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcAssessmentStatus").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcAssessmentInternalControls").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcAssessmentDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcAssessmentReviewFindings").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcAssessmentFollowups").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcAssessmentStatusLast").attr('disabled', 'disabled');
+            //         $("#txtEditPmiItClcFile").addClass('d-none');
+            //         $("#EditPmiItClcFile").removeClass('d-none');
+            //         $("#btnEditPmiItClcAssessment").addClass('d-none');
+            //     }
+            //     $(document).ready(function(){
+            //         $('#modalEditPmiItClcAssessment').on('hide.bs.modal', function() {
+            //             $('#check_box').attr('checked', false);
+            //             window.location.reload();
+            //         });
+            //     });
+            // });
 
             //============================== CHANGE PMI IT CLC STATUS ==============================
-            // actionChangeClcCategoryPmiItClcStat is generated by datatables and open the modalChangeClcCategoryPmiClcStat(modal) to collect and change the id & it_clc_status of the specified rows
-            $(document).on('click', '.actionChangeClcCategoryPmiItClcStat', function(){
-                let clccategorypmiitclcStat = $(this).attr('it_clc_status'); // the it_clc_status will collect the value (1-active, 2-inactive)
-                let clccategorypmiitclcId = $(this).attr('pmi_it_clc-id'); // the pmi_clc-id(attr) is inside the datatables of ClcCategoryPmiClcController that will be use to collect the pmi_clc-id
+            $(document).on('click', '.actionChangePmiItClcAssessmentStat', function(){
+                let clccategorypmiitclcStat = $(this).attr('pmi_it_clc_assessment_status');
+                let clccategorypmiitclcId = $(this).attr('pmi_it_clc-id');
                 console.log(clccategorypmiitclcStat);
-                $("#txtChangeClcCategoryPmiItClcStat").val(clccategorypmiitclcStat); // collect the pmi_clc it_clc_status id the default is 2, this will be use to change the pmi_clc it_clc_status when the formChangeClcCategoryPmiClcStat(form) is submitted
-                $("#txtChangeClcCategoryPmiItClcId").val(clccategorypmiitclcId); // after clicking the aChangeUserStat(button) the clccategorypmiitclcId will be pass to the clc_category_pmi_clc_id(input=hidden) and when the form is submitted this will be pass to ajax and collect pmi_clc-id that will be use to query the pmi_clc-id in the ClcCategoryPmiClcController to update the it_clc_status of the pmi_clc
+                $("#txtChangePmiItClcAssessmentStat").val(clccategorypmiitclcStat);
+                $("#txtChangePmiItClcAssessmentId").val(clccategorypmiitclcId);
 
                 if(clccategorypmiitclcStat == 1){
-                    $("#lblChangeClcCategoryPmiItClcStatLabel").text('Are you sure to activate?'); 
-                    $("#h4ChangeClcCategoryPmiItClcStat").html('<i class="fa fa-user"></i> Activate!');
+                    $("#lblChangePmiItClcAssessmentStatLabel").text('Are you sure to activate?');
+                    $("#h4ChangePmiItClcAssessmentStat").html('<i class="fa fa-user"></i> Activate!');
                 }
                 else{
-                    $("#lblChangeClcCategoryPmiItClcStatLabel").text('Are you sure to deactivate?');
-                    $("#h4ChangeClcCategoryPmiItClcStat").html('<i class="fa fa-user"></i> Deactivate!');
+                    $("#lblChangePmiItClcAssessmentStatLabel").text('Are you sure to deactivate?');
+                    $("#h4ChangePmiItClcAssessmentStat").html('<i class="fa fa-user"></i> Deactivate!');
                 }
             });
-            // ChangeClcCategoryPmiClcStatus(); function is inside public/js/my_js/ClcCategoryPmiClc.js
-            // after the submission, the ajax request will pass the formChangeClcCategoryPmiClcStat(form) of data(input) in the uri(change_clc_category_pmi_clc_stat)
-            // then the controller will handle that uri to use specific method called change_clc_category_pmi_clc_stat() inside ClcCategoryPmiClcController
-            $("#formChangeClcCategoryPmiItClcStat").submit(function(event){
+            $("#formChangePmiItClcAssessmentStat").submit(function(event){
                 event.preventDefault();
-                ChangeClcCategoryPmiItClcStatus();
+                ChangePmiItClcAssessmentStatus();
             });
-
-            //============================== SELECT CLC EVIDENCES FILE ==============================
-            $(document).on('click', '.actionSelectClcEvidences', function(){
-                let selectclcevidence = $(this).attr('filter'); 
-                let selectclcevidenceId = $(this).attr('clc_evidences-id'); 
-                console.log(selectclcevidence);
-                console.log(selectclcevidenceId);
-                $("#selectClcEvidencesFile").val(selectclcevidence); 
-                $("#selectClcEvidencesId").val(selectclcevidenceId); 
-
-                if(selectclcevidence == 0){
-                    $("#lblSelectClcEvidences").text('Are you sure to delete this record?'); 
-                    $("#h4SelectClcEvidences").html('<i class="fa fa-times"></i> Delete Record');
-                }
-                else{
-                    $("#lblSelectClcEvidences").text('Are you sure to add this record?');
-                    $("#h4SelectClcEvidences").html('<i class="fa fa-check"></i>  Add Record');
-                }
-            });
-            $("#formSelectClcEvidences").submit(function(event){
-                event.preventDefault();
-                SelectClcEvidencesFile();
-            });
-
-            // ===========================================================
-            function reloadDataTableClcCategoryPmiItClc() {
-                dataTableClcEvidences.draw();
-            }
-            $("#modalSelectFiles").on('hidden.bs.modal', function () {
-                console.log('PMI IT CLC Reload Successfully');
-                reloadDataTableClcCategoryPmiItClc();
-            });        
 
             // ========================= RESIZE TEXTAREA =========================
             document.querySelectorAll("textarea").forEach(function (size) {
@@ -565,7 +800,25 @@
                 });
             });
 
+            $("#selFiscalYear").on('change', function() {
+                dataTablePmiItClcAssessment.column(2).search($(this).val()).draw();
+            });
+
         }); // JQUERY DOCUMENT READY END
+
+
+        $('#btnExportItClcSummary').on('click', function(){
+
+        // console.log($('#formViewWPRequest').serialize());
+        let year_id = $('#selectYearId').val();
+        let audit_period = $('#selectAuditPeriod').val();
+        // let selected_month = $('#selectMonthId').val();
+
+        window.location.href = `export_it_clc_summary/${year_id}/${audit_period}`;
+        console.log(year_id);
+        // console.log(selected_month);
+        $('#modalExportItClcSummary').modal('hide');
+        });
 
     </script>
 <?php $__env->stopSection(); ?>

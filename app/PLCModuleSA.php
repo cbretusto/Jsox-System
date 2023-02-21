@@ -63,7 +63,6 @@ class PLCModuleSA extends Model
     //     return $this->hasMany(PLCCAPAPreventiveAction::class, 'plc_capa_id', 'id');
     // }
 
-
     public function plc_rev_history(){
         return $this->hasOne(PLCModule::class, 'id', 'sa_id');
     }

@@ -36,7 +36,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>CLC Module</h1>
+                        <h1>CLC / FCRP / IT-CLC Module</h1>
                     </div>
                 </div>
             </div>
@@ -48,12 +48,29 @@
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">CLC Evidences</h3>
+                                <h3 class="card-title">Evidences</h3>
                             </div>
                             <div class="card-body">
-                                <div style="float: right;">                   
-                                    <button class="btn btn-info" data-toggle="modal" data-target="#modalAddClcEvidences" id="btnShowAddClcEvidencesModal"><i class="fa fa-plus"></i>  Add CLC Evidence </button>
+                                <div class="row">
+                                    <div class="col-sm-3 mr-2"> 
+                                        <label><strong>Fiscal Year:</strong></label>
+                                        <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                            <!-- Code generated -->
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-3"> 
+                                        <label class="form-control-label">Audit Period:</label> 
+                                        <select class="form-control" id="selAuditPeriod" name="audit_period">
+                                            <option selected disabled value="">-- Select Audit Period --</option>
+                                            <option value="First Half">First Half</option>
+                                            <option value="Second Half">Second Half</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>       
+                                    <button class="btn btn-info " data-toggle="modal" data-target="#modalAddClcEvidences" id="btnShowAddClcEvidencesModal" style="float: right;"><i class="fa fa-plus"></i>  Add CLC Evidence </button>
                                 </div> <br><br>
+
                                 <div class="table responsive" style="height: 666px; overflow-y: scroll;">
                                     <table id="tblClcEvidences" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
                                         <thead>
@@ -102,7 +119,10 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
                                             </div>
-                                            <input type="text" class="form-control h-100" name="fiscal_year" id="txtAddFiscalYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                            <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
+                                                <!-- Code generated -->
+                                            </select>
+                                            
                                         </div>
                                     </div>
 
@@ -174,7 +194,10 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
                                             </div>
-                                            <input type="text" class="form-control h-100" name="fiscal_year" id="txtEditFiscalYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                            <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtEditFiscalYear">
+                                                <!-- Code generated -->
+                                            </select>
+                                            
                                         </div>
                                     </div>
 
@@ -205,7 +228,7 @@
                                             <input type="hidden" class="form-control" id="txtUpdatedBy" name="updated_by" readonly>
                                         </div> 
                                         <input type="text" class="form-control" id="EditClcEvidenceFile" name="uploadedfile">
-                                        <input type="file" class="d-none" id="txtEditClcEvidenceFile" name="uploaded_file[]" accept=".xlsx, .xls, .csv, application/pdf" multiple required> 
+                                        <input type="file" class="d-none" id="txtEditClcEvidenceFile" name="uploaded_file[]" accept=".xlsx, .xls, .csv, application/pdf" multiple> 
                                     </div>
 
                                     <div class="form-group form-check">
@@ -251,10 +274,13 @@
 
             // ======================= CLC CATEGORY  DATA TABLE =======================
             GetClcCategory($(".selectClcCategory"));
+            GetFiscalYear($(".selectFiscalYear"));
         
             dataTableClcEvidences = $("#tblClcEvidences").DataTable({ 
                 "processing" : false,
                 "serverSide" : true,
+                "responsive": true,
+                "order": [[ 0, "desc" ]],
                 "ajax" : {
                     url: "view_clc_evidences",
                 },
@@ -357,6 +383,19 @@
                 });
             });
 
+            //=========================== FILTER FISCAL YEAR DATATABLE ===========================
+            // $("#selFiscalYear").on('change', function() {
+            //     dataTableClcEvidences.column(0).search($(this).val()).draw();
+            // });
+
+            $("#selFiscalYear").on('change', function() {
+                dataTableClcEvidences.column(1).search($(this).val()).draw();
+            });
+
+            $("#selAuditPeriod").on('change', function() {
+                dataTableClcEvidences.search($("#selAuditPeriod").val()).draw();
+            });
+            
             // //============================== DELETE CLC EVIDENCE ==============================
             // // aDeleteReport is generated by datatables to collect the id of the specified rows
             // $(document).on('click', '.actionDeleteClcEvidences', function(){

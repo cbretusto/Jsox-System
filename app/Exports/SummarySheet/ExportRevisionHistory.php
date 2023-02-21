@@ -20,7 +20,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 
 
-class ExportRevisionHistory implements  FromView, WithTitle, WithEvents
+class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -165,21 +165,21 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents
 
                     //EXCEL FORMAT
                     $event->sheet->getDelegate()->getRowDimension('7')->setRowHeight(40);
-                    $event->sheet->getDelegate()->getStyle('A7:H7')
+                    $event->sheet->getDelegate()->getStyle('A7:G7')
                     ->getFont()
                     ->getColor()
                     ->setARGB('0000FF');
 
-                    $event->sheet->getDelegate()->getStyle('A7:H7')->applyFromArray($styleBorderAll);
-
+                    $event->sheet->getDelegate()->getStyle('A7:G7')->applyFromArray($styleBorderAll);
+                    // $event->sheet->getDelegate()->getColumnDimension('B')->setVisible(false);
                     $event->sheet->getColumnDimension('A')->setWidth(16);
-                    $event->sheet->getColumnDimension('B')->setWidth(4);
-                    $event->sheet->getColumnDimension('C')->setWidth(9);
-                    $event->sheet->getColumnDimension('D')->setWidth(14);
-                    $event->sheet->getColumnDimension('E')->setWidth(20);
-                    $event->sheet->getColumnDimension('F')->setWidth(18);
-                    $event->sheet->getColumnDimension('G')->setWidth(25);
-                    $event->sheet->getColumnDimension('H')->setWidth(18);
+                    // $event->sheet->getColumnDimension('B')->setWidth(6);
+                    $event->sheet->getColumnDimension('B')->setWidth(10);
+                    $event->sheet->getColumnDimension('C')->setWidth(14);
+                    $event->sheet->getColumnDimension('D')->setWidth(20);
+                    $event->sheet->getColumnDimension('E')->setWidth(18);
+                    $event->sheet->getColumnDimension('F')->setWidth(25);
+                    $event->sheet->getColumnDimension('G')->setWidth(18);
 
                     $event->sheet->getDelegate()->mergeCells('A1:D1');
                     $event->sheet->setCellValue('A1',"PLC REVISION HISTORY (RH)");
@@ -188,101 +188,103 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents
 
                     $event->sheet->setCellValue('A3',"Process Code");
                     $event->sheet->getDelegate()->getStyle('A3')->applyFromArray($arial_font13);
-                    $event->sheet->setCellValue('C3',":");
-                    $event->sheet->getDelegate()->getStyle('C3')->applyFromArray($arial_font13);
-                    $event->sheet->getDelegate()->getStyle('C3')->applyFromArray($hv_center);
+                    $event->sheet->setCellValue('B3',":");
+                    $event->sheet->getDelegate()->getStyle('B3')->applyFromArray($arial_font13);
+                    $event->sheet->getDelegate()->getStyle('B3')->applyFromArray($hv_center);
 
                     $event->sheet->setCellValue('A4',"Process Name");
                     $event->sheet->getDelegate()->getStyle('A4')->applyFromArray($arial_font13);
-                    $event->sheet->setCellValue('C4',":");
-                    $event->sheet->getDelegate()->getStyle('C4')->applyFromArray($arial_font13);
-                    $event->sheet->getDelegate()->getStyle('C4')->applyFromArray($hv_center);
+                    $event->sheet->setCellValue('B4',":");
+                    $event->sheet->getDelegate()->getStyle('B4')->applyFromArray($arial_font13);
+                    $event->sheet->getDelegate()->getStyle('B4')->applyFromArray($hv_center);
 
                     $event->sheet->setCellValue('A5',"Process Owner");
                     $event->sheet->getDelegate()->getStyle('A5')->applyFromArray($arial_font13);
-                    $event->sheet->setCellValue('C5',":");
-                    $event->sheet->getDelegate()->getStyle('C5')->applyFromArray($arial_font13);
-                    $event->sheet->getDelegate()->getStyle('C5')->applyFromArray($hv_center);
+                    $event->sheet->setCellValue('B5',":");
+                    $event->sheet->getDelegate()->getStyle('B5')->applyFromArray($arial_font13);
+                    $event->sheet->getDelegate()->getStyle('B5')->applyFromArray($hv_center);
 
 
                     $event->sheet->setCellValue('A7',"Revision Date");
+                    $event->sheet->getDelegate()->mergeCells('A7:B7');
                     $event->sheet->getDelegate()->getStyle('A7')->applyFromArray($arial_font12_bold);
                     $event->sheet->getDelegate()->getStyle('A7')->applyFromArray($hv_center);
 
-                    $event->sheet->getDelegate()->mergeCells('B7:C7');
                     $event->sheet->setCellValue('B7',"Version No.");
                     $event->sheet->getDelegate()->getStyle('B7')->applyFromArray($arial_font12_bold);
                     $event->sheet->getDelegate()->getStyle('B7')->applyFromArray($hv_center);
                     $event->sheet->getDelegate()->getStyle('B7')->getAlignment()->setWrapText(true);
 
-                    $event->sheet->getDelegate()->mergeCells('D7:E7');
-                    $event->sheet->setCellValue('D7',"Reason for Revision");
-                    $event->sheet->getDelegate()->getStyle('D7')->applyFromArray($arial_font12_bold);
-                    $event->sheet->getDelegate()->getStyle('D7')->applyFromArray($hv_center);
-                    $event->sheet->getDelegate()->getStyle('D7')->getAlignment()->setWrapText(true);
+                    $event->sheet->getDelegate()->mergeCells('C7:D7');
+                    $event->sheet->setCellValue('C7',"Reason for Revision");
+                    $event->sheet->getDelegate()->getStyle('C7')->applyFromArray($arial_font12_bold);
+                    $event->sheet->getDelegate()->getStyle('C7')->applyFromArray($hv_center);
+                    $event->sheet->getDelegate()->getStyle('C7')->getAlignment()->setWrapText(true);
 
-                    $event->sheet->setCellValue('F7',"Concerned Dept/Section");
+                    $event->sheet->setCellValue('E7',"Concerned Dept/Section");
+                    $event->sheet->getDelegate()->getStyle('E7')->applyFromArray($arial_font12_bold);
+                    $event->sheet->getDelegate()->getStyle('E7')->applyFromArray($hv_center);
+                    $event->sheet->getDelegate()->getStyle('E7')->getAlignment()->setWrapText(true);
+
+                    $event->sheet->setCellValue('F7',"Details of Revision");
                     $event->sheet->getDelegate()->getStyle('F7')->applyFromArray($arial_font12_bold);
                     $event->sheet->getDelegate()->getStyle('F7')->applyFromArray($hv_center);
                     $event->sheet->getDelegate()->getStyle('F7')->getAlignment()->setWrapText(true);
 
-                    $event->sheet->setCellValue('G7',"Details of Revision");
+                    $event->sheet->setCellValue('G7',"In-charge");
                     $event->sheet->getDelegate()->getStyle('G7')->applyFromArray($arial_font12_bold);
                     $event->sheet->getDelegate()->getStyle('G7')->applyFromArray($hv_center);
                     $event->sheet->getDelegate()->getStyle('G7')->getAlignment()->setWrapText(true);
-
-                    $event->sheet->setCellValue('H7',"In-charge");
-                    $event->sheet->getDelegate()->getStyle('H7')->applyFromArray($arial_font12_bold);
-                    $event->sheet->getDelegate()->getStyle('H7')->applyFromArray($hv_center);
-                    $event->sheet->getDelegate()->getStyle('H7')->getAlignment()->setWrapText(true);
 
                     //EXCEL FORMAT
 
                     //EXCEL DATA FROM DATABASE
 
                     // $event->sheet->setCellValue('D3',$rev_history);
-                    $plc_category = $rev_history[0]->plc_category_details->plc_category;
-                    $process_owner = $rev_history[0]->process_owner;
-                    $process_code = substr($plc_category, 0,6);
-                    $process_name = substr($plc_category, 7);
-
-                    $event->sheet->setCellValue('D3',$process_code);
-                    $event->sheet->getDelegate()->getStyle('D3')->applyFromArray($arial_font12);
-
-                    $event->sheet->setCellValue('D4',$process_name);
-                    $event->sheet->getDelegate()->getStyle('D4')->applyFromArray($arial_font12);
-
-                    $event->sheet->setCellValue('D5',$process_owner);
-                    $event->sheet->getDelegate()->getStyle('D5')->applyFromArray($arial_font12);
 
                     $start_col = 8;
+                    $details_col = 8;
+                    $dept_col = 8;
 
                     for ($i=0; $i < count($rev_history); $i++){
-                        $eme_col = 0;
-                        $char_col = 0;
-                        $event->sheet->getDelegate()->getStyle('A'.$start_col.':H'.$start_col)->applyFromArray($styleBorderAll);
+
+                        $plc_category = $rev_history[$i]->plc_category_details->plc_category;
+                        $process_owner = $rev_history[$i]->process_owner;
+                        $process_code = substr($plc_category, 0,6);
+                        $process_name = substr($plc_category, 7);
+
+                        $event->sheet->setCellValue('C3',$process_code);
+                        $event->sheet->getDelegate()->getStyle('C3')->applyFromArray($arial_font12);
+
+                        $event->sheet->setCellValue('C4',$process_name);
+                        $event->sheet->getDelegate()->getStyle('C4')->applyFromArray($arial_font12);
+
+                        $event->sheet->setCellValue('C5',$process_owner);
+                        $event->sheet->getDelegate()->getStyle('C5')->applyFromArray($arial_font12);
+
+                        $event->sheet->getDelegate()->getStyle('A'.$start_col.':G'.$start_col)->applyFromArray($styleBorderAll);
 
                         $rev_date = $rev_history[$i]->revision_date;
                         $rev_version = $rev_history[$i]->version_no;
-                        $event->sheet->getDelegate()->getStyle('A'.$start_col.':H'.$start_col)->applyFromArray($arial_font12);
+                        $event->sheet->getDelegate()->getStyle('A'.$start_col.':G'.$start_col)->applyFromArray($arial_font12);
 
-                        if($rev_history[$i]->created_at == null){
-                        $event->sheet->setCellValue('A'.$start_col,$rev_date);
-                        // $event->sheet->setCellValue('B'.$start_col,$rev_version);
-                        $event->sheet->getDelegate()->mergeCells('A'.$start_col.':C'.$start_col);
+                        $reason_counter = count($rev_history[$i]->reason_for_revision_details);
+                        $details_for_revision_counter = count($rev_history[$i]->details_of_revision_details);
+                        $dept_counter = count($rev_history[$i]->concern_dept_sect_inchanrge_details);
+
+
+                        if($rev_history[$i]->revision_date == null){
+                        $event->sheet->setCellValue('A'.$start_col,$rev_history[$i]->no_revision);
+                        // $event->sheet->getDelegate()->mergeCells('A'.$start_col.':C'.$start_col);
+                        $event->sheet->getDelegate()->mergeCells('C'.$start_col.':D'.$start_col);
                         $event->sheet->getDelegate()->getStyle('A'.$start_col)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($hv_center);
-                        // $event->sheet->getDelegate()->mergeCells('B'.$start_col.':C'.$start_col);
-                        $event->sheet->getDelegate()->mergeCells('D'.$start_col.':E'.$start_col);
+                        $event->sheet->getDelegate()->getStyle('A'.$start_col)->applyFromArray($hlv_top);
 
+                        }
 
-                        }else{
-                            $end_col = $start_col;
+                        else{
                             $date = date('d-F-y',strtotime($rev_date));
-
-                            // $event->sheet->getDelegate()->mergeCells('B'.$start_col.':C'.$end_col);
-                            $event->sheet->getDelegate()->mergeCells('D'.$start_col.':E'.$start_col);
-
+                            // $event->sheet->getDelegate()->mergeCells('A'.$start_col.':B'.$start_col);
                             $event->sheet->setCellValue('A'.$start_col,$date);
                             $event->sheet->setCellValue('B'.$start_col,$rev_version);
                             $event->sheet->getDelegate()->getStyle('H'.$start_col)->getAlignment()->setWrapText(true);
@@ -291,97 +293,90 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents
 
                         }
 
-                        $reason_counter = count($rev_history[$i]->reason_for_revision_details);
-                        $details_for_revision_counter = count($rev_history[$i]->details_of_revision_details);
-                        $dept_counter = count($rev_history[$i]->concern_dept_sect_inchanrge_details);
+                        if(count($rev_history[$i]->reason_for_revision_details) > 1){
+                            $end_col = $start_col + count($rev_history[$i]->reason_for_revision_details) -1;
+                            $event->sheet->getDelegate()->mergeCells('A'.$start_col.':A'.$end_col);
+                            $event->sheet->getDelegate()->mergeCells('B'.$start_col.':B'.$end_col);
+                        }
 
 
                         for ($q=0; $q < count($rev_history[$i]->reason_for_revision_details); $q++){
-                            $event->sheet->getDelegate()->getStyle('A'.$start_col.':H'.$start_col)->applyFromArray($styleBorderAll);
+                            $event->sheet->getDelegate()->getStyle('A'.$start_col.':G'.$start_col)->applyFromArray($styleBorderAll);
                             $reason_for_revision = $rev_history[$i]->reason_for_revision_details[$q]->reason_for_revision;
 
-
-                            $event->sheet->setCellValue('D'.$start_col,$rev_history[$i]->reason_for_revision_details[$q]->reason_for_revision);
-                            $event->sheet->getDelegate()->mergeCells('D'.$start_col.':E'.$start_col);
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->getAlignment()->setWrapText(true);
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hlv_top);
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12);
+                            $event->sheet->setCellValue('C'.$start_col,$rev_history[$i]->reason_for_revision_details[$q]->reason_for_revision);
+                            $event->sheet->getDelegate()->mergeCells('C'.$start_col.':D'.$start_col);
+                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->getAlignment()->setWrapText(true);
+                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hlv_top);
+                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12);
                             $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(50);
 
 
-
-                            if ($reason_counter > 1){
-                                $tapos_col = $start_col +$reason_counter -1;
-
-                                $event->sheet->getDelegate()->mergeCells('A'.$start_col.':A'.$tapos_col);
-                                $event->sheet->getDelegate()->mergeCells('B'.$start_col.':C'.$tapos_col);
-
-                            }
-                            else{
-                                // $colin = $start_col;
-                                $event->sheet->getDelegate()->mergeCells('B'.$start_col.':C'.$start_col);
-                            }
-
-                            $eme_col = $start_col;
-
                             for ($j=0; $j < count($rev_history[$i]->details_of_revision_details); $j++){
 
-                                $event->sheet->setCellValue('G'.$eme_col,$rev_history[$i]->details_of_revision_details[$j]->details_of_revision);
-                                $event->sheet->getDelegate()->getStyle('G'.$eme_col)->getAlignment()->setWrapText(true);
-                                $event->sheet->getDelegate()->getStyle('G'.$eme_col)->applyFromArray($hlv_top);
-                                $event->sheet->getDelegate()->getStyle('G'.$eme_col)->applyFromArray($arial_font12);
-
-
-                                if($details_for_revision_counter > 1){
-                                    $eme_col++;
-                                    $details_for_revision_counter--;
-                                }
+                                $event->sheet->setCellValue('F'.$start_col,$rev_history[$i]->details_of_revision_details[$j]->details_of_revision);
+                                $event->sheet->getDelegate()->getStyle('F'.$start_col)->getAlignment()->setWrapText(true);
+                                $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($hlv_top);
+                                $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($arial_font12);
 
                                 $rev_details = $rev_history[$i]->details_of_revision_details[$j]->details_of_revision;
 
                                 $var = str_replace('"',"",$rev_details);
                                 $strlen = strlen($var);
 
-                                if ($strlen < 200){
-                                    $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+                                if ($strlen > 50){
+                                    $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(120);
                                 }else{
                                     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(60);
                                 }
 
-                            }
+                                $concerned_dept = "";
+                                $in_charge = "";
 
-                            $char_col = $start_col;
+                                for ($d=0; $d < count($rev_history[$i]->concern_dept_sect_inchanrge_details); $d++){
+
+                                    if($rev_history[$i]->reason_for_revision_details[$q]->groupby == $rev_history[$i]->details_of_revision_details[$j]->groupby &&
+                                        $rev_history[$i]->reason_for_revision_details[$q]->groupby == $rev_history[$i]->concern_dept_sect_inchanrge_details[$d]->groupby){
+
+                                        $concerned_dept .= ' '. $rev_history[$i]->concern_dept_sect_inchanrge_details[$d]->concern_dept_sect;
+                                        $in_charge .= ' '. $rev_history[$i]->concern_dept_sect_inchanrge_details[$d]->in_charge;
+
+                                        $event->sheet->setCellValue('E'.$start_col,$concerned_dept);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hlv_top);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($arial_font12);
 
 
-                            for ($d=0; $d < count($rev_history[$i]->concern_dept_sect_inchanrge_details); $d++){
-
-                                    $event->sheet->setCellValue('F'.$char_col,$rev_history[$i]->concern_dept_sect_inchanrge_details[$d]->concern_dept_sect);
-                                    $event->sheet->getDelegate()->getStyle('F'.$char_col)->getAlignment()->setWrapText(true);
-                                    $event->sheet->getDelegate()->getStyle('F'.$char_col)->applyFromArray($hlv_top);
-                                    $event->sheet->getDelegate()->getStyle('F'.$char_col)->applyFromArray($arial_font12);
-
-                                    $event->sheet->setCellValue('H'.$char_col,$rev_history[$i]->concern_dept_sect_inchanrge_details[$d]->in_charge);
-                                    $event->sheet->getDelegate()->getStyle('H'.$char_col)->getAlignment()->setWrapText(true);
-                                    $event->sheet->getDelegate()->getStyle('H'.$char_col)->applyFromArray($hlv_top);
-                                    $event->sheet->getDelegate()->getStyle('H'.$char_col)->applyFromArray($arial_font12);
-
-                                    if($reason_counter > 1){
-                                        $char_col++;
-                                        $reason_counter--;
+                                        $event->sheet->setCellValue('G'.$start_col,$in_charge);
+                                        $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
+                                        $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
 
                                     }
+
+                                    // if($dept_counter > 1){
+                                    //     $start_col++;
+                                    //     $dept_counter--;
+                                    // }
+                                }
+
+                                // if($details_for_revision_counter > 1){
+                                //     $start_col++;
+                                //     $details_for_revision_counter--;
+                                // }
+
                             }
 
                             if($reason_counter > 1){
                                 $start_col++;
                                 $reason_counter--;
                             }
-
                         }
 
                         $start_col++;
+                        // $details_col++;
+                        // $dept_col++;
                     }
-
                 },
             ];
         }

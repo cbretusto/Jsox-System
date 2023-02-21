@@ -16,6 +16,7 @@ class CreateClcCategoryPmiClcTable extends Migration
         Schema::create('clc_category_pmi_clc', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedTinyInteger('status')->default(0)->comment = '1-active,2-Inactive';
+            $table->string('fiscal_year');
             $table->string('titles');
             $table->string('control_objectives');
             $table->string('internal_controls');
@@ -24,8 +25,6 @@ class CreateClcCategoryPmiClcTable extends Migration
             $table->string('review_findings');
             $table->string('follow_up_details');
             $table->string('g_ng_last');
-            $table->string('uploaded_file');
-            $table->unsignedTinyInteger('uploaded_file_status')->default(1)->comment = '1-with file,2-without file';
             $table->string('created_by');
             $table->string('updated_by');
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';

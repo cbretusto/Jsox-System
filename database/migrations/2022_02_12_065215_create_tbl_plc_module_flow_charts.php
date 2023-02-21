@@ -21,6 +21,7 @@ class CreateTblPLCModuleFlowCharts extends Migration
             $table->string('flow_chart');
             $table->string('process_owner');
             $table->string('revision_date');
+            $table->string('no_revision');
             $table->string('version_no');
             $table->string('date_uploaded');
             $table->string('uploaded_by');

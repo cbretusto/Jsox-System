@@ -17,8 +17,6 @@ function AddRCMData(){
         "hideMethod": "fadeOut",
     };
 
-
-
 	$.ajax({
         url: "add_rcm_data",
         method: "post",
@@ -165,11 +163,16 @@ function GetRcmData(rcmDataID){
                 $("#txtEditControlObjectiveId").val(rcm_data[0].control_objective);
                 $("#txtEditRiskSummary").val(rcm_data[0].risk_summary);
                 $("#txtEditRiskDetailId").val(rcm_data[0].risk_detail);
+                $("#selectEditFiscalYear").val(rcm_data[0].fiscal_year).trigger('change');
                 $("#txtEditDebitId").val(rcm_data[0].debit);
                 $("#txtEditCreditId").val(rcm_data[0].credit);
 
                 //START INTERNAL CONTROL GET DATA
                 console.log('RCM CONSOLE:', internal_control)
+
+                for (let index = 0; index <= internal_control.length; index++) {
+                    $('#removeEditRowRcmInternalControl')[0].click();
+                }
 
                 for (let index = 0; index < internal_control.length; index++) {
                     if(index > 0){
@@ -252,7 +255,7 @@ function GetRcmData(rcmDataID){
                     }else if (internal_control[index].manual == 'NULL'){
                         $("#editManualId_"+index).prop("checked",false);
                     }
-                    
+
                     if(internal_control[index].automatic == 'X'){
                         $("#editAutomaticId_"+index).prop("checked",true);
                     }else if (internal_control[index].automatic == 'NULL'){
@@ -342,60 +345,6 @@ function EditRcmData(){
         }
     });
 }
-
-// ============================== DELETE RCM DATA ==============================
-// function DeleteRcmData(){
-//     toastr.options = {
-//         "closeButton": false,
-//         "debug": false,
-//         "newestOnTop": true,
-//         "progressBar": true,
-//         "positionClass": "toast-top-right",
-//         "preventDuplicates": false,
-//         "onclick": null,
-//         "showDuration": "300",
-//         "hideDuration": "3000",
-//         "timeOut": "3000",
-//         "extendedTimeOut": "3000",
-//         "showEasing": "swing",
-//         "hideEasing": "linear",
-//         "showMethod": "fadeIn",
-//         "hideMethod": "fadeOut",
-//     };
-
-//     $.ajax({
-//         url: "delete_rcm_data",
-//         method: "post",
-//         data: $('#deleteRCMDataForm').serialize(),
-//         dataType: "json",
-//         beforeSend: function(){
-//             $("#iBtnDeleteRcmDataIcon").addClass('fa fa-spinner fa-pulse');
-//             $("#btnDeleteRcmData").prop('disabled', 'disabled');
-//         },
-//         success: function(response){
-//             let result = response['result'];
-//             if(result == 1){
-//                 $("#modalDeleteRcmData").modal('hide');
-//                 $("#deleteRCMDataForm")[0].reset();
-//                 toastr.success('PLC Category successfully deleted');
-//                 dataTablePlcModuleRCM.draw();
-//             }
-//             else{
-//                 toastr.warning('No PLC Category found!');
-//             }
-
-//             $("#iBtnDeleteRcmDataIcon").removeClass('fa fa-spinner fa-pulse');
-//             $("#btnDeleteRcmData").removeAttr('disabled');
-//             $("#iBtnDeleteRcmDataIcon").addClass('fa fa-check');
-//         },
-//         error: function(data, xhr, status){
-//             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-//             $("#iBtnDeleteRcmDataIcon").removeClass('fa fa-spinner fa-pulse');
-//             $("#btnDeleteRcmData").removeAttr('disabled');
-//             $("#iBtnDeleteRcmDataIcon").addClass('fa fa-check');
-//         }
-//     });
-// }
 
 //============================== CHANGE PMI CLC CATEGORY STATUS ==============================
 function ChangePlcRcmStatus(){
@@ -494,32 +443,26 @@ function GetRcmDataView(getRcmDataID){
             // console.log(rcm_data);
 
             if(rcm_data_view.length > 0){
-
                 $("#txtControlObjectiveData").val(rcm_data_view[0].control_objective);
                 $("#txtRiskSummaryData").val(rcm_data_view[0].risk_summary);
                 $("#txtRiskDetailData").val(rcm_data_view[0].risk_detail);
                 $("#txtDebitData").val(rcm_data_view[0].debit);
                 $("#txtCreditData").val(rcm_data_view[0].credit);
-                $("#txtValidityData").val(rcm_data_view[0].validity);
-                $("#txtCompletenessData").val(rcm_data_view[0].completeness);
-                $("#txtAccuracyData").val(rcm_data_view[0].accuracy);
-                $("#txtCutOffData").val(rcm_data_view[0].cut_off);
-                $("#txtValuationData").val(rcm_data_view[0].valuation);
-                $("#txtPresentationData").val(rcm_data_view[0].presentation);
-                $("#txtKeyControlData").val(rcm_data_view[0].key_control);
-                $("#txtItControlData").val(rcm_data_view[0].it_control);
-                $("#txtControlIdData").val(rcm_data_view[0].control_id);
-                $("#txtInternalControlData").val(rcm_data_view[0].internal_control);
-                $("#txtPreventiveData").val(rcm_data_view[0].prentive);
-                $("#txtDefectiveData").val(rcm_data_view[0].defective);
-                $("#txtInternatxtManualDatalControlData").val(rcm_data_view[0].manual);
-                $("#txtAutomaticData").val(rcm_data_view[0].automatic);
-                $("#txtSystemData").val(rcm_data_view[0].system);
-
-
-
-
-
+                $("#txtValidityData").val(rcm_data_view[0].rcm_info[0].validity);
+                $("#txtCompletenessData").val(rcm_data_view[0].rcm_info[0].completeness);
+                $("#txtAccuracyData").val(rcm_data_view[0].rcm_info[0].accuracy);
+                $("#txtCutOffData").val(rcm_data_view[0].rcm_info[0].cut_off);
+                $("#txtValuationData").val(rcm_data_view[0].rcm_info[0].valuation);
+                $("#txtPresentationData").val(rcm_data_view[0].rcm_info[0].presentation);
+                $("#txtKeyControlData").val(rcm_data_view[0].rcm_info[0].key_control);
+                $("#txtItControlData").val(rcm_data_view[0].rcm_info[0].it_control);
+                $("#txtControlIdData").val(rcm_data_view[0].rcm_info[0].control_id);
+                $("#txtInternalControlData").val(rcm_data_view[0].rcm_info[0].internal_control);
+                $("#txtPreventiveData").val(rcm_data_view[0].rcm_info[0].prentive);
+                $("#txtDefectiveData").val(rcm_data_view[0].rcm_info[0].defective);
+                $("#txtInternatxtManualDatalControlData").val(rcm_data_view[0].rcm_info[0].manual);
+                $("#txtAutomaticData").val(rcm_data_view[0].rcm_info[0].automatic);
+                $("#txtSystemData").val(rcm_data_view[0].rcm_info[0].system);
             }
             else{
                 toastr.warning('No RCM Data Record Found!');

@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PLCCAPAPreventiveAction extends Model
+class PmiClc extends Model
 {
-    protected $table = 'plc_capa_preventive_actions';
+    protected $table = 'pmi_clcs';
     protected $connection = 'mysql';
 }

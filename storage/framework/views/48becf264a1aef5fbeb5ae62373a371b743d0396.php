@@ -26,7 +26,7 @@
 
 
 
-<link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
@@ -44,4 +44,7 @@
 
 <link href="<?php echo e(asset('public/css/flash.css')); ?>" rel="stylesheet">
 
-<link href="<?php echo e(asset('public/css/custom.css')); ?>" rel="stylesheet"><?php /**PATH /var/www/Jsox/resources/views/shared/css_links/css_links.blade.php ENDPATH**/ ?>
+<link href="<?php echo e(asset('public/css/custom.css')); ?>" rel="stylesheet">
+
+
+<?php /**PATH /var/www/Jsox/resources/views/shared/css_links/css_links.blade.php ENDPATH**/ ?>

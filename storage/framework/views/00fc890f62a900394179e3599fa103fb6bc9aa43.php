@@ -69,6 +69,22 @@
                             </div>
 
                             <div class="card-body table-responsive">
+                                <div class="row">
+                                    <div class="col-sm-3 mr-2"> 
+                                        <label><strong>Fiscal Year:</strong></label>
+                                        <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                            <!-- Code generated -->
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-3"> 
+                                        <label class="form-control-label">Audit Period:</label> 
+                                        <select class="form-control" id="selAuditPeriod" name="audit_period">
+                                            <option selected disabled value="">-- Select Audit Period --</option>
+                                            <option value="First Half">First Half</option>
+                                            <option value="Second Half">Second Half</option>
+                                        </select>
+                                    </div>
+                                </div> 
                                 <div style="float: right;">
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalExportItClcSummary"><i class="fa fa-download"></i>  Export IT-CLC Summary  </button>
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalAddPmiItClcCategory" id="btnShowAddPmiItClcCategoryModal"><i class="fa fa-plus"></i>  Add PMI IT-CLC  </button>
@@ -79,6 +95,7 @@
                                             <tr style="text-align:center">
                                                 <th>ID</th>
                                                 <th style="width: 5%"></th>
+                                                <th>Fiscal Year <br> Audit Period</th>
                                                 <th>Control Objectives</th>
                                                 <th>Internal Controls</th>
                                                 <th>Status</th>
@@ -155,6 +172,31 @@
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <div class="row">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                </div> 
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Audit Period: &nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control" name="audit_period" id="selectAddAuditPeriod">
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                        
+                                    </select>
+                                </div> 
+                            </div>
+
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Control Objective:</label>
@@ -242,6 +284,31 @@
                     <div class="modal-body">
                         <input type="hidden" class="form-control" name="pmi_it_clc_category_id" id="txtEditPmiItClcCategoryId">
                         <div class="row">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="selectEditFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                </div> 
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Audit Period: &nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control" name="audit_period" id="selectEditAuditPeriod">
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                        
+                                    </select>
+                                </div> 
+                            </div>
+
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Control Objective:</label>
@@ -370,6 +437,8 @@
             });
 
             // ======================= CLC CATEGORY DATA TABLE =======================
+            GetFiscalYear($(".selectFiscalYear"));
+
             dataTableClcCategoryPmiItClc = $("#tblClcCategoryPmiItClc").DataTable({
                 "processing" : false,
                 "serverSide" : true,
@@ -381,6 +450,7 @@
                 "columns":[
                     { "data" : "id" },
                     { "data" : "it_clc_status" },
+                    { "data" : "fiscal_year_audit_period" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
                     { "data" : "status" },
@@ -489,6 +559,8 @@
                     GetPmiItClcByIdToEdit(pmi_itclcId);
 
                 // READ ONLY
+                $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                $("#selectEditAuditPeriod").attr('disabled', 'disabled');
                 $("#txtEditPmiItClcStatus").attr('disabled', 'disabled');
                 $("#txtEditPmiItClcInternalControls").attr('disabled', 'disabled');
                 $("#txtEditPmiItClcDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
@@ -509,6 +581,8 @@
             $('#check_box').on('click', function() {
                 $('#check_box').attr('checked', 'checked');
                 if($(this).is(":checked")){
+                    $("#selectEditFiscalYear").removeAttr('disabled', false);
+                    $("#selectEditAuditPeriod").removeAttr('disabled', false);
                     $("#txtEditPmiItClcStatus").removeAttr('disabled', false);
                     $("#txtEditPmiItClcInternalControls").removeAttr('disabled', false);
                     $("#txtEditPmiItClcDetectedProblemsImprovementPlans").removeAttr('disabled', false);
@@ -520,6 +594,8 @@
                     $("#btnEditPmiItClcCategory").removeClass('d-none');
                 }
                 else{
+                    $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                    $("#selectEditAuditPeriod").attr('disabled', 'disabled');
                     $("#txtEditPmiItClcStatus").attr('disabled', 'disabled');
                     $("#txtEditPmiItClcInternalControls").attr('disabled', 'disabled');
                     $("#txtEditPmiItClcDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
@@ -606,6 +682,15 @@
                     this.style.height = (this.scrollHeight + parseInt(resize.getPropertyValue("border-top-width")) + parseInt(resize.getPropertyValue("border-bottom-width"))) + "px";
                 });
             });
+
+            $("#selFiscalYear").on('change', function() {
+                dataTableClcCategoryPmiItClc.column(2).search($(this).val()).draw();
+            });
+
+            $("#selAuditPeriod").on('change', function() {
+                dataTableClcCategoryPmiItClc.search($("#selAuditPeriod").val()).draw();
+            });
+
 
         }); // JQUERY DOCUMENT READY END
 

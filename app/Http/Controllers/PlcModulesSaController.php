@@ -27,63 +27,59 @@ use App\PLCModuleSAFuAssessmentDetailsAndFindings;
 class PlcModulesSaController extends Controller
 {
     public function view_plc_sa_data(Request $request){
-        $plc_module_sa = PLCModuleSA::with('plc_sa_dic_assessment_details_finding')->where('category', $request->session)->where('logdel', 0)->get();
+        $plc_module_sa = PLCModuleSA::with('plc_sa_dic_assessment_details_finding', 'rcm_info')
+        ->where('category', $request->session)
+        ->where('logdel', 0)
+        ->get();
+        // return $plc_module_sa;
+
         session_start();
         $rapidx_name = $_SESSION['rapidx_name'];
-        // return $plc_module_sa;
 
         return DataTables::of($plc_module_sa)
 
-        ->addColumn('control_no', function($plc_module_sa){
-            $get_rcm_control_no = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('status', 0)->get();
+        ->addColumn('control_id', function($plc_module_sa){
+            $get_rcm_control_no = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('counter', $plc_module_sa->rcm_internal_control_counter)->where('status', 0)->get();
             $result = '';
-            for($x = 0; $x < count($get_rcm_control_no); $x++){
-                $result .= $get_rcm_control_no[$x]->control_id;
-                $result .= '<br>';
-                $result .= '<br>';
+            if($get_rcm_control_no[0]->status == 0 ){
+                $result .= $get_rcm_control_no[0]->control_id;
+            }else{
+
             }
-            // return $plc_module_sa->rcm_id;
             return $result;
         })
 
         ->addColumn('internal_control', function($plc_module_sa){
-            $get_rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('status', 0)->get();
+            $get_rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('counter', $plc_module_sa->rcm_internal_control_counter)->where('status', 0)->get();
             $result = '';
-            for($x = 0; $x < count($get_rcm_internal_control); $x++){
-                $result .= $get_rcm_internal_control[$x]->internal_control;
-                $result .= '<br>';
-                $result .= '<br>';
+            if($get_rcm_internal_control[0]->status == 0 ){
+                $result .= $get_rcm_internal_control[0]->internal_control;
+            }else{
+
             }
-            // return $plc_module_sa->rcm_id;
             return $result;
         })
+
         ->addColumn('key_control', function($plc_module_sa){
-            $key_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->get();
+            $key_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('counter', $plc_module_sa->rcm_internal_control_counter)->where('status', 0)->get();
             $result = "<center>";
-            for ($b=0; $b < count($key_control); $b++) { 
-                if($key_control[$b]->key_control != null){
-                    $result .= 'Key Control';
-                    $result .= '<br>';
-                    $result .= '<br>';
+                if($key_control[0]->status == 0 ){
+                    $result .= $key_control[0]->key_control;
                 }else{
 
                 }
-            }
             $result .= '</center>';
             return $result;
         })
+
         ->addColumn('it_control', function($plc_module_sa){
-            $it_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->get();
+            $it_control = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('counter', $plc_module_sa->rcm_internal_control_counter)->where('status', 0)->get();
             $result = "<center>";
-            for ($b=0; $b < count($it_control); $b++) { 
-                if($it_control[$b]->it_control != null){
-                    $result .= 'IT Control';
-                    $result .= '<br>';
-                    $result .= '<br>';
+                if($it_control[0]->status == 0 ){
+                    $result .= $it_control[0]->it_control;
                 }else{
 
                 }
-            }
             $result .= '</center>';
             return $result;
         })
@@ -347,19 +343,19 @@ class PlcModulesSaController extends Controller
             $result .= '</center>';
             return $result;
         })
-            ->rawColumns(['action', 
-                'control_no',
+            ->rawColumns(['action',
+                'control_id',
                 'key_control',
                 'it_control',
-                'internal_control', 
+                'internal_control',
                 'dic_assessment',
-                'oec_assessment', 
-                'rf_assessment', 
-                'fu_assessment', 
-                'dic_status', 
-                'oec_status', 
-                'rf_status', 
-                'fu_status', 
+                'oec_assessment',
+                'rf_assessment',
+                'fu_assessment',
+                'dic_status',
+                'oec_status',
+                'rf_status',
+                'fu_status',
                 'approval_status'])
             ->make(true);
     }
@@ -380,7 +376,7 @@ class PlcModulesSaController extends Controller
         $oec_assesment_details_and_finding_details = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $rf_assesment_details_and_finding_details = PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
-        $rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('status', 0)->get();
+        $rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('counter', $sa_data[0]->rcm_internal_control_counter)->where('status', 0)->get();
 
         $saModule = array(
             'sa_data' => $sa_data
@@ -439,8 +435,6 @@ class PlcModulesSaController extends Controller
 
             $update_sa = [
                 'category'                      => $request->category_name,
-                'year'                          => $request->year,
-                'fiscal_year'                   => $request->fiscal_year,
                 'assessed_by'                   => $request->assessed_by,
                 'view_assessed_by'              => $request->view_assessed_by,
                 'checked_by'                    => $request->checked_by,
@@ -477,8 +471,10 @@ class PlcModulesSaController extends Controller
 
             $plc_capa = PLCModuleSA::where('id', $request->sa_data_id)->get();
             $capa = [
-                'sa_id'    => $request->sa_data_id,
+                'sa_id'     => $request->sa_data_id,
+                'category'  => $request->category_name,
                 'rcm_id'   => $plc_capa[0]->rcm_id,
+                'rcm_internal_control_counter'    => $request->sa_counter,
             ];
                 if(PlcCapa::where('sa_id', $request->sa_data_id)->exists()){
                     if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
@@ -492,9 +488,11 @@ class PlcModulesSaController extends Controller
                         $capa
                     );
                 }else{
-                    PlcCapa::insert(
-                        $capa
-                    );
+                    if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
+                        PlcCapa::insert(
+                            $capa
+                        );
+                    }
                 }
 
             //START DIC ASSESSMENT DETAILS AND FINDINGS
@@ -618,7 +616,7 @@ class PlcModulesSaController extends Controller
                     'sa_id'                         => $request->sa_data_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
-                    'oec_status'                        => $request->oec_status,
+                    'oec_status'                    => $request->oec_status,
                     'created_at'                    => date('Y-m-d H:i:s'),
                 );
                 $oec_files = $request->file("oec_attachment");
@@ -690,7 +688,7 @@ class PlcModulesSaController extends Controller
                     'sa_id'                         => $request->sa_data_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
-                    'oec_status'                        => $request->oec_status,
+                    'oec_status'                    => $request->oec_status,
                     'created_at'                    => date('Y-m-d H:i:s'),
                 );
                 PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $request->sa_data_id)->delete();
@@ -833,7 +831,6 @@ class PlcModulesSaController extends Controller
 
             //START FU ASSESSMENT DETAILS AND FINDINGS
             $arr_upload_file_fu    = array();
-
             if($request->fu_assessment_details_findings_counter > 1){ // Multiple Insert
                 PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $request->sa_data_id)->delete();
 
@@ -1048,19 +1045,24 @@ class PlcModulesSaController extends Controller
         //FIRST HALF
         $get_dic_good_status = collect($get_sa_status)->where('dic_status', 'G');
         $get_oec_good_status = collect($get_sa_status)->where('oec_status', 'G');
-        
+        $sa_first_half_status = collect($get_sa_status)->where('approver_status', '2');
+
         //SECOND HALF
         $get_dic_not_good_status = collect($get_sa_status)->where('dic_status', 'NG');
         $get_oec_not_good_status = collect($get_sa_status)->where('oec_status', 'NG');
+        $sa_second_half_status = collect($get_sa_status)->where('approver_status', '4');
 
-        // return $get_sa_status;
+        // return count($get_sa_status);
 
-        return response()->json(['get_sa_status' => $get_sa_status, 
-            'get_dic_good_status' => count($get_dic_good_status), 
+        return response()->json(['get_sa_status' => $get_sa_status,
+            'get_dic_good_status' => count($get_dic_good_status),
             'get_oec_good_status' => count($get_oec_good_status),
+            'sa_first_half_status' => count($sa_first_half_status),
             'get_dic_not_good_status' => count($get_dic_not_good_status),
             'get_oec_not_good_status' => count($get_oec_not_good_status),
-            'category' => $request->category
+            'sa_second_half_status' => count($sa_second_half_status),
+            'category' => $request->category,
+            'test' => count($get_sa_status)
         ]);
     }
 

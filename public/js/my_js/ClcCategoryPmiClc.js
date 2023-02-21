@@ -1,5 +1,5 @@
 //============================== ADD PMI CLC CATEGORY ==============================
-function AddPmiClcCategory(){
+function AddPmiClc(){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -18,18 +18,18 @@ function AddPmiClcCategory(){
         "hideMethod": "fadeOut",
     };
 
-    let formData = new FormData($('#formAddPmiClcCategory')[0]);
+    let formData = new FormData($('#formAddPmiClc')[0]);
 
 	$.ajax({
-        url: "add_pmi_clc_category",
+        url: "add_pmi_clc",
         method: "post",
         processData: false,
         contentType: false,
         data: formData,
         dataType: "json",
         beforeSend: function(){
-            $("#iBtnAddPmiClcCategoryIcon").addClass('fa fa-spinner fa-pulse');
-            $("#btnAddPmiClcCategory").prop('disabled', 'disabled');
+            $("#iBtnAddPmiClcIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiClc").prop('disabled', 'disabled');
         },
         success: function(response){
             if(response['validation'] == 'hasError'){
@@ -57,6 +57,281 @@ function AddPmiClcCategory(){
                 else{
                     $("#txtAddPmiClcInternalControls").addClass('is-invalid');
                     $("#txtAddPmiClcInternalControls").attr('title', response['error']['internal_controls']);
+                }
+            }
+            else if(response['result'] == 1){
+                $("#modalAddPmiClc").modal('hide');
+                $("#formAddPmiClc")[0].reset();
+                toastr.success('Succesfully saved!');
+                dataTablePmiClc.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnAddPmiClcIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiClc").removeAttr('disabled');
+            $("#iBtnAddPmiClcIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnAddPmiClcIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiClc").removeAttr('disabled');
+            $("#iBtnAddPmiClcIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== EDIT PMI CLC CATEGORY BY ID TO EDIT ==============================
+function GetPmiClcByIdToEdit(pmiClcId){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "get_pmi_clc_by_id",
+        method: "get",
+        data: {
+            pmi_clc_id: pmiClcId
+        },
+        dataType: "json",
+        beforeSend: function(){    
+
+        },
+        success: function(response){
+            let pmi_clc = response['pmi_clc'];
+
+            if(pmi_clc.length > 0){
+                $("#txtEditNo")                         .val(pmi_clc[0].no);
+                $("#selectEditFiscalYear")              .val(pmi_clc[0].fiscal_year).trigger('change');
+                $("#selectEditPmiClcTitle")             .val(pmi_clc[0].titles).trigger('change');
+                $("#txtEditPmiClcControlObjectives")    .val(pmi_clc[0].control_objectives);
+                $("#txtEditPmiClcInternalControls")     .val(pmi_clc[0].internal_controls);
+            }
+            else{
+                toastr.warning('No Record Found!');
+            }
+        },
+        
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+    });
+}
+
+//============================== EDIT PMI CLC CATEGORY ==============================
+function EditPmiClc(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formEditPmiClc')[0]);
+
+	$.ajax({
+        url: "edit_pmi_clc",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnEditPmiClcIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiClc").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving Failed!');
+                if(response['error']['titles'] === undefined){
+                    $("#selectEditPmiClcTitle").removeClass('is-invalid');
+                    $("#selectEditPmiClcTitle").attr('title', '');
+                }
+                else{
+                    $("#selectEditPmiClcTitle").addClass('is-invalid');
+                    $("#selectEditPmiClcTitle").attr('title', response['error']['titles']);
+                }
+                if(response['error']['control_objectives'] === undefined){
+                    $("#txtEditPmiClcControlObjectives").removeClass('is-invalid');
+                    $("#txtEditPmiClcControlObjectives").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiClcControlObjectives").addClass('is-invalid');
+                    $("#txtEditPmiClcControlObjectives").attr('title', response['error']['control_objectives']);
+                }
+                if(response['error']['internal_controls'] === undefined){
+                    $("#txtEditPmiClcInternalControls").removeClass('is-invalid');
+                    $("#txtEditPmiClcInternalControls").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiClcInternalControls").addClass('is-invalid');
+                    $("#txtEditPmiClcInternalControls").attr('title', response['error']['internal_controls']);
+                }
+            }
+            else if(response['result'] == 1){
+                $("#modalEditPmiClc").modal('hide');
+                $("#formEditPmiClc")[0].reset();
+                toastr.success('Succesfully saved!');
+                dataTablePmiClc.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnEditPmiClcIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiClc").removeAttr('disabled');
+            $("#iBtnEditPmiClcIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnEditPmiClcIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiClc").removeAttr('disabled');
+            $("#iBtnEditPmiClcIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== CHANGE PMI CLC CATEGORY STATUS ==============================
+function ChangePmiClcStatus(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "change_pmi_clc_stat",
+        method: "post",
+        data: $('#formChangePmiClcStat').serialize(),
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnChangePmiClcStatIcon").addClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiClcStat").prop('disabled', 'disabled');
+        },
+        success: function(response){
+
+            if(response['validation'] == 'hasError'){
+                toastr.error('Activation failed!');
+            }else{
+                if(response['result'] == 1){
+                    if($("#txtChangePmiClcStat").val() == 1){
+                        toastr.success('Activation success!');
+                        $("#txtChangePmiClcStat").val() == 2;
+                    }
+                    else{
+                        toastr.success('Deactivation success!');
+                        $("#txtChangePmiClcStat").val() == 1;
+                    }
+                }
+                $("#modalChangePmiClcStat").modal('hide');
+                $("#formChangePmiClcStat")[0].reset();
+                dataTablePmiClc.draw();
+            }
+
+            $("#iBtnChangePmiClcStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiClcStat").removeAttr('disabled');
+            $("#iBtnChangePmiClcStatIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnChangePmiClcStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiClcStat").removeAttr('disabled');
+            $("#iBtnChangePmiClcStatIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== ADD PMI CLC ASSESSMENT ==============================
+function AddPmiClcAssessment(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formAddPmiClcAssessment')[0]);
+
+	$.ajax({
+        url: "add_pmi_clc_category",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnAddPmiClcAssessmentIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiClcAssessment").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving Failed!');
+                if(response['error']['titles'] === undefined){
+                    $("#selectAddPmiClcAssessmentTitle").removeClass('is-invalid');
+                    $("#selectAddPmiClcAssessmentTitle").attr('title', '');
+                }
+                else{
+                    $("#selectAddPmiClcAssessmentTitle").addClass('is-invalid');
+                    $("#selectAddPmiClcAssessmentTitle").attr('title', response['error']['titles']);
+                }
+                if(response['error']['control_objectives'] === undefined){
+                    $("#txtAddPmiClcAssessmentControlObjectives").removeClass('is-invalid');
+                    $("#txtAddPmiClcAssessmentControlObjectives").attr('title', '');
+                }
+                else{
+                    $("#txtAddPmiClcAssessmentControlObjectives").addClass('is-invalid');
+                    $("#txtAddPmiClcAssessmentControlObjectives").attr('title', response['error']['control_objectives']);
+                }
+                if(response['error']['internal_controls'] === undefined){
+                    $("#txtAddPmiClcAssessmentInternalControls").removeClass('is-invalid');
+                    $("#txtAddPmiClcAssessmentInternalControls").attr('title', '');
+                }
+                else{
+                    $("#txtAddPmiClcAssessmentInternalControls").addClass('is-invalid');
+                    $("#txtAddPmiClcAssessmentInternalControls").attr('title', response['error']['internal_controls']);
                 }
                 if(response['error']['g_ng'] === undefined){
                     $("#txtAddPmiClcGNg").removeClass('is-invalid');
@@ -98,37 +373,29 @@ function AddPmiClcCategory(){
                     $("#txtAddPmiClcGNgLast").addClass('is-invalid');
                     $("#txtAddPmiClcGNgLast").attr('title', response['error']['g_ng_last']);
                 }
-                // if(response['error']['uploaded_file'] === undefined){
-                //     $("#txtAddPmiClcFile").removeClass('is-invalid');
-                //     $("#txtAddPmiClcFile").attr('title', '');
-                // }
-                // else{
-                //     $("#txtAddPmiClcFile").addClass('is-invalid');
-                //     $("#txtAddPmiClcFile").attr('title', response['error']['uploaded_file']);
-                // }
             }
             else if(response['result'] == 1){
-                $("#modalAddPmiClcCategory").modal('hide');
-                $("#formAddPmiClcCategory")[0].reset();
+                $("#modalAddPmiClcAssessment").modal('hide');
+                $("#formAddPmiClcAssessment")[0].reset();
                 toastr.success('Succesfully saved!');
-                dataTableClcCategoryPmiClc.draw(); // reload the tables after insertion
+                dataTablePmiClcAssessment.draw(); // reload the tables after insertion
             }
 
-            $("#iBtnAddPmiClcCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnAddPmiClcCategory").removeAttr('disabled');
-            $("#iBtnAddPmiClcCategoryIcon").addClass('fa fa-check');
+            $("#iBtnAddPmiClcAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiClcAssessment").removeAttr('disabled');
+            $("#iBtnAddPmiClcAssessmentIcon").addClass('fa fa-check');
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-            $("#iBtnAddPmiClcCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnAddPmiClcCategory").removeAttr('disabled');
-            $("#iBtnAddPmiClcCategoryIcon").addClass('fa fa-check');
+            $("#iBtnAddPmiClcAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiClcAssessment").removeAttr('disabled');
+            $("#iBtnAddPmiClcAssessmentIcon").addClass('fa fa-check');
         }
     });
 }
 
 //============================== EDIT PMI CLC CATEGORY BY ID TO EDIT ==============================
-function GetPmiClcByIdToEdit(pmi_clcId){
+function GetPmiClcAssessmentByIdToEdit(pmiClcAssessmentId){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -148,52 +415,50 @@ function GetPmiClcByIdToEdit(pmi_clcId){
     };
 
     $.ajax({
-        url: "get_pmi_clc_category_by_id",
+        url: "get_pmi_clc_assessment_by_id",
         method: "get",
         data: {
-            pmi_clc_category_id: pmi_clcId
+            pmi_clc_assessment_id: pmiClcAssessmentId
         },
         dataType: "json",
         beforeSend: function(){    
         },
         
         success: function(response){
-            let pmi_clc_category = response['pmi_clc_category'];
+            let pmi_clc_assessment = response['pmi_clc_assessment'];
 
-            if(pmi_clc_category.length > 0){
-                if(pmi_clc_category[0].g_ng == 'Good'){
-                    console.log(pmi_clc_category[0].g_ng);
-                    $("#txtEditPmiClcGood").prop("checked", true);
-                }else if (pmi_clc_category[0].g_ng == 'Not Good'){
-                    console.log(pmi_clc_category[0].g_ng);
-                    $("#txtEditPmiClcNotGood").prop("checked", true);
+            if(pmi_clc_assessment.length > 0){
+                if(pmi_clc_assessment[0].g_ng == 'Good'){
+                    console.log(pmi_clc_assessment[0].g_ng);
+                    $("#txtEditPmiClcAssessmentGood").prop("checked", true);
+                }else if (pmi_clc_assessment[0].g_ng == 'Not Good'){
+                    console.log(pmi_clc_assessment[0].g_ng);
+                    $("#txtEditPmiClcAssessmentNotGood").prop("checked", true);
                 }
-                else if (pmi_clc_category[0].g_ng == null){
-                    console.log(pmi_clc_category[0].g_ng);
-                    $("#txtEditPmiClcNotGood").prop("checked", false);
-                    $("#txtEditPmiClcGood").prop("checked", false);
-                }
-
-                if(pmi_clc_category[0].g_ng_last == 'Good'){
-                    console.log(pmi_clc_category[0].g_ng_last);
-                    $("#txtEditPmiClcGoodLast").prop("checked", true);
-                }else if (pmi_clc_category[0].g_ng_last == 'Not Good'){
-                    console.log(pmi_clc_category[0].g_ng_last);
-                    $("#txtEditPmiClcNotGoodLast").prop("checked", true);
-                }
-                else if (pmi_clc_category[0].g_ng_last == null){
-                    console.log(pmi_clc_category[0].g_ng_last);
-                    $("#txtEditPmiClcNotGoodLast").prop("checked", false);
-                    $("#txtEditPmiClcGoodLast").prop("checked", false);
+                else if (pmi_clc_assessment[0].g_ng == 'N/A'){
+                    console.log(pmi_clc_assessment[0].g_ng);
+                    $("#txtEditPmiClcAssessmentNA").prop("checked", true);
                 }
 
-                $("#selectEditPmiClcTitle")                         .val(pmi_clc_category[0].titles).trigger('change');
-                $("#txtEditPmiClcControlObjectives")                .val(pmi_clc_category[0].control_objectives);
-                $("#txtEditPmiClcInternalControls")                 .val(pmi_clc_category[0].internal_controls);
-                $("#txtEditPmiClcDetectedProblemsImprovementPlans") .val(pmi_clc_category[0].detected_problems_improvement_plans);
-                $("#txtEditPmiClcReviewFindings")                   .val(pmi_clc_category[0].review_findings);
-                $("#txtEditFollowupDetails")                        .val(pmi_clc_category[0].follow_up_details);
-                // $("#EditPmiClcFile")                                .val(pmi_clc_category[0].uploaded_file);
+                if(pmi_clc_assessment[0].g_ng_last == 'Good'){
+                    console.log(pmi_clc_assessment[0].g_ng_last);
+                    $("#txtEditPmiClcAssessmentGoodLast").prop("checked", true);
+                }else if (pmi_clc_assessment[0].g_ng_last == 'Not Good'){
+                    console.log(pmi_clc_assessment[0].g_ng_last);
+                    $("#txtEditPmiClcAssessmentNotGoodLast").prop("checked", true);
+                }
+                else if (pmi_clc_assessment[0].g_ng_last == 'N/A'){
+                    console.log(pmi_clc_assessment[0].g_ng_last);
+                    $("#txtEditPmiClcAssessmentNALast").prop("checked", true);
+                }
+
+                $("#selectEditFiscalYear")                                      .val(pmi_clc_assessment[0].fiscal_year).trigger('change');
+                $("#selectEditPmiClcAssessmentTitle")                           .val(pmi_clc_assessment[0].titles).trigger('change');
+                $("#txtEditPmiClcAssessmentControlObjectives")                  .val(pmi_clc_assessment[0].control_objectives);
+                $("#txtEditPmiClcAssessmentInternalControls")                   .val(pmi_clc_assessment[0].internal_controls);
+                $("#txtEditPmiClcAssessmentDetectedProblemsImprovementPlans")   .val(pmi_clc_assessment[0].detected_problems_improvement_plans);
+                $("#txtEditPmiClcAssessmentReviewFindings")                     .val(pmi_clc_assessment[0].review_findings);
+                $("#txtEditPmiClcAssessmentFollowupDetails")                    .val(pmi_clc_assessment[0].follow_up_details);
             }
             else{
                 toastr.warning('No Record Found!');
@@ -206,8 +471,8 @@ function GetPmiClcByIdToEdit(pmi_clcId){
     });
 }
 
-//============================== CHANGE PMI CLC CATEGORY STATUS ==============================
-function ChangeClcCategoryPmiClcStatus(){
+//============================== CHANGE PMI CLC ASSESSMENT STATUS ==============================
+function ChangePmiClcAssessmentStatus(){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -227,13 +492,13 @@ function ChangeClcCategoryPmiClcStatus(){
     };
 
     $.ajax({
-        url: "change_clc_category_pmi_clc_stat",
+        url: "change_pmi_clc_assessment_stat",
         method: "post",
-        data: $('#formChangeClcCategoryPmiClcStat').serialize(),
+        data: $('#formChangePmiClcAssessmentStat').serialize(),
         dataType: "json",
         beforeSend: function(){
-            $("#iBtnChangeClcCategoryPmiClcStatIcon").addClass('fa fa-spinner fa-pulse');
-            $("#txtChangeClcCategoryPmiClcStat").prop('disabled', 'disabled');
+            $("#iBtnChangePmiClcAssessmentStatIcon").addClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiClcAssessmentStat").prop('disabled', 'disabled');
         },
         success: function(response){
 
@@ -241,35 +506,35 @@ function ChangeClcCategoryPmiClcStatus(){
                 toastr.error('Activation failed!');
             }else{
                 if(response['result'] == 1){
-                    if($("#txtChangeClcCategoryPmiClcStat").val() == 1){
+                    if($("#txtChangePmiClcAssessmentStat").val() == 1){
                         toastr.success('Activation success!');
-                        $("#txtChangeClcCategoryPmiClcStat").val() == 2;
+                        $("#txtChangePmiClcAssessmentStat").val() == 2;
                     }
                     else{
                         toastr.success('Deactivation success!');
-                        $("#txtChangeClcCategoryPmiClcStat").val() == 1;
+                        $("#txtChangePmiClcAssessmentStat").val() == 1;
                     }
                 }
-                $("#modalChangeClcCategoryPmiClcStat").modal('hide');
-                $("#formChangeClcCategoryPmiClcStat")[0].reset();
-                dataTableClcCategoryPmiClc.draw();
+                $("#modalChangePmiClcAssessmentStat").modal('hide');
+                $("#formChangePmiClcAssessmentStat")[0].reset();
+                dataTablePmiClcAssessment.draw();
             }
 
-            $("#iBtnChangeClcCategoryPmiClcStatIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#txtChangeClcCategoryPmiClcStat").removeAttr('disabled');
-            $("#iBtnChangeClcCategoryPmiClcStatIcon").addClass('fa fa-check');
+            $("#iBtnChangePmiClcAssessmentStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiClcAssessmentStat").removeAttr('disabled');
+            $("#iBtnChangePmiClcAssessmentStatIcon").addClass('fa fa-check');
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-            $("#iBtnChangeClcCategoryPmiClcStatIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#txtChangeClcCategoryPmiClcStat").removeAttr('disabled');
-            $("#iBtnChangeClcCategoryPmiClcStatIcon").addClass('fa fa-check');
+            $("#iBtnChangePmiClcAssessmentStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiClcAssessmentStat").removeAttr('disabled');
+            $("#iBtnChangePmiClcAssessmentStatIcon").addClass('fa fa-check');
         }
     });
 }
 
-//============================== EDIT PMI CLC CATEGORY ==============================
-function EditPmiClcCategory(){
+//============================== EDIT PMI CLC ASSESSMENT ==============================
+function EditPmiClcAssessment(){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -288,45 +553,45 @@ function EditPmiClcCategory(){
         "hideMethod": "fadeOut",
     };
 
-    let formData = new FormData($('#formEditPmiClcCategory')[0]);
+    let formData = new FormData($('#formEditPmiClcAssessment')[0]);
 
 	$.ajax({
-        url: "edit_pmi_clc_category",
+        url: "edit_pmi_clc_assessment",
         method: "post",
         processData: false,
         contentType: false,
         data: formData,
         dataType: "json",
         beforeSend: function(){
-            $("#iBtnEditPmiClcCategoryIcon").addClass('fa fa-spinner fa-pulse');
-            $("#btnEditPmiClcCategory").prop('disabled', 'disabled');
+            $("#iBtnEditPmiClcAssessmentIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiClcAssessment").prop('disabled', 'disabled');
         },
         success: function(response){
             if(response['validation'] == 'hasError'){
                 toastr.error('Saving Failed!');
                 if(response['error']['titles'] === undefined){
-                    $("#selectEditPmiClcTitle").removeClass('is-invalid');
-                    $("#selectEditPmiClcTitle").attr('title', '');
+                    $("#selectEditPmiClcAssessmentTitle").removeClass('is-invalid');
+                    $("#selectEditPmiClcAssessmentTitle").attr('title', '');
                 }
                 else{
-                    $("#selectEditPmiClcTitle").addClass('is-invalid');
-                    $("#selectEditPmiClcTitle").attr('title', response['error']['titles']);
+                    $("#selectEditPmiClcAssessmentTitle").addClass('is-invalid');
+                    $("#selectEditPmiClcAssessmentTitle").attr('title', response['error']['titles']);
                 }
                 if(response['error']['control_objectives'] === undefined){
-                    $("#txtEditPmiClcControlObjectives").removeClass('is-invalid');
-                    $("#txtEditPmiClcControlObjectives").attr('title', '');
+                    $("#txtEditPmiClcAssessmentControlObjectives").removeClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentControlObjectives").attr('title', '');
                 }
                 else{
-                    $("#txtEditPmiClcControlObjectives").addClass('is-invalid');
-                    $("#txtEditPmiClcControlObjectives").attr('title', response['error']['control_objectives']);
+                    $("#txtEditPmiClcAssessmentControlObjectives").addClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentControlObjectives").attr('title', response['error']['control_objectives']);
                 }
                 if(response['error']['internal_controls'] === undefined){
-                    $("#txtEditPmiClcInternalControls").removeClass('is-invalid');
-                    $("#txtEditPmiClcInternalControls").attr('title', '');
+                    $("#txtEditPmiClcAssessmentInternalControls").removeClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentInternalControls").attr('title', '');
                 }
                 else{
-                    $("#txtEditPmiClcInternalControls").addClass('is-invalid');
-                    $("#txtEditPmiClcInternalControls").attr('title', response['error']['internal_controls']);
+                    $("#txtEditPmiClcAssessmentInternalControls").addClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentInternalControls").attr('title', response['error']['internal_controls']);
                 }
                 if(response['error']['g_ng'] === undefined){
                     $("#txtEditPmiClcGNg").removeClass('is-invalid');
@@ -337,28 +602,28 @@ function EditPmiClcCategory(){
                     $("#txtEditPmiClcGNg").attr('title', response['error']['g_ng']);
                 }
                 if(response['error']['detected_problems_improvement_plans'] === undefined){
-                    $("#txtEditPmiClcDetectedProblemsImprovementPlans").removeClass('is-invalid');
-                    $("#txtEditPmiClcDetectedProblemsImprovementPlans").attr('title', '');
+                    $("#txtEditPmiClcAssessmentDetectedProblemsImprovementPlans").removeClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentDetectedProblemsImprovementPlans").attr('title', '');
                 }
                 else{
-                    $("#txtEditPmiClcDetectedProblemsImprovementPlans").addClass('is-invalid');
-                    $("#txtEditPmiClcDetectedProblemsImprovementPlans").attr('title', response['error']['detected_problems_improvement_plans']);
+                    $("#txtEditPmiClcAssessmentDetectedProblemsImprovementPlans").addClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentDetectedProblemsImprovementPlans").attr('title', response['error']['detected_problems_improvement_plans']);
                 }
                 if(response['error']['review_findings'] === undefined){
-                    $("#txtEditPmiClcReviewFindings").removeClass('is-invalid');
-                    $("#txtEditPmiClcReviewFindings").attr('title', '');
+                    $("#txtEditPmiClcAssessmentReviewFindings").removeClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentReviewFindings").attr('title', '');
                 }
                 else{
-                    $("#txtEditPmiClcReviewFindings").addClass('is-invalid');
-                    $("#txtEditPmiClcReviewFindings").attr('title', response['error']['review_findings']);
+                    $("#txtEditPmiClcAssessmentReviewFindings").addClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentReviewFindings").attr('title', response['error']['review_findings']);
                 }
                 if(response['error']['follow_up_details'] === undefined){
-                    $("#txtEditFollowupDetails").removeClass('is-invalid');
-                    $("#txtEditFollowupDetails").attr('title', '');
+                    $("#txtEditPmiClcAssessmentFollowupDetails").removeClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentFollowupDetails").attr('title', '');
                 }
                 else{
-                    $("#txtEditFollowupDetails").addClass('is-invalid');
-                    $("#txtEditFollowupDetails").attr('title', response['error']['follow_up_details']);
+                    $("#txtEditPmiClcAssessmentFollowupDetails").addClass('is-invalid');
+                    $("#txtEditPmiClcAssessmentFollowupDetails").attr('title', response['error']['follow_up_details']);
                 }
                 if(response['error']['g_ng_last'] === undefined){
                     $("#txtEditPmiClcGNgLast").removeClass('is-invalid');
@@ -368,31 +633,23 @@ function EditPmiClcCategory(){
                     $("#txtEditPmiClcGNgLast").addClass('is-invalid');
                     $("#txtEditPmiClcGNgLast").attr('title', response['error']['g_ng_last']);
                 }
-                // if(response['error']['uploaded_file'] === undefined){
-                //     $("#txtEditPmiClcFile").removeClass('is-invalid');
-                //     $("#txtEditPmiClcFile").attr('title', '');
-                // }
-                // else{
-                //     $("#txtEditPmiClcFile").addClass('is-invalid');
-                //     $("#txtEditPmiClcFile").attr('title', response['error']['uploaded_file']);
-                // }
             }
             else if(response['result'] == 1){
-                $("#modalEditPmiClcCategory").modal('hide');
-                $("#formEditPmiClcCategory")[0].reset();
+                $("#modalEditPmiClcAssessment").modal('hide');
+                $("#formEditPmiClcAssessment")[0].reset();
                 toastr.success('Succesfully saved!');
-                dataTableClcCategoryPmiClc.draw(); // reload the tables after insertion
+                dataTablePmiClcAssessment.draw(); // reload the tables after insertion
             }
 
-            $("#iBtnEditPmiClcCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnEditPmiClcCategory").removeAttr('disabled');
-            $("#iBtnEditPmiClcCategoryIcon").addClass('fa fa-check');
+            $("#iBtnEditPmiClcAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiClcAssessment").removeAttr('disabled');
+            $("#iBtnEditPmiClcAssessmentIcon").addClass('fa fa-check');
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-            $("#iBtnEditPmiClcCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnEditPmiClcCategory").removeAttr('disabled');
-            $("#iBtnEditPmiClcCategoryIcon").addClass('fa fa-check');
+            $("#iBtnEditPmiClcAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiClcAssessment").removeAttr('disabled');
+            $("#iBtnEditPmiClcAssessmentIcon").addClass('fa fa-check');
         }
     });
 }

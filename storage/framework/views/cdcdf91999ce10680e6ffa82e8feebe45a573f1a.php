@@ -26,8 +26,8 @@
         }
 
         table.table tbody td{
-            white-space:nowrap;
-
+            /* white-space:nowrap; */
+            vertical-align: middle;
         }
         table.table thead th{
             text-align: center;
@@ -68,18 +68,22 @@
                                         <div style="float: right;">                   
                                             <button class="btn btn-info mt-1" data-toggle="modal" data-target="#modalAddMatrix" id="btnShowAddMatrixModal"><i class="fa fa-plus"></i>  Add Matrix </button>
                                         </div> <br><br>
-                                        <div class="table responsive">
-                                            <table id="tblMatrix" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
+                                        <div class="table responsive" style="height: 640px; overflow: scroll;">
+                                            <table id="tblMatrix" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr>
-                                                        <th >Status</th>
-                                                        <th >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                                        <th >Non Key Control <br>or<br> IT Control</th>
-                                                        <th>TS Key Controls</th>
-                                                        <th>CN Key Controls</th>
-                                                        <th >Key Controls</th>
-                                                        <th >Controls Evaluated as</th>
-                                                        <th >Action</th>
+                                                        <th rowspan="2">Status</th>
+                                                        <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                                        <th colspan="3" class="bg-success">1st Test Assessment</th>
+                                                        <th colspan="2" class="bg-primary">2nd Test Roll-forward / Follow-up</th>
+                                                        <th rowspan="2">Action</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="bg-success">Non Key Control /<br> IT Control</th>
+                                                        <th class="bg-success">TS Key Controls</th>
+                                                        <th class="bg-success">CN Key Controls</th>
+                                                        <th class="bg-primary">Key Controls</th>
+                                                        <th class="bg-primary">Controls Evaluated as</th>
                                                     </tr>
                                                 </thead>            
                                             </table>
@@ -90,8 +94,8 @@
                                         <div style="float: right;">                   
                                             <button class="btn btn-info mt-1" data-toggle="modal" data-target="#modalAddJsoxPlcMatrix" id="btnShowAddJsoxPlcMatrixModal"><i class="fa fa-plus"></i>  Add Reference </button>
                                         </div> <br><br>
-                                        <div class="table responsive">
-                                            <table id="tblJsoxPlcMatrix" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
+                                        <div class="table responsive" style="height: 640px; overflow: scroll;">
+                                            <table id="tblJsoxPlcMatrix" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr style="text-align:center">
                                                         <th>Process Name</th>
@@ -137,9 +141,9 @@
                                         </div>
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Interval: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
+                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Frequency:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
                                             </div>
-                                            <input type="text" class="form-control" id="txtAddInterval" name="interval" autocomplete="off"> 
+                                            <textarea type="text" class="form-control" id="txtAddFrequency" name="frequency" autocomplete="off"></textarea>
                                         </div> 
                                     </div>
 
@@ -216,9 +220,9 @@
                                     <div class="form-group col-sm-12 flex-column d-flex"> 
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Interval: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
+                                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>Frequency: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
                                             </div>
-                                            <input type="text" class="form-control" id="txtEditInterval" name="interval" autocomplete="off"> 
+                                            <textarea type="text" class="form-control" id="txtEditFrequency" name="frequency" autocomplete="off"></textarea>
                                         </div> 
                                     </div>
 
@@ -561,13 +565,13 @@
                 },
 
                 "columns":[
-                    { "data" : "status" },
-                    { "data" : "interval" },
-                    { "data" : "nonkey_it_controls" },
-                    { "data" : "ts_key_control" },
-                    { "data" : "cn_key_control" },
-                    { "data" : "key_controls" },
-                    { "data" : "controls_evaluated" },
+                    { "data" : "status", orderable:false, searchable:false },
+                    { "data" : "frequency", orderable:false, searchable:false },
+                    { "data" : "nonkey_it_controls", orderable:false, searchable:false },
+                    { "data" : "ts_key_control", orderable:false, searchable:false },
+                    { "data" : "cn_key_control", orderable:false, searchable:false },
+                    { "data" : "key_controls", orderable:false, searchable:false },
+                    { "data" : "controls_evaluated", orderable:false, searchable:false },
                     { "data" : "action", orderable:false, searchable:false }
                 ],
                 "columnDefs": [
@@ -745,10 +749,10 @@
 
                 // html ='<div class="form-group col-sm-12">';
                     html ='<div class="input-group divDocumentHeader_'+documentCounter+'">';
-                        html +='<div class="input-group-prepend ">';
-                        html +='-<span class="input-group-text ml-2 mt-2" id="inputGroup-sizing-default"><strong>'+documentCounter+'. Document: &nbsp;&nbsp;&nbsp; </strong></span>';
-                        html +='</div>';
-                        html +=' <input type="text" class="form-control mt-2" id="txtAddDocument_'+documentCounter+'" name="document_'+documentCounter+'" autocomplete="off"> ';
+                    html +='    <div class="input-group-prepend ">';
+                    html +='        -<span class="input-group-text ml-2 mt-2" id="inputGroup-sizing-default"><strong>'+documentCounter+'. Document: &nbsp;&nbsp;&nbsp; </strong></span>';
+                    html +='    </div>';
+                    html +='    <input type="text" class="form-control mt-2" id="txtAddDocument_'+documentCounter+'" name="document_'+documentCounter+'" autocomplete="off"> ';
                     html +='</div>';
                 // html +='</div>';
 
@@ -815,6 +819,23 @@
                 }
             });
 
+            // DISABLED ENTER KEY EXCEPT FOR TEXTAREA
+            $(document).on("keydown", ":input:not(textarea)", function(event) {
+                if(event.key == "Enter") {
+                    event.preventDefault();
+                }
+            });
+
+            //==================================== RESIZE TEXTAREA ====================================
+            document.querySelectorAll("textarea").forEach(function (size) {
+            size.addEventListener("input", function () {
+                var resize = window.getComputedStyle(this);
+                // reset height to allow textarea to shrink again
+                this.style.height = "auto";
+                // when "box-sizing: border-box" we need to add vertical border size to scrollHeight
+                this.style.height = (this.scrollHeight + parseInt(resize.getPropertyValue("border-top-width")) + parseInt(resize.getPropertyValue("border-bottom-width"))) + "px";
+            });
+        });
 
         }); // JQUERY DOCUMENT READY END
     </script>                  

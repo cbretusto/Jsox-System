@@ -10,18 +10,31 @@ use App\ClcCategoryPmiItClc;
 
 class ExportItClcController extends Controller
 {
-    public function export_it_clc_summary(Request $request, $year_id)
+    public function export_it_clc_summary(Request $request, $year_id,$audit_period)
     {
 
-        $clc_it = ClcCategoryPmiItClc::get();
+        $clc_it = ClcCategoryPmiItClc::where('fiscal_year', $year_id)
+        ->get();;
 
         // return $clc_it;
 
+        if($audit_period == '1'){
+            $audit_period_text = 'First Half';
+        }
+
+        if($audit_period == '2'){
+            $audit_period_text = 'Second Half';
+        }
+
+        $year = substr($year_id,2);
+
         $date = date('Ymd',strtotime(NOW()));
-        // return $date;
+        // return $clc_it;
         return Excel::download(new ExportItClc(
             $date,
-            $clc_it
-        ), 'PMI IT-CLC.xlsx');
+            $clc_it,
+            $audit_period,
+            $year
+        ), 'PMI IT-CLC - '.'FY'.$year.' '. $audit_period_text.'.xlsx');
     }
 }

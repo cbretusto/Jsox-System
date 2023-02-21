@@ -44,7 +44,7 @@ class UserManagementController extends Controller
         })
         ->addColumn('action', function($user){
             $result = '<center><div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Action">
+                        <button type="button" class="btn btn-dark dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Action">
                             <i class="fa fa-lg fa-users-cog"></i> 
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">'; // dropdown-menu start
@@ -192,5 +192,4 @@ class UserManagementController extends Controller
         // return $user_log;
         return response()->json(['result' => $user_log]);
     }
-
 }

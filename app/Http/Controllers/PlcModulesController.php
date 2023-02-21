@@ -16,11 +16,11 @@ use App\RapidXUser;
 use App\UserManagement;
 use App\RapidXDepartment;
 use App\PLCModuleFlowChart;
+use App\RevisionHistoryConformance;
 use App\RevisionHistoryReasonForRevision;
 use App\RevisionHistoryDetailsOfRevision;
-use App\RevisionHistoryConcernDeptSectIncharge;
-use App\RevisionHistoryConformance;
 use App\RevisionHistoryDeptSectConformance;
+use App\RevisionHistoryConcernDeptSectIncharge;
 
 class PlcModulesController extends Controller
 {
@@ -46,11 +46,11 @@ class PlcModulesController extends Controller
 
         ->addColumn('revision_date', function($plc_module){
             $result = "<center>";
-            $result .= $plc_module->revision_date;
-            $result .= "<br>";
-            $result .= "<br>";
-            $result .= $plc_module->no_revision;
-            $result .= '</br>';
+            if($plc_module->revision_date != NULL){
+                $result .= $plc_module->revision_date;
+            }else if($plc_module->no_revision != NULL){
+                $result .= $plc_module->no_revision;
+            }
             return $result;
         })
 
@@ -230,8 +230,6 @@ class PlcModulesController extends Controller
         }
         else{
             $add_revision_process_owner = implode(" / ", $request->process_owner);
-            // return $add_revision_process_owner;
-
             $add_revision_history_array = [
                 'category'      => $request->category_name,
                 'process_owner' => $add_revision_process_owner,
@@ -255,6 +253,7 @@ class PlcModulesController extends Controller
             $multiple_revision_history_details_array = [
                 'plc_module_id' =>  $get_rev_history_id,
                 'category'      =>  $request->category_name,
+                'created_at'    => date('Y-m-d H:i:s')
             ];
             if($request->add_revision_history_counter > 0){ // Multiple Insert
                 for($reason_rev = 0; $reason_rev <= $request->add_reason_for_revision_counter; $reason_rev++){
@@ -362,6 +361,7 @@ class PlcModulesController extends Controller
                     'plc_module_id' =>  $get_rev_history_id,
                     'category'      =>  $request->category_name,
                     'groupby'       => 0,
+                    'created_at'    => date('Y-m-d H:i:s')
                 ];
 
                 for($x = 0; $x <= $request->add_reason_for_revision_counter; $x++){
@@ -408,20 +408,6 @@ class PlcModulesController extends Controller
 
                     }
                 }
-
-                //ADD FLOW CHART
-                $add_flowchart = array(
-                    'category'          => $request->category_name,
-                    'process_owner'     => $add_revision_process_owner,
-                    'revision_date'     => $request->revision_date,
-                    'version_no'        => $request->version_no,
-                );
-                $add_flowchart['rev_history_id'] =  $get_rev_history_id;
-
-                //ADD FLOW CHART
-                PLCModuleFlowChart::insert([
-                    $add_flowchart
-                ]);
             }//END REVISION HISTORY
 
             // //DETAILS OF REVISION
@@ -470,23 +456,20 @@ class PlcModulesController extends Controller
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
 
         }else{
+            $prasis_uwner = $request->nr_process_owner;
+            if($prasis_uwner != null){
+                $add_revision_process_owner = implode(" / ", $prasis_uwner);
+            }else{
+                $add_revision_process_owner = $prasis_uwner;
+            }
             $no_revision = [
                 'no_revision' => $request->no_revision,
                 'category'      => $request->category_name,
-                // 'process_owner' => $add_revision_process_owner,
+                'process_owner' => $add_revision_process_owner,
                 'version_no'    => $request->version_no,
-                'logdel'        => 0
+                'logdel'        => 0,
+                'created_at'    => date('Y-m-d H:i:s')
             ];
-            if($request->nr_process_owner != null){
-                $add_revision_process_owner = implode(" / ", $request->nr_process_owner);
-                $add_process_owner['process_owner'] = $add_revision_process_owner;
-
-                PLCModule::insert(
-                    $add_process_owner
-                );
-            }else{
-
-            }
 
             $get_id = PLCModule::insertGetId(
                 $no_revision
@@ -494,7 +477,8 @@ class PlcModulesController extends Controller
 
             PLCModuleFlowChart::insert([
                 'rev_history_id'    => $get_id,
-                'revision_date'     => $request->no_revision,
+                'process_owner'     => $add_revision_process_owner,
+                'no_revision'       => $request->no_revision,
                 'category'          => $request->category_name,
                 'version_no'        => $request->version_no,
                 'logdel'            => 0
@@ -519,7 +503,6 @@ class PlcModulesController extends Controller
         for ($i=0; $i < $reason_for_revision_groupby ; $i++) {
             $reason_for_revision_array[] = collect($reason_for_revision_details)->where('groupby', $i)->flatten(0)->toArray();
         }
-        
         $details_of_revision_groupby =RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
         $details_of_revision_details = RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->where('logdel', 0)->get();
         for ($ii=0; $ii < $details_of_revision_groupby ; $ii++) {
@@ -532,11 +515,6 @@ class PlcModulesController extends Controller
         for ($iii=0; $iii < $concern_Dept_sect_incharge_groupby ; $iii++) {
             $concern_Dept_sect_incharge_array[] = collect($concern_Dept_sect_incharge_details)->where('groupby', $iii)->flatten(0)->toArray();
         }
-
-        // return $conformance_details;
-        // $revisionHistory = $revision_history[0]->reason_for_revision;
-        // $explodeDetailsOfRevision = explode ("\n\n", $revision_history[0]->details_of_revision);
-        // print_r($explodeDetailsForRevision);
 
         $rev_history = array(
             'revision_history' => $revision_history
@@ -555,11 +533,6 @@ class PlcModulesController extends Controller
         // }
         return response()->json(
             $rev_history
-            // 'revision_history' => $revision_history,
-            // 'reason_for_revision_array' =>  $reason_for_revision_array,
-            // 'details_of_revision_array' =>  $details_of_revision_array,
-            // 'concern_Dept_sect_incharge_array' => $concern_Dept_sect_incharge_array,
-            // 'conformance_details' => $conformance_details,
         );  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
@@ -585,7 +558,9 @@ class PlcModulesController extends Controller
             $edit_revision_history_array = array(
                 'process_owner' => $edit_revision_process_owner,
                 'revision_date' => $request->edit_revision_history_date,
+                'no_revision'   => $request->edit_no_revision_history,
                 'version_no'    => $request->edit_version_no,
+                'updated_at'    => date('Y-m-d H:i:s')
             );
 
             //UPDATE REVISION HISTORY
@@ -601,7 +576,9 @@ class PlcModulesController extends Controller
                     'category'          => $request->category_name,
                     'process_owner'     => $edit_revision_process_owner,
                     'revision_date'     => $request->edit_revision_history_date,
+                    'no_revision'       => $request->edit_no_revision_history,
                     'version_no'        => $request->edit_version_no,
+                    'updated_at'        => date('Y-m-d H:i:s')
                 ]);
             }else{
                 //ADD FLOW CHART
@@ -610,7 +587,9 @@ class PlcModulesController extends Controller
                     'category'          => $request->category_name,
                     'process_owner'     => $edit_revision_process_owner,
                     'revision_date'     => $request->edit_revision_history_date,
+                    'no_revision'       => $request->edit_no_revision_history,
                     'version_no'        => $request->edit_version_no,
+                    'created_at'    => date('Y-m-d H:i:s')
                 ]);
             }
 
@@ -618,6 +597,7 @@ class PlcModulesController extends Controller
                 $insert_multiple_rev_history = [
                     'plc_module_id' =>  $request->revision_history_id,
                     'category'      =>  $request->category_name,
+                    'updated_at'        => date('Y-m-d H:i:s')
                 ];
 
                 RevisionHistoryReasonForRevision::where('plc_module_id', $request->revision_history_id)->delete();
@@ -706,6 +686,7 @@ class PlcModulesController extends Controller
                     'process_owner' => $edit_revision_process_owner,
                     'revision_date' => $request->edit_revision_history_date,
                     'version_no'    => $request->edit_version_no,
+                    'updated_at'    => date('Y-m-d H:i:s')
                 );
 
                 $get_id = PLCModule::where('id', $request->revision_history_id)
@@ -745,18 +726,21 @@ class PlcModulesController extends Controller
 
                 $edit_single_concerned_department = "concerned_dept_";
                 for($z = 0; $z <= $request->edit_dept_sect_incharge_counter; $z++){
-                    $impload_concerned_department = $request->concerned_dept_.$z;
                     RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $request->revision_history_id)->delete();
+                    
+                    if($request->input("concerned_dept_$z") != null){
+                        $impload_concerned_department = implode(" / ", $request[$edit_single_concerned_department.$z]);
+                        $edit_single_dept_sect_array = $insert_single_rev_history;
+                        $edit_single_dept_sect_array['counter'] = $z;
+                        $edit_single_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
+                        $edit_single_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
 
-                    $impload_concerned_department = implode(" / ", $request[$edit_single_concerned_department.$z]);
-                    $edit_single_dept_sect_array = $insert_single_rev_history;
-                    $edit_single_dept_sect_array['counter'] = $z;
-                    $edit_single_dept_sect_array['concern_dept_sect'] = $impload_concerned_department;
-                    $edit_single_dept_sect_array['in_charge'] = $request->input("in_charge_$z");
+                        RevisionHistoryConcernDeptSectIncharge::insert([
+                            $edit_single_dept_sect_array
+                        ]);
+                    }else{
 
-                    RevisionHistoryConcernDeptSectIncharge::insert([
-                        $edit_single_dept_sect_array
-                    ]);
+                    }
                 }
             }
 
@@ -773,7 +757,9 @@ class PlcModulesController extends Controller
                     'category'          => $request->category_name,
                     'process_owner'     => $edit_revision_process_owner,
                     'revision_date'     => $request->edit_revision_history_date,
+                    'no_revision'       => $request->edit_no_revision_history,
                     'version_no'        => $request->edit_version_no,
+                    'updated_at'        => date('Y-m-d H:i:s')
                 ]);
             }else{
                 //ADD FLOW CHART
@@ -782,7 +768,9 @@ class PlcModulesController extends Controller
                     'category'          => $request->category_name,
                     'process_owner'     => $edit_revision_process_owner,
                     'revision_date'     => $request->edit_revision_history_date,
+                    'no_revision'       => $request->edit_no_revision_history,
                     'version_no'        => $request->edit_version_no,
+                    'created_at'        => date('Y-m-d H:i:s')
                 ]);
             }
             return response()->json(['result' => "1"]);
@@ -834,7 +822,7 @@ class PlcModulesController extends Controller
     }
 
     public function load_user_management_process_owner(Request $request){
-        $users = UserManagement::where('logdel', 0)->where('user_level_id', 2)->orWhere('user_level_id', 3)->get();
+        $users = UserManagement::where('user_level_id', 2)->orWhere('user_level_id', 3)->where('logdel', 0)->distinct()->get();
         return response()->json(['users' => $users]);
     }
 
@@ -850,7 +838,7 @@ class PlcModulesController extends Controller
         $data = $request->all();
 
         $rules = [
-            // 'conformance_dept_sect_0[]'    => 'required|string|max:255',
+            'year_value'    => 'required|string|max:255',
             // 'conformance_name_0'            => 'required|string|max:255',
         ];
 
@@ -859,7 +847,7 @@ class PlcModulesController extends Controller
         if($validator->passes()){
             $conformance = [
                 'category'              => $request->category_name,
-                'year'                  => $request->year,
+                'year'                  => $request->year_value,
                 'conformance_period'    => $request->conformance_period,
                 'created_at'            => date('Y-m-d H:i:s')
             ];
@@ -869,15 +857,18 @@ class PlcModulesController extends Controller
                 $conformance
             );
             if($request->add_conformance_counter > 0){
-                $add_multiple_dept_sect = "conformance_dept_sect_";
+                $add_multiple_dept_sect = "add_multiple_dept_sect_";
+                $add_multiple_conformance_name = "conformance_name_";
                 for($i = 0; $i <= $request->add_conformance_counter; $i++){
-                    if($request->input("conformance_dept_sect_$i") != null || $impload_multiple_concerned_department != null){
+                    if($request->input("add_multiple_dept_sect_$i") != null){
                         $impload_multiple_concerned_department = implode(" / ", $request[$add_multiple_dept_sect.$i]);
+                        $impload_multiple_conformance_name = implode(" / ", $request[$add_multiple_conformance_name.$i]);
+
                         $multiple_add_dept_sect_conformance['conformance_id'] = $getConformanceId;
+                        $multiple_add_dept_sect_conformance['dept_sect'] = $impload_multiple_concerned_department;
+                        $multiple_add_dept_sect_conformance['name'] = $impload_multiple_conformance_name;
                         $multiple_add_dept_sect_conformance['category'] = $request->category_name;
                         $multiple_add_dept_sect_conformance['counter'] = $i;
-                        $multiple_add_dept_sect_conformance['dept_sect'] = $impload_multiple_concerned_department;
-                        $multiple_add_dept_sect_conformance['name'] = $request->input("conformance_name_$i");
 
                         RevisionHistoryDeptSectConformance::insert(
                             $multiple_add_dept_sect_conformance
@@ -887,13 +878,15 @@ class PlcModulesController extends Controller
                     }
                 }
             }else{
-                if($request->input("conformance_dept_sect_0") != null){
-                    $impload_single_concerned_department = implode(" / ", $request["conformance_dept_sect_0"]);
+                if($request->input("add_multiple_dept_sect_0") != null){
+                    $impload_single_concerned_department = implode(" / ", $request["add_multiple_dept_sect_0"]);
+                    $impload_single_conformance_name = implode(" / ", $request["conformance_name_0"]);
+
                     $single_add_dept_sect_conformance['conformance_id'] = $getConformanceId;
                     $single_add_dept_sect_conformance['category'] = $request->category_name;
                     $single_add_dept_sect_conformance['counter'] = 0;
                     $single_add_dept_sect_conformance['dept_sect'] = $impload_single_concerned_department;
-                    $single_add_dept_sect_conformance['name'] = $request->input("conformance_name_0");
+                    $single_add_dept_sect_conformance['name'] = $impload_single_conformance_name;
 
                     RevisionHistoryDeptSectConformance::insert(
                         $single_add_dept_sect_conformance
@@ -945,7 +938,7 @@ class PlcModulesController extends Controller
         }
         else{
             $conformance = [
-                'year'                  => $request->year,
+                'year'                  => $request->year_value,
                 'conformance_period'    => $request->conformance_period,
                 'updated_at'            => date('Y-m-d H:i:s')
             ];
@@ -962,30 +955,36 @@ class PlcModulesController extends Controller
             ];
             if($request->edit_conformance_counter > 0){
                 $edit_multiple_dept_sect = "edit_conformance_dept_sect_";
-                for($i = 0; $i < $request->edit_conformance_counter; $i++){
+                $edit_multiple_conformance_name = "conformance_name_";
+                RevisionHistoryDeptSectConformance::where('conformance_id', $request->revision_history_conformance_id)->delete();
+                for($i = 0; $i <= $request->edit_conformance_counter; $i++){
+                    $multiple_edit_dept_sect_conformance = $edit_dept_sect_conformance;
+                    $multiple_edit_dept_sect_conformance['counter'] = $i;
+
                     if($request->input("edit_conformance_dept_sect_$i") != null){
-                        RevisionHistoryDeptSectConformance::where('conformance_id', $request->revision_history_conformance_id)->delete();
                         $impload_multiple_concerned_department = implode(" / ", $request[$edit_multiple_dept_sect.$i]);
-                        $multiple_edit_dept_sect_conformance = $edit_dept_sect_conformance;
+                        $impload_multiple_conformance_name = implode(" / ", $request[$edit_multiple_conformance_name.$i]);
+
                         $multiple_edit_dept_sect_conformance['dept_sect'] = $impload_multiple_concerned_department;
-                        $multiple_edit_dept_sect_conformance['counter'] = $i;
-                        $multiple_edit_dept_sect_conformance['name'] = $request->input("conformance_name_$i");
+                        $multiple_edit_dept_sect_conformance['name'] = $impload_multiple_conformance_name;
 
                         RevisionHistoryDeptSectConformance::insert(
-                            $multiple_edit_dept_sect_conformance
-                        );
+                                $multiple_edit_dept_sect_conformance
+                            );
                     }else{
-                        
+                            
                     }
                 }
             }else{
                 if($request->input("edit_conformance_dept_sect_0") != null){
                     RevisionHistoryDeptSectConformance::where('conformance_id', $request->revision_history_conformance_id)->delete();
                     $impload_single_concerned_department = implode(" / ", $request["edit_conformance_dept_sect_0"]);
+                    $impload_single_conformance_name = implode(" / ", $request["conformance_name_0"]);
+
                     $single_edit_dept_sect_conformance = $edit_dept_sect_conformance;
                     $single_edit_dept_sect_conformance['dept_sect'] = $impload_single_concerned_department;
                     $single_edit_dept_sect_conformance['counter'] = 0;
-                    $single_edit_dept_sect_conformance['name'] = $request->input("conformance_name_0");
+                    $single_edit_dept_sect_conformance['name'] = $impload_single_conformance_name;
 
                     RevisionHistoryDeptSectConformance::insert(
                         $single_edit_dept_sect_conformance

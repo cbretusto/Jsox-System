@@ -10,21 +10,62 @@ use App\ClcCategoryPmiFcrp;
 
 class ExportFcrpClcController extends Controller
 {
-    public function export_fcrp_clc_summary(Request $request, $year_id)
+    public function export_fcrp_clc_summary(Request $request, $year_id, $audit_period)
     {
 
-        $company_policies = ClcCategoryPmiFcrp::where('titles', 'Company policies')->get();
-        $roles_res_skills = ClcCategoryPmiFcrp::where('titles', 'Roles, responsibilities and skills')->get();
-        $gaap = ClcCategoryPmiFcrp::where('titles', 'GAAP')->get();
-        $communication = ClcCategoryPmiFcrp::where('titles', 'Communication')->get();
-        $unsual_accounting = ClcCategoryPmiFcrp::where('titles', 'Unusual accounting treatments')->get();
-        $data_coll = ClcCategoryPmiFcrp::where('titles', 'Data collection')->get();
-        $verification = ClcCategoryPmiFcrp::where('titles', 'Verification of statement figures')->get();
-        $significant = ClcCategoryPmiFcrp::where('titles', 'Significant accounts')->get();
-        $consolidation = ClcCategoryPmiFcrp::where('titles', 'Consolidation Package')->get();
-        $reclassification = ClcCategoryPmiFcrp::where('titles', 'Reclassification of accounts')->get();
-        $year_end = ClcCategoryPmiFcrp::where('titles', 'Year-end adjusting entries')->get();
+        $company_policies = ClcCategoryPmiFcrp::where('titles', 'Company policies')
+        ->where('fiscal_year', $year_id)
+        ->get();
 
+        $roles_res_skills = ClcCategoryPmiFcrp::where('titles', 'Roles, responsibilities and skills')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $gaap = ClcCategoryPmiFcrp::where('titles', 'GAAP')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $communication = ClcCategoryPmiFcrp::where('titles', 'Communication')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $unsual_accounting = ClcCategoryPmiFcrp::where('titles', 'Unusual accounting treatments')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $data_coll = ClcCategoryPmiFcrp::where('titles', 'Data collection')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $verification = ClcCategoryPmiFcrp::where('titles', 'Verification of statement figures')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $significant = ClcCategoryPmiFcrp::where('titles', 'Significant accounts')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $consolidation = ClcCategoryPmiFcrp::where('titles', 'Consolidation Package')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $reclassification = ClcCategoryPmiFcrp::where('titles', 'Reclassification of accounts')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        $year_end = ClcCategoryPmiFcrp::where('titles', 'Year-end adjusting entries')
+        ->where('fiscal_year', $year_id)
+        ->get();
+
+        if($audit_period == '1'){
+            $audit_period_text = 'First Half';
+        }
+
+        if($audit_period == '2'){
+            $audit_period_text = 'Second Half';
+        }
+
+        $year = substr($year_id,2);
         // return $company_policies;
 
         $date = date('Ymd',strtotime(NOW()));
@@ -41,7 +82,9 @@ class ExportFcrpClcController extends Controller
             $significant,
             $consolidation,
             $reclassification,
-            $year_end
-        ), 'PMI FCRP-CLC.xlsx');
+            $year_end,
+            $audit_period,
+            $year
+        ), 'PMI FCRP-CLC - '.'FY'.$year.' '. $audit_period_text.'.xlsx');
     }
 }

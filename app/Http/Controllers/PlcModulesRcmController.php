@@ -32,13 +32,14 @@ class PlcModulesRcmController extends Controller
             else{
                 $result .= '<span class="badge badge-pill badge-danger">Inactive</span>';
             }
-                $result .= '</center>';
-                return $result;
+            // $result .= "123";
+            $result .= '</center>';
+            return $result;
         })
         ->addColumn('control_id', function($plc_module_rcm){
             $revHistoryControlId = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_rcm->id)->get();
             $result = "<center>";
-            for ($a = 0; $a < count($revHistoryControlId) ; $a++) { 
+            for ($a = 0; $a < count($revHistoryControlId) ; $a++) {
                 $result .=  $revHistoryControlId[$a]->control_id;
                 $result .= '<br>';
                 $result .= '<br>';
@@ -50,7 +51,7 @@ class PlcModulesRcmController extends Controller
         ->addColumn('description', function($plc_module_rcm){
             $revHistoryDescription = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_rcm->id)->get();
             $result = "<center>";
-            for ($b=0; $b < count($revHistoryDescription); $b++) { 
+            for ($b=0; $b < count($revHistoryDescription); $b++) {
                 if($revHistoryDescription[$b]->key_control != null){
                     $result .= 'Key Control';
                     $result .= '<br>';
@@ -80,7 +81,7 @@ class PlcModulesRcmController extends Controller
         ->addColumn('system', function($plc_module_rcm){
             $revHistorySystem = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_rcm->id)->get();
             $result = "<center>";
-            for ($d = 0; $d < count($revHistorySystem); $d++) { 
+            for ($d = 0; $d < count($revHistorySystem); $d++) {
                 $result .=  $revHistorySystem[$d]->system;
                 $result .= '<br>';
                 $result .= '<br>';
@@ -95,12 +96,10 @@ class PlcModulesRcmController extends Controller
             if($plc_module_rcm->status == 1){
                 $result .= '<button class="m-r-15 text-muted btn actionGetRcmData" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalViewRcmData" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
                 $result .= '<br>';
-                $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionEditRcmData" style="width:105px;margin:2%;" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalEditRcmData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
-                $result .= '<br>';
-                $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangePlcRcmStat" style="width:105px;margin:2%;" plc_module_rcm-id="' . $plc_module_rcm->id . '" status="2" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-ban"></i>  Deactivate</button>&nbsp;';
-                $result .= '<br>';
+                // $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionEditRcmData" style="width:105px;margin:2%;" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalEditRcmData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                // $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangePlcRcmStat" style="width:105px;margin:2%;" plc_module_rcm-id="' . $plc_module_rcm->id . '" status="2" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-ban"></i>  Deactivate</button>&nbsp;';
             }else{
-                $result .= '<button class="btn btn-success btn-sm text-center actionChangePlcRcmStat" plc_module_rcm-id="' . $plc_module_rcm->id . '"  status="1" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-check"></i>  Active</button>&nbsp;';
+                // $result .= '<button class="btn btn-success btn-sm text-center actionChangePlcRcmStat" plc_module_rcm-id="' . $plc_module_rcm->id . '"  status="1" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-check"></i>  Active</button>&nbsp;';
             }
             $result .= '</center>';
             return $result;
@@ -131,26 +130,25 @@ class PlcModulesRcmController extends Controller
         // return $data;
         $rcm = [
             'add_control_objective' => 'required',
-            'add_risk_summary'      => 'required',
-            'add_risk_detail'       => 'required',
+            'fiscal_year'           => 'required',
+            // 'add_risk_detail'       => 'required',
         ];
 
         $validator = Validator::make($data, $rcm);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()){
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
-        }
-        else{
-
+        }else{
             $add_rcm_details = [
                 'category'          => $request->category_name,
                 'control_objective' => $request->add_control_objective,
                 'risk_summary'      => $request->add_risk_summary,
                 'risk_detail'       => $request->add_risk_detail,
+                'fiscal_year'       => $request->fiscal_year,
                 'debit'             => $request->add_debit,
                 'credit'            => $request->add_credit,
                 'logdel'            => 0,
+                'created_at'        => date('Y-m-d H:i:s')
             ];
 
             $rcmId = PLCModuleRCM::insertGetId(
@@ -181,7 +179,7 @@ class PlcModulesRcmController extends Controller
                         'created_at'        => date('Y-m-d H:i:s'),
                     ];
                     $add_multiple_rcm_internal_control['counter'] = $index;
-                    
+
                     if($request->add_internal_control_counter > 0){
                         $check_status = $request->input("internal_control_checkbox_$index");
                         if ($check_status == null){
@@ -191,31 +189,26 @@ class PlcModulesRcmController extends Controller
                         }
                         $add_multiple_rcm_internal_control['status'] = $rcm_status;
                     }
-                        // $add_multiple_rcm_internal_control['internal_control'] = $request->input("internal_control_$index");
 
                     PLCModuleRCMInternalControl::insert([
                         $add_multiple_rcm_internal_control
                     ]);
-                }
-                
-                if ($request->add_control_id_0 != null && $request->input("internal_control_0") != null){
-                    PLCModuleSA::insert([
-                        'rcm_id'            => $rcmId,
-                        'category'          => $request->category_name,
-                        'control_no'        => $request->add_control_id_0,
-                        'key_control'       => $request->add_key_control_0,
-                        'it_control'        => $request->add_it_control_0,
-                    ]);
-                }else if($request->add_control_id_1 != null && $request->input("internal_control_1") != null){
-                    PLCModuleSA::insert([
-                        'rcm_id'            => $rcmId,
-                        'category'          => $request->category_name,
-                        'control_no'        => $request->add_control_id_1,
-                        'key_control'       => $request->add_key_control_1,
-                        'it_control'        => $request->add_it_control_1,
-                    ]);
-                }else{
 
+                    //SA MODULE
+                    $MultipleSa = [
+                        'rcm_id'        => $rcmId,
+                        'logdel'        => $rcm_status,
+                        'counter'       => $index,
+                        'category'      => $request->category_name,
+                        'fiscal_year'   => $request->fiscal_year,
+                        'created_at'        => date('Y-m-d H:i:s'),
+                    ];
+
+                    if ($request->input("add_control_id_$index") != null && $request->input("internal_control_$index") != null){
+                        PLCModuleSA::insert([
+                            $MultipleSa
+                        ]);
+                    }
                 }
             }else{ // Single Insert
                 $add_single_rcm_internal_control = [
@@ -239,21 +232,29 @@ class PlcModulesRcmController extends Controller
                     'system'            => $request->add_system_0,
                     'created_at'        => date('Y-m-d H:i:s'),
                 ];
-
-                // $add_single_rcm_internal_control['internal_control'] = $request->internal_control_1;
+                $check_status = $request->input("internal_control_checkbox_0");
+                if ($check_status == null){
+                    $rcm_status = '0';
+                }else{
+                    $rcm_status = '1';
+                }
+                $add_single_rcm_internal_control['status'] = $rcm_status;
 
                 PLCModuleRCMInternalControl::insert([
                     $add_single_rcm_internal_control
                 ]);
-
+                
                 if ($request->add_control_id_0 != null && $request->internal_control_0 != null){
                     PLCModuleSA::insert([
-                        'rcm_id'            => $rcmId,
-                        'category'          => $request->category_name,
-                        'control_no'        => $request->add_control_id_0,
-                        'key_control'       => $request->add_key_control_0,
-                        'it_control'        => $request->add_it_control_0,
+                        'rcm_id'        => $rcmId,
+                        'logdel'        => $rcm_status,
+                        'counter'       => 0,
+                        'category'      => $request->category_name,
+                        'fiscal_year'   => $request->fiscal_year,
+                        'created_at'        => date('Y-m-d H:i:s'),
                     ]);
+                }else{
+
                 }
             }//END RCM INTERNAL CONTROL
 
@@ -296,18 +297,21 @@ class PlcModulesRcmController extends Controller
             'control_objective' => $request->edit_control_objective,
             'risk_summary'      => $request->edit_risk_summary,
             'risk_detail'       => $request->edit_risk_detail,
+            'fiscal_year'       => $request->fiscal_year,
             'debit'             => $request->edit_debit,
             'credit'            => $request->edit_credit,
+            'updated_at'        => date('Y-m-d H:i:s'),
             ];
 
             PLCModuleRCM::where('id', $request->rcm_data_id)
             ->update(
                 $edit_rcm_details
             );
-                
             // START RCM INTERNAL CONTROLS
             if($request->edit_internal_control_counter > 0){ // Multiple Insert
                 PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->delete();
+                PLCModuleSA::where('rcm_id', $request->rcm_data_id)->delete();
+
                 for($index = 0; $index <= $request->edit_internal_control_counter; $index++){
                     $edit_rcm_internal_control = [
                         'rcm_id'            => $request->rcm_data_id,
@@ -327,7 +331,7 @@ class PlcModulesRcmController extends Controller
                         'manual'            => $request->input("edit_manual_$index"),
                         'automatic'         => $request->input("edit_automatic_$index"),
                         'system'            => $request->input("edit_system_$index"),
-                        'created_at'        => date('Y-m-d H:i:s'),
+                        'updated_at'        => date('Y-m-d H:i:s'),
                     ];
 
                     if($request->edit_internal_control_counter > 0){
@@ -344,60 +348,28 @@ class PlcModulesRcmController extends Controller
                     PLCModuleRCMInternalControl::insert(
                         $edit_rcm_internal_control
                     );
-                }
-                
-                $PLCModuleRcmInternalControl = PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->get();
-                if($request->edit_control_id_0 != null && $request->internal_control_0 != null){
-                    $rcm_sa_0 = [
-                        'control_no'    => $request->edit_control_id_0,
-                        'key_control'   => $request->edit_key_control_0,
-                        'it_control'    => $request->edit_it_control_0,
-                    ];
-                    PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                    ->update(
-                        $rcm_sa_0
-                    );
-                }else if($request->edit_control_id_1 != null && $request->internal_control_1 != null){
-                    $rcm_sa_1 = [
-                        'control_no'    => $request->edit_control_1,
-                        'key_control'   => $request->edit_key_control_1,
-                        'it_control'    => $request->edit_it_control_1,
-                    ];
-                    PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                    ->update(
-                        $rcm_sa_1
-                    );
-                }else{
-                    if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
-                        for ($i=0; $i < count($PLCModuleRcmInternalControl); $i++) { 
-                            if($PLCModuleRcmInternalControl[$i]->control_id == null){
-                                $rcm_sa['logdel'] = 1;
-                            }else{
-                                $rcm_sa['logdel'] = 0;
-                            }
-                        }
-                        PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                        ->update(
-                            $rcm_sa
-                        );
+
+                    //SA MODULE
+                    if ($request->input("edit_control_id_$index") != null && $request->input("internal_control_$index") != null){
+                        $MultipleSa = [
+                            'logdel'        => $rcm_status,
+                            'category'      => $request->category_name,
+                            'rcm_id'        => $request->rcm_data_id,
+                            'counter'       => $index,
+                            'fiscal_year'   => $request->fiscal_year,
+                            'updated_at'        => date('Y-m-d H:i:s'),
+                        ];
+
+                        PLCModuleSA::insert([
+                            $MultipleSa
+                        ]);
                     }else{
-                        if ($request->edit_control_id_0 != null && $request->input("internal_control_0") != null){
-                            PLCModuleSA::insert([
-                                'rcm_id'            => $request->rcm_data_id,
-                                'category'          => $request->category_name,
-                            ]);
-                        }else if($request->edit_control_id_1 != null && $request->input("internal_control_1") != null){
-                            PLCModuleSA::insert([
-                                'rcm_id'            => $request->rcm_data_id,
-                                'category'          => $request->category_name,
-                            ]);
-                        }else{
-        
-                        }
+                        // return "123";
                     }
                 }
             }else{ // Single Insert
                 PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->delete();
+                PLCModuleSA::where('rcm_id', $request->rcm_data_id)->delete();
                 $edit_rcm_internal_control = [
                     'rcm_id'            => $request->rcm_data_id,
                     'category'          => $request->category_name,
@@ -417,48 +389,38 @@ class PlcModulesRcmController extends Controller
                     'manual'            => $request->edit_manual_0,
                     'automatic'         => $request->edit_automatic_0,
                     'system'            => $request->edit_system_0,
-                    'created_at'        => date('Y-m-d H:i:s'),
+                    'updated_at'        => date('Y-m-d H:i:s'),
                 ];
+
+                $check_status = $request->input("edit_internal_control_checkbox_0");
+                if ($check_status == null){
+                    $rcm_status = '0';
+                }else{
+                    $rcm_status = '1';
+                }
+                $edit_rcm_internal_control['status'] = $rcm_status;
+
                 PLCModuleRCMInternalControl::insert(
                     $edit_rcm_internal_control
                 );
 
-                $PLCModuleRcmInternalControl = PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->get();
-                // return $PLCModuleRcmInternalControl;
-                if($request->edit_control_id_0 != null && $request->internal_control_0 != null){
-                    $rcm_sa_0 = [
-                        'control_no'    => $request->edit_control_id_0,
-                        'key_control'   => $request->edit_key_control_0,
-                        'it_control'    => $request->edit_it_control_0,
+                //SA MODULE
+                if ($request->input("edit_control_id_0") != null && $request->input("internal_control_0") != null){
+                    $SingleSa = [
+                        'logdel'        => $rcm_status,
+                        'category'      => $request->category_name,
+                        'rcm_id'        => $request->rcm_data_id,
+                        'counter'       => 0,
+                        'fiscal_year'   => $request->fiscal_year,
+                        'updated_at'        => date('Y-m-d H:i:s'),
                     ];
-                    PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                    ->update(
-                        $rcm_sa_0
-                    );
-                }else{
-                    if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
-                        for ($i = 0; $i < count($PLCModuleRcmInternalControl); $i++) { 
-                            if($PLCModuleRcmInternalControl[$i]->control_id == null){
-                                $rcm_sa['logdel'] = 1;
-                            }else{
-                                $rcm_sa['logdel'] = 0;
-                            }
-                        }
 
-                        PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                        ->update(
-                            $rcm_sa
-                        );
-                    }else{
-                        PLCModuleSA::insert([
-                            'rcm_id'            => $request->rcm_data_id,
-                            'category'          => $request->category_name,
-                            'control_no'        => $request->edit_control_id_0,
-                            'key_control'       => $request->edit_key_control_0,
-                            'it_control'        => $request->edit_it_control_0,
-                        ]);
-                    }
+                    PLCModuleSA::insert([
+                        $SingleSa
+                    ]);
+                }else{
                 }
+
             }//END RCM INTERNAL CONTROL
 
                // // $PLCModuleRCM = PLCModuleRCM::where('id', $request->rcm_data_id)->get();
@@ -502,28 +464,28 @@ class PlcModulesRcmController extends Controller
 
         $data = $request->all(); // collect all input fields
         $validator = Validator::make($data, [
-            'clc_plc_rcm_id' => 'required',
+            'plc_rcm_id' => 'required',
             'status' => 'required',
         ]);
 
         if($validator->passes()){
-            PLCModuleRCM::where('id', $request->clc_plc_rcm_id)
+            PLCModuleRCM::where('id', $request->plc_rcm_id)
             ->update([
-                'status' => $request->status, 
+                'status' => $request->status,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
-            $rcm_status = PLCModuleRCM::where('id', $request->clc_plc_rcm_id)->get();
+            $rcm_status = PLCModuleRCM::where('id', $request->plc_rcm_id)->get();
             if($rcm_status[0]->status == 2){
-                PLCModuleSA::where('rcm_id', $request->clc_plc_rcm_id)
+                PLCModuleSA::where('rcm_id', $request->plc_rcm_id)
                 ->update([
-                    'logdel' => 1, 
+                    'logdel' => 1,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             }else if($rcm_status[0]->status == 1){
-                PLCModuleSA::where('rcm_id', $request->clc_plc_rcm_id)
+                PLCModuleSA::where('rcm_id', $request->plc_rcm_id)
                 ->update([
-                    'logdel' => 0, 
+                    'logdel' => 0,
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             }
@@ -536,8 +498,12 @@ class PlcModulesRcmController extends Controller
     }
 
     public function get_rcm_data_id_to_view(Request $request){
-        $rcm_data_view = PLCModuleRCM::where('id', $request->rcm_data_id_view)->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
+        $rcm_data_view = PLCModuleRCM::with(['rcm_info'])
+        ->where('id', $request->rcm_data_id_view)
+        ->get(); // get all users where id is equal to the user-id attribute of the dropdown-item of actions dropdown(Edit)
         // return $rcm_data;
+        // return $rcm_data_view;
+
         return response()->json(['rcm_data_view' => $rcm_data_view]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 

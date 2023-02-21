@@ -1,5 +1,5 @@
-//============================== ADD PMI FCRP CATEGORY ==============================
-function AddPmiFcrpCategory(){
+//============================== ADD PMI FCRP ==============================
+function AddPmiFcrp(){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -18,18 +18,18 @@ function AddPmiFcrpCategory(){
         "hideMethod": "fadeOut",
     };
 
-    let formData = new FormData($('#formAddPmiFcrpCategory')[0]);
+    let formData = new FormData($('#formAddPmiFcrp')[0]);
 
 	$.ajax({
-        url: "add_pmi_fcrp_category",
+        url: "add_pmi_fcrp",
         method: "post",
         processData: false,
         contentType: false,
         data: formData,
         dataType: "json",
         beforeSend: function(){
-            $("#iBtnAddPmiFcrpCategoryIcon").addClass('fa fa-spinner fa-pulse');
-            $("#btnAddPmiFcrpCategory").prop('disabled', 'disabled');
+            $("#iBtnAddPmiFcrpIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiFcrp").prop('disabled', 'disabled');
         },
         success: function(response){
             if(response['validation'] == 'hasError'){
@@ -58,77 +58,29 @@ function AddPmiFcrpCategory(){
                     $("#txtAddPmiFcrpInternalControl").addClass('is-invalid');
                     $("#txtAddPmiFcrpInternalControl").attr('title', response['error']['internal_controls']);
                 }
-                if(response['error']['g_ng'] === undefined){
-                    $("#txtAddPmiFcrpGNg").removeClass('is-invalid');
-                    $("#txtAddPmiFcrpGNg").attr('title', '');
-                }
-                else{
-                    $("#txtAddPmiFcrpGNg").addClass('is-invalid');
-                    $("#txtAddPmiFcrpGNg").attr('title', response['error']['g_ng']);
-                }
-                if(response['error']['detected_problems_improvement_plans'] === undefined){
-                    $("#txtAddPmiFcrpDetectedProblemsImprovementPlans").removeClass('is-invalid');
-                    $("#txtAddPmiFcrpDetectedProblemsImprovementPlans").attr('title', '');
-                }
-                else{
-                    $("#txtAddPmiFcrpDetectedProblemsImprovementPlans").addClass('is-invalid');
-                    $("#txtAddPmiFcrpDetectedProblemsImprovementPlans").attr('title', response['error']['detected_problems_improvement_plans']);
-                }
-                if(response['error']['review_findings'] === undefined){
-                    $("#txtAddPmiFcrpReviewFindings").removeClass('is-invalid');
-                    $("#txtAddPmiFcrpReviewFindings").attr('title', '');
-                }
-                else{
-                    $("#txtAddPmiFcrpReviewFindings").addClass('is-invalid');
-                    $("#txtAddPmiFcrpReviewFindings").attr('title', response['error']['review_findings']);
-                }
-                if(response['error']['follow_up_details'] === undefined){
-                    $("#txtAddPmiFcrpFollowupDetails").removeClass('is-invalid');
-                    $("#txtAddPmiFcrpFollowupDetails").attr('title', '');
-                }
-                else{
-                    $("#txtAddPmiFcrpFollowupDetails").addClass('is-invalid');
-                    $("#txtAddPmiFcrpFollowupDetails").attr('title', response['error']['follow_up_details']);
-                }
-                if(response['error']['g_ng_last'] === undefined){
-                    $("#txtAddPmiFcrpGNgLast").removeClass('is-invalid');
-                    $("#txtAddPmiFcrpGNgLast").attr('title', '');
-                }
-                else{
-                    $("#txtAddPmiFcrpGNgLast").addClass('is-invalid');
-                    $("#txtAddPmiFcrpGNgLast").attr('title', response['error']['g_ng_last']);
-                }
-                // if(response['error']['uploaded_file'] === undefined){
-                //     $("#txtAddPmiFcrpFile").removeClass('is-invalid');
-                //     $("#txtAddPmiFcrpFile").attr('title', '');
-                // }
-                // else{
-                //     $("#txtAddPmiFcrpFile").addClass('is-invalid');
-                //     $("#txtAddPmiFcrpFile").attr('title', response['error']['uploaded_file']);
-                // }
             }
             else if(response['result'] == 1){
-                $("#modalAddPmiFcrpCategory").modal('hide');
-                $("#formAddPmiFcrpCategory")[0].reset();
+                $("#modalAddPmiFcrp").modal('hide');
+                $("#formAddPmiFcrp")[0].reset();
                 toastr.success('Succesfully saved!');
-                dataTableClcCategoryPmiFcrp.draw(); // reload the tables after insertion
+                dataTablePmiFcrp.draw();
             }
 
-            $("#iBtnAddPmiFcrpCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnAddPmiFcrpCategory").removeAttr('disabled');
-            $("#iBtnAddPmiFcrpCategoryIcon").addClass('fa fa-check');
+            $("#iBtnAddPmiFcrpIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiFcrp").removeAttr('disabled');
+            $("#iBtnAddPmiFcrpIcon").addClass('fa fa-check');
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-            $("#iBtnAddPmiFcrpCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnAddPmiFcrpCategory").removeAttr('disabled');
-            $("#iBtnAddPmiFcrpCategoryIcon").addClass('fa fa-check');
+            $("#iBtnAddPmiFcrpIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiFcrp").removeAttr('disabled');
+            $("#iBtnAddPmiFcrpIcon").addClass('fa fa-check');
         }
     });
 }
 
-//============================== EDIT PMI FCRP CATEGORY BY ID TO EDIT ==============================
-function GetPmiFcrpByIdToEdit(pmi_fcrpId){
+//============================== EDIT PMI FCRP BY ID TO EDIT ==============================
+function GetPmiFcrpByIdToEdit(pmiFcrpId){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -148,54 +100,26 @@ function GetPmiFcrpByIdToEdit(pmi_fcrpId){
     };
 
     $.ajax({
-        url: "get_pmi_fcrp_category_by_id",
+        url: "get_pmi_fcrp_by_id",
         method: "get",
         data: {
-            pmi_fcrp_category_id: pmi_fcrpId
+            pmi_fcrp_id: pmiFcrpId
         },
         dataType: "json",
         beforeSend: function(){    
         },
         
         success: function(response){
-            let pmi_fcrp_category = response['pmi_fcrp_category'];
+            let pmi_fcrp = response['pmi_fcrp'];
 
             console.log(response);
 
-            if(pmi_fcrp_category.length > 0){
-                if(pmi_fcrp_category[0].g_ng == 'Good'){
-                    console.log(pmi_fcrp_category[0].g_ng);
-                    $("#txtEditPmiFcrpGood").prop("checked", true);
-                }else if (pmi_fcrp_category[0].g_ng == 'Not Good'){
-                    console.log(pmi_fcrp_category[0].g_ng);
-                    $("#txtEditPmiFcrpNotGoodLast").prop("checked", true);
-                }
-                else if (pmi_fcrp_category[0].g_ng == null){
-                    console.log(pmi_fcrp_category[0].g_ng);
-                    $("#txtEditPmiFcrpNotGood").prop("checked", false);
-                    $("#txtEditPmiFcrpGood").prop("checked", false);
-                }
-
-                if(pmi_fcrp_category[0].g_ng_last == 'Good'){
-                    console.log(pmi_fcrp_category[0].g_ng_last);
-                    $("#txtEditPmiFcrpGoodLast").prop("checked", true);
-                }else if (pmi_fcrp_category[0].g_ng_last == 'Not Good'){
-                    console.log(pmi_fcrp_category[0].g_ng_last);
-                    $("#txtEditPmiFcrpNotGoodLast").prop("checked", true);
-                }
-                else if (pmi_fcrp_category[0].g_ng_last == null){
-                    console.log(pmi_fcrp_category[0].g_ng_last);
-                    $("#txtEditPmiFcrpNotGoodLast").prop("checked", false);
-                    $("#txtEditPmiFcrpGoodLast").prop("checked", false);
-                }
-
-                $("#selectEditPmiFcrpTitle")                        .val(pmi_fcrp_category[0].titles).trigger('change');
-                $("#txtEditPmiFcrpControlObjectives")                .val(pmi_fcrp_category[0].control_objectives);
-                $("#txtEditPmiFcrpInternalControls")                 .val(pmi_fcrp_category[0].internal_controls);
-                $("#txtEditPmiFcrpDetectedProblemsImprovementPlans") .val(pmi_fcrp_category[0].detected_problems_improvement_plans);
-                $("#txtEditPmiFcrpReviewFindings")                   .val(pmi_fcrp_category[0].review_findings);
-                $("#txtEditPmiFcrpFollowupDetails")                  .val(pmi_fcrp_category[0].follow_up_details);
-                // $("#EditPmiFcrpFile")                                .val(pmi_fcrp_category[0].uploaded_file);
+            if(pmi_fcrp.length > 0){
+                $("#txtEditNo")                             .val(pmi_fcrp[0].no);
+                $("#selectEditFiscalYear")                  .val(pmi_fcrp[0].fiscal_year).trigger('change');
+                $("#selectEditPmiFcrpTitle")                .val(pmi_fcrp[0].titles).trigger('change');
+                $("#txtEditPmiFcrpControlObjectives")       .val(pmi_fcrp[0].control_objectives);
+                $("#txtEditPmiFcrpInternalControls")        .val(pmi_fcrp[0].internal_controls);
             }
             else{
                 toastr.warning('No Record Found!');
@@ -208,8 +132,8 @@ function GetPmiFcrpByIdToEdit(pmi_fcrpId){
     });
 }
 
-//============================== EDIT PMI FCRP CATEGORY ==============================
-function EditPmiFcrpCategory(){
+//============================== EDIT PMI FCRP ==============================
+function EditPmiFcrp(){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -228,18 +152,18 @@ function EditPmiFcrpCategory(){
         "hideMethod": "fadeOut",
     };
 
-    let formData = new FormData($('#formEditPmiFcrpCategory')[0]);
+    let formData = new FormData($('#formEditPmiFcrp')[0]);
 
 	$.ajax({
-        url: "edit_pmi_fcrp_category",
+        url: "edit_pmi_fcrp",
         method: "post",
         processData: false,
         contentType: false,
         data: formData,
         dataType: "json",
         beforeSend: function(){
-            $("#iBtnEditPmiFcrpCategoryIcon").addClass('fa fa-spinner fa-pulse');
-            $("#btnEditPmiFcrpCategory").prop('disabled', 'disabled');
+            $("#iBtnEditPmiFcrpIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiFcrp").prop('disabled', 'disabled');
         },
         success: function(response){
             if(response['validation'] == 'hasError'){
@@ -268,77 +192,29 @@ function EditPmiFcrpCategory(){
                     $("#txtEditPmiFcrpInternalControl").addClass('is-invalid');
                     $("#txtEditPmiFcrpInternalControl").attr('title', response['error']['internal_controls']);
                 }
-                if(response['error']['g_ng'] === undefined){
-                    $("#txtEditPmiFcrpGNg").removeClass('is-invalid');
-                    $("#txtEditPmiFcrpGNg").attr('title', '');
-                }
-                else{
-                    $("#txtEditPmiFcrpGNg").addClass('is-invalid');
-                    $("#txtEditPmiFcrpGNg").attr('title', response['error']['g_ng']);
-                }
-                if(response['error']['detected_problems_improvement_plans'] === undefined){
-                    $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").removeClass('is-invalid');
-                    $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").attr('title', '');
-                }
-                else{
-                    $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").addClass('is-invalid');
-                    $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").attr('title', response['error']['detected_problems_improvement_plans']);
-                }
-                if(response['error']['review_findings'] === undefined){
-                    $("#txtEditPmiFcrpReviewFindings").removeClass('is-invalid');
-                    $("#txtEditPmiFcrpReviewFindings").attr('title', '');
-                }
-                else{
-                    $("#txtEditPmiFcrpReviewFindings").addClass('is-invalid');
-                    $("#txtEditPmiFcrpReviewFindings").attr('title', response['error']['review_findings']);
-                }
-                if(response['error']['follow_up_details'] === undefined){
-                    $("#txtEditPmiFcrpFollowupDetails").removeClass('is-invalid');
-                    $("#txtEditPmiFcrpFollowupDetails").attr('title', '');
-                }
-                else{
-                    $("#txtEditPmiFcrpFollowupDetails").addClass('is-invalid');
-                    $("#txtEditPmiFcrpFollowupDetails").attr('title', response['error']['follow_up_details']);
-                }
-                if(response['error']['g_ng_last'] === undefined){
-                    $("#txtEditPmiFcrpGNgLast").removeClass('is-invalid');
-                    $("#txtEditPmiFcrpGNgLast").attr('title', '');
-                }
-                else{
-                    $("#txtEditPmiFcrpGNgLast").addClass('is-invalid');
-                    $("#txtEditPmiFcrpGNgLast").attr('title', response['error']['g_ng_last']);
-                }
-                // if(response['error']['uploaded_file'] === undefined){
-                //     $("#txtEditPmiFcrpFile").removeClass('is-invalid');
-                //     $("#txtEditPmiFcrpFile").attr('title', '');
-                // }
-                // else{
-                //     $("#txtEditPmiFcrpFile").addClass('is-invalid');
-                //     $("#txtEditPmiFcrpFile").attr('title', response['error']['uploaded_file']);
-                // }
             }
             else if(response['result'] == 1){
-                $("#modalEditPmiFcrpCategory").modal('hide');
-                $("#formEditPmiFcrpCategory")[0].reset();
+                $("#modalEditPmiFcrp").modal('hide');
+                $("#formEditPmiFcrp")[0].reset();
                 toastr.success('Succesfully saved!');
-                dataTableClcCategoryPmiFcrp.draw(); // reload the tables after insertion
+                dataTablePmiFcrp.draw();
             }
 
-            $("#iBtnEditPmiFcrpCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnEditPmiFcrpCategory").removeAttr('disabled');
-            $("#iBtnEditPmiFcrpCategoryIcon").addClass('fa fa-check');
+            $("#iBtnEditPmiFcrpIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiFcrp").removeAttr('disabled');
+            $("#iBtnEditPmiFcrpIcon").addClass('fa fa-check');
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-            $("#iBtnEditPmiFcrpCategoryIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#btnEditPmiFcrpCategory").removeAttr('disabled');
-            $("#iBtnEditPmiFcrpCategoryIcon").addClass('fa fa-check');
+            $("#iBtnEditPmiFcrpIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiFcrp").removeAttr('disabled');
+            $("#iBtnEditPmiFcrpIcon").addClass('fa fa-check');
         }
     });
 }
 
-//============================== CHANGE PMI FCRP CATEGORY STATUS ==============================
-function ChangeClcCategoryPmiFcrpStatus(){
+//============================== CHANGE PMI FCRP STATUS ==============================
+function ChangePmiFcrpStatus(){
     toastr.options = {
         "closeButton": false,
         "debug": false,
@@ -358,13 +234,13 @@ function ChangeClcCategoryPmiFcrpStatus(){
     };
 
     $.ajax({
-        url: "change_clc_category_pmi_fcrp_stat",
+        url: "change_pmi_fcrp_stat",
         method: "post",
-        data: $('#formChangeClcCategoryPmiFcrpStat').serialize(),
+        data: $('#formChangePmiFcrpStat').serialize(),
         dataType: "json",
         beforeSend: function(){
-            $("#iBtnChangeClcCategoryPmiFcrpStatIcon").addClass('fa fa-spinner fa-pulse');
-            $("#txtChangeClcCategoryPmiFcrpStat").prop('disabled', 'disabled');
+            $("#iBtnChangePmiFcrpStatIcon").addClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiFcrpStat").prop('disabled', 'disabled');
         },
         success: function(response){
 
@@ -372,29 +248,372 @@ function ChangeClcCategoryPmiFcrpStatus(){
                 toastr.error('Activation failed!');
             }else{
                 if(response['result'] == 1){
-                    if($("#txtChangeClcCategoryPmiFcrpStat").val() == 1){
+                    if($("#txtChangePmiFcrpStat").val() == 1){
                         toastr.success('Activation success!');
-                        $("#txtChangeClcCategoryPmiFcrpStat").val() == 2;
+                        $("#txtChangePmiFcrpStat").val() == 2;
                     }
                     else{
                         toastr.success('Deactivation success!');
-                        $("#txtChangeClcCategoryPmiFcrpStat").val() == 1;
+                        $("#txtChangePmiFcrpStat").val() == 1;
                     }
                 }
-                $("#modalChangeClcCategoryPmiFcrpStat").modal('hide');
-                $("#formChangeClcCategoryPmiFcrpStat")[0].reset();
-                dataTableClcCategoryPmiFcrp.draw();
+                $("#modalChangePmiFcrpStat").modal('hide');
+                $("#formChangePmiFcrpStat")[0].reset();
+                dataTablePmiFcrp.draw();
             }
 
-            $("#iBtnChangeClcCategoryPmiFcrpStatIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#txtChangeClcCategoryPmiFcrpStat").removeAttr('disabled');
-            $("#iBtnChangeClcCategoryPmiFcrpStatIcon").addClass('fa fa-check');
+            $("#iBtnChangePmiFcrpStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiFcrpStat").removeAttr('disabled');
+            $("#iBtnChangePmiFcrpStatIcon").addClass('fa fa-check');
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
-            $("#iBtnChangeClcCategoryPmiFcrpStatIcon").removeClass('fa fa-spinner fa-pulse');
-            $("#txtChangeClcCategoryPmiFcrpStat").removeAttr('disabled');
-            $("#iBtnChangeClcCategoryPmiFcrpStatIcon").addClass('fa fa-check');
+            $("#iBtnChangePmiFcrpStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiFcrpStat").removeAttr('disabled');
+            $("#iBtnChangePmiFcrpStatIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== ADD PMI FCRP ASSESSMENT ==============================
+function AddPmiFcrpAssessment(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formAddPmiFcrpAssessment')[0]);
+
+	$.ajax({
+        url: "add_pmi_fcrp_assessment",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnAddPmiFcrpAssessmentIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiFcrpAssessment").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving Failed!');
+                if(response['error']['titles'] === undefined){
+                    $("#selectAddPmiFcrpAssessmentTitle").removeClass('is-invalid');
+                    $("#selectAddPmiFcrpAssessmentTitle").attr('title', '');
+                }
+                else{
+                    $("#selectAddPmiFcrpAssessmentTitle").addClass('is-invalid');
+                    $("#selectAddPmiFcrpAssessmentTitle").attr('title', response['error']['titles']);
+                }
+                if(response['error']['control_objectives'] === undefined){
+                    $("#txtAddPmiFcrpControlObjectivesAssessment").removeClass('is-invalid');
+                    $("#txtAddPmiFcrpControlObjectivesAssessment").attr('title', '');
+                }
+                else{
+                    $("#txtAddPmiFcrpControlObjectivesAssessment").addClass('is-invalid');
+                    $("#txtAddPmiFcrpControlObjectivesAssessment").attr('title', response['error']['control_objectives']);
+                }
+                if(response['error']['internal_controls'] === undefined){
+                    $("#txtAddPmiFcrpInternalControl").removeClass('is-invalid');
+                    $("#txtAddPmiFcrpInternalControl").attr('title', '');
+                }
+                else{
+                    $("#txtAddPmiFcrpInternalControl").addClass('is-invalid');
+                    $("#txtAddPmiFcrpInternalControl").attr('title', response['error']['internal_controls']);
+                }
+            }
+            else if(response['result'] == 1){
+                $("#modalAddPmiFcrpAssessment").modal('hide');
+                $("#formAddPmiFcrpAssessment")[0].reset();
+                toastr.success('Succesfully saved!');
+                dataTablePmiFcrpAssessment.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnAddPmiFcrpAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiFcrpAssessment").removeAttr('disabled');
+            $("#iBtnAddPmiFcrpAssessmentIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnAddPmiFcrpAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnAddPmiFcrpAssessment").removeAttr('disabled');
+            $("#iBtnAddPmiFcrpAssessmentIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== EDIT PMI FCRP ASSESSMENT BY ID TO EDIT ==============================
+function GetPmiFcrpAssessmentByIdToEdit(pmiFcrpAssessmentId){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "get_pmi_fcrp_assessment_by_id",
+        method: "get",
+        data: {
+            pmi_fcrp_assessment_id: pmiFcrpAssessmentId
+        },
+        dataType: "json",
+        beforeSend: function(){    
+        },
+        
+        success: function(response){
+            let pmi_fcrp_category = response['pmi_fcrp_category'];
+
+            console.log(response);
+
+            if(pmi_fcrp_category.length > 0){
+                if(pmi_fcrp_category[0].g_ng == 'Good'){
+                    console.log(pmi_fcrp_category[0].g_ng);
+                    $("#txtEditPmiFcrpAssessmentGood").prop("checked", true);
+                }else if (pmi_fcrp_category[0].g_ng == 'Not Good'){
+                    console.log(pmi_fcrp_category[0].g_ng);
+                    $("#txtEditPmiFcrpAssessmentNotGoodLast").prop("checked", true);
+                }
+                else if (pmi_fcrp_category[0].g_ng == 'N/A'){
+                    console.log(pmi_fcrp_category[0].g_ng);
+                    $("#txtEditPmiFcrpAssessmentNA").prop("checked", true);
+                }
+
+                if(pmi_fcrp_category[0].g_ng_last == 'Good'){
+                    console.log(pmi_fcrp_category[0].g_ng_last);
+                    $("#txtEditPmiFcrpAssessmentGoodLast").prop("checked", true);
+                }else if (pmi_fcrp_category[0].g_ng_last == 'Not Good'){
+                    console.log(pmi_fcrp_category[0].g_ng_last);
+                    $("#txtEditPmiFcrpAssessmentNotGoodLast").prop("checked", true);
+                }
+                else if (pmi_fcrp_category[0].g_ng_last == 'N/A'){
+                    console.log(pmi_fcrp_category[0].g_ng_last);
+                    $("#txtEditPmiFcrpAssessmentNALast").prop("checked", true);
+                }
+
+                $("#selectEditFiscalYear")                                      .val(pmi_fcrp_category[0].fiscal_year).trigger('change');
+                $("#selectEditPmiFcrpAssessmentTitle")                          .val(pmi_fcrp_category[0].titles).trigger('change');
+                $("#txtEditPmiFcrpAssessmentControlObjectives")                 .val(pmi_fcrp_category[0].control_objectives);
+                $("#txtEditPmiFcrpAssessmentInternalControls")                  .val(pmi_fcrp_category[0].internal_controls);
+                $("#txtEditPmiFcrpAssessmentDetectedProblemsImprovementPlans")  .val(pmi_fcrp_category[0].detected_problems_improvement_plans);
+                $("#txtEditPmiFcrpAssessmentReviewFindings")                    .val(pmi_fcrp_category[0].review_findings);
+                $("#txtEditPmiFcrpAssessmentFollowupDetails")                   .val(pmi_fcrp_category[0].follow_up_details);
+            }
+            else{
+                toastr.warning('No Record Found!');
+            }
+        },
+        
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+    });
+}
+
+//============================== EDIT PMI FCRP ASSESSMENT ==============================
+function EditPmiFcrpAssessment(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formEditPmiFcrpAssessment')[0]);
+
+	$.ajax({
+        url: "edit_pmi_fcrp_assessment",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnEditPmiFcrpAssessmentIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiFcrpAssessment").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving Failed!');
+                if(response['error']['status'] === undefined){
+                    $("#selectEditPmiFcrpAssessmentTitle").removeClass('is-invalid');
+                    $("#selectEditPmiFcrpAssessmentTitle").attr('title', '');
+                }
+                else{
+                    $("#selectEditPmiFcrpAssessmentTitle").addClass('is-invalid');
+                    $("#selectEditPmiFcrpAssessmentTitle").attr('title', response['error']['status']);
+                }
+                if(response['error']['control_objectives'] === undefined){
+                    $("#txtEditPmiFcrpAssessmentControlObjectives").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentControlObjectives").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpAssessmentControlObjectives").addClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentControlObjectives").attr('title', response['error']['control_objectives']);
+                }
+                if(response['error']['internal_controls'] === undefined){
+                    $("#txtEditPmiFcrpInternalControl").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpInternalControl").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpInternalControl").addClass('is-invalid');
+                    $("#txtEditPmiFcrpInternalControl").attr('title', response['error']['internal_controls']);
+                }
+                if(response['error']['g_ng'] === undefined){
+                    $("#txtEditPmiFcrpGNg").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpGNg").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpGNg").addClass('is-invalid');
+                    $("#txtEditPmiFcrpGNg").attr('title', response['error']['g_ng']);
+                }
+                if(response['error']['detected_problems_improvement_plans'] === undefined){
+                    $("#txtEditPmiFcrpAssessmentDetectedProblemsImprovementPlans").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentDetectedProblemsImprovementPlans").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpAssessmentDetectedProblemsImprovementPlans").addClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentDetectedProblemsImprovementPlans").attr('title', response['error']['detected_problems_improvement_plans']);
+                }
+                if(response['error']['review_findings'] === undefined){
+                    $("#txtEditPmiFcrpAssessmentReviewFindings").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentReviewFindings").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpAssessmentReviewFindings").addClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentReviewFindings").attr('title', response['error']['review_findings']);
+                }
+                if(response['error']['follow_up_details'] === undefined){
+                    $("#txtEditPmiFcrpAssessmentFollowupDetails").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentFollowupDetails").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpAssessmentFollowupDetails").addClass('is-invalid');
+                    $("#txtEditPmiFcrpAssessmentFollowupDetails").attr('title', response['error']['follow_up_details']);
+                }
+                if(response['error']['g_ng_last'] === undefined){
+                    $("#txtEditPmiFcrpGNgLast").removeClass('is-invalid');
+                    $("#txtEditPmiFcrpGNgLast").attr('title', '');
+                }
+                else{
+                    $("#txtEditPmiFcrpGNgLast").addClass('is-invalid');
+                    $("#txtEditPmiFcrpGNgLast").attr('title', response['error']['g_ng_last']);
+                }
+            }
+            else if(response['result'] == 1){
+                $("#modalEditPmiFcrpAssessment").modal('hide');
+                $("#formEditPmiFcrpAssessment")[0].reset();
+                toastr.success('Succesfully saved!');
+                dataTablePmiFcrpAssessment.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnEditPmiFcrpAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiFcrpAssessment").removeAttr('disabled');
+            $("#iBtnEditPmiFcrpAssessmentIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnEditPmiFcrpAssessmentIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditPmiFcrpAssessment").removeAttr('disabled');
+            $("#iBtnEditPmiFcrpAssessmentIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== CHANGE PMI FCRP ASSESSMENT STATUS ==============================
+function ChangePmiFcrpAssessmentStatus(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "change_pmi_fcrp_assessment_stat",
+        method: "post",
+        data: $('#formChangePmiFcrpAssessmentStat').serialize(),
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnChangePmiFcrpAssessmentStatIcon").addClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiFcrpAssessmentStat").prop('disabled', 'disabled');
+        },
+        success: function(response){
+
+            if(response['validation'] == 'hasError'){
+                toastr.error('Activation failed!');
+            }else{
+                if(response['result'] == 1){
+                    if($("#txtChangePmiFcrpAssessmentStat").val() == 1){
+                        toastr.success('Activation success!');
+                        $("#txtChangePmiFcrpAssessmentStat").val() == 2;
+                    }
+                    else{
+                        toastr.success('Deactivation success!');
+                        $("#txtChangePmiFcrpAssessmentStat").val() == 1;
+                    }
+                }
+                $("#modalChangePmiFcrpAssessmentStat").modal('hide');
+                $("#formChangePmiFcrpAssessmentStat")[0].reset();
+                dataTablePmiFcrpAssessment.draw();
+            }
+
+            $("#iBtnChangePmiFcrpAssessmentStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiFcrpAssessmentStat").removeAttr('disabled');
+            $("#iBtnChangePmiFcrpAssessmentStatIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnChangePmiFcrpAssessmentStatIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtChangePmiFcrpAssessmentStat").removeAttr('disabled');
+            $("#iBtnChangePmiFcrpAssessmentStatIcon").addClass('fa fa-check');
         }
     });
 }

@@ -186,10 +186,16 @@ $layout = 'layouts.super_user_layout';
                                 aria-controls="rcmId" aria-selected="false">RCM</a>
                         </li>
 
-                        <?php if(Session::get('pmi_plc_category_id' ) !=36): ?>
+                        <?php if(Session::get('pmi_plc_category_id' ) !=4 &&
+                                Session::get('pmi_plc_category_id' ) !=9 &&
+                                Session::get('pmi_plc_category_id' ) !=19 &&
+                                Session::get('pmi_plc_category_id' ) !=30 &&
+                                Session::get('pmi_plc_category_id' ) !=33 &&
+                                Session::get('pmi_plc_category_id' ) !=36
+                            ): ?>
                             <li class="nav-item" id="navSaModule">
-                            <a class="nav-link" id="+-tab" data-toggle="tab" href="#SA-TabId" role="tab" aria-controls="SA-TabId" aria-selected="false">SA</a>
-                        </li>
+                                <a class="nav-link" id="+-tab" data-toggle="tab" href="#SA-TabId" role="tab" aria-controls="SA-TabId" aria-selected="false">SA</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </div>
@@ -269,20 +275,22 @@ $layout = 'layouts.super_user_layout';
                                     </div>
 
                                     <div class="tab-pane fade" id="rcmId" role="tabpanel" aria-labelledby="RCM-tab">
-                                        <div class="text-right mt-4">
-                                            <button class="btn btn-primary" data-toggle="modal"
-                                                data-target="#modalAddRcmData" style="float: right;"><i
-                                                    class="fa fa-plus fa-md"></i> Add
-                                                RCM Data</button>
+                                        <div class="col-sm-3 mr-2">
+                                            <label><strong>Fiscal Year:</strong></label>
+                                            <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" value="<?php echo date("Y"); ?>">
+                                                <!-- Code generated -->
+                                            </select>
+                                        </div>
+                                        <div class="text-right">
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddRcmData" style="float: right;"><i class="fa fa-plus fa-md"></i> Add RCM Data</button>
                                         </div><br> <br>
 
                                         <div class="table-responsive" >
-                                            <table id="plcModuleRcmDataTables"
-                                                class="table table-sm table-bordered table-striped table-hover"
-                                                width="100%" style="white-space: pre-wrap;">
+                                            <table id="plcModuleRcmDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 5%">&nbsp;</th>
+                                                        <th style="width: 10%">Fiscal Year</th>
                                                         <th style="width: 10%">Control Objective</th>
                                                         <th style="width: 10%">Risk Summary</th>
                                                         <th style="width: 20%">Risk Detail</th>
@@ -298,14 +306,21 @@ $layout = 'layouts.super_user_layout';
                                     </div>
 
                                     <div class="tab-pane fade" id="SA-TabId" role="tabpanel" aria-labelledby="SA-tab">
-                                        <div></div><br>
-                                        <a href = 'export/<?php echo e(Session::get("pmi_plc_category_id")); ?>'><button class="btn btn-primary"><i class="fas fa-file-export"></i> Export Audit Result</button></a><br>
-
-                                        <button type="button" class="btn btn-dark text-center actionFirstHalfYecApprovedDate mt-2 mb-2" data-toggle="modal" data-target="#modalFirstHalfYecApprovedDate" data-keyboard="false"><i class="far fa-calendar-check">&nbsp;</i>YEC Approved Date</button>
-                                        <div class="table-responsive">
+                                        <div class="col-sm-3 mr-2">
+                                            <label><strong>Fiscal Year:</strong></label>
+                                            <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYearSa" aria-controls="">
+                                                <!-- Code generated -->
+                                            </select>
+                                        </div>
+                                        <div style="float: right;">
+                                            <a href = 'export/<?php echo e(Session::get("pmi_plc_category_id")); ?>'><button class="btn btn-primary"><i class="fas fa-file-export"></i> Export Audit Result</button></a>
+                                            <button type="button" class="btn btn-dark text-center actionFirstHalfYecApprovedDate mt-2 mb-2" data-toggle="modal" data-target="#modalFirstHalfYecApprovedDate" data-keyboard="false"><i class="far fa-calendar-check">&nbsp;</i>YEC Approved Date</button>
+                                        </div>
+                                            <div class="table-responsive">
                                             <table id="plcModulesSaDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr>
+                                                        <th rowspan="2">Fiscal Year</th>
                                                         <th rowspan="2">&nbsp;</th>
                                                         <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                         <th rowspan="2">Control <br> No.</th>
@@ -469,7 +484,7 @@ $layout = 'layouts.super_user_layout';
                                 </div>
 
                                 <div class="card" id="cardAddRevisionHistory">
-                                    <input type="text" name="add_revision_history_counter" id="addRevisionHistoryCounter" value="0">
+                                    <input type="hidden" name="add_revision_history_counter" id="addRevisionHistoryCounter" value="0">
                                     <div class="card-header bg-light">
                                         <span class="badge badge-dark"># 1.</span>
                                         <Strong>Details of Revision History:</Strong>
@@ -578,30 +593,20 @@ $layout = 'layouts.super_user_layout';
                             <input type="hidden" name="category_name" id="txtCategoryNameId"value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
                             <div class="card-header" style="height:50px;">
                                 <h3 class="card-title"><strong>Conformance:</strong></h3>
-                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addAddRowConformance"><i class="fa fa-plus"></i> Add Row</button>
+                                <button type="button" class="btn btn-sm btn-info float-right mb-2" id="addAddRowConformance"><i class="fa fa-plus"></i> Add Row</button>
                                 <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeAddRowConformance"><i class="fas fa-times"></i> Remove Row</button>
                             </div>
                             <div class="card-body">
                                 <div id="divAddConformance">
                                     <input type="hidden" name="add_conformance_counter" id="addConformanceCounter" value="0">
-                                    <div class="row">
-                                        <div class="form-group col-sm-6 flex-column">
-                                            <label>Year:</label>
-                                            <input type="year" class="form-control" name="year" id="txtAddYear" required>
-                                        </div>
-                                        <div class="form-group col-sm-6 flex-column">
-                                            <label>Conformance Period:</label>
-                                            <select class="form-control select2bs4" name="conformance_period" id="selAddConformancePeriod" required>
-                                                <option selected disabled value="">--Select--</option>
-                                                <option value="First Half">First Half</option>
-                                                <option value="Second Half">Second Half</option>
-                                            </select>
-                                        </div>
+                                    <div class="form-group col-sm-6 flex-column">
+                                        <label>Year:</label>
+                                        <input type="year" class="form-control" name="year" id="txtAddYear" required>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-sm-6 flex-column">
                                             <label>Section:</label>
-                                            <select class="form-control sel-user-concerned-department select2bs4" id="selAddConformanceSection_0" name="conformance_dept_sect_0[]" multiple required></select>
+                                            <select class="form-control sel-user-concerned-department select2bs4" id="selAddConformanceSection_0" name="/[]" multiple required></select>
                                         </div>
                                         <div class="form-group col-sm-6 flex-column">
                                             <label>Name:</label>
@@ -610,7 +615,7 @@ $layout = 'layouts.super_user_layout';
                                     </div>
                                 </div>
                             </div>
-                        </div>                    
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-info" data-dismiss="modal" style="padding: 5px 40px;">No</button>
@@ -637,8 +642,8 @@ $layout = 'layouts.super_user_layout';
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <input type="text" name="category_name" id="txtCategoryNameId"value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
-                                <input type="text" class="form-control" name="revision_history_conformance_id" id="txtRevisionHistoryConformanceId">
+                                <input type="hidden" name="category_name" id="txtCategoryNameId"value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
+                                <input type="hidden" class="form-control" name="revision_history_conformance_id" id="txtRevisionHistoryConformanceId">
 
                                 <div class="card" id="cardEditConformance">
                                     <div class="card-header" style="height:50px;">
@@ -647,22 +652,12 @@ $layout = 'layouts.super_user_layout';
                                         <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeEditRowConformance"><i class="fas fa-times"></i> Remove Row</button>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row">
+                                        <div id="divEditConformance">
+                                            <input type="hidden" name="edit_conformance_counter" id="editConformanceCounter" value="0">
                                             <div class="form-group col-sm-6 flex-column">
                                                 <label>Year:</label>
                                                 <input type="year" class="form-control" name="year" id="txtEditYear" required>
                                             </div>
-                                            <div class="form-group col-sm-6 flex-column">
-                                                <label>Conformance Period:</label>
-                                                <select class="form-control select2bs4" name="conformance_period" id="selEditConformancePeriod" required>
-                                                    <option selected disabled value="">--Select--</option>
-                                                    <option value="First Half">First Half</option>
-                                                    <option value="Second Half">Second Half</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div id="divEditConformance">
-                                            <input type="text" name="edit_conformance_counter" id="editConformanceCounter" value="0">
                                             <div class="row">
                                                 <div class="form-group col-sm-6 flex-column">
                                                     <label>Section:</label>
@@ -710,14 +705,14 @@ $layout = 'layouts.super_user_layout';
                                 <div class="row justify-content-between text-left">
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Process Owner</label>
-                                        <select class="form-control sel-user-process-owner select2bs4" id="selectEditProcessOwner" name="edit_revision_history_process_owner[]" multiple></select>
+                                        <select class="form-control sel-user-process-owner select2bs4" id="selectEditProcessOwner" name="edit_revision_history_process_owner[]" multiple required></select>
                                         
                                     </div>
 
                                     <div class="col-sm-4">
-                                        <div class="form-group"> 
+                                        <div class="form-group">
                                             <label>Revision Date</label>
-                                            <div class="input-group"> 
+                                            <div class="input-group">
                                                 <input type="date" class="form-control" name="edit_revision_history_date" id="txtEditRevisionHistoryDate">
                                                 
                                                 <input type="text" class="form-control" name="edit_no_revision_history" id="txtEditNoRevisionHistory">
@@ -740,9 +735,9 @@ $layout = 'layouts.super_user_layout';
                                         <button type="button" class="btn btn-sm btn-danger ml-2 d-none" id="removeEditRowRevisionHistory"><i class="fas fa-times"></i> REMOVE ROW</button>
                                     </div>
                                 </div>
-                            
+
                                 <div class="card" id="cardEditRevisionHistory">
-                                    <input type="text" class="resetCounter" name="edit_revision_history_counter" id="editRevisionHistoryCounter" value="0">
+                                    <input type="hidden" class="resetCounter" name="edit_revision_history_counter" id="editRevisionHistoryCounter" value="0">
                                     <div class="card-header bg-light">
                                         <span class="badge badge-dark"># 1.</span>
                                         <Strong>Details of Revision History:</Strong>
@@ -826,6 +821,32 @@ $layout = 'layouts.super_user_layout';
             </div>
         </div>
     </div> <!-- CHANGE STAT MODAL END -->
+
+    <!-- CHANGE CONFORMANCE STAT MODAL START -->
+    <div class="modal fade" id="modalChangePlcRevisionHistoryConformanceStat">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title" id="h4ChangePlcRevisionHistoryConformanceStat"><i class=""></i> Change Status</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formChangePlcRevisionHistoryConformanceStat">
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body">
+                        <label id="lblChangePlcRevisionHistoryConformanceStatLabel"></label>
+                        <input type="hidden" name="plc_revision_history_conformance_id" id="txtChangePlcRevisionHistoryConformanceId">
+                        <input type="hidden" name="status" id="txtChangePlcRevisionHistoryConformanceStat">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <button type="submit" id="btnChangeRevisionHistoryConformanceStat" class="btn btn-dark"><i id="iBtnChangePlcRevisionHistoryConformanceStatIcon" class="fa fa-check"></i> Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- CHANGE CONFORMANCE STAT MODAL END -->
 
     
     <!-- EDIT MODAL START -->
@@ -916,12 +937,10 @@ $layout = 'layouts.super_user_layout';
                         <div class="modal-body">
                             <div class="card">
                                 <div class="card-header">
+                                    <input type="hidden" name="category_name" id="txtCategoryNameId" value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
                                     <div class="form-group">
-                                        <input type="hidden" name="category_name" id="txtCategoryNameId"
-                                            value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
                                         <label>Control Objective:</label>
-                                        <textarea type="text" class="form-control" rows="2" name="add_control_objective"
-                                        id="txtAddControlObjectiveId" autocomplete= "off"></textarea>
+                                        <textarea type="text" class="form-control" rows="2" name="add_control_objective" id="txtAddControlObjectiveId" autocomplete= "off"></textarea>
                                     </div>
 
                                     <div class="row justify-content-between text-left">
@@ -937,12 +956,18 @@ $layout = 'layouts.super_user_layout';
                                     </div>
 
                                     <div class="row justify-content-between text-left">
-                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                        <div class="form-group col-sm-4 flex-column d-flex">
+                                            <label>Year:</label>
+                                            <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="selectAddFiscalYear">
+                                                <!-- Code generated -->
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-sm-4 flex-column d-flex">
                                             <label>Debit:</label>
                                             <input type="text" class="form-control" name="add_debit" id="txtAddDebitId" autocomplete= "off">
                                         </div>
 
-                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                        <div class="form-group col-sm-4 flex-column d-flex">
                                             <label>Credit:</label>
                                             <input type="text" class="form-control" name="add_credit" id="txtAddCreditId" autocomplete= "off">
                                         </div>
@@ -993,14 +1018,14 @@ $layout = 'layouts.super_user_layout';
                                                                                 <label>Validity</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
                                                                                 <input type="checkbox" id="completenessId_0" name="add_completeness_0" value="X">
                                                                                 <label>Completeness</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
                                                                                 <input type="checkbox" id="accuracyId_0" name="add_accuracy_0" value="X">
@@ -1008,7 +1033,7 @@ $layout = 'layouts.super_user_layout';
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                        
+
                                                                     <div class="row justify-content-between text-left">
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
@@ -1022,14 +1047,14 @@ $layout = 'layouts.super_user_layout';
                                                                                 <label>Valuation</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
                                                                                 <input type="checkbox" id="presentationId_0" name="add_presentation_0" value="X">
                                                                                 <label>Presentation</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         
                                                                     </div>
                                                                 </div>
@@ -1044,21 +1069,21 @@ $layout = 'layouts.super_user_layout';
                                                                 <label>Preventive</label>
                                                             </div>
                                                         </div>
-                
+
                                                         <div class="col-sm-3 flex-column d-flex">
                                                             <div class="form-group">
                                                                 <input type="checkbox" id="detectiveId_0" name="add_detective_0" value="X">
                                                                 <label>Detective</label>
                                                             </div>
                                                         </div>
-                
+
                                                         <div class="col-sm-3 flex-column d-flex">
                                                             <div class="form-group">
                                                                 <input type="checkbox" id="manualId_0" name="add_manual_0" value="X">
                                                                 <label>Manual</label>
                                                             </div>
                                                         </div>
-                
+
                                                         <div class="col-sm-3 flex-column d-flex">
                                                             <div class="form-group">
                                                                 <input type="checkbox" id="automaticId_0" name="add_automatic_0" value="X">
@@ -1130,12 +1155,19 @@ $layout = 'layouts.super_user_layout';
                                     </div>
 
                                     <div class="row justify-content-between text-left">
-                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                        <div class="form-group col-sm-4 flex-column d-flex">
+                                            <label>Year:</label>
+                                            <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="selectEditFiscalYear">
+                                                <!-- Code generated -->
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-sm-4 flex-column d-flex">
                                             <label>Debit:</label>
                                             <input type="text" class="form-control" name="edit_debit" id="txtEditDebitId" autocomplete="off">
                                         </div>
 
-                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                        <div class="form-group col-sm-4 flex-column d-flex">
                                             <label>Credit:</label>
                                             <input type="text" class="form-control" name="edit_credit" id="txtEditCreditId" autocomplete="off">
                                         </div>
@@ -1186,14 +1218,14 @@ $layout = 'layouts.super_user_layout';
                                                                                 <label>Validity</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
                                                                                 <input type="checkbox" id="editCompletenessId_0" name="edit_completeness_0" value="X">
                                                                                 <label>Completeness</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
                                                                                 <input type="checkbox" id="editAccuracyId_0" name="edit_accuracy_0" value="X">
@@ -1201,7 +1233,7 @@ $layout = 'layouts.super_user_layout';
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                        
+
                                                                     <div class="row justify-content-between text-left">
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
@@ -1215,7 +1247,7 @@ $layout = 'layouts.super_user_layout';
                                                                                 <label>Valuation</label>
                                                                             </div>
                                                                         </div>
-                        
+
                                                                         <div class="form-group col-sm-4 flex-column d-flex">
                                                                             <div class="form-group">
                                                                                 <input type="checkbox" id="editPresentationId_0" name="edit_presentation_0" value="X">
@@ -1235,21 +1267,21 @@ $layout = 'layouts.super_user_layout';
                                                                 <label>Preventive</label>
                                                             </div>
                                                         </div>
-                
+
                                                         <div class="col-sm-3 flex-column d-flex">
                                                             <div class="form-group">
                                                                 <input type="checkbox" id="editDetectiveId_0" name="edit_detective_0" value="X">
                                                                 <label>Detective</label>
                                                             </div>
                                                         </div>
-                
+
                                                         <div class="col-sm-3 flex-column d-flex">
                                                             <div class="form-group">
                                                                 <input type="checkbox" id="editManualId_0" name="edit_manual_0" value="X">
                                                                 <label>Manual</label>
                                                             </div>
                                                         </div>
-                
+
                                                         <div class="col-sm-3 flex-column d-flex">
                                                             <div class="form-group">
                                                                 <input type="checkbox" id="editAutomaticId_0" name="edit_automatic_0" value="X">
@@ -1292,7 +1324,7 @@ $layout = 'layouts.super_user_layout';
                     <?php echo csrf_field(); ?>
                     <div class="modal-body">
                         <label id="lblChangePlcRcmStatLabel"></label>
-                        <input type="hidden" name="clc_plc_rcm_id" id="txtChangePlcRcmId">
+                        <input type="hidden" name="plc_rcm_id" id="txtChangePlcRcmId">
                         <input type="hidden" name="status" id="txtChangePlcRcmStat">
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -1550,7 +1582,7 @@ $layout = 'layouts.super_user_layout';
                                     <div class="col">
                                         <div class="input-group input-group-sm mb-3">
                                             <div class="input-group-prepend w-50">
-                                                <span class="input-group-text w-100" id="basic-addon1">Preventiev</span>
+                                                <span class="input-group-text w-100" id="basic-addon1">Preventive</span>
                                             </div>
                                             <input type="text" class="form-control" name="preventive_data"
                                                 id="txtPreventiveData" readonly>
@@ -1564,7 +1596,7 @@ $layout = 'layouts.super_user_layout';
                                     <div class="col">
                                         <div class="input-group input-group-sm mb-3">
                                             <div class="input-group-prepend w-50">
-                                                <span class="input-group-text w-100" id="basic-addon1">detective</span>
+                                                <span class="input-group-text w-100" id="basic-addon1">Detective</span>
                                             </div>
                                             <input type="text" class="form-control" name="detective_data"
                                                 id="txtdetectiveData" readonly>
@@ -1653,12 +1685,12 @@ $layout = 'layouts.super_user_layout';
                                 <div class="row text-left">
                                     <div class="form-group col-sm-4">
                                         <label>Control No.</label>
-                                        <textarea type="text" class="form-control" name="control_no" id="txtEditSaControlNo" autocomplete= "off" readonly></textarea>
+                                        <input type="text" class="form-control" name="control_no" id="txtEditSaControlNo" autocomplete= "off" readonly>
                                     </div>
 
                                     <div class="form-group col-sm-4">
                                         <label>Year:</label>
-                                        <input type="text" class="form-control" name="fiscal_year" id="txtFiscalYear" readonly>
+                                        <input type="text" class="form-control" name="fiscal_year" id="txtFiscalYear">
                                         <input type="hidden" class="form-control" name="year" id="getCurrentYear" readonly>
                                     </div>
 
@@ -1976,6 +2008,7 @@ $layout = 'layouts.super_user_layout';
                                 <thead>
                                     <tr style="text-align:center">
                                     <th>Category</th>
+                                    <th>Fiscal Year</th>
                                     <th>PLC Uploaded File</th>
                                     <th>Action</th>
                                     </tr>
@@ -2010,6 +2043,7 @@ $layout = 'layouts.super_user_layout';
                                 <thead>
                                     <tr style="text-align:center">
                                     <th>PLC Category</th>
+                                    <th>Fiscal Year</th>
                                     <th>PLC Evidences File</th>
                                     <th>Action</th>
                                     </tr>
@@ -2042,7 +2076,7 @@ $layout = 'layouts.super_user_layout';
                         <input type="hidden" name="category_id" id="txtCategoryId" value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
                         <input type="hidden" name="sa_id" id="txtSaId">
                         <input type="hidden" name="select_clc_evidences_id" id="selectPlcEvidencesId">
-                        <input type="text" name="filter" id="selectPlcEvidencesFile">
+                        <input type="hidden" name="filter" id="selectPlcEvidencesFile">
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
@@ -2069,8 +2103,8 @@ $layout = 'layouts.super_user_layout';
                     <div class="modal-body">
                         <label id="lblDeleteReferenceDocument"></label>
                         <h5><strong>Are you sure you want to delete this record?</strong></h5>
-                        <input type="text" name="reference_document_id" id="txtDeleteReferenceId">
-                        <input type="text" name="filter" id="deleteReferenceDocument">
+                        <input type="hidden" name="reference_document_id" id="txtDeleteReferenceId">
+                        <input type="hidden" name="filter" id="deleteReferenceDocument">
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
@@ -2308,7 +2342,7 @@ $layout = 'layouts.super_user_layout';
                 "columns": [
                     { "data": "flow_chart_status", orderable: false },
                     { "data": "process_owner", orderable: false },
-                    { "data": "revision_date", orderable: false },
+                    { "data": "revision", orderable: false },
                     { "data": "version_no", orderable: false },
                     { "data": "flow_chart", orderable: false },
                     { "data": "date_uploaded" },
@@ -2322,6 +2356,8 @@ $layout = 'layouts.super_user_layout';
             //VIEW PLC MODULES DATATABLES END
 
             //VIEW PLC MODULES RCM DATATABLES
+            GetFiscalYear($(".selectFiscalYear"));
+
             dataTablePlcModuleRCM = $("#plcModuleRcmDataTables").DataTable({
                 "processing": false,
                 "serverSide": true,
@@ -2341,6 +2377,7 @@ $layout = 'layouts.super_user_layout';
                 },
                 "columns": [
                     {"data": "status", orderable: false},
+                    {"data": "fiscal_year", orderable: false, visible: false},
                     {"data": "control_objective", orderable: false},
                     {"data": "risk_summary", orderable: false},
                     {"data": "risk_detail", orderable: false},
@@ -2355,6 +2392,10 @@ $layout = 'layouts.super_user_layout';
                 ],
             });
             //VIEW PLC MODULES RCM DATATABLES END
+
+            $("#selFiscalYear").on('change', function() {
+                dataTablePlcModuleRCM.column(1).search($(this).val()).draw();
+            });
 
             // ========================= RELOAD RCM DATATABLE =========================
             function reloadDataTablePlcRcm() {
@@ -2399,9 +2440,10 @@ $layout = 'layouts.super_user_layout';
                     }
                 },
                 "columns": [
+                    {"data": "year", orderable: false, visible: false},
                     {"data": "approval_status", orderable: false},
                     {"data": "action", orderable: false},
-                    {"data": "control_no", orderable: false},
+                    {"data": "control_id", orderable: false},
                     {"data": "key_control", orderable: false},
                     {"data": "it_control", orderable: false},
                     {"data": "internal_control", orderable: false},
@@ -2423,6 +2465,10 @@ $layout = 'layouts.super_user_layout';
             });
             //VIEW PLC MODULES SA DATATABLES END
 
+            $("#selFiscalYearSa").on('change', function() {
+                dataTablePlcModuleSa.column(0).search($(this).val()).draw();
+            });
+
             // Chan March 16, 2022
             // ======================= PLC EVIDENCES DATA TABLE =======================
             dataTableSelectPlcEvidences = $("#SelectPlcEvidenceTable").DataTable({
@@ -2437,6 +2483,7 @@ $layout = 'layouts.super_user_layout';
 
                 "columns":[
                     { "data" : "plc_category" },
+                    { "data" : "fiscal_year" },
                     { "data" : "plc_evidences" },
                     { "data" : "action", orderable:false, searchable:false }
                 ],
@@ -2456,6 +2503,7 @@ $layout = 'layouts.super_user_layout';
                 },
                 "columns":[
                     { "data" : "category_details.plc_category" },
+                    { "data" : "fiscal_year" },
                     { "data" : "plc_evidences" },
                     { "data" : "action" },
                 ],
@@ -2642,7 +2690,7 @@ $layout = 'layouts.super_user_layout';
 
             //============================ ADD CONFORMANCE ============================
             $("#addConformanceForm").submit(function(event){
-                event.preventDefault(); 
+                event.preventDefault();
                 AddConformance();
             });
              //============================== EDIT CONFORMANCE ==============================
@@ -2697,7 +2745,6 @@ $layout = 'layouts.super_user_layout';
             $(document).on('click', '.actionUploadFlowChart', function() {
                 $.ajax({
                     url: "get_rapidx_user",
-                    method: "get",
                     dataType: "json",
                     beforeSend: function() {},
                     success: function(response) {
@@ -2792,7 +2839,7 @@ $layout = 'layouts.super_user_layout';
                 let plcrcmId = $(this).attr('plc_module_rcm-id'); // the pmi_clc-id(attr) is inside the datatables of ClcCategoryPmiClcController that will be use to collect the pmi_clc-id
                 console.log(plcrcmStat);
                 $("#txtChangePlcRcmStat").val(plcrcmStat); // collect the pmi_clc status id the default is 2, this will be use to change the pmi_clc status when the formChangePlcRcmStat(form) is submitted
-                $("#txtChangePlcRcmId").val(plcrcmId); // after clicking the actionChangePlcRcmStat(button) the plcrcmId will be pass to the clc_plc_rcm_id(input=hidden) and when the form is submitted this will be pass to ajax and collect pmi_clc-id that will be use to query the pmi_clc-id in the ClcCategoryPmiClcController to update the status of the pmi_clc
+                $("#txtChangePlcRcmId").val(plcrcmId); // after clicking the actionChangePlcRcmStat(button) the plcrcmId will be pass to the plc_rcm_id(input=hidden) and when the form is submitted this will be pass to ajax and collect pmi_clc-id that will be use to query the pmi_clc-id in the ClcCategoryPmiClcController to update the status of the pmi_clc
 
                 if(plcrcmStat == 1){
                     $("#lblChangePlcRcmStatLabel").text('Are you sure to activate?');
@@ -3359,7 +3406,7 @@ $layout = 'layouts.super_user_layout';
                     html +='           <textarea class="form-control ml-4 mb-1" rows="2" id="txtAddRcmIntenralControl_'+addInternalControlCounter+'" name="internal_control_'+addInternalControlCounter+'" style="width:96%;"></textarea>';
                     html +='           <input type="checkbox" class="form-check-input ml-4 checked" id="internalControlCheckBox_'+addInternalControlCounter+'" name="internal_control_checkbox_'+addInternalControlCounter+'">';
                     html +='           <label class="mb-4 ml-5" id="txtSupportingInternalControl_'+addInternalControlCounter+'">Supporting Internal Control</label>';
-                
+
                     html +='            <div id="accordion">';
                     html +='                <div class="ml-3 mr-4">';
                     html +='                    <button type="button" class="btn btn-secondary w-100"  data-toggle="collapse"  data-target="#btnShowDescription_'+addInternalControlCounter+'" aria-expanded="false" aria-controls="btnShowDescription_'+addInternalControlCounter+'"><i class="fa fa-arrow-down"></i>&nbsp;&nbsp;<strong>Description</strong></button>';
@@ -3517,7 +3564,7 @@ $layout = 'layouts.super_user_layout';
                     html +='           <textarea class="form-control ml-4 mb-1" rows="3" id="txtEditRcmIntenralControl_'+editInternalControlCounter+'" name="internal_control_'+editInternalControlCounter+'" style="width:96%;"></textarea>';
                     html +='           <input type="checkbox" class="form-check-input ml-4 checked" id="editInternalControlCheckBox_'+editInternalControlCounter+'" name="edit_internal_control_checkbox_'+editInternalControlCounter+'">';
                     html +='           <label class="mb-4 ml-5" id="txtEditSupportingInternalControl_'+editInternalControlCounter+'">Supporting Internal Control</label>';
-                
+
                     html +='            <div id="accordion">';
                     html +='                <div class="ml-3 mr-4">';
                     html +='                    <button type="button" class="btn btn-secondary w-100"  data-toggle="collapse"  data-target="#btnEditShowDescription_'+editInternalControlCounter+'" aria-expanded="false" aria-controls="btnEditShowDescription_'+editInternalControlCounter+'"><i class="fa fa-arrow-down"></i>&nbsp;&nbsp;<strong>Description</strong></button>';
@@ -3548,7 +3595,7 @@ $layout = 'layouts.super_user_layout';
                     html +='                                    </div>';
                     html +='                                </div>';
                     html +='                            </div>';
-                    
+
                     html +='                            <div class="row justify-content-between text-left">';
                     html +='                                <div class="form-group col-sm-4 flex-column d-flex">';
                     html +='                                    <div class="form-group">';
@@ -3919,7 +3966,7 @@ $layout = 'layouts.super_user_layout';
                 }
                 console.log('Card:', revisionHistoryCounter, '| Revision History Row(+):',
                 revisionHistoryCounter);
-                
+
                 // $("#selectMultipleRowAddDepartment_0_"+revisionHistoryCounter).prop('required', true);
 
                 var html = '<div class="divRevisionHistoryHeader_' + revisionHistoryCounter +'" id="chris_bugok_' + revisionHistoryCounter + '">';
@@ -3970,8 +4017,8 @@ $layout = 'layouts.super_user_layout';
 
                 $('#addRevisionHistoryCounter').val(revisionHistoryCounter);
                 $('#cardAddRevisionHistory').append(html);
-                
-                
+
+
                 $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 });

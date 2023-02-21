@@ -38,33 +38,33 @@
                     <div class="col-4">
                         <a href="<?php echo e(route('clc_category_pmi_clc')); ?>">
                         
-                            <div class="info-box bg-info">
+                            <div class="info-box bg-dark">
                                 <div class="info-box-content">
                                     <span class="info-box-text" style="position:absolute !important; text-align: center; margin-top: 17px;"><h5><strong>PMI CLC</strong></h5></span>
                                 </div>
-                                <span class="info-box-icon bg-info"><i class="fas fa-arrow-right"></i></span>
+                                <span class="info-box-icon bg-dark"><i class="fas fa-arrow-right"></i></span>
                             </div>
                         </a>
                     </div>
 
                     <div class="col-4">
                         <a href="<?php echo e(route('clc_category_pmi_fcrp')); ?>">
-                            <div class="info-box bg-info">
+                            <div class="info-box bg-dark">
                                 <div class="info-box-content">
                                     <span class="info-box-text" style="position:absolute !important; text-align: center; margin-top: 17px;"><h5><strong>PMI FCRP</strong></h5></span>
                                 </div>
-                                <span class="info-box-icon bg-info"><i class="fas fa-arrow-right"></i></span>
+                                <span class="info-box-icon bg-dark"><i class="fas fa-arrow-right"></i></span>
                             </div>
                         </a>
                     </div>
 
                     <div class="col-4">
                         <a href="<?php echo e(route('clc_category_pmi_it_clc')); ?>">
-                            <div class="info-box bg-info">
+                            <div class="info-box bg-dark">
                                 <div class="info-box-content">
                                     <span class="info-box-text" style="position:absolute !important; text-align: center; margin-top: 17px;"><h5><strong>PMI IT-CLC</strong></h5></span>
                                 </div>
-                                <span class="info-box-icon bg-info"><i class="fas fa-arrow-right"></i></span>
+                                <span class="info-box-icon bg-dark"><i class="fas fa-arrow-right"></i></span>
                             </div>
                         </a>
                     </div>

@@ -69,16 +69,33 @@
                             </div>
 
                             <div class="card-body table-responsive">
+                                <div class="row">
+                                    <div class="col-sm-3 mr-2"> 
+                                        <label><strong>Fiscal Year:</strong></label>
+                                        <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                            <!-- Code generated -->
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-3"> 
+                                        <label class="form-control-label">Audit Period:</label> 
+                                        <select class="form-control" id="selAuditPeriod" name="audit_period">
+                                            <option selected disabled value="">-- Select Audit Period --</option>
+                                            <option value="First Half">First Half</option>
+                                            <option value="Second Half">Second Half</option>
+                                        </select>
+                                    </div>
+                                </div> 
                                 <div style="float: right;">
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalExportFcrpClcSummary"><i class="fa fa-download"></i>  Export FCRP-CLC Summary  </button>
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalAddPmiFcrpCategory" id="btnShowAddPmiFcrpCategoryModal"><i class="fa fa-plus"></i>  Add PMI FCRP  </button>
-                                </div> <br><br>
+                                </div><br><br>
                                 <div class="table-responsive">
                                     <table id="tblClcCategoryPmiFcrp" class="table table-sm table-bordered table-striped table-hover" style="width: 100%; white-space: pre-wrap;">
                                         <thead>
                                             <tr style="text-align:center">
                                                 <th>ID</th>
                                                 <th style="width: 5%"></th>
+                                                <th>Fiscal Year <br> Audit Period</th>
                                                 <th style="width: 10%">Title</th>
                                                 <th>Control Objectives</th>
                                                 <th>Internal Controls</th>
@@ -93,7 +110,7 @@
                                         </thead>
                                     </table>
                                 </div>
-                            </div>
+                            </>
                         </div>
                     </div>
                 </div>
@@ -176,6 +193,31 @@
                                         <option value="Consolidation Package">Consolidation Package</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                </div> 
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Audit Period: &nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control" name="audit_period" id="selectAddAuditPeriod">
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                        
+                                    </select>
+                                </div> 
                             </div>
 
                             <div class="form-group col-sm-12 flex-column d-flex">
@@ -308,6 +350,31 @@
                                         <option value="Consolidation Package">Consolidation Package</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="selectEditFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                </div> 
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Audit Period: &nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control" name="audit_period" id="selectEditAuditPeriod">
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                        
+                                    </select>
+                                </div> 
                             </div>
 
                             <div class="form-group col-sm-12 flex-column d-flex">
@@ -565,6 +632,8 @@
             });
 
             // ======================= PMI FCRP CATEGORY DATA TABLE =======================
+            GetFiscalYear($(".selectFiscalYear"));
+
             dataTableClcCategoryPmiFcrp = $("#tblClcCategoryPmiFcrp").DataTable({
                 "processing" : false,
                 "serverSide" : true,
@@ -576,6 +645,7 @@
                 "columns":[
                     { "data" : "id" },
                     { "data" : "status" },
+                    { "data" : "fiscal_year_audit_period" },
                     { "data" : "titles" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
@@ -685,6 +755,8 @@
                     GetPmiFcrpByIdToEdit(pmi_fcrpId);
 
                 // READ ONLY
+                $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                $("#selectEditAuditPeriod").attr('disabled', 'disabled');
                 $("#selectEditPmiFcrpTitle").attr('disabled', 'disabled');
                 $("#txtEditPmiFcrpInternalControls").attr('disabled', 'disabled');
                 $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
@@ -705,6 +777,8 @@
             $('#check_box').on('click', function() {
                 $('#check_box').attr('checked', 'checked');
                 if($(this).is(":checked")){
+                    $("#selectEditFiscalYear").removeAttr('disabled', false);
+                    $("#selectEditAuditPeriod").removeAttr('disabled', false);
                     $("#selectEditPmiFcrpTitle").removeAttr('disabled', false);
                     $("#txtEditPmiFcrpInternalControls").removeAttr('disabled', false);
                     $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").removeAttr('disabled', false);
@@ -715,6 +789,8 @@
                     $("#btnEditPmiFcrpCategory").removeClass('d-none');
                 }
                 else{
+                    $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                    $("#selectEditAuditPeriod").attr('disabled', 'disabled');
                     $("#selectEditPmiFcrpTitle").attr('disabled', 'disabled');
                     $("#txtEditPmiFcrpInternalControls").attr('disabled', 'disabled');
                     $("#txtEditPmiFcrpDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
@@ -836,6 +912,14 @@
                     // when "box-sizing: border-box" we need to add vertical border size to scrollHeight
                     this.style.height = (this.scrollHeight + parseInt(resize.getPropertyValue("border-top-width")) + parseInt(resize.getPropertyValue("border-bottom-width"))) + "px";
                 });
+            });
+
+            $("#selFiscalYear").on('change', function() {
+                dataTableClcCategoryPmiFcrp.column(2).search($(this).val()).draw();
+            });
+
+            $("#selAuditPeriod").on('change', function() {
+                dataTableClcCategoryPmiFcrp.search($("#selAuditPeriod").val()).draw();
             });
 
         }); // JQUERY DOCUMENT READY END

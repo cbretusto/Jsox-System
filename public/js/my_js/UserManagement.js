@@ -323,7 +323,6 @@ function ChangeUserStatus(){
                 dataTableUsers.draw();
             }
 
-
             $("#iBtnChangeUserStatIcon").removeClass('fa fa-spinner fa-pulse');
             $("#btnChangeUserStat").removeAttr('disabled');
             $("#iBtnChangeUserStatIcon").addClass('fa fa-check');
@@ -336,3 +335,4 @@ function ChangeUserStatus(){
         }
     });
 }
+

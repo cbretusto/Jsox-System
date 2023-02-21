@@ -1,11 +1,10 @@
 <?php
 
 namespace App;
-use App\PLCModuleSADicAssessmentDetailsAndFindings;
+use App\PlcCategory;
+use App\PlcCapaStatementOfFindings;
 use App\PLCModuleSAOecAssessmentDetailsAndFindings;
-use App\PLCCAPACapaAnalysis;
-use App\PLCCAPACorrectiveAction;
-use App\PLCCAPAPreventiveAction;
+use App\PLCModuleSADicAssessmentDetailsAndFindings;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +12,10 @@ class PlcCapa extends Model
 {
     protected $table = 'tbl_plc_capa';
     protected $connection = 'mysql';
+
+    public function plc_category_info(){
+        return $this->hasOne(PlcCategory::class, 'id', 'category');
+    }
 
     public function plc_sa_info(){
         return $this->hasOne(PLCModuleSA::class, 'id', 'sa_id');
@@ -23,21 +26,25 @@ class PlcCapa extends Model
     }
 
     public function plc_sa_dic_assessment_details_findings_details(){
-        return $this->hasMany(PLCModuleSADicAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id');
+        return $this->hasMany(PLCModuleSADicAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id')->where('dic_status', 'NG')->where('logdel', 0);
     }
     public function plc_sa_oec_assessment_details_findings_details(){
-        return $this->hasMany(PLCModuleSAOecAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id');
+        return $this->hasMany(PLCModuleSAOecAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id')->where('oec_status', 'NG')->where('logdel', 0);
     }
 
-    public function plc_sa_capa_analysis_details(){
-        return $this->hasMany(PLCCAPACapaAnalysis::class, 'plc_capa_id', 'id');
+    public function capa_details(){
+        return $this->hasMany(PlcCapaStatementOfFindings::class, 'plc_capa_id', 'id');
     }
 
-    public function plc_sa_corrective_action_details(){
-        return $this->hasMany(PLCCAPACorrectiveAction::class, 'plc_capa_id', 'id');
-    }
-    
-    public function plc_sa_preventive_action_details(){
-        return $this->hasMany(PLCCAPAPreventiveAction::class, 'plc_capa_id', 'id');
-    }
+    // public function plc_sa_capa_analysis_details(){
+    //     return $this->hasMany(PLCCAPACapaAnalysis::class, 'plc_capa_id', 'id');
+    // }
+
+    // public function plc_sa_corrective_action_details(){
+    //     return $this->hasMany(PLCCAPACorrectiveAction::class, 'plc_capa_id', 'id');
+    // }
+
+    // public function plc_sa_preventive_action_details(){
+    //     return $this->hasMany(PLCCAPAPreventiveAction::class, 'plc_capa_id', 'id');
+    // }
 }

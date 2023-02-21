@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PLCCAPACorrectiveAction extends Model
+class PmiFcrp extends Model
 {
-    protected $table = 'plc_capa_corrective_actions';
+    protected $table = 'pmi_fcrps';
     protected $connection = 'mysql';
 }

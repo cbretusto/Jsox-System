@@ -16,6 +16,7 @@ use App\PLCModuleSA;
 use App\RevisionHistoryReasonForRevision;
 use App\RevisionHistoryDetailsOfRevision;
 use App\RevisionHistoryConcernDeptSectIncharge;
+use App\PLCModuleRCMInternalControl;
 
 
 class ExportSummaryController extends Controller
@@ -32,18 +33,27 @@ class ExportSummaryController extends Controller
         ])
         ->where('logdel',0)
         ->where('category', '=',$select_category)
-        // ->orderBy('id', 'asc')
+        // ->orderBy('revision_date', 'asc')
         ->get();
 
         $rev_history_detailss = collect($rev_history_details)->where('reason_for_revision_details', '!=', null );
+
+            // for($xxx = 0; $xxx < count($concernDeptartment); $xxx++){
+            //     $result .= $concernDeptartment[$xxx]->concern_dept_sect;
+            //     $result .= "<br>";
+            //     $result .= "<br>";
+            // }
+
+            // return $rev_history_detailss;
 
         $flow_chart_details = PLCModuleFlowChart::with('plc_categories_details')
         ->where('logdel',0)
         ->where('flow_chart', '!=', null)
         ->where('category', '=',$select_category)
-        ->orderBy('id', 'DESC')
+        ->orderBy('updated_at', 'DESC')
         ->get();
 
+        // return $rev_history_detailss;
 
         $rcm_details = PLCModuleRCM::
         with(
@@ -51,8 +61,11 @@ class ExportSummaryController extends Controller
         'rcm_info'
         )
         ->where('logdel',0)
+        // ->where('status',0)
         ->where('category', '=',$select_category)
         ->get();
+
+        // return $rcm_details;
 
 
         $sa_details = PLCModuleSA::
@@ -68,11 +81,7 @@ class ExportSummaryController extends Controller
         ->where('logdel',0)
         ->get();
 
-
         $plc_category = $rev_history_details[0]->plc_category_details->plc_category;
-
-
-        // return $rev_history_detailss;
 
 
         $date = date('Ymd',strtotime(NOW()));
@@ -82,7 +91,8 @@ class ExportSummaryController extends Controller
             $rev_history_details,
             $flow_chart_details,
             $rcm_details,
-            $sa_details
+            $sa_details,
+            $select_category,
 
         ), $plc_category.'.xlsx');
     }

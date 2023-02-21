@@ -28,7 +28,6 @@
         table.table tbody td{
             /* white-space:nowrap; */
             vertical-align: middle;
-
         }
         table.table thead th{
             text-align: center;

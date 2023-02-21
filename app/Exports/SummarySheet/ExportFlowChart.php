@@ -221,8 +221,13 @@ class ExportFlowChart implements  FromView, WithTitle, WithEvents
                     $process_code = substr($plc_category, 0,6);
                     $process_name = substr($plc_category, 7);
 
+                    $process_owner = $flow_chart_details[0]->process_owner;
+
+                    // dd($process_owner);
+
                     $event->sheet->setCellValue('M1',$process_code);
                     $event->sheet->setCellValue('M2',$process_name);
+                    $event->sheet->setCellValue('M3',$process_owner);
                     // $event->sheet->setCellValue('M3',);
 
                     if($flow_chart_details[0]->flow_chart != null){

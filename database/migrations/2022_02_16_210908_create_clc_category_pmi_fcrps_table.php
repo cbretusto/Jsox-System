@@ -16,6 +16,7 @@ class CreateClcCategoryPmiFcrpsTable extends Migration
         Schema::create('clc_category_pmi_fcrps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedTinyInteger('status')->default(0)->comment = '1-active,2-Inactive';
+            $table->string('fiscal_year');
             $table->string('titles');
             $table->string('control_objectives');
             $table->string('internal_controls');

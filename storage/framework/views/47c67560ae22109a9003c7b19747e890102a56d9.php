@@ -68,6 +68,22 @@
                                 <h3 class="card-title">PMI CLC</h3>
                             </div>
                             <div class="card-body table-responsive">
+                                <div class="row">
+                                    <div class="col-sm-3 mr-2"> 
+                                        <label><strong>Fiscal Year:</strong></label>
+                                        <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                            <!-- Code generated -->
+                                        </select>
+                                    </div>
+                                    <div class=" col-sm-3"> 
+                                        <label class="form-control-label">Audit Period:</label> 
+                                        <select class="form-control" id="selAuditPeriod" name="audit_period">
+                                            <option selected disabled value="">-- Select Audit Period --</option>
+                                            <option value="First Half">First Half</option>
+                                            <option value="Second Half">Second Half</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div style="float: right;">
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalExportClcSummary"><i class="fa fa-download"></i>  Export CLC Summary  </button>
                                     <button class="btn btn-info" data-toggle="modal" data-target="#modalAddPmiClcCategory" id="btnShowAddPmiClcCategoryModal"><i class="fa fa-plus"></i>  Add PMI CLC  </button>
@@ -78,6 +94,7 @@
                                             <tr style="text-align:center">
                                                 <th>ID</th>
                                                 <th style="width: 5%"></th>
+                                                <th>Fiscal Year <br> Audit Period</th>
                                                 <th style="width: 10%">Title</th>
                                                 <th>Control Objectives</th>
                                                 <th>Internal Controls</th>
@@ -100,46 +117,43 @@
         </section>
     </div>
 
-     <!-- MODALS -->
-     <div class="modal fade" id="modalExportClcSummary">
+    <!-- MODALS -->
+    <div class="modal fade" id="modalExportClcSummary">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export CLC Summary</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label>Select Year:</label>
-                            <select name="select_year" id="selectYearId">
-                                <?php
-                                    $year_now = date('Y');
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export CLC Summary</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Select Year:</label>
+                                <select name="select_year" id="selectYearId">
+                                    <?php
+                                        $year_now = date('Y');
 
-                                    for($i = 2021; $i <= $year_now; $i++){
-                                        echo "<option value =".$i.">
-                                            ".$i."
-                                            </option>";
-                                    }
-                                ?>
-                            </select>
+                                        for($i = 2021; $i <= $year_now; $i++){
+                                            echo "<option value =".$i.">
+                                                ".$i."
+                                                </option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                <button type="submit" id="btnExportClcSummary" class="btn btn-dark"><i id="BtnExportClcSummaryIcon" class="fa fa-check"></i> Export</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-<!-- /.modal -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnExportClcSummary" class="btn btn-dark"><i id="BtnExportClcSummaryIcon" class="fa fa-check"></i> Export</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- ADD MODAL START -->
     <div class="modal fade" id="modalAddPmiClcCategory">
@@ -160,13 +174,13 @@
                             </div>
 
                             <div class="form-group col-sm-12 flex-column d-flex">
-                                <div class="input-group mb-4">
+                                <div class="input-group mb-2">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
+                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
                                     </div>
                                     <select class="form-control" name="titles" id="selectAddPmiClcTitle" style="width: 70%;">
                                         <option selected disabled value="">--Select--</option>
-                                        <option value="Ethics and intergrity">Ethics and integrity</option>
+                                        <option value="Ethics and integrity">Ethics and integrity</option>
                                         <option value="Roles of board directors and corporate auditors">Roles of board directors and corporate auditors</option>
                                         <option value="Executive stance and attitude">Executive stance and attitude</option>
                                         <option value="Organizational structure">Organizational structure</option>
@@ -184,7 +198,32 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                    
+                                </div> 
+                            </div>
 
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Audit Period: &nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control" name="audit_period" id="selectAddAuditPeriod">
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                        
+                                    </select>
+                                </div> 
+                            </div>
+                            
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Control Objective:</label>
@@ -319,6 +358,32 @@
                                         <option value="Independent Evaluation">Independent Evaluation</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="selectEditFiscalYear">
+                                        <!-- Code generated -->
+                                    </select>
+                                    
+                                </div> 
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>Audit Period: &nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <select class="form-control" name="audit_period" id="selectEditAuditPeriod">
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                        
+                                    </select>
+                                </div> 
                             </div>
 
                             <div class="form-group col-sm-12 flex-column d-flex">
@@ -574,6 +639,8 @@
             });
 
             // ======================= PMI CLC CATEGORY DATA TABLE =======================
+            GetFiscalYear($(".selectFiscalYear"));
+
             dataTableClcCategoryPmiClc = $("#tblClcCategoryPmiClc").DataTable({
                 "processing" : false,
                 "serverSide" : true,
@@ -585,6 +652,7 @@
                 "columns":[
                     { "data" : "id" },
                     { "data" : "status" },
+                    { "data" : "fiscal_year_audit_period" },
                     { "data" : "titles" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
@@ -694,6 +762,8 @@
                     GetPmiClcByIdToEdit(pmi_clcId);
 
                 // READ ONLY
+                $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                $("#selectEditAuditPeriod").attr('disabled', 'disabled');
                 $("#selectEditPmiClcTitle").attr('disabled', 'disabled');
                 $("#txtEditPmiClcInternalControls").attr('disabled', 'disabled');
                 $("#txtEditPmiClcDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
@@ -713,6 +783,8 @@
             $('#check_box').on('click', function() {
                 $('#check_box').attr('checked', 'checked');
                 if($(this).is(":checked")){
+                    $("#selectEditFiscalYear").removeAttr('disabled', false);
+                    $("#selectEditAuditPeriod").removeAttr('disabled', false);
                     $("#selectEditPmiClcTitle").removeAttr('disabled', false);
                     $("#txtEditPmiClcInternalControls").removeAttr('disabled', false);
                     $("#txtEditPmiClcDetectedProblemsImprovementPlans").removeAttr('disabled', false);
@@ -723,6 +795,8 @@
                     $("#btnEditPmiClcCategory").removeClass('d-none');
                 }
                 else{
+                    $("#selectEditFiscalYear").attr('disabled', 'disabled');
+                    $("#selectEditAuditPeriod").attr('disabled', 'disabled');
                     $("#selectEditPmiClcTitle").attr('disabled', 'disabled');
                     $("#txtEditPmiClcInternalControls").attr('disabled', 'disabled');
                     $("#txtEditPmiClcDetectedProblemsImprovementPlans").attr('disabled', 'disabled');
@@ -823,6 +897,13 @@
                 });
             });
 
+            $("#selFiscalYear").on('change', function() {
+                dataTableClcCategoryPmiClc.column(2).search($(this).val()).draw();
+            });
+
+            $("#selAuditPeriod").on('change', function() {
+                dataTableClcCategoryPmiClc.search($("#selAuditPeriod").val()).draw();
+            });
 
         }); // JQUERY DOCUMENT READY END
 

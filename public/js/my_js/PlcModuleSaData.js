@@ -41,20 +41,28 @@ function GetSaData(saDataId){
             console.log('fu_details',fu_details);
             // console.log('test', sa_data);
             if(sa_data.length > 0){
+                $("#txtSACounter").val(sa_data[0].rcm_internal_control_counter);
+                $("#txtFiscalYear").val(sa_data[0].fiscal_year);
                 $("#selectEditDept").val(sa_data[0].concerned_dept).trigger('change');
-                $("#txtEditSaControlNo").val(sa_data[0].control_no);
+                $("#selectEditAssessedBy").val(sa_data[0].view_assessed_by).trigger('change');
+                $("#selectEditCheckedBy").val(sa_data[0].view_checked_by).trigger('change');
+                $("#selectViewSecondHalfAssessedBy").val(sa_data[0].view_second_half_assessed_by).trigger('change');
+                $("#selectViewSecondHalfCheckedBy").val(sa_data[0].view_second_half_checked_by).trigger('change');
                 $("#txtEditSaRfImprovement").val(sa_data[0].rf_improvement);
                 $("#txtEditSaFuImprovement").val(sa_data[0].fu_improvement);
                 
-                let getControlIdFromRCM = "";
-                let getInternalControlFromRCM = "";
-                for (let index = 0; index < rcm_internal_control.length; index++) {
-                    getControlIdFromRCM         += rcm_internal_control[index].control_id  + '\n';
-                    getInternalControlFromRCM   += rcm_internal_control[index].internal_control + "\n\n";
-                    console.log(rcm_internal_control);
-                }
-                $("#txtEditSaInternalControl").val(getInternalControlFromRCM);
-                $("#txtEditSaControlNo").val(getControlIdFromRCM);
+                // let getControlIdFromRCM = "";
+                // let getInternalControlFromRCM = "";
+                // for (let index = 0; index < rcm_internal_control.length; index++) {
+                //     getControlIdFromRCM         += rcm_internal_control[index].control_id  + '\n';
+                //     getInternalControlFromRCM   += rcm_internal_control[index].internal_control + "\n\n";
+                //     console.log(rcm_internal_control);
+                // }
+                // $("#txtEditSaControlNo").val(getControlIdFromRCM);
+                // $("#txtEditSaInternalControl").val(getInternalControlFromRCM);
+
+                $("#txtEditSaControlNo").val(rcm_internal_control[0].control_id);
+                $("#txtEditSaInternalControl").val(rcm_internal_control[0].internal_control);
 
 
                 //START DIC GET DATA
@@ -75,7 +83,7 @@ function GetSaData(saDataId){
                         $('#txtEditSaDicAssessment_'+dic).val(dic_details[dic_counter].dic_assessment_details_findings)
                         $('#txtDicEditOrigFile_'+dic).val(dic_details[dic_counter].dic_attachment)
     
-                        if(dic_details[dic_counter].dic_attachment != ''){
+                        if(dic_details[dic_counter].dic_attachment != null){
                             $("#DicAttachment_"+dic).addClass('d-none');
                             $("#DicCheckBox_"+dic).removeClass('d-none');
                             $("#DicReuploadFile_"+dic).removeClass('d-none');
@@ -118,7 +126,7 @@ function GetSaData(saDataId){
                         $('#txtEditSaOecAssessment_'+oec).val(oec_details[oec_counter].oec_assessment_details_findings)
                         $('#txtOecAttachment_'+oec).val(oec_details[oec_counter].oec_attachment)
 
-                        if(oec_details[oec_counter].oec_attachment != ''){
+                        if(oec_details[oec_counter].oec_attachment != null){
                             $("#OecAttachment_"+oec).addClass('d-none');
                             $("#OecCheckBox_"+oec).removeClass('d-none');
                             $("#OecReuploadFile_"+oec).removeClass('d-none');
@@ -721,6 +729,12 @@ function countPmiCategoryById(category){
             }
             else{
                 // toastr.warning('No Record Found!');
+            }
+
+            if(JsonObject['test'] == JsonObject['sa_first_half_status']){
+                $("#checkPendingStatus"+JsonObject['category']).text(['DONE']);
+            }else{
+                $("#checkPendingStatus"+JsonObject['category']).text(['PENDING']);
             }
 
         },

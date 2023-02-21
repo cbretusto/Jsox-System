@@ -46,6 +46,9 @@ class PlcEvidencesController extends Controller{
 
                     $result .=  "<a href='download_plc_evidences/" . $file . "' > $file </a><br>";
                 }
+            }else{
+                $result .= '<span class="badge badge-pill badge-danger">File Not Found!</span>';
+
             }
                 return $result;
         })
@@ -96,6 +99,11 @@ class PlcEvidencesController extends Controller{
             $result .= '</center>';
             return $result;
         })
+        ->addColumn('fiscal_year', function($plc_evidences){
+            $result = "";
+            $result .= $plc_evidences->fiscal_year;
+            return $result;
+        })
         ->addColumn('plc_evidences', function($plc_evidences){
             $result = "";
             if($plc_evidences->plc_evidences != null){
@@ -106,7 +114,7 @@ class PlcEvidencesController extends Controller{
             }
                 return $result;
         })
-            ->rawColumns(['action','plc_evidences'])
+            ->rawColumns(['action','fiscal_year', 'plc_evidences'])
             ->make(true);
     }
 
@@ -120,6 +128,12 @@ class PlcEvidencesController extends Controller{
 
         return DataTables::of($plc_evidences)
 
+        ->addColumn('fiscal_year', function($plc_evidences){
+            $result = "";
+            $result .= $plc_evidences->plc_evidences_details->fiscal_year;
+
+            return $result;
+        })
         ->addColumn('plc_evidences', function($plc_evidences){
             $result = "";
             if($plc_evidences->plc_evidences_details != null){
@@ -139,7 +153,7 @@ class PlcEvidencesController extends Controller{
 
             return $result;
         })
-            ->rawColumns(['plc_evidences', 'action'])
+            ->rawColumns(['fiscal_year', 'plc_evidences', 'action'])
             ->make(true);
     }
 
@@ -199,9 +213,10 @@ class PlcEvidencesController extends Controller{
                     'fiscal_year'          => $request->fiscal_year,
                     'audit_period'   => $request->audit_period,
                     'plc_category'  => $request->plc_category,
-                    'plc_evidences' => 'No File Uploaded',
+                    'plc_evidences' => '',
                     'date_uploaded' => $request->uploaded_date,
                     'uploaded_by'   => $request->name_of_uploader,
+                    'status'        => 1,
                     'logdel'        => 0,
                     'created_at'    => date('Y-m-d H:i:s')
                 ]);

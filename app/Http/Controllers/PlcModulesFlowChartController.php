@@ -16,6 +16,7 @@ class PlcModulesFlowChartController extends Controller{
         $plc_module_flow_chart = PLCModuleFlowChart::with('rapidx_user_details')
         ->where('category', $request->session)
         ->where('flow_chart_status', 1)
+        ->where('logdel', 0)
         ->orderBy('id', 'desc')
         ->get();
 
@@ -33,6 +34,13 @@ class PlcModulesFlowChartController extends Controller{
                 return $result;
         })
 
+        ->addColumn('revision', function($plc_module_flow_chart){
+            $result = "";
+            $result .= $plc_module_flow_chart->revision_date;
+            $result .= $plc_module_flow_chart->no_revision;
+            return $result;
+        })
+
         ->addColumn('action', function($plc_module_flow_chart){
             $result = '<center>';
                     $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionUploadFlowChart" style="width:125px;margin:2%;" flow_chart-id="' . $plc_module_flow_chart->id . '" data-toggle="modal" data-target="#modalEditFlowChart" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Upload Flow Chart</button>&nbsp;';
@@ -48,7 +56,6 @@ class PlcModulesFlowChartController extends Controller{
                 $result .= '<span class="badge badge-pill badge-danger">No file uploaded!</span>';
             }
             else{
-
                 $result .= "<a href='download_flow_chart/" . $plc_module_flow_chart->id . "' > $plc_module_flow_chart->flow_chart</a>";
             }
                 $result .= '</center>';

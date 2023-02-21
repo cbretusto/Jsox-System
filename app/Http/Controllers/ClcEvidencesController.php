@@ -257,6 +257,7 @@ class ClcEvidencesController extends Controller
 
         $rules = [
             'clc_category'   => 'required|string|max:255',
+            'uploaded_file'   => 'required',
         ];
 
         $validator = Validator::make($data, $rules);

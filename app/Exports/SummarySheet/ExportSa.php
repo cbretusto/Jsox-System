@@ -38,8 +38,6 @@ class ExportSa implements  FromView, WithTitle, WithEvents
         $this->date = $date;
         $this->sa_details = $sa_details;
 
-
-
     }
 
         public function view(): View {
@@ -210,9 +208,12 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $process_code = substr($plc_category, 0,6);
                     $process_name = substr($plc_category, 7);
 
+                    $assessed_by = $sa_details[0]->assessed_by;
+                    $checked_by = $sa_details[0]->checked_by;
+
                     $event->sheet->setCellValue('B2',$process_name.' ('.$process_code.')');
-                    $event->sheet->setCellValue('H2',"Assessed by:");
-                    $event->sheet->setCellValue('J2',"Checked by:");
+                    $event->sheet->setCellValue('H2',"Assessed by:".$assessed_by);
+                    $event->sheet->setCellValue('J2',"Checked by:".$checked_by);
                     $event->sheet->setCellValue('L2',"Assessed by:");
                     $event->sheet->getDelegate()->getStyle('B2:L2')->applyFromArray($arial_font12);
 
@@ -289,259 +290,353 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                  //==================== Excel Format =========================
 
                   //==================== Data =========================
+
                     $start_col = 8;
-
                     for ($i=0; $i < count($sa_details); $i++){
-
-                        $key_control = $sa_details[$i]->key_control;
-                        $it_control = $sa_details[$i]->it_control;
-
-                        if($key_control == 'X'){
-                            $event->sheet->setCellValue('C'.$start_col,"X");
-                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12_bold);
-                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hcv_top);
-                        }else{
-                            // $event->sheet->setCellValue('C'.$start_col,"-");
-                            // $event->sheet->setBorderStyle('B8', PHPExcel_Style_Borders::DIAGONAL_DOWN);
-                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($diagonal);
-                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12_bold);
-                        }
-
-                        if($it_control == 'X'){
-                            $event->sheet->setCellValue('D'.$start_col,"X");
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12_bold);
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_top);
-                        }else{
-                            // $event->sheet->setCellValue('D'.$start_col,"-");
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($diagonal);
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12_bold);
-                        }
-
-
-                        $control_no = $sa_details[$i]->control_no;
-                        // $internal_control = $sa_details[$i]->internal_control;
-
-
-                        // $event->sheet->getDelegate()->mergeCells('B'.$start_col.':C'.$start_col);
-                        $event->sheet->setCellValue('B'.$start_col,$control_no);
-                        $event->sheet->getDelegate()->getStyle('B'.$start_col)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($hcv_top);
-                        $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($arial_font12);
-
 
                         for($m=0; $m < count($sa_details[$i]->rcm_info); $m++){
 
-                            $internal_control = $sa_details[$i]->rcm_info[$m]->internal_control;
-                            $status = $sa_details[$i]->rcm_info[$m]->status;
+                                $internal_control = $sa_details[$i]->rcm_info[$m]->internal_control;
+                                $status = $sa_details[$i]->rcm_info[$m]->status;
 
-                            if($status == 0){
-                                $event->sheet->setCellValue('G'.$start_col,$internal_control);
-                                $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
-                                $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
-                                $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+                                if($sa_details[$i]->rcm_internal_control_counter ==  $sa_details[$i]->rcm_info[$m]->counter){
 
-                            }
+                                    $event->sheet->setCellValue('B'.$start_col,$sa_details[$i]->rcm_info[$m]->control_id);
 
-                        }
+                                    $key_control = $sa_details[$i]->rcm_info[$m]->key_control;
+                                    $it_control = $sa_details[$i]->rcm_info[$m]->it_control;
+
+                                    if($key_control == 'X'){
+                                        $event->sheet->setCellValue('C'.$start_col,"X");
+                                        $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12_bold);
+                                        $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hcv_top);
+                                    }else{
+                                        // $event->sheet->setCellValue('C'.$start_col,"-");
+                                        // $event->sheet->setBorderStyle('B8', PHPExcel_Style_Borders::DIAGONAL_DOWN);
+                                        $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($diagonal);
+                                        $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hcv_top);
+                                        $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font12_bold);
+                                    }
+
+                                    if($it_control == 'X'){
+                                        $event->sheet->setCellValue('D'.$start_col,"X");
+                                        $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12_bold);
+                                        $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_top);
+                                    }else{
+                                        // $event->sheet->setCellValue('D'.$start_col,"-");
+                                        $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($diagonal);
+                                        $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_top);
+                                        $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font12_bold);
+                                    }
+
+                                    $event->sheet->getDelegate()->getStyle('B'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($arial_font12);
+
+                                        $event->sheet->setCellValue('G'.$start_col,$internal_control);
+
+                                        if($status == 0){
+                                            $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
+                                            $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
+                                            $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
+                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+
+                                        }
+
+                                            $internal_ctrl_var = str_replace('"',"",$internal_control);
+                                            $strlen_internal = strlen($internal_ctrl_var);
+
+                                            $dividedByLength = $strlen_internal / 33;
+                                            $weDontDieWeMultiply = 20 * $dividedByLength;
+                                            $totalLines = count(explode('\n',$internal_control)) * 20;
+                                            $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
+
+                                        if ($strlen_internal < 150){
+                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        }else{
+                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        }
 
 
-                        $dicCounter = count($sa_details[$i]->plc_sa_dic_assessment_details_finding);
+                                        $dicCounter = count($sa_details[$i]->plc_sa_dic_assessment_details_finding);
 
-                        for($y=0; $y < count($sa_details[$i]->plc_sa_dic_assessment_details_finding); $y++){
-                            $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
-                            $dic_assessment = $sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_assessment_details_findings;
-                            $dic_status = $sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_status;
+                                    for($y=0; $y < count($sa_details[$i]->plc_sa_dic_assessment_details_finding); $y++){
+                                        $dic_assessment = $sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_assessment_details_findings;
+                                        $dic_status = $sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_status;
 
-                            $event->sheet->setCellValue('H'.$start_col,$sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_assessment_details_findings);
-                            $event->sheet->getDelegate()->getStyle('H'.$start_col)->getAlignment()->setWrapText(true);
-                            $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($hlv_top);
-                            $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($arial_font12);
-
-
-                            $event->sheet->setCellValue('I'.$start_col,$dic_status);
-                            $event->sheet->getDelegate()->getStyle('I'.$start_col)->getAlignment()->setWrapText(true);
-                            $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($arial_font12_bold);
-
-                                $dic_attachment = $sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_attachment;
-                                $dic_assessment_var = str_replace('"',"",$dic_assessment);
-                                $strlen_dic = strlen($dic_assessment_var);
-
-                                $dividedByLength = $strlen_dic / 33;
-                                $weDontDieWeMultiply = 20 * $dividedByLength;
-                                $totalLines = count(explode('\n',$dic_assessment)) * 20;
-                                $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
+                                        $event->sheet->setCellValue('H'.$start_col,$sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_assessment_details_findings);
+                                        $event->sheet->getDelegate()->getStyle('H'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($hlv_top);
+                                        $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($arial_font12);
 
 
-                                if($dic_attachment != null ){
+                                        $event->sheet->setCellValue('I'.$start_col,$dic_status);
+                                        $event->sheet->getDelegate()->getStyle('I'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($hcv_top);
+                                        $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($arial_font12_bold);
 
-                                    // DRAWINGS SAVED FOR LATER :)
+                                            $dic_attachment = $sa_details[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_attachment;
+                                            $dic_assessment_var = str_replace('"',"",$dic_assessment);
+                                            $strlen_dic = strlen($dic_assessment_var);
 
-                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$dic_attachment)));
-                                    $drawing->setWidth(200);
-                                    $drawing->setCoordinates('H'.$start_col);
-                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                    $drawing->setOffsetX(40);
-                                    $drawing->setWorksheet($event->sheet->getDelegate());
+                                            $dividedByLength = $strlen_dic / 33;
+                                            $weDontDieWeMultiply = 20 * $dividedByLength;
+                                            $totalLines = count(explode('\n',$dic_assessment)) * 20;
+                                            $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
 
-                                    // DRAWINGS SAVED FOR LATER :)
-                                }else{
-                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                    $drawing->setWidth(100);
-                                    $drawing->setCoordinates('H'.$start_col);
-                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                    $drawing->setOffsetX(45);
-                                    $drawing->setWorksheet($event->sheet->getDelegate());
+
+                                            if($dic_attachment != null ){
+
+                                                // DRAWINGS SAVED FOR LATER :)
+
+                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$dic_attachment)));
+                                                $drawing->setWidth(200);
+                                                $drawing->setCoordinates('H'.$start_col);
+                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                                $drawing->setOffsetX(40);
+                                                $drawing->setWorksheet($event->sheet->getDelegate());
+
+                                                // DRAWINGS SAVED FOR LATER :)
+                                            }else{
+                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                $drawing->setWidth(100);
+                                                $drawing->setCoordinates('H'.$start_col);
+                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                                $drawing->setOffsetX(45);
+                                                $drawing->setWorksheet($event->sheet->getDelegate());
+                                            }
+
+
+                                        if ($strlen_dic < 150){
+                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        }else{
+                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        }
+
+                                        if($dic_status == 'G'){
+                                            $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
+                                            ->getFill()
+                                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                            ->getStartColor()
+                                            // ->setARGB('DD4B39');
+                                            ->setARGB('c0c0c0');
+                                        }
+
+                                    for($x=0; $x < count($sa_details[$i]->plc_sa_oec_assessment_details_finding); $x++){
+                                        // $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
+                                        $oec_assessment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings;
+                                        $oec_status = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_status;
+
+
+                                        if($oec_status == 'NG'){
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)
+                                            ->getFont()
+                                            ->getColor()
+                                            ->setARGB('FF0000');
+
+                                            $event->sheet->setCellValue('K'.$start_col, 'NG');
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->getAlignment()->setWrapText(true);
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($hcv_top);
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font12_bold);
+
+                                        }
+
+                                        if($oec_assessment != null){
+                                            // $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
+                                            // ->getFill()
+                                            // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                            // ->getStartColor()
+                                            // // ->setARGB('DD4B39');
+                                            // ->setARGB('c0c0c0');
+
+                                            // $capa_analysis = $statement_of_findings_first_half[$x]->plc_capa_details[$q]->plc_sa_capa_analysis_details[$t]->capa_analysis;+
+                                            $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
+                                            ->getFill()
+                                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                            ->getStartColor()
+                                            // ->setARGB('DD4B39');
+                                            ->setARGB('FFFFFF');
+
+                                            $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
+
+                                            $oec_attachment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_attachment;
+
+                                            $oec_assessment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings;
+                                            $oec_assessment_var = str_replace('"',"",$oec_assessment);
+                                            $strlen_oec = strlen($oec_assessment_var);
+
+                                            $dividedByLength = $strlen_oec / 33;
+                                            $weDontDieWeMultiply = 20 * $dividedByLength;
+                                            $totalLines = count(explode('\n',$oec_assessment)) * 20;
+                                            $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
+
+                                            // dd($dividedByLengthWithBreaks);
+
+                                            if($oec_attachment != null ){
+
+                                                // DRAWINGS SAVED FOR LATER :)
+
+                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$oec_attachment)));
+                                                $drawing->setWidth(200);
+                                                $drawing->setCoordinates('J'.$start_col);
+                                                $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                $drawing->setOffsetX(40);
+                                                $drawing->setWorksheet($event->sheet->getDelegate());
+
+                                                // DRAWINGS SAVED FOR LATER :)
+                                            }else{
+                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                $drawing->setWidth(100);
+                                                $drawing->setCoordinates('J'.$start_col);
+                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
+                                                $drawing->setOffsetX(60);
+                                                $drawing->setWorksheet($event->sheet->getDelegate());
+                                            }
+
+                                            $event->sheet->setCellValue('J'.$start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings);
+                                            $event->sheet->setCellValue('K'.$start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_status);
+                                            $event->sheet->getDelegate()->getStyle('J'.$start_col)->getAlignment()->setWrapText(true);
+                                            $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($arial_font12);
+                                            $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($hlv_top);
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->getAlignment()->setWrapText(true);
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($hcv_top);
+                                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font12_bold);
+                                            // $event->sheet->setCellValue('Q'.$start_col,$strlen_oec);
+
+                                            if ($strlen_oec < 150){
+                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                            }else{
+                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for ($p=0; $p <count($sa_details[$i]->plc_sa_rf_assessment_details_finding) ; $p++) {
+
+                                        $rf_assessment = $sa_details[$i]->plc_sa_rf_assessment_details_finding[$p]->rf_assessment_details_findings;
+                                        // $rf_status = $sa_details[$i]->plc_sa_rf_assessment_details_finding[$x]->rf_status;
+
+
+                                        // if($rf_status == 'NG'){
+                                        //     $event->sheet->getDelegate()->getStyle('K'.$start_col)
+                                        //     ->getFont()
+                                        //     ->getColor()
+                                        //     ->setARGB('FF0000');
+
+                                        //     $event->sheet->setCellValue('K'.$start_col, 'NG');
+                                        //     $event->sheet->getDelegate()->getStyle('K'.$start_col)->getAlignment()->setWrapText(true);
+                                        //     $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($hcv_top);
+                                        //     $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font12_bold);
+
+                                        // }
+
+                                        if($rf_assessment != null){
+
+                                            $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
+                                            ->getFill()
+                                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                            ->getStartColor()
+                                            // ->setARGB('DD4B39');
+                                            ->setARGB('FFFFFF');
+
+                                            $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
+
+                                            $rf_attachment = $sa_details[$i]->plc_sa_rf_assessment_details_finding[$p]->rf_attachment;
+
+                                            $rf_assessment = $sa_details[$i]->plc_sa_rf_assessment_details_finding[$p]->rf_assessment_details_findings;
+                                            $rf_assessment_var = str_replace('"',"",$rf_assessment);
+                                            $strlen_rf = strlen($rf_assessment_var);
+
+                                            $dividedByLength = $strlen_rf / 33;
+                                            $weDontDieWeMultiply = 20 * $dividedByLength;
+                                            $totalLines = count(explode('\n',$rf_assessment)) * 20;
+                                            $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
+
+                                            // dd($dividedByLengthWithBreaks);
+
+                                            $event->sheet->setCellValue('M'.$start_col,$sa_details[$i]->plc_sa_rf_assessment_details_finding[$p]->rf_assessment_details_findings);
+                                            // $event->sheet->setCellValue('N'.$start_col,$sa_details[$i]->plc_sa_rf_assessment_details_finding[$x]->rf_status);
+                                            $event->sheet->getDelegate()->getStyle('M'.$start_col)->getAlignment()->setWrapText(true);
+                                            $event->sheet->getDelegate()->getStyle('M'.$start_col)->applyFromArray($arial_font12);
+                                            $event->sheet->getDelegate()->getStyle('M'.$start_col)->applyFromArray($hlv_top);
+                                            $event->sheet->getDelegate()->getStyle('N'.$start_col)->getAlignment()->setWrapText(true);
+                                            $event->sheet->getDelegate()->getStyle('N'.$start_col)->applyFromArray($hcv_top);
+                                            $event->sheet->getDelegate()->getStyle('N'.$start_col)->applyFromArray($arial_font12_bold);
+
+
+                                            if ($strlen_rf < 150){
+                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                                if($rf_attachment != null ){
+
+                                                    // DRAWINGS SAVED FOR LATER :)
+                                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$rf_attachment)));
+                                                    $drawing->setWidth(200);
+                                                    $drawing->setCoordinates('J'.$start_col);
+                                                    $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                    $drawing->setOffsetX(40);
+                                                    $drawing->setWorksheet($event->sheet->getDelegate());
+
+                                                    // DRAWINGS SAVED FOR LATER :)
+                                                }else{
+                                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                    $drawing->setWidth(100);
+                                                    $drawing->setCoordinates('J'.$start_col);
+                                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                                    $drawing->setOffsetX(60);
+                                                    $drawing->setWorksheet($event->sheet->getDelegate());
+                                                }
+                                            }else{
+                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                                if($rf_attachment != null ){
+
+                                                    // DRAWINGS SAVED FOR LATER :)
+                                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$rf_attachment)));
+                                                    $drawing->setWidth(200);
+                                                    $drawing->setCoordinates('J'.$start_col);
+                                                    $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                    $drawing->setOffsetX(40);
+                                                    $drawing->setWorksheet($event->sheet->getDelegate());
+
+                                                    // DRAWINGS SAVED FOR LATER :)
+                                                }else{
+                                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                    $drawing->setWidth(100);
+                                                    $drawing->setCoordinates('J'.$start_col);
+                                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 150);
+                                                    $drawing->setOffsetX(60);
+                                                    $drawing->setWorksheet($event->sheet->getDelegate());
+                                                }
+                                            }
+
+                                        }
+
+                                    }
+
+
                                 }
 
-
-                            if ($strlen_dic < 150){
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                            }else{
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                            }
-
-                            if($dic_status == 'G'){
-                                $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
-                                ->getFill()
-                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                                ->getStartColor()
-                                // ->setARGB('DD4B39');
-                                ->setARGB('c0c0c0');
-                            }
-
-                            if($dicCounter > 0){
-                                $dicCounter--;
-                                $start_col++;
-                                // $tempoCounter++;
+                                        $start_col++;
                             }
 
 
 
                         }
+                        $border_start = 4;
+                        $border_end = $start_col - 1;
 
-                        $oecCounter = count($sa_details[$i]->plc_sa_oec_assessment_details_finding);
-                        $array = array();
-                        $oec_start_col = $start_col -1;
-
-                        for($x=0; $x < count($sa_details[$i]->plc_sa_oec_assessment_details_finding); $x++){
-                            // $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
-                            $oec_assessment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings;
-                             $oec_status = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_status;
-
-                            // $counter = ;
-                            array_push($array,$oec_start_col);
-
-                            // dd($oec_start_col);
-
-                            if($oec_status == 'NG'){
-                                $event->sheet->getDelegate()->getStyle('K'.$oec_start_col)
-                                ->getFont()
-                                ->getColor()
-                                ->setARGB('FF0000');
-
-                                $event->sheet->setCellValue('K'.$oec_start_col, 'NG');
-                                $event->sheet->getDelegate()->getStyle('K'.$oec_start_col)->getAlignment()->setWrapText(true);
-                                $event->sheet->getDelegate()->getStyle('K'.$oec_start_col)->applyFromArray($hcv_top);
-                                $event->sheet->getDelegate()->getStyle('K'.$oec_start_col)->applyFromArray($arial_font12_bold);
-
-                            }
-
-                            if($oec_assessment != null){
-                                // $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
-                                // ->getFill()
-                                // ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                                // ->getStartColor()
-                                // // ->setARGB('DD4B39');
-                                // ->setARGB('c0c0c0');
-
-                                // $capa_analysis = $statement_of_findings_first_half[$x]->plc_capa_details[$q]->plc_sa_capa_analysis_details[$t]->capa_analysis;+
-                                $event->sheet->getDelegate()->getStyle('J'.$oec_start_col.':K'.$oec_start_col)
-                                ->getFill()
-                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                                ->getStartColor()
-                                // ->setARGB('DD4B39');
-                                ->setARGB('FFFFFF');
-
-                                $event->sheet->getDelegate()->getStyle('B'.$oec_start_col.':N'.$oec_start_col)->applyFromArray($styleBorderAll);
-
-                                $oec_attachment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_attachment;
-
-                                $oec_assessment = $sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings;
-                                $oec_assessment_var = str_replace('"',"",$oec_assessment);
-                                $strlen_oec = strlen($oec_assessment_var);
-
-                                $dividedByLength = $strlen_oec / 33;
-                                $weDontDieWeMultiply = 20 * $dividedByLength;
-                                $totalLines = count(explode('\n',$oec_assessment)) * 20;
-                                $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
-
-                                // dd($dividedByLengthWithBreaks);
-
-                                if($oec_attachment != null ){
-
-                                    // DRAWINGS SAVED FOR LATER :)
-
-                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$oec_attachment)));
-                                    $drawing->setWidth(200);
-                                    $drawing->setCoordinates('J'.$oec_start_col);
-                                    $drawing->setOffsetY($dividedByLengthWithBreaks);
-                                    $drawing->setOffsetX(40);
-                                    $drawing->setWorksheet($event->sheet->getDelegate());
-
-                                    // DRAWINGS SAVED FOR LATER :)
-                                }else{
-                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                    $drawing->setWidth(100);
-                                    $drawing->setCoordinates('J'.$oec_start_col);
-                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 20);
-                                    $drawing->setOffsetX(45);
-                                    $drawing->setWorksheet($event->sheet->getDelegate());
-                                }
-
-                                $event->sheet->setCellValue('J'.$oec_start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings);
-                                $event->sheet->getDelegate()->getStyle('J'.$oec_start_col)->getAlignment()->setWrapText(true);
-                                $event->sheet->getDelegate()->getStyle('J'.$oec_start_col)->applyFromArray($arial_font12);
-                                $event->sheet->getDelegate()->getStyle('J'.$oec_start_col)->applyFromArray($hlv_top);
-
-                                // $event->sheet->setCellValue('Q'.$oec_start_col,$strlen_oec);
-
-                                if ($strlen_oec < 150){
-                                    $event->sheet->getDelegate()->getRowDimension($oec_start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                }else{
-                                    $event->sheet->getDelegate()->getRowDimension($oec_start_col)->setRowHeight(305);
-                                }
-
-                            }
-                            if($oecCounter > 0){
-                                $oec_start_col++;
-                                $oecCounter--;
-                                // $tempoCounter++;
-                            }
-
-                            // $event->sheet->getDelegate()->mergeCells('K'.$array[0].':K'.end($array));
-                            // $event->sheet->getDelegate()->mergeCells('B'.$array[0].':B'.end($array));
-                            // $event->sheet->getDelegate()->mergeCells('C'.$array[0].':C'.end($array));
-                            // $event->sheet->getDelegate()->mergeCells('D'.$array[0].':D'.end($array));
-                            // $event->sheet->getDelegate()->mergeCells('G'.$array[0].':G'.end($array));
-                            // $event->sheet->getDelegate()->mergeCells('H'.$array[0].':H'.end($array));
-                            // $event->sheet->getDelegate()->mergeCells('I'.$array[0].':I'.end($array));
-
-
-                            $event->sheet->getDelegate()->getStyle('B'.$start_col.':N'.$start_col)->applyFromArray($styleBorderAll);
-                        }
-                        // $event->sheet->setCellValue('P1',$array[0]);
-
+                        $event->sheet->getDelegate()->getStyle('B'.$border_start.':N'.$border_end)->applyFromArray($styleBorderAll);
 
                     }
-
 
                   //==================== Data =========================
 

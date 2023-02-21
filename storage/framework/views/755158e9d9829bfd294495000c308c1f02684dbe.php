@@ -63,6 +63,22 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="user-management" role="tabpanel" aria-labelledby="user-management-tab">
                                     <div>
+                                        <div class="row  mt-3">
+                                            <div class="col-sm-3 mr-2"> 
+                                                <label><strong>Fiscal Year:</strong></label>
+                                                <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                                    <!-- Code generated -->
+                                                </select>
+                                            </div>
+                                            <div class=" col-sm-3"> 
+                                                <label class="form-control-label">Audit Period:</label> 
+                                                <select class="form-control" id="selAuditPeriod" name="audit_period">
+                                                    <option selected disabled value="">-- Select Audit Period --</option>
+                                                    <option value="First Half">First Half</option>
+                                                    <option value="Second Half">Second Half</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <button class="btn btn-dark mt-1" data-toggle="modal" data-target="#modalAddPlcEvidences" id = "btnAddPlcEvidencesModal"
                                         style="float: right;"><i class="fas fa-plus"></i> Add
                                         PLC Evidences</button></div><br><br>
@@ -112,7 +128,9 @@
                                     <div class="input-group-prepend w-50">
                                         <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
                                     </div>
-                                    <input type="text" class="form-control h-100" name="fiscal_year" id="txtAddYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddYear">
+                                        <!-- Code generated -->
+                                    </select>
                                 </div>
                             </div>
 
@@ -190,7 +208,9 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
                                             </div>
-                                            <input type="text" class="form-control" name="fiscal_year" id="txtEditFiscalYear" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4">
+                                            <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtEditFiscalYear">
+                                                <!-- Code generated -->
+                                            </select>        
                                         </div>
                                     </div>
             
@@ -259,11 +279,13 @@
             GetPlcCategory($(".selectAddPlcCategory"));
 
              // ============================== VIEW PLC EVIDENCES DATATABLES  START ==============================
+             GetFiscalYear($(".selectFiscalYear"));
+
             dataTablePlcEvidences = $("#plcEvidencesTable").DataTable({
                 "processing" : false,
                 "serverSide" : true,
                 "responsive": true,
-                // "order": [[ 0, "desc" ]],
+                "order": [[ 0, "desc" ]],
                 // "scrollX": true,
                 // "scrollX": "100%",
                 "language": {
@@ -382,6 +404,14 @@
             $("#editPlcEvidencesForm").submit(function(event){
                 event.preventDefault();
                 EditPlcEvidences();
+            });
+
+            $("#selFiscalYear").on('change', function() {
+                dataTablePlcEvidences.column(1).search($(this).val()).draw();
+            });
+
+            $("#selAuditPeriod").on('change', function() {
+                dataTablePlcEvidences.search($("#selAuditPeriod").val()).draw();
             });
 
     </script>

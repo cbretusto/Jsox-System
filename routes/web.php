@@ -88,6 +88,15 @@ Route::post('/change_user_stat', 'UserManagementController@change_user_stat')->n
 Route::get('/get_user_by_stat', 'UserManagementController@get_user_by_stat');
 Route::get('/get_user_log', 'UserManagementController@get_user_log');
 
+//========================== FISCAL YEAR CONTROLLER =============================//
+Route::get('/view_fiscal_year', 'FiscalYearController@view_fiscal_year');
+Route::post('/add_fiscal_year', 'FiscalYearController@add_fiscal_year')->name('add_fiscal_year');
+Route::get('/get_fiscal_year_by_id', 'FiscalYearController@get_fiscal_year_by_id');
+Route::post('/edit_fiscal_year', 'FiscalYearController@edit_fiscal_year');
+Route::post('/change_fiscal_year_stat', 'FiscalYearController@change_fiscal_year_stat')->name('change_user_stat');
+Route::get('/load_fiscal_year_list', 'FiscalYearController@load_fiscal_year_list');
+Route::get('/search_fiscal_year', 'FiscalYearController@search_fiscal_year');
+
 //========================== PLC CATEGORY CONTROLLER =============================//
 Route::post('/add_plc_category', 'PlcCategoryController@add_plc_category');
 Route::get('/view_plc_category', 'PlcCategoryController@view_plc_category');
@@ -135,9 +144,6 @@ Route::get('/get_revision_history_id_to_edit', 'PlcModulesController@get_revisio
 Route::get('/get_revision_history_conformance_id_to_edit', 'PlcModulesController@get_revision_history_conformance_id_to_edit');
 Route::post('/edit_revision_history', 'PlcModulesController@edit_revision_history');
 Route::post('/edit_revision_history_conformance', 'PlcModulesController@edit_revision_history_conformance');
-// Route::post('/delete_revision_history', 'PlcModulesController@delete_revision_history');
-// Route::post('/deactivate_revision_history', 'PlcModulesController@deactivate_revision_history');
-// Route::post('/activate_revision_history', 'PlcModulesController@activate_revision_history');
 Route::get('/load_user_management_rev', 'PlcModulesController@load_user_management_rev');
 Route::get('/load_user_management_process_owner', 'PlcModulesController@load_user_management_process_owner');
 Route::get('/load_concerned_department', 'PlcModulesController@load_concerned_department');
@@ -165,11 +171,9 @@ Route::post('/change_plc_rcm_stat', 'PlcModulesRcmController@change_plc_rcm_stat
 Route::get('/view_plc_sa_data', 'PlcModulesSaController@view_plc_sa_data');
 Route::post('/add_sa_module', 'PlcModulesSaController@add_sa_module');
 Route::get('/get_sa_data_to_edit', 'PlcModulesSaController@get_sa_data_to_edit');
-// Route::post('/delete_sa_data', 'PlcModulesSaController@delete_sa_data');
 Route::post('/edit_sa_module', 'PlcModulesSaController@edit_sa_module');
 Route::get('/get_uploaded_file', 'PlcModulesSaController@get_uploaded_file');
 Route::get('/load_assessed_by_SA', 'PlcModulesSaController@load_assessed_by_SA');
-// Route::get('/load_user_SA', 'PlcModulesSaController@load_user_SA');
 Route::post('/approved_sa_data', 'PlcModulesSaController@approved_sa_data');
 Route::post('/disapproved_sa_data', 'PlcModulesSaController@disapproved_sa_data');
 Route::post('/yec_approved_date', 'PlcModulesSaController@yec_approved_date')->name('yec_approved_date');
@@ -191,13 +195,6 @@ Route::get('/get_clc_category', 'ClcCategoryController@get_clc_category');
 
 //============================= CLC EVIDENCES CONTROLLER ================================
 Route::get('/view_clc_evidences', 'ClcEvidencesController@view_clc_evidences');
-// Route::get('/view_pmi_clc_evidences_file', 'ClcEvidencesController@view_pmi_clc_evidences_file');
-// Route::get('/view_select_pmi_clc_evidences_file', 'ClcEvidencesController@view_select_pmi_clc_evidences_file');
-// Route::post('/select_clc_evidences', 'ClcEvidencesController@select_clc_evidences')->name('select_clc_evidences');
-// Route::get('/view_pmi_fcrp_evidences_file', 'ClcEvidencesController@view_pmi_fcrp_evidences_file');
-// Route::get('/view_select_pmi_fcrp_evidences_file', 'ClcEvidencesController@view_select_pmi_fcrp_evidences_file');
-// Route::get('/view_pmi_it_clc_evidences_file', 'ClcEvidencesController@view_pmi_it_clc_evidences_file');
-// Route::get('/view_select_pmi_it_clc_evidences_file', 'ClcEvidencesController@view_select_pmi_it_clc_evidences_file');
 Route::get('/get_rapidx_user', 'ClcEvidencesController@get_rapidx_user');
 Route::post('/add_clc_evidences', 'ClcEvidencesController@add_clc_evidences');
 Route::get('/download_file_clc_evidence/{id}', 'ClcEvidencesController@download_file_clc_evidence');
@@ -208,48 +205,63 @@ Route::post('/edit_clc_evidences', 'ClcEvidencesController@edit_clc_evidences');
 Route::get('/view_clc_category_pmi_clc', 'ClcCategoryPmiClcController@view_clc_category_pmi_clc');
 Route::get('/get_rapidx_user', 'ClcCategoryPmiClcController@get_rapidx_user');
 Route::post('/add_pmi_clc_category', 'ClcCategoryPmiClcController@add_pmi_clc_category');
-// Route::get('/download_file_pmi_clc_category/{id}', 'ClcCategoryPmiClcController@download_file_pmi_clc_category');
-Route::get('/get_pmi_clc_category_by_id', 'ClcCategoryPmiClcController@get_pmi_clc_category_by_id');
-Route::post('/edit_pmi_clc_category', 'ClcCategoryPmiClcController@edit_pmi_clc_category');
-Route::post('/change_clc_category_pmi_clc_stat', 'ClcCategoryPmiClcController@change_clc_category_pmi_clc_stat')->name('change_clc_category_pmi_clc_stat');
-// Route::get('/get_clc_evidence_file', 'ClcCategoryPmiClcController@get_clc_evidence_file');
+Route::get('/get_pmi_clc_assessment_by_id', 'ClcCategoryPmiClcController@get_pmi_clc_assessment_by_id');
+Route::post('/edit_pmi_clc_assessment', 'ClcCategoryPmiClcController@edit_pmi_clc_assessment');
+Route::post('/change_pmi_clc_assessment_stat', 'ClcCategoryPmiClcController@change_pmi_clc_assessment_stat')->name('change_pmi_clc_assessment_stat');
+
+Route::get('/view_pmi_clc', 'ClcCategoryPmiClcController@view_pmi_clc');
+Route::post('/add_pmi_clc', 'ClcCategoryPmiClcController@add_pmi_clc');
+Route::get('/get_pmi_clc_by_id', 'ClcCategoryPmiClcController@get_pmi_clc_by_id');
+Route::post('/edit_pmi_clc', 'ClcCategoryPmiClcController@edit_pmi_clc');
+Route::post('/change_pmi_clc_stat', 'ClcCategoryPmiClcController@change_pmi_clc_stat')->name('change_pmi_clc_stat');
 
 //============================= PMI FCRP CATEGORY CONTROLLER ================================
-Route::get('/view_clc_category_pmi_fcrp', 'ClcCategoryPmiFcrpController@view_clc_category_pmi_fcrp');
+Route::get('/view_pmi_fcrp_assessment', 'ClcCategoryPmiFcrpController@view_pmi_fcrp_assessment');
 Route::get('/get_rapidx_user', 'ClcCategoryPmiFcrpController@get_rapidx_user');
-Route::post('/add_pmi_fcrp_category', 'ClcCategoryPmiFcrpController@add_pmi_fcrp_category');
-Route::get('/download_file_pmi_fcrp_category/{id}', 'ClcCategoryPmiFcrpController@download_file_pmi_fcrp_category');
-Route::get('/get_pmi_fcrp_category_by_id', 'ClcCategoryPmiFcrpController@get_pmi_fcrp_category_by_id');
-Route::post('/edit_pmi_fcrp_category', 'ClcCategoryPmiFcrpController@edit_pmi_fcrp_category');
-Route::post('/change_clc_category_pmi_fcrp_stat', 'ClcCategoryPmiFcrpController@change_clc_category_pmi_fcrp_stat')->name('change_clc_category_pmi_fcrp_stat');
+Route::post('/add_pmi_fcrp_assessment', 'ClcCategoryPmiFcrpController@add_pmi_fcrp_assessment');
+Route::get('/get_pmi_fcrp_assessment_by_id', 'ClcCategoryPmiFcrpController@get_pmi_fcrp_assessment_by_id');
+Route::post('/edit_pmi_fcrp_assessment', 'ClcCategoryPmiFcrpController@edit_pmi_fcrp_assessment');
+Route::post('/change_pmi_fcrp_assessment_stat', 'ClcCategoryPmiFcrpController@change_pmi_fcrp_assessment_stat')->name('change_pmi_fcrp_assessment_stat');
+
+Route::get('/view_pmi_fcrp', 'ClcCategoryPmiFcrpController@view_pmi_fcrp');
+Route::get('/get_rapidx_user', 'ClcCategoryPmiFcrpController@get_rapidx_user');
+Route::post('/add_pmi_fcrp', 'ClcCategoryPmiFcrpController@add_pmi_fcrp');
+Route::get('/get_pmi_fcrp_by_id', 'ClcCategoryPmiFcrpController@get_pmi_fcrp_by_id');
+Route::post('/edit_pmi_fcrp', 'ClcCategoryPmiFcrpController@edit_pmi_fcrp');
+Route::post('/change_pmi_fcrp_stat', 'ClcCategoryPmiFcrpController@change_pmi_fcrp_stat')->name('change_pmi_fcrp_stat');
 
 //============================= PMI IT-CLC CATEGORY CONTROLLER ================================
-Route::get('/view_clc_category_pmi_it_clc', 'ClcCategoryPmiItClcController@view_clc_category_pmi_it_clc');
+Route::get('/view_pmi_it_clc_assessment', 'ClcCategoryPmiItClcController@view_pmi_it_clc_assessment');
 Route::get('/get_rapidx_user', 'ClcCategoryPmiItClcController@get_rapidx_user');
-Route::post('/add_pmi_it_clc_category', 'ClcCategoryPmiItClcController@add_pmi_it_clc_category');
-Route::get('/download_file_pmi_it_clc_category/{id}', 'ClcCategoryPmiItClcController@download_file_pmi_it_clc_category');
-Route::get('/get_pmi_it_clc_category_by_id', 'ClcCategoryPmiItClcController@get_pmi_it_clc_category_by_id');
-Route::post('/edit_pmi_it_clc_category', 'ClcCategoryPmiItClcController@edit_pmi_it_clc_category');
-Route::post('/change_clc_category_pmi_it_clc_stat', 'ClcCategoryPmiItClcController@change_clc_category_pmi_it_clc_stat')->name('change_clc_category_pmi_it_clc_stat');
+Route::post('/add_pmi_it_clc_assessment', 'ClcCategoryPmiItClcController@add_pmi_it_clc_assessment');
+Route::get('/get_pmi_it_clc_assessment_by_id', 'ClcCategoryPmiItClcController@get_pmi_it_clc_assessment_by_id');
+Route::post('/edit_pmi_it_clc_assessment', 'ClcCategoryPmiItClcController@edit_pmi_it_clc_assessment');
+Route::post('/change_pmi_it_clc_assessment_stat', 'ClcCategoryPmiItClcController@change_pmi_it_clc_assessment_stat')->name('change_pmi_it_clc_assessment_stat');
 
 Route::get('/export/{id}/{audit_year_id}/{audit_fiscal_year_id}', 'InvExcelController@export');
+
+Route::get('/view_pmi_it_clc', 'ClcCategoryPmiItClcController@view_pmi_it_clc');
+Route::post('/add_pmi_it_clc', 'ClcCategoryPmiItClcController@add_pmi_it_clc');
+Route::get('/get_pmi_it_clc_by_id', 'ClcCategoryPmiItClcController@get_pmi_it_clc_by_id');
+Route::post('/edit_pmi_it_clc', 'ClcCategoryPmiItClcController@edit_pmi_it_clc');
+Route::post('/change_pmi_it_clc_stat', 'ClcCategoryPmiItClcController@change_pmi_it_clc_stat')->name('change_pmi_it_clc_stat');
 
 //============================= PLC CAPA CONTROLLER ================================
 Route::get('/view_plc_capa', 'PlcCapaController@view_plc_capa');
 Route::get('/get_plc_capa_id_to_edit', 'PlcCapaController@get_plc_capa_id_to_edit');
 Route::post('/edit_plc_capa', 'PlcCapaController@edit_plc_capa');
+Route::get('/load_jsox_user_list', 'PlcCapaController@load_jsox_user_list');
 
-// Route::get('/export_capa/{id}/{concerned_dept}', 'PlcCapaController@export_capa');
+
 Route::get('/export_capa/{year_id}/{fiscal_year_id}/{dept_id}', 'PlcCapaController@export_capa');
 
 //============================== CLC EXPORT =======================================
-Route::get('/export_clc_summary/{year_id}', 'ExportClcController@export_clc_summary');
-Route::get('/export_it_clc_summary/{year_id}', 'ExportItClcController@export_it_clc_summary');
-Route::get('/export_fcrp_clc_summary/{year_id}', 'ExportFcrpClcController@export_fcrp_clc_summary');
+Route::get('/export_clc_summary/{year_id}/{audit_period}', 'ExportClcController@export_clc_summary');
+Route::get('/export_it_clc_summary/{year_id}/{audit_period}', 'ExportItClcController@export_it_clc_summary');
+Route::get('/export_fcrp_clc_summary/{year_id}/{audit_period}', 'ExportFcrpClcController@export_fcrp_clc_summary');
 
 
 Route::get('/export_summary/{year_id}/{select_category}', 'ExportSummaryController@export_summary');
-
 
 Route::get('/get_ppc_section_data', 'AnalyticsController@get_ppc_section_data');
 Route::get('/get_ppc_whse_tscn_data', 'AnalyticsController@get_ppc_whse_tscn_data');
@@ -259,16 +271,3 @@ Route::get('/get_logistics_data', 'AnalyticsController@get_logistics_data');
 
 Route::get('/export_ng_report/{year_id}/{dept_id}', 'AnalyticsController@export_ng_report');
 Route::get('/view_pps_data', 'AnalyticsController@view_pps_data');
-
-
-
-
-
-
-
-
-
-
-
-
-

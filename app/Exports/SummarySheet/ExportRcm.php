@@ -410,7 +410,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                         $risk_detail = $rcm_details[$i]->risk_detail;
                         $debit = $rcm_details[$i]->debit;
                         $credit = $rcm_details[$i]->credit;
-                        $control_id = $rcm_details[$i]->control_id;
+
                         // $internal_control = $rcm_details[$i]->internal_control;
                         $system = $rcm_details[$i]->system;
 
@@ -443,121 +443,126 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                         $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
                         $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hcv_top);
 
-                        if($rcm_details[$i]->validity != null){
-                            $event->sheet->setCellValue('H'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('H'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->completeness != null){
-                            $event->sheet->setCellValue('I'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('I'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->accuracy != null){
-                            $event->sheet->setCellValue('J'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('J'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->cut_off != null){
-                            $event->sheet->setCellValue('K'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('K'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->valuation != null){
-                            $event->sheet->setCellValue('L'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('L'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('L'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('L'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->presentation != null){
-                            $event->sheet->setCellValue('M'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('M'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('M'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('M'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->key_control != null){
-                            $event->sheet->setCellValue('N'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('N'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('N'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('N'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->it_control != null){
-                            $event->sheet->setCellValue('O'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('O'.$start_col,'');
-                        }
-
-                        $event->sheet->setCellValue('P'.$start_col,$control_id);
-                        $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($arial_font11);
-                        $event->sheet->getDelegate()->getStyle('P'.$start_col)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($hcv_top);
+                        // for($x=0; $x < count($rcm_details[$i]->rcm_info); $x++){
 
 
-                        if($rcm_details[$i]->preventive != null){
-                            $event->sheet->setCellValue('R'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('R'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('R'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('R'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->defective != null){
-                            $event->sheet->setCellValue('S'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('S'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('S'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('S'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->manual != null){
-                            $event->sheet->setCellValue('T'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('T'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('T'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('T'.$start_col,'');
-                        }
-
-                        if($rcm_details[$i]->automatic != null){
-                            $event->sheet->setCellValue('U'.$start_col,'X');
-                            $event->sheet->getDelegate()->getStyle('U'.$start_col)->applyFromArray($hcv_top);
-                            $event->sheet->getDelegate()->getStyle('U'.$start_col)->applyFromArray($arial_font11_bold);
-                        }else{
-                            $event->sheet->setCellValue('U'.$start_col,'');
-                        }
-
-                        $event->sheet->setCellValue('AI'.$start_col,$system);
-                        $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($arial_font11);
-                        $event->sheet->getDelegate()->getStyle('AI'.$start_col)->getAlignment()->setWrapText(true);
-                        $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($hcv_top);
-
+                        //     // $event->sheet->setCellValue('AI'.$start_col,$system);
+                        //     // $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($arial_font11);
+                        //     // $event->sheet->getDelegate()->getStyle('AI'.$start_col)->getAlignment()->setWrapText(true);
+                        //     // $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($hcv_top);
+                        // }
 
                         $internal_counter = count($rcm_details[$i]->rcm_info);
 
                         for($x=0; $x < count($rcm_details[$i]->rcm_info); $x++){
+
+                            if($rcm_details[$i]->rcm_info[$x]->validity != null){
+                                $event->sheet->setCellValue('H'.$start_col,'X');
+                                $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($hcv_top);
+                                $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('H'.$start_col,'');
+                                }
+                                if($rcm_details[$i]->rcm_info[$x]->completeness != null){
+                                    $event->sheet->setCellValue('I'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('I'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->accuracy != null){
+                                    $event->sheet->setCellValue('J'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('J'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->cut_off != null){
+                                    $event->sheet->setCellValue('K'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('K'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->valuation != null){
+                                    $event->sheet->setCellValue('L'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('L'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('L'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('L'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->presentation != null){
+                                    $event->sheet->setCellValue('M'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('M'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('M'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('M'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->key_control != null){
+                                    $event->sheet->setCellValue('N'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('N'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('N'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('N'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->it_control != null){
+                                    $event->sheet->setCellValue('O'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('O'.$start_col,'');
+                                }
+
+                                // $event->sheet->setCellValue('P'.$start_col,$control_id);
+                                $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($arial_font11);
+                                $event->sheet->getDelegate()->getStyle('P'.$start_col)->getAlignment()->setWrapText(true);
+                                $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($hcv_top);
+
+
+                                if($rcm_details[$i]->rcm_info[$x]->preventive != null){
+                                    $event->sheet->setCellValue('R'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('R'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('R'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('R'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->defective != null){
+                                    $event->sheet->setCellValue('S'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('S'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('S'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('S'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->manual != null){
+                                    $event->sheet->setCellValue('T'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('T'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('T'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('T'.$start_col,'');
+                                }
+
+                                if($rcm_details[$i]->rcm_info[$x]->automatic != null){
+                                    $event->sheet->setCellValue('U'.$start_col,'X');
+                                    $event->sheet->getDelegate()->getStyle('U'.$start_col)->applyFromArray($hcv_top);
+                                    $event->sheet->getDelegate()->getStyle('U'.$start_col)->applyFromArray($arial_font11_bold);
+                                }else{
+                                    $event->sheet->setCellValue('U'.$start_col,'');
+                                }
+
                             $event->sheet->getDelegate()->getStyle('B'.$start_col.':AI'.$start_col)->applyFromArray($styleBorderAll);
                             $status = $rcm_details[$i]->rcm_info[$x]->status;
+                            $internal_ctrl = $rcm_details[$i]->rcm_info[$x]->internal_control;
+                            $ctrl_id = $rcm_details[$i]->rcm_info[$x]->control_id;
 
-                            if($status == 1){
+                            if($status == 1 || $ctrl_id == NULL ){
                                 $event->sheet->getDelegate()->getStyle('N'.$start_col.':AI'.$start_col)
                                 ->getFill()
                                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
@@ -568,6 +573,11 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                             }
 
                             $event->sheet->setCellValue('Q'.$start_col, $rcm_details[$i]->rcm_info[$x]->internal_control);
+                            $event->sheet->setCellValue('P'.$start_col, $rcm_details[$i]->rcm_info[$x]->control_id);
+                            $event->sheet->setCellValue('AI'.$start_col, $rcm_details[$i]->rcm_info[$x]->system);
+                            $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($arial_font11);
+                            $event->sheet->getDelegate()->getStyle('AI'.$start_col)->getAlignment()->setWrapText(true);
+                            $event->sheet->getDelegate()->getStyle('AI'.$start_col)->applyFromArray($hcv_top);
                             $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($arial_font11);
                             $event->sheet->getDelegate()->getStyle('Q'.$start_col)->getAlignment()->setWrapText(true);
                             $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($hlv_top);
