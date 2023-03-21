@@ -416,6 +416,7 @@ function GetPmiFcrpAssessmentByIdToEdit(pmiFcrpAssessmentId){
                     $("#txtEditPmiFcrpAssessmentNALast").prop("checked", true);
                 }
 
+                $("#txtEditPmiFcrpAssessmentNo")                                .val(pmi_fcrp_category[0].no);
                 $("#selectEditFiscalYear")                                      .val(pmi_fcrp_category[0].fiscal_year).trigger('change');
                 $("#selectEditPmiFcrpAssessmentTitle")                          .val(pmi_fcrp_category[0].titles).trigger('change');
                 $("#txtEditPmiFcrpAssessmentControlObjectives")                 .val(pmi_fcrp_category[0].control_objectives);

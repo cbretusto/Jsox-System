@@ -15,17 +15,16 @@ class CreateJsoxPlcMatricesTable extends Migration
     {
         Schema::create('jsox_plc_matrices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('process_name');
-            $table->string('control_no');
-            $table->string('document');
-            $table->string('frequency');
-            $table->string('samples');
-            $table->string('in_charge');
+            $table->string('process_name')->nullable();
+            $table->string('control_no')->nullable();
+            $table->string('document')->nullable();
+            $table->string('frequency')->nullable();
+            $table->string('samples')->nullable();
+            $table->string('in_charge')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment = '1-active,2-inactive';
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
-
             $table->timestamps();
         });
     }

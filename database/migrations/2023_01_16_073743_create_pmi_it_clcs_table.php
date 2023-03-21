@@ -15,10 +15,10 @@ class CreatePmiItClcsTable extends Migration
     {
         Schema::create('pmi_it_clcs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('no');
-            $table->string('fiscal_year');
-            $table->string('control_objectives');
-            $table->string('internal_controls');
+            $table->string('no')->nullable();
+            $table->string('fiscal_year')->nullable();
+            $table->string('control_objectives')->nullable();
+            $table->string('internal_controls')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment = '1-active,2-Inactive';
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();

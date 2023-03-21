@@ -302,29 +302,29 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             }
 
 
-                            if ($company_policies[$i]->g_ng == 'Good'){
-                                $event->sheet->setCellValue('F'.$start_col, 'G');
-                                } else if($company_policies[$i]->g_ng == 'N/A'){
-                                    $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
+                            // if ($company_policies[$i]->g_ng == 'Good'){
+                            //     $event->sheet->setCellValue('F'.$start_col, 'G');
+                            //     } else if($company_policies[$i]->g_ng == 'N/A'){
+                            //         $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
 
-                                } else{
-                                $event->sheet->setCellValue('F'.$start_col, 'NG');
+                            //     } else{
+                            //     $event->sheet->setCellValue('F'.$start_col, 'NG');
 
-                                }
+                            //     }
 
-                            $event->sheet->setCellValue('G'.$start_col, $company_policies[$i]->detected_problems_improvement_plans);
-                            // $event->sheet->setCellValue('H'.$start_col, $company_policies[$i]->review_findings);
-                            // $event->sheet->setCellValue('I'.$start_col, $company_policies[$i]->follow_up_details);
+                            // $event->sheet->setCellValue('G'.$start_col, $company_policies[$i]->detected_problems_improvement_plans);
+                            // // $event->sheet->setCellValue('H'.$start_col, $company_policies[$i]->review_findings);
+                            // // $event->sheet->setCellValue('I'.$start_col, $company_policies[$i]->follow_up_details);
 
-                            if ($company_policies[$i]->g_ng_last == 'Good'){
-                                // $event->sheet->setCellValue('J'.$start_col, 'G');
-                                } else if($company_policies[$i]->g_ng == 'N/A'){
+                            // if ($company_policies[$i]->g_ng_last == 'Good'){
+                            //     // $event->sheet->setCellValue('J'.$start_col, 'G');
+                            //     } else if($company_policies[$i]->g_ng == 'N/A'){
 
-                                    $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
-                                } else{
-                                // $event->sheet->setCellValue('J'.$start_col, 'NG');
+                            //         $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
+                            //     } else{
+                            //     // $event->sheet->setCellValue('J'.$start_col, 'NG');
 
-                                }
+                            //     }
 
                             // wrap text
                             $event->sheet->getDelegate()->getStyle('B'.$start_col)->getAlignment()->setWrapText(true);
@@ -403,28 +403,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($roles[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$roles_col, 'G');
-                            } else if($roles[$x]->g_ng == 'N/A'){
+                        // if ($roles[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$roles_col, 'G');
+                        //     } else if($roles[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$roles_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$roles_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$roles_col, $roles[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$roles_col, $roles[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$roles_col, $roles[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$roles_col, $roles[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$roles_col, $roles[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$roles_col, $roles[$x]->follow_up_details);
 
-                        if ($roles[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$roles_col, 'G');
-                            } else if($roles[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$roles_col, 'NG');
+                        // if ($roles[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$roles_col, 'G');
+                        //     } else if($roles[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$roles_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$roles_col)->applyFromArray($hcv_top);
@@ -504,28 +504,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                         }
 
 
-                        if ($gaap[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$gaap_col, 'G');
-                            } else if($gaap[$x]->g_ng == 'N/A'){
+                        // if ($gaap[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$gaap_col, 'G');
+                        //     } else if($gaap[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$gaap_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$gaap_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$gaap_col, $gaap[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$gaap_col, $gaap[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$gaap_col, $gaap[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$gaap_col, $gaap[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$gaap_col, $gaap[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$gaap_col, $gaap[$x]->follow_up_details);
 
-                        if ($gaap[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$gaap_col, 'G');
-                            } else if($gaap[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$gaap_col, 'NG');
+                        // if ($gaap[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$gaap_col, 'G');
+                        //     } else if($gaap[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$gaap_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$gaap_col)->applyFromArray($hcv_top);
@@ -605,28 +605,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                         }
 
 
-                        if ($communication[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$communication_col, 'G');
-                            } else if($communication[$x]->g_ng == 'N/A'){
+                        // if ($communication[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$communication_col, 'G');
+                        //     } else if($communication[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$communication_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$communication_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$communication_col, $communication[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$communication_col, $communication[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$communication_col, $communication[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$communication_col, $communication[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$communication_col, $communication[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$communication_col, $communication[$x]->follow_up_details);
 
-                        if ($communication[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$communication_col, 'G');
-                            } else if($communication[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$communication_col, 'NG');
+                        // if ($communication[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$communication_col, 'G');
+                        //     } else if($communication[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$communication_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$communication_col)->applyFromArray($hcv_top);
@@ -706,28 +706,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($unusual[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$unusual_col, 'G');
-                            } else if($unusual[$x]->g_ng == 'N/A'){
+                        // if ($unusual[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$unusual_col, 'G');
+                        //     } else if($unusual[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$unusual_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$unusual_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$unusual_col, $unusual[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$unusual_col, $unusual[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$unusual_col, $unusual[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$unusual_col, $unusual[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$unusual_col, $unusual[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$unusual_col, $unusual[$x]->follow_up_details);
 
-                        if ($unusual[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$unusual_col, 'G');
-                            } else if($unusual[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$unusual_col, 'NG');
+                        // if ($unusual[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$unusual_col, 'G');
+                        //     } else if($unusual[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$unusual_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$unusual_col)->applyFromArray($hcv_top);
@@ -807,28 +807,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($data_col[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$data_col_col, 'G');
-                            } else if($data_col[$x]->g_ng == 'N/A'){
+                        // if ($data_col[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$data_col_col, 'G');
+                        //     } else if($data_col[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$data_col_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$data_col_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$data_col_col, $data_col[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$data_col_col, $data_col[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$data_col_col, $data_col[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$data_col_col, $data_col[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$data_col_col, $data_col[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$data_col_col, $data_col[$x]->follow_up_details);
 
-                        if ($data_col[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$data_col_col, 'G');
-                            } else if($data_col[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$data_col_col, 'NG');
+                        // if ($data_col[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$data_col_col, 'G');
+                        //     } else if($data_col[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$data_col_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$data_col_col)->applyFromArray($hcv_top);
@@ -908,28 +908,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($verification[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$verification_col, 'G');
-                            } else if($verification[$x]->g_ng == 'N/A'){
+                        // if ($verification[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$verification_col, 'G');
+                        //     } else if($verification[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$verification_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$verification_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$verification_col, $verification[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$verification_col, $verification[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$verification_col, $verification[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$verification_col, $verification[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$verification_col, $verification[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$verification_col, $verification[$x]->follow_up_details);
 
-                        if ($verification[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$verification_col, 'G');
-                            } else if($verification[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$verification_col, 'NG');
+                        // if ($verification[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$verification_col, 'G');
+                        //     } else if($verification[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$verification_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$verification_col)->applyFromArray($hcv_top);
@@ -1009,28 +1009,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($significant[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$significant_col, 'G');
-                            } else if($significant[$x]->g_ng == 'N/A'){
+                        // if ($significant[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$significant_col, 'G');
+                        //     } else if($significant[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$significant_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$significant_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$significant_col, $significant[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$significant_col, $significant[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$significant_col, $significant[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$significant_col, $significant[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$significant_col, $significant[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$significant_col, $significant[$x]->follow_up_details);
 
-                        if ($significant[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$significant_col, 'G');
-                            } else if($significant[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$significant_col, 'NG');
+                        // if ($significant[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$significant_col, 'G');
+                        //     } else if($significant[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$significant_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$significant_col)->applyFromArray($hcv_top);
@@ -1109,28 +1109,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($consolidation[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$consolidation_col, 'G');
-                            } else if($consolidation[$x]->g_ng == 'N/A'){
+                        // if ($consolidation[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$consolidation_col, 'G');
+                        //     } else if($consolidation[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$consolidation_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$consolidation_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$consolidation_col, $consolidation[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$consolidation_col, $consolidation[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$consolidation_col, $consolidation[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$consolidation_col, $consolidation[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$consolidation_col, $consolidation[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$consolidation_col, $consolidation[$x]->follow_up_details);
 
-                        if ($consolidation[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$consolidation_col, 'G');
-                            } else if($consolidation[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$consolidation_col, 'NG');
+                        // if ($consolidation[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$consolidation_col, 'G');
+                        //     } else if($consolidation[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$consolidation_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$consolidation_col)->applyFromArray($hcv_top);
@@ -1208,28 +1208,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$reclassification_col, $reclassification[$x]->internal_controls);
                         }
 
-                        if ($reclassification[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$reclassification_col, 'G');
-                            } else if($reclassification[$x]->g_ng == 'N/A'){
+                        // if ($reclassification[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$reclassification_col, 'G');
+                        //     } else if($reclassification[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$reclassification_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$reclassification_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$reclassification_col, $reclassification[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$reclassification_col, $reclassification[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$reclassification_col, $reclassification[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$reclassification_col, $reclassification[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$reclassification_col, $reclassification[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$reclassification_col, $reclassification[$x]->follow_up_details);
 
-                        if ($reclassification[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$reclassification_col, 'G');
-                            } else if($reclassification[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$reclassification_col, 'NG');
+                        // if ($reclassification[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$reclassification_col, 'G');
+                        //     } else if($reclassification[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$reclassification_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$reclassification_col)->applyFromArray($hcv_top);
@@ -1307,28 +1307,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
 
 
 
-                        if ($year_end[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$year_end_col, 'G');
-                            } else if($year_end[$x]->g_ng == 'N/A'){
+                        // if ($year_end[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$year_end_col, 'G');
+                        //     } else if($year_end[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$year_end_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$year_end_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$year_end_col, $year_end[$x]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$year_end_col, $year_end[$x]->review_findings);
-                        // $event->sheet->setCellValue('I'.$year_end_col, $year_end[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$year_end_col, $year_end[$x]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$year_end_col, $year_end[$x]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$year_end_col, $year_end[$x]->follow_up_details);
 
-                        if ($year_end[$x]->g_ng_last == 'Good'){
-                            // $event->sheet->setCellValue('J'.$year_end_col, 'G');
-                            } else if($year_end[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
-                            } else{
-                            // $event->sheet->setCellValue('J'.$year_end_col, 'NG');
+                        // if ($year_end[$x]->g_ng_last == 'Good'){
+                        //     // $event->sheet->setCellValue('J'.$year_end_col, 'G');
+                        //     } else if($year_end[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
+                        //     } else{
+                        //     // $event->sheet->setCellValue('J'.$year_end_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$year_end_col)->applyFromArray($hcv_top);
@@ -1487,29 +1487,29 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                                 $event->sheet->setCellValue('E'.$start_col, $company_policies[$i]->internal_controls);
                             }
 
-                            if ($company_policies[$i]->g_ng == 'Good'){
-                                $event->sheet->setCellValue('F'.$start_col, 'G');
-                                } else if($company_policies[$i]->g_ng == 'N/A'){
-                                    $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
+                            // if ($company_policies[$i]->g_ng == 'Good'){
+                            //     $event->sheet->setCellValue('F'.$start_col, 'G');
+                            //     } else if($company_policies[$i]->g_ng == 'N/A'){
+                            //         $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
 
-                                } else{
-                                $event->sheet->setCellValue('F'.$start_col, 'NG');
+                            //     } else{
+                            //     $event->sheet->setCellValue('F'.$start_col, 'NG');
 
-                                }
+                            //     }
 
-                            $event->sheet->setCellValue('G'.$start_col, $company_policies[$i]->detected_problems_improvement_plans);
-                            $event->sheet->setCellValue('H'.$start_col, $company_policies[$i]->review_findings);
-                            $event->sheet->setCellValue('I'.$start_col, $company_policies[$i]->follow_up_details);
+                            // $event->sheet->setCellValue('G'.$start_col, $company_policies[$i]->detected_problems_improvement_plans);
+                            // $event->sheet->setCellValue('H'.$start_col, $company_policies[$i]->review_findings);
+                            // $event->sheet->setCellValue('I'.$start_col, $company_policies[$i]->follow_up_details);
 
-                            if ($company_policies[$i]->g_ng_last == 'Good'){
-                                $event->sheet->setCellValue('J'.$start_col, 'G');
-                                } else if($company_policies[$i]->g_ng == 'N/A'){
+                            // if ($company_policies[$i]->g_ng_last == 'Good'){
+                            //     $event->sheet->setCellValue('J'.$start_col, 'G');
+                            //     } else if($company_policies[$i]->g_ng == 'N/A'){
 
-                                    $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
-                                } else{
-                                $event->sheet->setCellValue('J'.$start_col, 'NG');
+                            //         $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
+                            //     } else{
+                            //     $event->sheet->setCellValue('J'.$start_col, 'NG');
 
-                                }
+                            //     }
 
                             // wrap text
                             $event->sheet->getDelegate()->getStyle('B'.$start_col)->getAlignment()->setWrapText(true);
@@ -1586,28 +1586,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$roles_col, $roles[$x]->internal_controls);
                         }
 
-                        if ($roles[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$roles_col, 'G');
-                            } else if($roles[$x]->g_ng == 'N/A'){
+                        // if ($roles[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$roles_col, 'G');
+                        //     } else if($roles[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$roles_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$roles_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$roles_col, $roles[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$roles_col, $roles[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$roles_col, $roles[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$roles_col, $roles[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$roles_col, $roles[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$roles_col, $roles[$x]->follow_up_details);
 
-                        if ($roles[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$roles_col, 'G');
-                            } else if($roles[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$roles_col, 'NG');
+                        // if ($roles[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$roles_col, 'G');
+                        //     } else if($roles[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($roles_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$roles_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$roles_col)->applyFromArray($hcv_top);
@@ -1686,28 +1686,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$gaap_col, $gaap[$x]->internal_controls);
                         }
 
-                        if ($gaap[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$gaap_col, 'G');
-                            } else if($gaap[$x]->g_ng == 'N/A'){
+                        // if ($gaap[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$gaap_col, 'G');
+                        //     } else if($gaap[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$gaap_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$gaap_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$gaap_col, $gaap[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$gaap_col, $gaap[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$gaap_col, $gaap[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$gaap_col, $gaap[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$gaap_col, $gaap[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$gaap_col, $gaap[$x]->follow_up_details);
 
-                        if ($gaap[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$gaap_col, 'G');
-                            } else if($gaap[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$gaap_col, 'NG');
+                        // if ($gaap[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$gaap_col, 'G');
+                        //     } else if($gaap[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($gaap_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$gaap_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$gaap_col)->applyFromArray($hcv_top);
@@ -1786,28 +1786,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$communication_col, $communication[$x]->internal_controls);
                         }
 
-                        if ($communication[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$communication_col, 'G');
-                            } else if($communication[$x]->g_ng == 'N/A'){
+                        // if ($communication[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$communication_col, 'G');
+                        //     } else if($communication[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$communication_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$communication_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$communication_col, $communication[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$communication_col, $communication[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$communication_col, $communication[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$communication_col, $communication[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$communication_col, $communication[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$communication_col, $communication[$x]->follow_up_details);
 
-                        if ($communication[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$communication_col, 'G');
-                            } else if($communication[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$communication_col, 'NG');
+                        // if ($communication[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$communication_col, 'G');
+                        //     } else if($communication[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($communication_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$communication_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$communication_col)->applyFromArray($hcv_top);
@@ -1885,28 +1885,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$unusual_col, $unusual[$x]->internal_controls);
                         }
 
-                        if ($unusual[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$unusual_col, 'G');
-                            } else if($unusual[$x]->g_ng == 'N/A'){
+                        // if ($unusual[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$unusual_col, 'G');
+                        //     } else if($unusual[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$unusual_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$unusual_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$unusual_col, $unusual[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$unusual_col, $unusual[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$unusual_col, $unusual[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$unusual_col, $unusual[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$unusual_col, $unusual[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$unusual_col, $unusual[$x]->follow_up_details);
 
-                        if ($unusual[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$unusual_col, 'G');
-                            } else if($unusual[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$unusual_col, 'NG');
+                        // if ($unusual[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$unusual_col, 'G');
+                        //     } else if($unusual[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($unusual_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$unusual_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$unusual_col)->applyFromArray($hcv_top);
@@ -1986,28 +1986,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                         }
 
 
-                        if ($data_col[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$data_col_col, 'G');
-                            } else if($data_col[$x]->g_ng == 'N/A'){
+                        // if ($data_col[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$data_col_col, 'G');
+                        //     } else if($data_col[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$data_col_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$data_col_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$data_col_col, $data_col[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$data_col_col, $data_col[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$data_col_col, $data_col[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$data_col_col, $data_col[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$data_col_col, $data_col[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$data_col_col, $data_col[$x]->follow_up_details);
 
-                        if ($data_col[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$data_col_col, 'G');
-                            } else if($data_col[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$data_col_col, 'NG');
+                        // if ($data_col[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$data_col_col, 'G');
+                        //     } else if($data_col[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($data_col_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$data_col_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$data_col_col)->applyFromArray($hcv_top);
@@ -2085,28 +2085,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$verification_col, $verification[$x]->internal_controls);
                         }
 
-                        if ($verification[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$verification_col, 'G');
-                            } else if($verification[$x]->g_ng == 'N/A'){
+                        // if ($verification[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$verification_col, 'G');
+                        //     } else if($verification[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$verification_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$verification_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$verification_col, $verification[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$verification_col, $verification[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$verification_col, $verification[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$verification_col, $verification[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$verification_col, $verification[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$verification_col, $verification[$x]->follow_up_details);
 
-                        if ($verification[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$verification_col, 'G');
-                            } else if($verification[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$verification_col, 'NG');
+                        // if ($verification[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$verification_col, 'G');
+                        //     } else if($verification[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($verification_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$verification_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$verification_col)->applyFromArray($hcv_top);
@@ -2184,28 +2184,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$significant_col, $significant[$x]->internal_controls);
                         }
 
-                        if ($significant[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$significant_col, 'G');
-                            } else if($significant[$x]->g_ng == 'N/A'){
+                        // if ($significant[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$significant_col, 'G');
+                        //     } else if($significant[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$significant_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$significant_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$significant_col, $significant[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$significant_col, $significant[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$significant_col, $significant[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$significant_col, $significant[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$significant_col, $significant[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$significant_col, $significant[$x]->follow_up_details);
 
-                        if ($significant[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$significant_col, 'G');
-                            } else if($significant[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$significant_col, 'NG');
+                        // if ($significant[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$significant_col, 'G');
+                        //     } else if($significant[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($significant_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$significant_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$significant_col)->applyFromArray($hcv_top);
@@ -2283,28 +2283,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                             $event->sheet->setCellValue('E'.$consolidation_col, $consolidation[$x]->internal_controls);
                         }
 
-                        if ($consolidation[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$consolidation_col, 'G');
-                            } else if($consolidation[$x]->g_ng == 'N/A'){
+                        // if ($consolidation[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$consolidation_col, 'G');
+                        //     } else if($consolidation[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$consolidation_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$consolidation_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$consolidation_col, $consolidation[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$consolidation_col, $consolidation[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$consolidation_col, $consolidation[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$consolidation_col, $consolidation[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$consolidation_col, $consolidation[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$consolidation_col, $consolidation[$x]->follow_up_details);
 
-                        if ($consolidation[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$consolidation_col, 'G');
-                            } else if($consolidation[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$consolidation_col, 'NG');
+                        // if ($consolidation[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$consolidation_col, 'G');
+                        //     } else if($consolidation[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($consolidation_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$consolidation_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$consolidation_col)->applyFromArray($hcv_top);
@@ -2375,28 +2375,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                         $event->sheet->setCellValue('B'.$reclassification_col, $reclassification[$x]->control_objectives);
                         $event->sheet->setCellValue('E'.$reclassification_col, $reclassification[$x]->internal_controls);
 
-                        if ($reclassification[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$reclassification_col, 'G');
-                            } else if($reclassification[$x]->g_ng == 'N/A'){
+                        // if ($reclassification[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$reclassification_col, 'G');
+                        //     } else if($reclassification[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$reclassification_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$reclassification_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$reclassification_col, $reclassification[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$reclassification_col, $reclassification[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$reclassification_col, $reclassification[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$reclassification_col, $reclassification[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$reclassification_col, $reclassification[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$reclassification_col, $reclassification[$x]->follow_up_details);
 
-                        if ($reclassification[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$reclassification_col, 'G');
-                            } else if($reclassification[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$reclassification_col, 'NG');
+                        // if ($reclassification[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$reclassification_col, 'G');
+                        //     } else if($reclassification[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($reclassification_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$reclassification_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$reclassification_col)->applyFromArray($hcv_top);
@@ -2475,28 +2475,28 @@ class ExportFcrpClc implements  FromView, WithTitle, WithEvents
                         }
 
 
-                        if ($year_end[$x]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$year_end_col, 'G');
-                            } else if($year_end[$x]->g_ng == 'N/A'){
+                        // if ($year_end[$x]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$year_end_col, 'G');
+                        //     } else if($year_end[$x]->g_ng == 'N/A'){
 
-                                $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$year_end_col, 'NG');
+                        //         $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$year_end_col, 'NG');
 
-                            }
+                        //     }
 
-                        $event->sheet->setCellValue('G'.$year_end_col, $year_end[$x]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$year_end_col, $year_end[$x]->review_findings);
-                        $event->sheet->setCellValue('I'.$year_end_col, $year_end[$x]->follow_up_details);
+                        // $event->sheet->setCellValue('G'.$year_end_col, $year_end[$x]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$year_end_col, $year_end[$x]->review_findings);
+                        // $event->sheet->setCellValue('I'.$year_end_col, $year_end[$x]->follow_up_details);
 
-                        if ($year_end[$x]->g_ng_last == 'Good'){
-                            $event->sheet->setCellValue('J'.$year_end_col, 'G');
-                            } else if($year_end[$x]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$year_end_col, 'NG');
+                        // if ($year_end[$x]->g_ng_last == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$year_end_col, 'G');
+                        //     } else if($year_end[$x]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($year_end_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$year_end_col, 'NG');
 
-                            }
+                        //     }
 
                         //design (font & alignment)
                         $event->sheet->getDelegate()->getStyle('A'.$year_end_col)->applyFromArray($hcv_top);

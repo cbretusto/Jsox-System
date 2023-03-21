@@ -330,7 +330,6 @@ function GetPlcCapaIdToEdit(plcCapaID){
                         console.log('OEC RESET ATTACHMENT')
                     });
                 }
-
             }
             else{
                 toastr.warning('No PLC Capa Record Found!');

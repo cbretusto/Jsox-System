@@ -138,11 +138,17 @@ class PlcModulesController extends Controller
     }
 
     public function view_plc_modules_conformance(Request $request){
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        // return $name;
         $plc_module_conformance = RevisionHistoryConformance::with(['conformance_details'])
             ->where('category', $request->session)
             ->where('logdel', 0)
             ->orderBy('id', 'desc')
             ->get();
+
+            // $test = RevisionHistoryConformance::all();
+            // return $plc_module_conformance[0]->conformance_details[0]->id;
 
         return DataTables::of($plc_module_conformance)
         ->addColumn('status', function($plc_module_conformance){
@@ -157,12 +163,28 @@ class PlcModulesController extends Controller
                 return $result;
         })
 
-        // ->addColumn('year', function ($plc_module_conformance){
-        //     $result = "";
-        //     $result .= "<center>";
-        //     $result .= '</center>';
-        //     return $result;
-        // })
+        ->addColumn('approval_status', function ($plc_module_conformance){
+            $approval_status = RevisionHistoryDeptSectConformance::where('conformance_id', $plc_module_conformance->id)->get();
+            $result = "";
+            for ($status = 0; $status < count($approval_status); $status++) {
+                // if($approval_status[$status]->approval_status == 0 && $plc_module_conformance->approval_order == $plc_module_conformance->conformance_details[$status]->counter) {
+                if($approval_status[$status]->approval_status == 0 && $plc_module_conformance->approval_order == $plc_module_conformance->conformance_details[$status]->counter) {
+                    $result .= "<center>";
+                    $result .= '<span class="badge badge-pill badge-warning">Pending</span>';
+                    $result .= '</center>';
+                }
+                elseif($approval_status[$status]->approval_status == 1 ) {
+                    $result .= "<center>";
+                    $result .= '<span class="badge badge-pill badge-success">Approved</span>';
+                    $result .= '</center>';
+                }elseif($approval_status[$status]->approval_status == 2) {
+                    $result .= "<center>";
+                    $result .= '<span class="badge badge-pill badge-danger">Disapproved</span>';
+                    $result .= '</center>';
+                } 
+            }
+            return $result;
+        })
 
         ->addColumn('dept_sect', function($plc_module_conformance){
             $conformanceDeptSect = RevisionHistoryDeptSectConformance::where('conformance_id', $plc_module_conformance->id)->get();
@@ -180,15 +202,26 @@ class PlcModulesController extends Controller
             $conformanceName = RevisionHistoryDeptSectConformance::where('conformance_id', $plc_module_conformance->id)->get();
             $result = "";
             $result .= "<center>";
-            for ($ii=0; $ii < count($conformanceName); $ii++) { 
-                $result .= $conformanceName[$ii]->name;
-                $result .= "<br>";
+            for ($ii=0; $ii < count($conformanceName); $ii++) {
+                if($conformanceName[$ii]->approval_status == 0 && $plc_module_conformance->approval_order == $plc_module_conformance->conformance_details[$ii]->counter){
+                    $result .= '<span class="badge badge-pill badge-warning"> '.$conformanceName[$ii]->name.'</span>';
+                    $result .= "<br>";
+                }elseif($conformanceName[$ii]->approval_status == 1){
+                    $result .= '<span class="badge badge-pill badge-success"> '.$conformanceName[$ii]->name.'</span>';
+                    $result .= "<br>";
+                }elseif($conformanceName[$ii]->approval_status == 2){
+                    $result .= '<span class="badge badge-pill badge-danger"> '.$conformanceName[$ii]->name.'</span>';
+                    $result .= "<br>";
+                }else{
+                    $result .= $conformanceName[$ii]->name;
+                    $result .= "<br>";
+                }
             }            
             $result .= '</center>';
             return $result;
         })
 
-        ->addColumn('action', function ($plc_module_conformance){
+        ->addColumn('action', function ($plc_module_conformance) use ($rapidx_name){
             $result = "";
             $result = "<center>";
             if ($plc_module_conformance->status == 1) {
@@ -197,13 +230,26 @@ class PlcModulesController extends Controller
             } else {
                 $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangePlcRevisionHistoryConformanceStat" style="width:105px;margin:2%;" revision_history_conformance-id="' . $plc_module_conformance->id . '" status="1" data-toggle="modal" data-target="#modalChangePlcRevisionHistoryConformanceStat" data-keyboard="false"><i class ="fa fa-key">  Activate</button>';
             }
+            
+            $conformanceApprover = RevisionHistoryDeptSectConformance::where('conformance_id', $plc_module_conformance->id)->get();
+            for ($approver = 0; $approver < count($conformanceApprover) ; $approver++) { 
+                if($plc_module_conformance->approval_order == $plc_module_conformance->conformance_details[$approver]->counter && $plc_module_conformance->conformance_details[$approver]->name == $rapidx_name){
+                    $result .= '<br>';
+                    $result .= '<button type="button" class="btn btn-success btn-xs text-center actionEditTablet actionRevHistoryConformanceApprovedDisapproved mr-1" type="button" revision_history_conformance-id="' . $plc_module_conformance->id . '" revision_history_conformance_approver-id="' . $plc_module_conformance->conformance_details[$approver]->id . '" status="1" data-toggle="modal" data-target="#modalTabletApprovedDisapproved" aria-haspopup="true" aria-expanded="false" title="Approved"><i class="fa fa-lg fa-thumbs-up"></i></button>';
+                    $result .= '<button type="button" class="btn btn-danger btn-xs text-center actionEditTablet actionRevHistoryConformanceApprovedDisapproved mr-1" type="button" revision_history_conformance-id="' . $plc_module_conformance->id . '" revision_history_conformance_approver-id="' . $plc_module_conformance->conformance_details[$approver]->id . '" status="2" data-toggle="modal" data-target="#modalTabletApprovedDisapproved" aria-haspopup="true" aria-expanded="false" title="Disapproved"><i class="fa fa-lg fa-thumbs-down"></i></button>';                
+                    $result .= '<br>';
+                }else{
+                    // $result .= 'test';
+                }
+            }
+            // $result .=  $conformanceApprover;
             $result .= '</center>';
             return $result;
         })
 
         ->rawColumns([
             'status',
-            // 'year',
+            'approval_status',
             'dept_sect',
             'name',
             'action'
@@ -997,4 +1043,38 @@ class PlcModulesController extends Controller
         }
     }
 
+    //============================== APPROVED DISAPPROVED==============================
+    public function rev_history_conformance_approved_disapproved(Request $request){        
+        date_default_timezone_set('Asia/Manila');
+
+            $data = $request->all(); // collect all input fields
+    
+            $validator = Validator::make($data, [
+                'revision_history_id'       => 'required',
+                'approval_status'   => 'required',
+            ]);
+
+            if($validator->passes()){
+                RevisionHistoryConformance::where('id', $request->revision_history_id)
+                ->update([
+                    'approval_order' => $request->approval_order+1,
+                ]);
+
+                $update_approval_status = [
+                    'approval_status' => $request->approval_status,
+                    'remark' => $request->remarks,
+                    'time_date' => NOW(),
+                ];
+
+                RevisionHistoryDeptSectConformance::where('id', $request->approver_id)
+                ->update(
+                    $update_approval_status
+                );
+
+                return response()->json(['result' => "1"]);
+            }
+            else{
+                return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
+            }
+    }
 }

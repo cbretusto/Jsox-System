@@ -32,8 +32,8 @@
                 <li class="nav-header font-weight-bold"><strong>Administrator Management</strong></li>
                 <li class="nav-item has-treeview d-none" id="user_management_id">
                     <a href="<?php echo e(route('user_management')); ?>" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>User Mananagement</p>
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>Setting</p>
                     </a>
                 </li>
 
@@ -81,24 +81,12 @@
                 </li>
 
                 <li class="nav-header"></li>
-                <li class="nav-item has-treeview d-none" id="clc_category_id">
-                    <a href="<?php echo e(route('clc_category')); ?>" class="nav-link">
-                        <i class="nav-icon fas fa-file"></i>
-                        <span>CLC / FCRP / IT-CLC <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Listing</span>
-                    </a>
-                </li>
-
-                <li class="nav-item has-treeview d-none" id="clc_dashboard_id">
-                    <a href="<?php echo e(route('clc_dashboard')); ?>" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <span>RCM / Self-assessment</span>
-                    </a>
-                </li>
+                
 
                 <li class="nav-item has-treeview d-none" id="clc_evidences_id">
                     <a href="<?php echo e(route('clc_evidences')); ?>" class="nav-link">
                         <i class="nav-icon fas fa-file-download"></i>
-                        <span>Evidences </span>
+                        <span>CLC / FCRP / IT-CLC </span>
                     </a>
                 </li>
             </ul>

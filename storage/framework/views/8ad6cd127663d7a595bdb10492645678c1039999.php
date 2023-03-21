@@ -101,22 +101,11 @@
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                            <h3 class="card-title"><strong>CLC / FCRP / IT-CLC MODULE</strong></h3>
+                            <h3 class="card-title"><strong>CLC / FCRP / IT-CLC EVIDENCES</strong></h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-4">
-                                        <div class="small-box bg-warning shadow">
-                                            <a href="<?php echo e(route('clc_dashboard')); ?>">
-                                                <div class="inner" style="height:100px;">
-                                                    <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>RCM / Self-assessment</strong></h4></span>
-                                                    <div class="icon">
-                                                        <i class="fas fa-tachometer-alt"></i>
-                                                    </div>   
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    
 
                                     
 
@@ -124,7 +113,7 @@
                                         <div class="small-box bg-warning shadow">
                                             <a href="<?php echo e(route('clc_evidences')); ?>">
                                                 <div class="inner" style="height:100px;">
-                                                    <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>Evidences</strong></h4></span>
+                                                    <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>CLC / FCRP / IT-CLC</strong></h4></span>
                                                     <div class="icon">
                                                         <i class="fas fa-file-download"></i>
                                                     </div>   

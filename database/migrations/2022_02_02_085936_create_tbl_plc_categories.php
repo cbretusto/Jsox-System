@@ -15,7 +15,7 @@ class CreateTblPlcCategories extends Migration
     {
         Schema::create('tbl_plc_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->String('plc_category');
+            $table->string('plc_category')->nullable();;
             $table->integer('status');
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();

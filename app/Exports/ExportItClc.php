@@ -222,21 +222,21 @@ class ExportItClc implements  FromView, WithTitle, WithEvents
                         $event->sheet->setCellValue('A'.$start_col, $counter);
                         $event->sheet->setCellValue('B'.$start_col, $it_clc[$i]->control_objectives);
                         $event->sheet->setCellValue('E'.$start_col, $it_clc[$i]->internal_controls);
-                        $event->sheet->setCellValue('F'.$start_col, $it_clc[$i]->g_ng);
-                        $event->sheet->setCellValue('G'.$start_col, $it_clc[$i]->detected_problems_improvement_plans);
-                        // $event->sheet->setCellValue('H'.$start_col, $it_clc[$i]->review_findings);
-                        // $event->sheet->setCellValue('I'.$start_col, $it_clc[$i]->follow_up_details);
-                        // $event->sheet->setCellValue('J'.$start_col, $it_clc[$i]->status_last);
+                        // $event->sheet->setCellValue('F'.$start_col, $it_clc[$i]->g_ng);
+                        // $event->sheet->setCellValue('G'.$start_col, $it_clc[$i]->detected_problems_improvement_plans);
+                        // // $event->sheet->setCellValue('H'.$start_col, $it_clc[$i]->review_findings);
+                        // // $event->sheet->setCellValue('I'.$start_col, $it_clc[$i]->follow_up_details);
+                        // // $event->sheet->setCellValue('J'.$start_col, $it_clc[$i]->status_last);
 
 
-                        if ($it_clc[$i]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('F'.$start_col, 'G');
-                            } else if($it_clc[$i]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('F'.$start_col, 'NG');
+                        // if ($it_clc[$i]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('F'.$start_col, 'G');
+                        //     } else if($it_clc[$i]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('F'.$start_col, 'NG');
 
-                            }
+                        //     }
 
 
                         $control_obj_lenght = strlen( $it_clc[$i]->control_objectives);
@@ -378,21 +378,21 @@ class ExportItClc implements  FromView, WithTitle, WithEvents
                         $event->sheet->setCellValue('A'.$start_col, $counter);
                         $event->sheet->setCellValue('B'.$start_col, $it_clc[$i]->control_objectives);
                         $event->sheet->setCellValue('E'.$start_col, $it_clc[$i]->internal_controls);
-                        $event->sheet->setCellValue('F'.$start_col, $it_clc[$i]->g_ng);
-                        $event->sheet->setCellValue('G'.$start_col, $it_clc[$i]->detected_problems_improvement_plans);
-                        $event->sheet->setCellValue('H'.$start_col, $it_clc[$i]->review_findings);
-                        $event->sheet->setCellValue('I'.$start_col, $it_clc[$i]->follow_up_details);
-                        $event->sheet->setCellValue('J'.$start_col, $it_clc[$i]->g_ng_last);
+                        // $event->sheet->setCellValue('F'.$start_col, $it_clc[$i]->g_ng);
+                        // $event->sheet->setCellValue('G'.$start_col, $it_clc[$i]->detected_problems_improvement_plans);
+                        // $event->sheet->setCellValue('H'.$start_col, $it_clc[$i]->review_findings);
+                        // $event->sheet->setCellValue('I'.$start_col, $it_clc[$i]->follow_up_details);
+                        // $event->sheet->setCellValue('J'.$start_col, $it_clc[$i]->g_ng_last);
 
 
-                        if ($it_clc[$i]->g_ng == 'Good'){
-                            $event->sheet->setCellValue('J'.$start_col, 'G');
-                            } else if($it_clc[$i]->g_ng == 'N/A'){
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
-                            } else{
-                            $event->sheet->setCellValue('J'.$start_col, 'NG');
+                        // if ($it_clc[$i]->g_ng == 'Good'){
+                        //     $event->sheet->setCellValue('J'.$start_col, 'G');
+                        //     } else if($it_clc[$i]->g_ng == 'N/A'){
+                        //         $event->sheet->getDelegate()->getRowDimension($start_col)->setVisible(false);
+                        //     } else{
+                        //     $event->sheet->setCellValue('J'.$start_col, 'NG');
 
-                            }
+                        //     }
 
 
                         $control_obj_lenght = strlen( $it_clc[$i]->control_objectives);

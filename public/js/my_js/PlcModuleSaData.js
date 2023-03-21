@@ -1,4 +1,4 @@
-//============================== EDIT USER BY ID TO EDIT ==============================
+//============================== EDIT SA BY ID TO EDIT ==============================
 function GetSaData(saDataId){
     toastr.options = {
         "closeButton": false,
@@ -293,6 +293,106 @@ function GetSaData(saDataId){
                 }else if (sa_data[0].rf_status == 'No Sample'){
                     $("#txtEditSaRfNoSample").prop("checked",true);
                 }
+                if(sa_data[0].fu_status == 'G'){
+                    $("#txtEditSaFuGStatus").prop("checked",true);
+                }else if (sa_data[0].fu_status == 'NG'){
+                    $("#txtEditSaFuNGStatus").prop("checked",true);
+                }else if (sa_data[0].fu_status == 'No Sample'){
+                    $("#txtEditSaNoFuSample").prop("checked",true);
+                }
+            }
+            else{
+                toastr.warning('No SA Data Record Found!');
+            }
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+    });
+}
+
+//============================== EDIT SA FOLLOW UP BY ID TO EDIT ==============================
+function GetSaFollowUp(saFollowUpaId){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "get_sa_follow_up_to_edit",
+        method: "get",
+        data: {
+            sa_follow_up_id: saFollowUpaId
+        },
+        dataType: "json",
+        beforeSend: function(){
+        },
+        success: function(response){
+            // console.log(response);
+            let sa_data     = response['sa_data'];
+            let fu_details  = response['fu_details'];
+            console.log('fu_details',fu_details);
+            // console.log('test', sa_data);
+            if(sa_data.length > 0){
+
+                $("#txtEditSaFuImprovement").val(sa_data[0].fu_improvement);
+                
+                //START FU GET DATA
+                if(fu_details.length != '0'){
+                    $("#txtEditSaFuAssessment").val(fu_details[0].fu_assessment_details_findings);
+                    $("#txtFuAttachment").val(fu_details[0].fu_attachment);
+
+                    // To remove auto counting of row in multiple (EDIT)
+                    for(let fu = 2; fu <= fu_details.length; fu++){
+                        $('#removeRowFuAssessmentDetailsAndFindings')[0].click();
+                    }
+                    let fu_counter = 1;
+                    // To automatic add row in edit base on how many the DIC is
+                    for(let fu = 2; fu <= fu_details.length; fu++){
+                        $('#addRowFuAssessmentDetailsAndFindings')[0].click();
+
+                        $('#txtEditSaFuAssessment_'+fu).val(fu_details[fu_counter].fu_assessment_details_findings)
+                        $('#txtFuAttachment_'+fu).val(fu_details[fu_counter].fu_attachment)
+
+                        if(fu_details[fu_counter].fu_attachment != ''){
+                            $("#FuAttachment_"+fu).addClass('d-none');
+                            $("#chckFuCheckBox_"+fu).removeClass('d-none');
+                            $("#txtFuReuploadFile_"+fu).removeClass('d-none');
+                            $("#txtFuAttachment_"+fu).removeClass('d-none');
+                        }
+                        fu_counter = fu_counter+1;
+                    }
+                    // FU
+                    if($('#txtFuAttachment').val() != ''){
+                        $("#FuAttachment").addClass('d-none');
+                        $("#txtFuAttachment").removeClass('d-none');
+                        $("#chckFuCheckBox").removeClass('d-none');
+                        $("#txtFuReuploadFile").removeClass('d-none');
+                        console.log('FU Attachment not null');
+                    }else{
+                        $("#FuAttachment").removeClass('d-none');
+                        $("#txtFuAttachment").addClass('d-none');
+                        $("#chckFuCheckBox").addClass('d-none');
+                        $("#txtFuReuploadFile").addClass('d-none');
+                        console.log('FU Attachment null');
+                    }
+                }else{
+
+                }
+
                 if(sa_data[0].fu_status == 'G'){
                     $("#txtEditSaFuGStatus").prop("checked",true);
                 }else if (sa_data[0].fu_status == 'NG'){
@@ -731,7 +831,7 @@ function countPmiCategoryById(category){
                 // toastr.warning('No Record Found!');
             }
 
-            if(JsonObject['test'] == JsonObject['sa_first_half_status']){
+            if(JsonObject['count'] == JsonObject['sa_first_half_status']){
                 $("#checkPendingStatus"+JsonObject['category']).text(['DONE']);
             }else{
                 $("#checkPendingStatus"+JsonObject['category']).text(['PENDING']);
@@ -740,6 +840,135 @@ function countPmiCategoryById(category){
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+    });
+}
+
+function EditSaFollowUp(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formEditSaFollowUp')[0]);
+
+	$.ajax({
+        url: "edit_sa_follow_up",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnEditSaFollowUpIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnEditSaFollowUp").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving SA Data Failed!');
+
+                // if(response['error']['control_no'] === undefined){
+                //     $("#txtAddSaControlNo").removeClass('is-invalid');
+                //     $("#txtAddSaControlNo").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddSaControlNo").addClass('is-invalid');
+                //     $("#txtAddSaControlNo").attr('title', response['error']['control_no']);
+                // }
+
+                // if(response['error']['assessed_by'] === undefined){
+                //     $("#txtAddAssessedBy").removeClass('is-invalid');
+                //     $("#txtAddAssessedBy").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddAssessedBy").addClass('is-invalid');
+                //     $("#txtAddAssessedBy").attr('title', response['error']['assessed_by']);
+                // }
+
+                // if(response['error']['checked_by'] === undefined){
+                //     $("#txtAddCheckedBy").removeClass('is-invalid');
+                //     $("#txtAddCheckedBy").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddCheckedBy").addClass('is-invalid');
+                //     $("#txtAddCheckedBy").attr('title', response['error']['checked_by']);
+                // }
+
+                // if(response['error']['add_debit'] === undefined){
+                //     $("#txtAddDebitId").removeClass('is-invalid');
+                //     $("#txtAddDebitId").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddDebitId").addClass('is-invalid');
+                //     $("#txtAddDebitId").attr('title', response['error']['add_debit']);
+                // }
+
+                // if(response['error']['add_credit'] === undefined){
+                //     $("#txtAddCreditId").removeClass('is-invalid');
+                //     $("#txtAddCreditId").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddCreditId").addClass('is-invalid');
+                //     $("#txtAddCreditId").attr('title', response['error']['add_credit']);
+                // }
+
+                // if(response['error']['add_control_id'] === undefined){
+                //     $("#txtAddControlId").removeClass('is-invalid');
+                //     $("#txtAddControlId").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddControlId").addClass('is-invalid');
+                //     $("#txtAddControlId").attr('title', response['error']['add_control_id']);
+                // }
+
+                // if(response['error']['add_internal_control'] === undefined){
+                //     $("#txtAddInternalControlId").removeClass('is-invalid');
+                //     $("#txtAddInternalControlId").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddInternalControlId").addClass('is-invalid');
+                //     $("#txtAddInternalControlId").attr('title', response['error']['add_internal_control']);
+                // }
+
+                // if(response['error']['add_system'] === undefined){
+                //     $("#txtAddSystemId").removeClass('is-invalid');
+                //     $("#txtAddSystemId").attr('title', '');
+                // }
+                // else{
+                //     $("#txtAddSystemId").addClass('is-invalid');
+                //     $("#txtAddSystemId").attr('title', response['error']['add_system']);
+                // }
+
+            }
+            else if(response['result'] == 1){
+                $("#modalSaFollowUp").modal('hide');
+                $("#formEditSaFollowUp")[0].reset();
+                toastr.success('SA Data was succesfully saved!');
+                dataTablePlcModuleSa.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnEditSaFollowUpIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditSaFollowUp").removeAttr('disabled');
+            $("#iBtnEditSaFollowUpIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnEditSaFollowUpIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditSaFollowUp").removeAttr('disabled');
+            $("#iBtnEditSaFollowUpIcon").addClass('fa fa-check');
         }
     });
 }

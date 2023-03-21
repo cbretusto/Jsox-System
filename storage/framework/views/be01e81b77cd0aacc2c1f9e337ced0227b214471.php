@@ -79,7 +79,9 @@
                                 <div class="tab-content table-responsive" id="tabPmiFcrpCategory">
                                     <div class="tab-pane fade show active" id="pmiFcrp" role="tabpanel" aria-labelledby="tabPmiFcrp">
                                         <div style="float: right;">
-                                            <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddPmiFcrp" id=""><i class="fa fa-plus"></i>  Add PMI CLC </button>
+                                            <button class="btn btn-info mt-2" data-toggle="modal" data-target="#modalExportFcrpClcSummary"><i class="fa fa-download"></i>  Export FCRP-CLC Summary  </button>
+                                            <button class="btn btn-dark mt-2" data-toggle="modal"  data-target="#modalImportPmiFcrpExcel" id="modalImportPmiFcrp" ><i class="fas fa-file-upload"></i> Import Excel</button>
+                                            
                                         </div> <br><br>
                                         <div class="table responsive">
                                             <table id="tblPmiFcrp" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
@@ -87,7 +89,7 @@
                                                     <tr style="text-align:center">
                                                         <th>&nbsp;</th>
                                                         <th>No.</th>
-                                                        <th>Fiscal Year</th>
+                                                        
                                                         <th>Title</th>
                                                         <th>Control Objectives</th>
                                                         <th>Internal Control</th>
@@ -100,7 +102,7 @@
 
                                     <div class="tab-pane fade" id="pmiFrcpAssessment" role="tabpanel" aria-labelledby="tabPmiFcrpAssessment">
                                         <div class="row">
-                                            <div class="col-sm-3 mr-2">
+                                            <div class="col-sm-3 mr-2 mt-3">
                                                 <label><strong>Fiscal Year:</strong></label>
                                                 <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
                                                     <!-- Code generated -->
@@ -109,14 +111,15 @@
                                         </div>
                                         <div style="float: right;">
                                             <button class="btn btn-info" data-toggle="modal" data-target="#modalExportFcrpClcSummary"><i class="fa fa-download"></i>  Export FCRP-CLC Summary  </button>
-                                            <button class="btn btn-dark" data-toggle="modal" data-target="#modalAddPmiFcrpAssessment" id="btnShowAddPmiFcrpAssessmentModal"><i class="fa fa-plus"></i>  Add PMI FCRP  </button>
+                                            <button class="btn btn-primary" data-toggle="modal"  data-target="#modalImportPmiFcrpAssessmentExcel" id="modalImportPmiFcrpAssessment" ><i class="fas fa-file-upload"></i> Import Excel</button>
+                                            
                                         </div><br><br>
                                         <div class="table-responsive">
                                             <table id="tblPmiFcrpAssessment" class="table table-sm table-bordered table-striped table-hover" style="width: 100%; white-space: pre-wrap;">
                                                 <thead>
                                                     <tr style="text-align:center">
-                                                        <th>ID</th>
                                                         <th style="width: 3%"></th>
+                                                        <th>No.</th>
                                                         <th>Fiscal Year</th>
                                                         <th style="width: 10%">Title</th>
                                                         <th>Control Objectives</th>
@@ -333,18 +336,19 @@
                 <div class="modal-body">
                     <div class="col-sm-12">
                         <div class="row">
-                                <div class="col-sm-6">
-                                    <select class="form-control selectFiscalYear position-absolute select2bs4" name="select_year" id="selectYearId" aria-controls="">
-                                        <!-- Code generated -->
-                                    </select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label>Audit Period:</label>
-                                    <select name="select_audit_period" id="selectAuditPeriod">
-                                        <option value="1">First Half</option>
-                                        <option value="2">Second Half</option>
-                                    </select>
-                                </div>
+                            <div class="col-sm-12">
+                                <label>Fiscal Year:</label>
+                                <select class="form-control selectFiscalYear position-absolute select2bs4" name="select_year" id="selectYearId" aria-controls="">
+                                    <!-- Code generated -->
+                                </select><br>
+                            </div><br>
+                            <div class="col-sm-12">
+                                <label>Audit Period:</label><br>
+                                <select name="select_audit_period" id="selectAuditPeriod">
+                                    <option value="1">First Half</option>
+                                    <option value="2">Second Half</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -359,84 +363,43 @@
     </div>
     <!-- /.modal -->
 
-    <!-- ADD MODAL ASSESSMENT START -->
-    <div class="modal fade" id="modalAddPmiFcrpAssessment">
-        <div class="modal-dialog modal-lg">
+    <!-- IMPORT MODAL START -->
+    <div class="modal fade" id="modalImportPmiFcrpExcel">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI FCRP ASSESSMENT</h4>
-                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <h4 class="modal-title"><i class="fas fa-file-import"></i> Import Pmi FCRP</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formAddPmiFcrpAssessment" enctype="multipart/form-data">
-                    <?php echo csrf_field(); ?>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
-                                    </div>
-                                    <select class="form-control" name="titles" id="selectAddPmiFcrpAssessmentTitle" style="width: 50%;">
-                                        <option selected disabled value="">-SELECT-</option>
-                                        <option value="Company policies">Company policies</option>
-                                        <option value="Roles, responsibilities and skills">Roles, responsibilities and skills</option>
-                                        <option value="GAAP">GAAP</option>
-                                        <option value="Communication">Communication</option>
-                                        <option value="Unusual accounting treatments">Unusual accounting treatments</option>
-                                        <option value="Data collection">Data collection</option>
-                                        <option value="Verification of statement figures">Verification of statement figures</option>
-                                        <option value="Significant accounts">Significant accounts</option>
-                                        <option value="Reclassification of accounts">Reclassification of accounts</option>
-                                        <option value="Year-end adjusting entries">Year-end adjusting entries</option>
-                                        <option value="Consolidation Package">Consolidation Package</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><strong>Year:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
-                                    </div>
-                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
-                                        <!-- Code generated -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <div class="form-group col-sm-12">
-                                    <label class="col-form-label">Control Objective:</label>
-                                    <textarea type="text" class="form-control" id="txtAddPmiFcrpControlObjectivesAssessment" name="control_objectives"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <div class="form-group col-sm-12">
-                                    <label class="col-form-label">Internal Control:</label>
-                                    <textarea type="text" class="form-control" id="txtAddPmiFcrpAssessmentInternalControls" name="internal_controls"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>
+                <form method="post" id="formImportPmiFcrp" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>File</label>
+                                <input type="file" class="form-control h-50" name="import_pmi_fcrp_file" id="fileImportPmiFcrp" accept=".xlsx, .xls, .csv" required>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                        <button type="submit" id="btnAddPmiFcrpAssessment" class="btn btn-dark"><i id="iBtnAddPmiFcrpAssessmentIcon" class="fa fa-check"></i> Save</button>
-                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnImportPmiFcrp" class="btn btn-dark"><i id="iconImportPmiFcrp" class="fa fa-check"></i> Import</button>
+                </div>
                 </form>
             </div>
         </div>
-    </div><!-- ADD MODAL ASSESSMENT END -->
+    </div><!-- IMPORT MODAL END -->
+
+    <!-- ADD MODAL ASSESSMENT START -->
+    
 
     <!-- EDIT MODAL ASSESSMENT START -->
     <div class="modal fade" id="modalEditPmiFcrpAssessment">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
                     <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI FCRP ASSESSMENT</h4>
@@ -449,8 +412,16 @@
                     <div class="modal-body">
                         <input type="hidden" class="form-control" name="pmi_fcrp_assessment_id" id="txtEditPmiFcrpCategoryId">
                         <div class="row">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <div class="input-group mb-2">
+                            <div class="form-group col-sm-4 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <input type="number" id="txtEditPmiFcrpAssessmentNo" name="pmi_fcrp_no" style="width: 65%;">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4 flex-column d-flex">
+                                <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default"><strong>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
                                     </div>
@@ -471,8 +442,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <div class="input-group mb-2">
+                            <div class="form-group col-sm-4 flex-column d-flex">
+                                <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><strong>Year:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
                                     </div>
@@ -583,6 +554,37 @@
             </div>
         </div>
     </div> <!-- CHANGE STAT MODAL ASSESSMENT END -->
+
+    <!-- IMPORT PMI CLC MODAL START -->
+    <div class="modal fade" id="modalImportPmiFcrpAssessmentExcel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fas fa-file-import"></i> Import Pmi FCRP Assessment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formImportPmiFcrpAssessment" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>File</label>
+                                <input type="file" class="form-control h-50" name="import_pmi_fcrp_assessment_file" id="fileImportPmiFcrpAssessment" accept=".xlsx, .xls, .csv" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnImportPmiFcrpAssessment" class="btn btn-dark"><i id="iconImportPmiFcrpAssessment" class="fa fa-check"></i> Import</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- IMPORT PMI CLC MODAL END -->    
 <?php $__env->stopSection(); ?>
 
 <!--  -->
@@ -621,7 +623,7 @@
                 "columns":[
                     { "data" : "status" },
                     { "data" : "no" },
-                    { "data" : "fiscal_year" },
+                    // { "data" : "fiscal_year" },
                     { "data" : "titles" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
@@ -643,8 +645,8 @@
                 },
 
                 "columns":[
-                    { "data" : "id" },
                     { "data" : "status" },
+                    { "data" : "no" },
                     { "data" : "fiscal_year" },
                     { "data" : "titles" },
                     { "data" : "control_objectives" },
@@ -704,6 +706,33 @@
                 ChangePmiFcrpStatus();
             });
 
+            // ========================= IMPORT EXCEL =========================
+            $('#formImportPmiFcrp').submit(function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: 'import_pmi_fcrp',
+                    method: 'post',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if(response['result'] == 1){
+                            $('#modalImportPmiFcrpExcel').modal('hide');
+                            $('#formImportPmiFcrp')[0].reset();
+                            toastr.success('Import Data Successful!');
+                            dataTablePmiFcrp.draw();
+                        }
+                        else{
+                            toastr.error('Import Failed! Please Check File');
+                            $('#modalImportPmiFcrpExcel').modal('hide');
+                            $('#formImportPmiFcrp')[0].reset();
+                        }
+                    }
+                });
+            })
 
             // ============================ AUTO ADD CREATED BY USER ============================
             $(document).on('click', '#btnShowAddPmiFcrpAssessmentModal, .actionEditPmiFcrpAssessment', function() {
@@ -799,21 +828,46 @@
             $("#selFiscalYear").on('change', function() {
                 dataTablePmiFcrpAssessment.column(2).search($(this).val()).draw();
             });
+
+            // ========================= IMPORT PMI CLC ASSESSMENT EXCEL =========================
+            $('#formImportPmiFcrpAssessment').submit(function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: 'import_pmi_fcrp_assessment',
+                    method: 'post',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if(response['result'] == 1){
+                            $('#modalImportPmiFcrpAssessmentExcel').modal('hide');
+                            $('#formImportPmiFcrpAssessment')[0].reset();
+                            toastr.success('Import Data Successful!');
+                            dataTablePmiFcrpAssessment.draw();
+                        }
+                        else{
+                            toastr.error('Import Failed! Please Check File');
+                            $('#modalImportPmiFcrpAssessmentExcel').modal('hide');
+                            $('#formImportPmiFcrpAssessment')[0].reset();
+                        }
+                    }
+                });
+            })
         }); // JQUERY DOCUMENT READY END
 
         $('#btnExportFcrpSummary').on('click', function(){
+            // console.log($('#formViewWPRequest').serialize());
+            let year_id = $('#selectYearId').val();
+            let audit_period = $('#selectAuditPeriod').val();
+            // let selected_month = $('#selectMonthId').val();
 
-        // console.log($('#formViewWPRequest').serialize());
-        let year_id = $('#selectYearId').val();
-        let audit_period = $('#selectAuditPeriod').val();
-        // let selected_month = $('#selectMonthId').val();
-
-        window.location.href = `export_fcrp_clc_summary/${year_id}/${audit_period}`;
-        console.log(year_id);
-        // console.log(selected_month);
-        $('#modalExportFcrpClcSummary').modal('hide');
-
-
+            window.location.href = `export_fcrp_clc_summary/${year_id}/${audit_period}`;
+            console.log(year_id);
+            // console.log(selected_month);
+            $('#modalExportFcrpClcSummary').modal('hide');
         });
 
     </script>

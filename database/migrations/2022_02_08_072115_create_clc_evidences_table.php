@@ -15,13 +15,13 @@ class CreateClcEvidencesTable extends Migration
     {
         Schema::create('clc_evidences', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('date_uploaded');
-            $table->string('fiscal_year');
-            $table->string('audit_period');
-            $table->string('clc_category');
-            $table->string('uploaded_file');
-            $table->string('uploaded_by');
-            $table->string('updated_by');
+            $table->string('date_uploaded')->nullable();
+            $table->string('fiscal_year')->nullable();
+            $table->string('audit_period')->nullable();
+            $table->string('clc_category')->nullable();
+            $table->string('uploaded_file')->nullable();
+            $table->string('uploaded_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

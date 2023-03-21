@@ -15,11 +15,12 @@ class CreatePlcModuleSaDicAssessmentDetailsAndFindingsTable extends Migration
     {
         Schema::create('plc_module_sa_dic_assessment_details_and_findings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('sa_id');
-            $table->string('category');
-            $table->string('counter');
-            $table->string('dic_assessment_details_findings');
-            $table->text('dic_attachment');
+            $table->bigInteger('sa_id')->unsigned();
+            $table->string('category')->nullable();
+            $table->string('counter')->nullable();
+            $table->string('dic_assessment_details_findings')->nullable();
+            $table->string('dic_status')->nullable();
+            $table->text('dic_attachment')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

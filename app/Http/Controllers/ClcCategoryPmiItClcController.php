@@ -185,39 +185,39 @@ class ClcCategoryPmiItClcController extends Controller
     }
 
     // ========================================= ADD PMI IT-CLC ASSESSMENT ===================================================
-    public function add_pmi_it_clc_assessment(Request $request){
-        date_default_timezone_set('Asia/Manila');
-        // session_start();
+    // public function add_pmi_it_clc_assessment(Request $request){
+    //     date_default_timezone_set('Asia/Manila');
+    //     // session_start();
         
-        $data = $request->all();
+    //     $data = $request->all();
 
-        $rules = [
-            'control_objectives'                    => 'required|string|max:555',
-            'internal_controls'                     => 'required|string|max:555',
-        ];
-        // return $request;
-        $validator = Validator::make($data, $rules);
-        // generate file name
+    //     $rules = [
+    //         'control_objectives'                    => 'required|string|max:555',
+    //         'internal_controls'                     => 'required|string|max:555',
+    //     ];
+    //     // return $request;
+    //     $validator = Validator::make($data, $rules);
+    //     // generate file name
 
-        if($validator->passes()){
-            ClcCategoryPmiItClc::insert([
-                'fiscal_year'                           => $request->fiscal_year,
-                'control_objectives'                    => $request->control_objectives,
-                'internal_controls'                     => $request->internal_controls,
-                'g_ng'                                  => $request->g_ng,
-                'detected_problems_improvement_plans'   => $request->detected_problems_improvement_plans,
-                'review_findings'                       => $request->review_findings,
-                'follow_ups'                            => $request->follow_ups,
-                'g_ng_last'                             => $request->g_ng_last,
-                'created_by'                            => $request->created_by,
-                'created_at'                            => date('Y-m-d H:i:s')
-            ]);
-            return response()->json(['result' => "1"]);
-        }
-        else{
-            return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
-        }
-    }
+    //     if($validator->passes()){
+    //         ClcCategoryPmiItClc::insert([
+    //             'fiscal_year'                           => $request->fiscal_year,
+    //             'control_objectives'                    => $request->control_objectives,
+    //             'internal_controls'                     => $request->internal_controls,
+    //             'g_ng'                                  => $request->g_ng,
+    //             'detected_problems_improvement_plans'   => $request->detected_problems_improvement_plans,
+    //             'review_findings'                       => $request->review_findings,
+    //             'follow_ups'                            => $request->follow_ups,
+    //             'g_ng_last'                             => $request->g_ng_last,
+    //             'created_by'                            => $request->created_by,
+    //             'created_at'                            => date('Y-m-d H:i:s')
+    //         ]);
+    //         return response()->json(['result' => "1"]);
+    //     }
+    //     else{
+    //         return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
+    //     }
+    // }
 
     //============================== GET PMI IT-CLC ASSESSMENT BY ID TO EDIT ==============================
     public function get_pmi_it_clc_assessment_by_id(Request $request){
@@ -234,7 +234,7 @@ class ClcCategoryPmiItClcController extends Controller
         $data = $request->all();
 
         $rules = [
-            // 'status'                                => 'required|string|max:555',
+            'pmi_it_clc_no'                                => 'required|string|max:555',
             // 'detected_problems_improvement_plans'   => 'required|string|max:555',
             // 'review_findings'                       => 'required|string|max:555',
             // 'follow_ups'                            => 'required|string|max:555',
@@ -247,6 +247,7 @@ class ClcCategoryPmiItClcController extends Controller
             ClcCategoryPmiItClc::where('id', $request->pmi_it_clc_assessment_id)
             ->update([
                 'fiscal_year'                           => $request->fiscal_year,
+                'no'                                    => $request->pmi_it_clc_no,
                 'control_objectives'                    => $request->control_objectives,
                 'internal_controls'                     => $request->internal_controls,
                 'g_ng'                                  => $request->g_ng,

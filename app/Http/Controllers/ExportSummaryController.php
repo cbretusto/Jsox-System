@@ -16,13 +16,16 @@ use App\PLCModuleSA;
 use App\RevisionHistoryReasonForRevision;
 use App\RevisionHistoryDetailsOfRevision;
 use App\RevisionHistoryConcernDeptSectIncharge;
+use App\RevisionHistoryConformance;
 use App\PLCModuleRCMInternalControl;
 
 
 class ExportSummaryController extends Controller
 {
-    public function export_summary(Request $request, $year_id ,$select_category)
+    public function export_summary(Request $request, $year_id ,$select_category, $select_audit_period)
     {
+
+        // return $select_audit_period;
 
         $rev_history_details = PLCModule::with([
             'plc_category_details',
@@ -41,7 +44,7 @@ class ExportSummaryController extends Controller
             // for($xxx = 0; $xxx < count($concernDeptartment); $xxx++){
             //     $result .= $concernDeptartment[$xxx]->concern_dept_sect;
             //     $result .= "<br>";
-            //     $result .= "<br>";
+                // $result .= "<br>";
             // }
 
             // return $rev_history_detailss;
@@ -83,6 +86,12 @@ class ExportSummaryController extends Controller
 
         $plc_category = $rev_history_details[0]->plc_category_details->plc_category;
 
+        $conformance_data = RevisionHistoryConformance::with('conformance_details')
+            ->where('category', '=',$select_category)
+            ->get();
+
+        // return $sa_details;
+
 
         $date = date('Ymd',strtotime(NOW()));
         // return $date;
@@ -93,6 +102,8 @@ class ExportSummaryController extends Controller
             $rcm_details,
             $sa_details,
             $select_category,
+            $conformance_data,
+            $select_audit_period
 
         ), $plc_category.'.xlsx');
     }

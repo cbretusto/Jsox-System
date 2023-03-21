@@ -15,9 +15,10 @@ class CreateSelectPlcEvidenceTable extends Migration
     {
         Schema::create('select_plc_evidence', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('plc_category_id');
-            $table->string('plc_sa_id');
-            $table->string('plc_evidences_id');
+            $table->bigInteger('plc_category_id')->unsigned();
+            $table->bigInteger('plc_sa_id')->unsigned();
+            $table->string('assessment_details_and_findings')->nullable();
+            $table->string('plc_evidences_id')->nullable();
             $table->unsignedTinyInteger('filter')->default(0)->comment = '0-show,1-hide';
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();

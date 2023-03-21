@@ -143,7 +143,7 @@ function NoRevisionHistory(){
     });
 }
 
-//============================== EDIT USER BY ID TO EDIT ==============================
+//============================== EDIT REVISION HISTORY BY ID TO EDIT ==============================
 function GetRevisionHistoryId(revisionHistoryId){
     toastr.options = {
         "closeButton": false,
@@ -196,7 +196,6 @@ function GetRevisionHistoryId(revisionHistoryId){
                 $("#txtEditVersionNo").val(history_revision[0].version_no);
                 $("#txtEditRevisionHistoryDate").val(history_revision[0].revision_date);
                 $("#txtEditNoRevisionHistory").val(history_revision[0].no_revision);
-
 
                 console.log('**Console** Reason For Revison:', reason_for_revision_array);
                 console.log('**Console** Details of Revision:', details_of_revision_array);
@@ -681,6 +680,8 @@ function GetRevisionHistoryConformanceId(revisionHistoryConformanceId){
                 $("#selectEditConformanceName_0").val(revision_history_conformance[0].name).trigger('change');
                 $("#selEditFiscalYearRevHistory").val(revision_history_conformance[0].year).trigger('change');
                 $("#selEditConformancePeriod").val(revision_history_conformance[0].conformance_period).trigger('change');
+
+                $("#txtApprovalOrder").val(revision_history_conformance[0].approval_order);
             
                 console.log('Conformance Details:', conformance_details);
                 for (let x = 0; x <= revision_history_conformance.length; x++) {
@@ -784,6 +785,69 @@ function EditConformance(){
         },
         error: function(data, xhr, status){
             toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+    });
+}
+
+//============================== Revision History Conformance Approver ==============================
+function ApprovedDisapproved(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "rev_history_conformance_approved_disapproved",
+        method: "post",
+        data: $('#formApprovedDisapproved').serialize(),
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnApprovedDisapprovedIcon").addClass('fa fa-spinner fa-pulse');
+            $("#txtApprovalStat").prop('disabled', 'disabled');
+        },
+        success: function(response){
+
+            if(response['validation'] == 'hasError'){
+                toastr.error('Failed!');
+            }else{
+                if(response['result'] == 1){
+                    console.log('response', response);
+                    if($("#txtApprovalStat").val() == 2){
+                        toastr.error('Disapproved!');
+                        $("#txtApprovalStat").val() == 2;
+                    }
+                    else{
+                        toastr.success('Approved!');
+                        $("#txtApprovalStat").val() == 1;
+                    }
+                }
+                $("#modalTabletApprovedDisapproved").modal('hide');
+                $("#formApprovedDisapproved")[0].reset();
+                dataTablePlcModuleRevisionHistoryConformance.draw();
+            }
+
+            $("#iBtnApprovedDisapprovedIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtApprovalStat").removeAttr('disabled');
+            $("#iBtnApprovedDisapprovedIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnApprovedDisapprovedIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#txtApprovalStat").removeAttr('disabled');
+            $("#iBtnApprovedDisapprovedIcon").addClass('fa fa-check');
         }
     });
 }

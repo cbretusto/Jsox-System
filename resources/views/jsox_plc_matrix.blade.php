@@ -92,7 +92,7 @@
                                     
                                     <div class="tab-pane fade" id="jsoxPlcMatrix" role="tabpanel" aria-labelledby="tabJsoxPlcMatrix">
                                         <div style="float: right;">                   
-                                            <button class="btn btn-info mt-1" data-toggle="modal" data-target="#modalAddJsoxPlcMatrix" id="btnShowAddJsoxPlcMatrixModal"><i class="fa fa-plus"></i>  Add Reference </button>
+                                            <button class="btn btn-dark mt-1" data-toggle="modal" data-target="#modalAddJsoxPlcMatrix" id="btnShowAddJsoxPlcMatrixModal"><i class="fa fa-plus"></i>  Add Reference </button>
                                         </div> <br><br>
                                         <div class="table responsive" style="height: 640px; overflow: scroll;">
                                             <table id="tblJsoxPlcMatrix" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">

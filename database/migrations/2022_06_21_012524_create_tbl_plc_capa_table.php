@@ -16,13 +16,13 @@ class CreateTblPlcCapaTable extends Migration
         Schema::create('tbl_plc_capa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('sa_id')->unsigned();
-            $table->string('rcm_id')->unsigned();
+            $table->bigInteger('rcm_id')->unsigned();
             $table->bigInteger('rcm_internal_control_counter')->unsigned();
-            $table->string('category')->unsigned();
-            $table->string('prepared_by');
-            $table->string('approved_by');
-            $table->string('issued_date');
-            $table->string('due_date');
+            $table->string('category')->nullable();
+            $table->string('prepared_by')->nullable();
+            $table->string('approved_by')->nullable();
+            $table->string('issued_date')->nullable();
+            $table->string('due_date')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

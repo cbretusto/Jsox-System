@@ -28,6 +28,8 @@ class ExportItClcController extends Controller
 
         $year = substr($year_id,2);
 
+        // return $clc_it;
+
         $date = date('Ymd',strtotime(NOW()));
         // return $clc_it;
         return Excel::download(new ExportItClc(

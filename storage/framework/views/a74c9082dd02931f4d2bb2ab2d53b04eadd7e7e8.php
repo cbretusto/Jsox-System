@@ -334,7 +334,7 @@
                         <div class="info-box bg-dark shadow border border-dark" id="pmi_4" status="4">
                             <div class="info-box-content">
                                 <div class="">
-                                    <h2 class="card-title"><strong>PMI - 04 Changing Sales Qty <br> ( NOT FOR TESTING )</strong></h2><br>
+                                    <h2 class="card-title" style="font-size:16px;"><strong>PMI-04 Changing Sales Quantities <br> Before Invoice Issuance ( NOT FOR TESTING )</strong></h2><br>
                                 </div>
                                 <input type="hidden" id="count_pmi_4" value="4">
                             </div>
@@ -935,7 +935,7 @@
                         <div class="info-box bg-dark shadow border border-dark" id="pmi_27" status="27">
                             <div class="info-box-content">
                                 <div class="">
-                                    <h2 class="card-title"><strong>PMI - 27 Receiving Shipment from CNPPS Suppliers</strong></h2><br>
+                                    <h2 class="card-title" style="font-size:15px;"><strong>PMI - 27 Receiving Shipment from CNPPS Suppliers</strong></h2><br>
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <span class="badge badge-success text-white shadow ml-2">GOOD:&nbsp;

@@ -15,11 +15,11 @@ class CreatePlcModuleSaFuAssessmentDetailsAndFindingsTable extends Migration
     {
         Schema::create('plc_module_sa_fu_assessment_details_and_findings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('sa_id');
-            $table->string('category');
-            $table->string('counter');
-            $table->string('fu_assessment_details_findings');
-            $table->text('fu_attachment');
+            $table->bigInteger('sa_id')->unsigned();
+            $table->string('category')->nullable();
+            $table->string('counter')->nullable();
+            $table->string('fu_assessment_details_findings')->nullable();
+            $table->text('fu_attachment')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

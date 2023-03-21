@@ -16,13 +16,11 @@ class CreateTblPLCModules extends Migration
         Schema::create('tbl_plc_modules', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedTinyInteger('status')->default(0)->comment = '1-active,2-Inactive';
-            $table->String('process_owner');
-            $table->String('revision_date');
+            $table->string('category')->nullable();
+            $table->string('process_owner')->nullable();
+            $table->string('revision_date')->nullable();
+            $table->integer('no_revision');
             $table->integer('version_no');
-            // $table->String('reason_for_revision');
-            // $table->String('concerned_dept');
-            // $table->String('details_of_revision');
-            // $table->String('In-Charge');
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

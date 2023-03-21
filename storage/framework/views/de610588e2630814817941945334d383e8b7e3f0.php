@@ -80,7 +80,9 @@
                                 <div class="tab-content table-responsive" id="tabPmiItClcCategory">
                                     <div class="tab-pane fade show active" id="pmiItClc" role="tabpanel" aria-labelledby="tabPmiItClc">
                                         <div style="float: right;">
-                                            <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddPmiItClc" id=""><i class="fa fa-plus"></i>  Add PMI IT-CLC </button>
+                                            <button class="btn btn-info mt-2" data-toggle="modal" data-target="#modalExportItClcSummary"><i class="fa fa-download"></i>  Export IT-CLC Summary  </button>
+                                            <button class="btn btn-dark mt-2" data-toggle="modal"  data-target="#modalImportPmiItClcExcel" id="modalImportPmiItClc" ><i class="fas fa-file-upload"></i> Import Excel</button>
+                                            
                                         </div> <br><br>
                                         <div class="table responsive">
                                             <table id="tblPmiItClc" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
@@ -88,7 +90,7 @@
                                                     <tr style="text-align:center">
                                                         <th>&nbsp;</th>
                                                         <th>No.</th>
-                                                        <th>Fiscal Year</th>
+                                                        
                                                         <th>Control Objectives</th>
                                                         <th>Internal Control</th>
                                                         <th>Action</th>
@@ -110,14 +112,15 @@
                                     </div>
                                     <div style="float: right;">
                                         <button class="btn btn-info" data-toggle="modal" data-target="#modalExportItClcSummary"><i class="fa fa-download"></i>  Export IT-CLC Summary  </button>
-                                        <button class="btn btn-dark" data-toggle="modal" data-target="#modalAddPmiItClcAssessment" id="btnShowAddPmiItClcAssessmentModal"><i class="fa fa-plus"></i>  Add PMI IT-CLC  </button>
+                                        <button class="btn btn-primary" data-toggle="modal"  data-target="#modalImportPmiItClcAssessmentExcel" id="modalImportPmiFcrpAssessment" ><i class="fas fa-file-upload"></i> Import Excel</button>
+                                        
                                     </div> <br><br>
                                     <div class="table-responsive">
                                         <table id="tblPmiItClcAssessment" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
                                             <thead>
                                                 <tr style="text-align:center">
-                                                    <th>ID</th>
                                                     <th style="width: 5%"></th>
+                                                    <th>No.</th>
                                                     <th>Fiscal Year</th>
                                                     <th>Control Objectives</th>
                                                     <th>Internal Controls</th>
@@ -318,106 +321,39 @@
     </div>
     <!-- /.modal -->
 
-    <!-- ADD MODAL ASSESSMENT START -->
-    <div class="modal fade" id="modalAddPmiItClcAssessment">
-        <div class="modal-dialog modal-lg">
+    <!-- IMPORT MODAL START -->
+    <div class="modal fade" id="modalImportPmiItClcExcel">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PMI IT-CLC ASSESSMENT</h4>
-                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <h4 class="modal-title"><i class="fas fa-file-import"></i> Import Pmi FCRP</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
                     </button>
                 </div>
-                <form method="post" id="formAddPmiItClcAssessment" enctype="multipart/form-data">
-                    <?php echo csrf_field(); ?>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
-                                    </div>
-                                    <select class="form-control selectFiscalYear select2bs4" name="fiscal_year" id="txtAddFiscalYear">
-                                        <!-- Code generated -->
-                                    </select>
-                                </div>
+                <form method="post" id="formImportPmiItClc" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>File</label>
+                                <input type="file" class="form-control h-50" name="import_pmi_it_clc_file" id="fileImportPmiItClc" accept=".xlsx, .xls, .csv" required>
                             </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <label class="col-form-label">Control Objective:</label>
-                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentControlObjectives" name="control_objectives"></textarea>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <label class="col-form-label">Internal Control:</label>
-                                <textarea type="text" class="form-control" id="txtAddPmiItClcInternalAssessmentControls" name="internal_controls"></textarea>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Good or Not Good: </strong></span>
-                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radioBtn" type="radio" id="txtAddPmiItClcAssessmentGood" name="g_ng" value="Good">
-                                        <label class="form-check-label" for="inlineRadio1">GOOD</label>
-                                    </div>&nbsp;&nbsp;&nbsp;
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radioBtn" type="radio" id="txtAddPmiItClcAssessmentNotGood" name="g_ng" value="Not Good">
-                                        <label class="form-check-label" for="inlineRadio2">NOT GOOD</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radioBtn" type="radio" id="txtAddPmiItClcAssessmentNA" name="g_ng" value="N/A">
-                                        <label class="form-check-label" for="inlineRadio2">N/A</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <label class="col-form-label">Detected Problems & Improvement Plans:</label>
-                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <label class="col-form-label">Review Findings:</label>
-                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentReviewFindings" name="review_findings"></textarea>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <label class="col-form-label">Follow up:</label>
-                                <textarea type="text" class="form-control" id="txtAddPmiItClcAssessmentFollowups" name="follow_up"></textarea>
-                            </div>
-
-                            <div class="form-group col-sm-12 flex-column d-flex">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Good or Not Good: </strong></span>
-                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="AddPmiItClcAssessmentGoodLast" value="Good">
-                                        <label class="form-check-label" for="inlineRadio1">GOOD</label>
-                                    </div>&nbsp;&nbsp;&nbsp;
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="AddPmiItClcAssessmentNotGoodLast" value="Not Good">
-                                        <label class="form-check-label" for="inlineRadio2">NOT GOOD</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input radioBtn" type="radio" name="g_ng_last" id="AddPmiItClcAssessmentNALast" value="N/A">
-                                        <label class="form-check-label" for="inlineRadio2">N/A</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" class="form-control" id="txtCreatedBy" name="created_by" readonly>
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                        <button type="submit" id="btnAddPmiItClcAssessment" class="btn btn-dark"><i id="iBtnAddPmiItClcAssessmentIcon" class="fa fa-check"></i> Save</button>
-                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnImportPmiItClc" class="btn btn-dark"><i id="iconImportPmiItClc" class="fa fa-check"></i> Import</button>
+                </div>
                 </form>
             </div>
         </div>
-    </div><!-- ADD MODAL ASSESSMENT END -->
+    </div><!-- IMPORT MODAL END -->
+
+    <!-- ADD MODAL ASSESSMENT START -->
+    
 
     <!-- EDIT MODAL ASSESSMENT START -->
     <div class="modal fade" id="modalEditPmiItClcAssessment">
@@ -434,6 +370,15 @@
                     <div class="modal-body">
                         <input type="hidden" class="form-control" name="pmi_it_clc_assessment_id" id="txtEditPmiItClcAssessmentId">
                         <div class="row">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><strong>No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <input type="number" id="txtEditPmiItClcAssessmentNo" name="pmi_it_clc_no" style="width: 60%;">
+                                </div>
+                            </div>
+                            
                             <div class="form-group col-sm-6 flex-column d-flex">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -545,6 +490,37 @@
             </div>
         </div>
     </div> <!-- CHANGE STAT MODAL ASSESSMENT END -->
+
+    <!-- IMPORT PMI CLC MODAL START -->
+    <div class="modal fade" id="modalImportPmiItClcAssessmentExcel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fas fa-file-import"></i> Import Pmi IT-CLC Assessment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formImportPmiItClcpAssessment" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>File</label>
+                                <input type="file" class="form-control h-50" name="import_pmi_it_clc_assessment_file" id="fileImportPmiItClcAssessment" accept=".xlsx, .xls, .csv" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnImportPmiItClcAssessment" class="btn btn-dark"><i id="iconImportPmiItClcAssessment" class="fa fa-check"></i> Import</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- IMPORT PMI CLC MODAL END -->        
 <?php $__env->stopSection(); ?>
 
 <!--  -->
@@ -585,7 +561,7 @@
                 "columns":[
                     { "data" : "status" },
                     { "data" : "no" },
-                    { "data" : "fiscal_year" },
+                    // { "data" : "fiscal_year" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
                     { "data" : "action", orderable:false, searchable:false }
@@ -606,8 +582,8 @@
                 },
 
                 "columns":[
-                    { "data" : "id" },
                     { "data" : "pmi_it_clc_assessment_status" },
+                    { "data" : "no" },
                     { "data" : "fiscal_year" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
@@ -662,7 +638,33 @@
                 event.preventDefault();
                 ChangePmiItClcStatus();
             });
+            // ========================= IMPORT EXCEL =========================
+            $('#formImportPmiItClc').submit(function(e){
+                e.preventDefault();
 
+                $.ajax({
+                    url: 'import_pmi_it_clc',
+                    method: 'post',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if(response['result'] == 1){
+                            $('#modalImportPmiItClcExcel').modal('hide');
+                            $('#formImportPmiItClc')[0].reset();
+                            toastr.success('Import Data Successful!');
+                            dataTablePmiItClc.draw();
+                        }
+                        else{
+                            toastr.error('Import Failed! Please Check File');
+                            $('#modalImportPmiItClcExcel').modal('hide');
+                            $('#formImportPmiItClc')[0].reset();
+                        }
+                    }
+                });
+            })
             // ============================ AUTO ADD CREATED BY USER ============================
             $(document).on('click', '#btnShowAddPmiItClcAssessmentModal, .actionEditPmiItClcAssessment', function() {
                 $.ajax({
@@ -804,6 +806,33 @@
                 dataTablePmiItClcAssessment.column(2).search($(this).val()).draw();
             });
 
+            // ========================= IMPORT PMI CLC ASSESSMENT EXCEL =========================
+            $('#formImportPmiItClcpAssessment').submit(function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: 'import_pmi_it_clc_assessment',
+                    method: 'post',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if(response['result'] == 1){
+                            $('#modalImportPmiItClcAssessmentExcel').modal('hide');
+                            $('#formImportPmiItClcpAssessment')[0].reset();
+                            toastr.success('Import Data Successful!');
+                            dataTablePmiItClcAssessment.draw();
+                        }
+                        else{
+                            toastr.error('Import Failed! Please Check File');
+                            $('#modalImportPmiItClcAssessmentExcel').modal('hide');
+                            $('#formImportPmiItClcpAssessment')[0].reset();
+                        }
+                    }
+                });
+            })
         }); // JQUERY DOCUMENT READY END
 
 

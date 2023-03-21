@@ -427,6 +427,7 @@ function GetPmiItClcAssessmentByIdToEdit(pmiItClcAssessmentId){
                     $("#txtEditPmiItClcAssessmentNALast").prop("checked", true);
                 }
                 
+                $("#txtEditPmiItClcAssessmentNo")                               .val(pmi_it_clc_assessment[0].no);
                 $("#selectEditFiscalYear")                                      .val(pmi_it_clc_assessment[0].fiscal_year).trigger('change');
                 $("#txtEditPmiItClcAssessmentControlObjectives")                .val(pmi_it_clc_assessment[0].control_objectives);
                 $("#txtEditPmiItClcAssessmentInternalControls")                 .val(pmi_it_clc_assessment[0].internal_controls);

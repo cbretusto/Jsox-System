@@ -15,9 +15,9 @@ class CreateClcCategoriesTable extends Migration
     {
         Schema::create('clc_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('category');
-            $table->string('created_by');
-            $table->string('updated_by');
+            $table->string('category')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment = '1-active,2-inactive';
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();

@@ -15,14 +15,15 @@ class CreateTblPlcEvidences extends Migration
     {
         Schema::create('tbl_plc_evidences', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->String('year');
-            $table->String('fiscal_year');
-            $table->String('plc_category');
-            $table->String('plc_evidences');
-            $table->String('date_uploaded');
-            $table->String('uploaded_by');
+            $table->string('fiscal_year')->nullable();
+            $table->string('audit_period')->nullable();
+            $table->string('plc_category')->nullable();
+            $table->string('plc_evidences')->nullable();
+            $table->string('date_uploaded')->nullable();
+            $table->string('uploaded_by')->nullable();
+            $table->string('revised_by')->nullable();
+            $table->string('revised_date')->nullable();
             $table->integer('status');
-            $table->String('revised_by');
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

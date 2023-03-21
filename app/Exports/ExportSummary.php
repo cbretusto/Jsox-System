@@ -39,6 +39,8 @@ class ExportSummary implements  WithMultipleSheets
     protected $rcm_details;
     protected $sa_details;
     protected $select_category;
+    protected $conformance_data;
+    protected $select_audit_period;
 
 
     function __construct(
@@ -47,13 +49,17 @@ class ExportSummary implements  WithMultipleSheets
         $flow_chart_details,
         $rcm_details,
         $sa_details,
-        $select_category
+        $select_category,
+        $conformance_data,
+        $select_audit_period
     ){
         $this->rev_history_details =  $rev_history_details;
         $this->flow_chart_details =  $flow_chart_details;
         $this->rcm_details =  $rcm_details;
         $this->sa_details =  $sa_details;
         $this->select_category =  $select_category;
+        $this->conformance_data =  $conformance_data;
+        $this->select_audit_period =  $select_audit_period;
 
     }
 
@@ -62,16 +68,16 @@ class ExportSummary implements  WithMultipleSheets
     {
         $sheets = [];
 
-        if($this->select_category == 4 || $this->select_category == 19 || $this->select_category == 30 || $this->select_category == 33 || $this->select_category == 36){
-            $sheets[] = new ExportRevisionHistory($this->date,$this->rev_history_details);
+        if($this->select_category == 4 || $this->select_category == 9 || $this->select_category == 19 || $this->select_category == 30 || $this->select_category == 33 || $this->select_category == 36){
+            $sheets[] = new ExportRevisionHistory($this->date,$this->rev_history_details,$this->conformance_data);
             $sheets[] = new ExportFlowChart($this->date,$this->flow_chart_details);
             $sheets[] = new ExportRcm($this->date,$this->rcm_details);
             // $sheets[] = new ExportSa($this->date,$this->sa_details);
         }else{
-            $sheets[] = new ExportRevisionHistory($this->date,$this->rev_history_details);
+            $sheets[] = new ExportRevisionHistory($this->date,$this->rev_history_details,$this->conformance_data);
             $sheets[] = new ExportFlowChart($this->date,$this->flow_chart_details);
             $sheets[] = new ExportRcm($this->date,$this->rcm_details);
-            $sheets[] = new ExportSa($this->date,$this->sa_details);
+            $sheets[] = new ExportSa($this->date,$this->sa_details,$this->select_audit_period);
         }
 
 

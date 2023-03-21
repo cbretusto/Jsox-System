@@ -308,7 +308,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                     $event->sheet->getDelegate()->getStyle('R4')->applyFromArray($hcv_top);
                     $event->sheet->getDelegate()->getStyle('R4')->applyFromArray($arial_font11);
 
-                    $event->sheet->setCellValue('S4',"Defective");
+                    $event->sheet->setCellValue('S4',"Detective");
                     $event->sheet->getStyle('S4')->getAlignment()->setTextRotation(-90);
                     $event->sheet->getDelegate()->getStyle('S4')->applyFromArray($hcv_top);
                     $event->sheet->getDelegate()->getStyle('S4')->applyFromArray($arial_font11);
@@ -533,7 +533,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                                     $event->sheet->setCellValue('R'.$start_col,'');
                                 }
 
-                                if($rcm_details[$i]->rcm_info[$x]->defective != null){
+                                if($rcm_details[$i]->rcm_info[$x]->detective != null){
                                     $event->sheet->setCellValue('S'.$start_col,'X');
                                     $event->sheet->getDelegate()->getStyle('S'.$start_col)->applyFromArray($hcv_top);
                                     $event->sheet->getDelegate()->getStyle('S'.$start_col)->applyFromArray($arial_font11_bold);

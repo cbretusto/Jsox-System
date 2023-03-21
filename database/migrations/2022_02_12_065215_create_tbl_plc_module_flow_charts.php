@@ -17,17 +17,17 @@ class CreateTblPLCModuleFlowCharts extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('rev_history_id')->unsigned();
             $table->unsignedTinyInteger('flow_chart_status')->default(0)->comment = '1-active,2-Inactive';
-            $table->string('category');
-            $table->string('flow_chart');
-            $table->string('process_owner');
-            $table->string('revision_date');
-            $table->string('no_revision');
-            $table->string('version_no');
-            $table->string('date_uploaded');
-            $table->string('uploaded_by');
+            $table->string('category')->nullable();
+            $table->string('flow_chart')->nullable();
+            $table->string('process_owner')->nullable();
+            $table->string('revision_date')->nullable();
+            $table->string('no_revision')->nullable();
+            $table->string('version_no')->nullable();
+            $table->string('date_uploaded')->nullable();
+            $table->string('uploaded_by')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
-
+            
             $table->foreign('rev_history_id')->references('id')->on('tbl_plc_modules');
         });
     }

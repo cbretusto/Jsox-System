@@ -23,7 +23,7 @@
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="tabUserManagementFiscalYear" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link" id="tabUserManagement" data-toggle="tab" href="#userManagement" role="tab" aria-controls="userManagement" aria-selected="false">User Management</a>
+                                        <a class="nav-link active" id="tabUserManagement" data-toggle="tab" href="#userManagement" role="tab" aria-controls="userManagement" aria-selected="false">User Management</a>
                                     </li>
 
                                     <li class="nav-item">

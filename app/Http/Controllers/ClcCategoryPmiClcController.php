@@ -60,9 +60,9 @@ class ClcCategoryPmiClcController extends Controller
         $data = $request->all();
 
         $rules = [
-            'titles'                                => 'required|string|max:255',
-            'control_objectives'                    => 'required|string|max:555',
-            'internal_controls'                     => 'required|string|max:555',
+            'titles'                => 'required|string|max:255',
+            'control_objectives'    => 'required|string|max:555',
+            'internal_controls'     => 'required|string|max:555',
         ];
         $validator = Validator::make($data, $rules);
 
@@ -190,38 +190,38 @@ class ClcCategoryPmiClcController extends Controller
     }
 
     // ========================================= ADD PMI CLC ASSESSMENT ===================================================
-    public function add_pmi_clc_category(Request $request){
-        date_default_timezone_set('Asia/Manila');
+    // public function add_pmi_clc_category(Request $request){
+    //     date_default_timezone_set('Asia/Manila');
 
-        $data = $request->all();
+    //     $data = $request->all();
 
-        $rules = [
-            'titles'                                => 'required|string|max:255',
-            'control_objectives'                    => 'required|string|max:555',
-            'internal_controls'                     => 'required|string|max:555',
-        ];
-        $validator = Validator::make($data, $rules);
+    //     $rules = [
+    //         'titles'                                => 'required|string|max:255',
+    //         'control_objectives'                    => 'required|string|max:555',
+    //         'internal_controls'                     => 'required|string|max:555',
+    //     ];
+    //     $validator = Validator::make($data, $rules);
 
-        if($validator->passes()){
-            ClcCategoryPmiClc::insert([
-                'fiscal_year'                           => $request->fiscal_year,
-                'titles'                                => $request->titles,
-                'control_objectives'                    => $request->control_objectives,
-                'internal_controls'                     => $request->internal_controls,
-                'g_ng'                                  => $request->g_ng,
-                'detected_problems_improvement_plans'   => $request->detected_problems_improvement_plans,
-                'review_findings'                       => $request->review_findings,
-                'follow_up_details'                     => $request->follow_up_details,
-                'g_ng_last'                             => $request->g_ng_last,
-                'created_by'                            => $request->created_by,
-                'created_at'                            => date('Y-m-d H:i:s')
-            ]);
-            return response()->json(['result' => "1"]);
-        }
-        else{
-            return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
-        }
-    }
+    //     if($validator->passes()){
+    //         ClcCategoryPmiClc::insert([
+    //             'fiscal_year'                           => $request->fiscal_year,
+    //             'titles'                                => $request->titles,
+    //             'control_objectives'                    => $request->control_objectives,
+    //             'internal_controls'                     => $request->internal_controls,
+    //             'g_ng'                                  => $request->g_ng,
+    //             'detected_problems_improvement_plans'   => $request->detected_problems_improvement_plans,
+    //             'review_findings'                       => $request->review_findings,
+    //             'follow_up_details'                     => $request->follow_up_details,
+    //             'g_ng_last'                             => $request->g_ng_last,
+    //             'created_by'                            => $request->created_by,
+    //             'created_at'                            => date('Y-m-d H:i:s')
+    //         ]);
+    //         return response()->json(['result' => "1"]);
+    //     }
+    //     else{
+    //         return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
+    //     }
+    // }
 
     //============================== GET PMI CLC ASSESSMENT BY ID TO EDIT ==============================
     public function get_pmi_clc_assessment_by_id(Request $request){
@@ -237,6 +237,7 @@ class ClcCategoryPmiClcController extends Controller
         $data = $request->all();
         // return $data;
         $rules = [
+            'pmi_clc_no'                            => 'required',
             'titles'                                => 'required',
             'control_objectives'                    => 'required',
             'internal_controls'                     => 'required',
@@ -252,6 +253,7 @@ class ClcCategoryPmiClcController extends Controller
         if($validator->passes()){
             ClcCategoryPmiClc::where('id', $request->pmi_clc_assessment_id)
             ->update([
+                'no'                                    => $request->pmi_clc_no,
                 'fiscal_year'                           => $request->fiscal_year,
                 'titles'                                => $request->titles,
                 'control_objectives'                    => $request->control_objectives,

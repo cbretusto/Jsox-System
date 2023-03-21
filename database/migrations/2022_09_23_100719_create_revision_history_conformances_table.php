@@ -18,6 +18,7 @@ class CreateRevisionHistoryConformancesTable extends Migration
             $table->string('category')->nullable();
             $table->string('year')->nullable();
             $table->longText('conformance_period')->nullable();
+            $table->unsignedTinyInteger('approval_order')->default(0);
             $table->unsignedTinyInteger('status')->default(1)->comment = '1-active, 2-inactive';
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();

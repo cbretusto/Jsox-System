@@ -15,8 +15,10 @@ class CreateUserManagementsTable extends Migration
     {
         Schema::create('user_managements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('rapidx_name');
-            $table->string('username');
+            $table->string('rapidx_name')->nullable();
+            $table->string('username')->nullable();
+            $table->string('email')->nullable();
+            $table->string('department')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment = '1-active, 2-inactive';
             $table->bigInteger('user_level_id')->unsigned()->comment = '1-user, 2-admin, 3-super admin';
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show, 1-hide';

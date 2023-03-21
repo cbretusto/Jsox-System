@@ -27,11 +27,15 @@ use App\PLCModuleSAFuAssessmentDetailsAndFindings;
 class PlcModulesSaController extends Controller
 {
     public function view_plc_sa_data(Request $request){
-        $plc_module_sa = PLCModuleSA::with('plc_sa_dic_assessment_details_finding', 'rcm_info')
+        $plc_module_sa = PLCModuleSA::with('plc_sa_dic_assessment_details_finding', 
+            'plc_sa_oec_assessment_details_finding', 
+            'plc_sa_rf_assessment_details_finding',
+            'plc_sa_fu_assessment_details_finding',
+            'rcm_info')
         ->where('category', $request->session)
         ->where('logdel', 0)
         ->get();
-        // return $plc_module_sa;
+        // return $plc_module_sa[0]->rcm_info;
 
         session_start();
         $rapidx_name = $_SESSION['rapidx_name'];
@@ -237,28 +241,52 @@ class PlcModulesSaController extends Controller
         ->addColumn('approval_status', function($plc_module_sa) {
 			$result = "";
 			$result .= '<center>';
-                if($plc_module_sa->approver_status == 0){
-                    if($plc_module_sa->assessed_by == null){
-                        $result .= '<span class="badge badge badge-info nowrap">For Update</span>';
-                    }else{
-                        $result .= '<span class="badge badge badge-warning nowrap">For Appproval <br> -Jr. Auditor</span>';
-                    }
+            if($plc_module_sa->approver_status == 0){
+                if($plc_module_sa->assessed_by == null){
+                    $result .= '<span class="badge badge badge-info nowrap">For Update</span>';
+                }else{
+                    $result .= '<span class="badge badge badge-warning nowrap">For Appproval <br> -Jr. Auditor</span>';
                 }
-                else if($plc_module_sa->approver_status == 1){
-                    $result .= '<span class="badge badge badge-warning nowrap">For Approval <br> -IAS Manager</span>';
-                }
-                else if($plc_module_sa->approver_status == 2){
-                    $result .= '<span class="badge badge badge-success mb-3 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+            }
+            else if($plc_module_sa->approver_status == 1){
+                $result .= '<span class="badge badge badge-warning nowrap">For Approval <br> -IAS Manager</span>';
+            }
+            else if($plc_module_sa->approver_status == 2){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                if($plc_module_sa->rcm_info[0]->it_control != null || $plc_module_sa->rcm_info[0]->key_control != null){
                     $result .= '<span class="badge badge badge-warning nowrap"><strong>(Second Half) <br> For Approval <br> -Jr Auditor</br></strong></span>';
                 }
-                else if($plc_module_sa->approver_status == 3){
-                    $result .= '<span class="badge badge badge-success mb-3 nowrap"><strong>(First Half) <br> Approved</strong></span>';
-                    $result .= '<span class="badge badge badge-warning nowrap"><strong>(Second Half) <br> For Approval <br> -IAS Manager</br></strong></span>';
-                }
-                else if($plc_module_sa->approver_status == 4){
-                    $result .= '<span class="badge badge badge-success mb-3 nowrap"><strong>(First Half) <br> Approved</strong></span>';
-                    $result .= '<span class="badge badge badge-success nowrap"><strong>(Second Half) <br> Approved</strong></span>';
-                }
+            }
+            else if($plc_module_sa->approver_status == 3){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-warning nowrap"><strong>(Second Half) <br> For Approval <br> -IAS Manager</br></strong></span>';
+            }
+            else if($plc_module_sa->approver_status == 4){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-success nowrap"><strong>(Second Half) <br> Approved</strong></span>';
+            }else if($plc_module_sa->approver_status == 5){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(Second Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-warning nowrap"><strong>(Follow Up) <br> For Appproval <br> -Jr. Auditor</strong></span>';
+            }else if($plc_module_sa->approver_status == 6){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(Second Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-warning nowrap">(Follow Up) <br> For Appproval <br> -IAS Manager</span>';
+            }else if($plc_module_sa->approver_status == 7){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(Second Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-success nowrap">(Follow Up) <br> Approved</span>';
+            }else if($plc_module_sa->approver_status == 8){
+                $result .= '<span class="badge badge badge-danger nowrap">Disapproved</span>';
+            }else if($plc_module_sa->approver_status == 9){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-danger nowrap">Disapproved</span>';
+            }
+            else if($plc_module_sa->approver_status == 10){
+                $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-success nowrap"><strong>(Second Half) <br> Approved</strong></span>';
+                $result .= '<span class="badge badge badge-danger nowrap">Disapproved</span>';
+            }
 			$result .= '</center>';
 			return $result;
 		})
@@ -267,6 +295,10 @@ class PlcModulesSaController extends Controller
             $result = "";
             $result = '<center>';
             $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditSaData"  style="width:85px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalEditSaData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit </button>';
+            
+            if($plc_module_sa->rf_status == 'NG'){
+                $result .= '<button type="button" class="btn btn-dark btn-sm text-center actionEditSaFollowUp"  style="width:85px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalSaFollowUp" data-keyboard="false"> Follow Up </button>';
+            }
 
             switch ($plc_module_sa->approver_status)
             {
@@ -274,8 +306,6 @@ class PlcModulesSaController extends Controller
                 {
                     if($plc_module_sa->assessed_by == $rapidx_name){
                         $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center actionApproveSaData" style="width:95px;margin:2%; font-size: 80%;" sa_data-id="' . $plc_module_sa->id  . '" status="1" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false">  Approve</button>';
-                    }else{
-
                     }
                     break;
                 }
@@ -285,15 +315,17 @@ class PlcModulesSaController extends Controller
                     if($plc_module_sa->checked_by == $rapidx_name){
                         $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center px-3 mb-1 actionApproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="2" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false"> Approve</button>';
                         $result .= '<br>';
-                        $result .= '<button type="button" class="btn btn-danger btn-sm fa fa-thumbs-down text-center actionDisapproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="0" data-toggle="modal" data-target="#modalDisapproveSaData" data-keyboard="false"> Disapprove</button>';
+                        $result .= '<button type="button" class="btn btn-danger btn-sm fa fa-thumbs-down text-center actionDisapproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="8" data-toggle="modal" data-target="#modalDisapproveSaData" data-keyboard="false"> Disapprove</button>';
                     }
                     break;
                 }
 
                 case 2:
                 {
-                    if($plc_module_sa->second_half_assessed_by == $rapidx_name){
-                        $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center px-3 mb-1 actionApproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="3" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false"> Approve</button>';
+                    if($plc_module_sa->rcm_info[0]->it_control != null || $plc_module_sa->rcm_info[0]->key_control != null){
+                        if($plc_module_sa->second_half_assessed_by == $rapidx_name){
+                            $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center px-3 mb-1 actionApproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="3" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false"> Approve</button>';
+                        }
                     }
                     break;
                 }
@@ -303,7 +335,24 @@ class PlcModulesSaController extends Controller
                     if($plc_module_sa->second_half_checked_by == $rapidx_name){
                         $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center px-3 mb-1 actionApproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="4" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false"> Approve</button>';
                         $result .= '<br>';
-                        $result .= '<button type="button" class="btn btn-danger btn-sm fa fa-thumbs-down text-center actionDisapproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="2" data-toggle="modal" data-target="#modalDisapproveSaData" data-keyboard="false"> Disapprove</button>';
+                        $result .= '<button type="button" class="btn btn-danger btn-sm fa fa-thumbs-down text-center actionDisapproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="9" data-toggle="modal" data-target="#modalDisapproveSaData" data-keyboard="false"> Disapprove</button>';
+                    }
+                    break;
+                }
+
+                case 5:{
+                    // if($plc_module_sa->rf_status == 'NG'){
+                        if($plc_module_sa->rf_status == 'NG' && $plc_module_sa->follow_up_assessed_by == $rapidx_name){
+                            $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center px-3 mb-1 actionApproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="6" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false"> Approve</button>';
+                        }
+                    // }
+                    break;
+                }
+                case 6:{
+                    if($plc_module_sa->rf_status == 'NG' && $plc_module_sa->follow_up_checked_by == $rapidx_name){
+                        $result .= '<button type="button" class="btn btn-success btn-sm fa fa-thumbs-up text-center px-3 mb-1 actionApproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="7" data-toggle="modal" data-target="#modalApproveSaData" data-keyboard="false"> Approve</button>';
+                        $result .= '<br>';
+                        $result .= '<button type="button" class="btn btn-danger btn-sm fa fa-thumbs-down text-center actionDisapproveSaData" sa_data-id="' . $plc_module_sa->id  . '" status="10" data-toggle="modal" data-target="#modalDisapproveSaData" data-keyboard="false"> Disapprove</button>';
                     }
                     break;
                 }
@@ -343,21 +392,23 @@ class PlcModulesSaController extends Controller
             $result .= '</center>';
             return $result;
         })
-            ->rawColumns(['action',
-                'control_id',
-                'key_control',
-                'it_control',
-                'internal_control',
-                'dic_assessment',
-                'oec_assessment',
-                'rf_assessment',
-                'fu_assessment',
-                'dic_status',
-                'oec_status',
-                'rf_status',
-                'fu_status',
-                'approval_status'])
-            ->make(true);
+
+        ->rawColumns([
+            'action',
+            'control_id',
+            'key_control',
+            'it_control',
+            'internal_control',
+            'dic_assessment',
+            'oec_assessment',
+            'rf_assessment',
+            'fu_assessment',
+            'dic_status',
+            'oec_status',
+            'rf_status',
+            'fu_status',
+            'approval_status'
+        ])->make(true);
     }
 
     //============================== EDIT SA DATA BY ID TO EDIT ==============================
@@ -473,27 +524,28 @@ class PlcModulesSaController extends Controller
             $capa = [
                 'sa_id'     => $request->sa_data_id,
                 'category'  => $request->category_name,
-                'rcm_id'   => $plc_capa[0]->rcm_id,
+                'rcm_id'    => $plc_capa[0]->rcm_id,
                 'rcm_internal_control_counter'    => $request->sa_counter,
             ];
-                if(PlcCapa::where('sa_id', $request->sa_data_id)->exists()){
-                    if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
-                        $capa['logdel'] = 0;
-                    }else{
-                        $capa['logdel'] = 1;
-                    }
+            
+            if(PlcCapa::where('sa_id', $request->sa_data_id)->exists()){
+                if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
+                    $capa['logdel'] = 0;
+                }else{
+                    $capa['logdel'] = 1;
+                }
 
-                    PlcCapa::where('sa_id', $request->sa_data_id)
-                    ->update(
+                PlcCapa::where('sa_id', $request->sa_data_id)
+                ->update(
+                    $capa
+                );
+            }else{
+                if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
+                    PlcCapa::insert(
                         $capa
                     );
-                }else{
-                    if($request->dic_status == 'NG' || $request->oec_status == 'NG'){
-                        PlcCapa::insert(
-                            $capa
-                        );
-                    }
                 }
+            }
 
             //START DIC ASSESSMENT DETAILS AND FINDINGS
             $arr_upload_file_dic = array();
@@ -829,13 +881,48 @@ class PlcModulesSaController extends Controller
                 }
             }//END RF ASSESSMENT DETAILS AND FINDINGS
 
+            return response()->json(['result' => "1"]);
+        }
+        else{
+            return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
+        }
+    }
+
+    // ========================================= EDIT SA FOLLOW UP ===================================================
+    public function edit_sa_follow_up(Request $request){
+        date_default_timezone_set('Asia/Manila');
+        $get_approver_status = PLCModuleSA::where('id', $request->sa_follow_up_id)->get();
+        $data = $request->all();
+        $rules = [
+            // 'fu_attachment'     => 'required|string|max:555',
+        ];
+        // return $sa_data[0]->approver_status;
+        $validator = Validator::make($data, $rules);
+        if($validator->passes()){
+            $update_sa = [
+                'follow_up_assessed_by'         => $request->follow_up_assessed_by,
+                'follow_up_checked_by'          => $request->follow_up_checked_by,
+                'fu_improvement'                => $request->fu_improvement,
+                'fu_improvement'                => $request->fu_improvement,
+                'fu_status'                     => $request->fu_status,
+                'approver_status'               => 5,
+                'updated_at'                    => date('Y-m-d H:i:s')
+            ];
+
+            //Start Update query
+            PLCModuleSA::where('id', $request->sa_follow_up_id)
+            ->update(
+                $update_sa
+            );
+            //Start Update query
+
             //START FU ASSESSMENT DETAILS AND FINDINGS
-            $arr_upload_file_fu    = array();
+            $arr_upload_file_fu = array();
             if($request->fu_assessment_details_findings_counter > 1){ // Multiple Insert
-                PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $request->sa_data_id)->delete();
+                PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $request->sa_follow_up_id)->delete();
 
                 $fu_edit_array = array(
-                    'sa_id'                         => $request->sa_data_id,
+                    'sa_id'                         => $request->sa_follow_up_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
                     'created_at'                    => date('Y-m-d H:i:s'),
@@ -907,12 +994,12 @@ class PlcModulesSaController extends Controller
                 $fu_files = $request->file("fu_attachment");
                 // return "may check";
                 $fu_update_array = array(
-                    'sa_id'                         => $request->sa_data_id,
+                    'sa_id'                         => $request->sa_follow_up_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
                     'created_at'                    => date('Y-m-d H:i:s'),
                 );
-                PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $request->sa_data_id)->delete();
+                PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $request->sa_follow_up_id)->delete();
                 // return $fu_files;
                 if(isset($fu_files)){
                     if(count($fu_files) > 0 ){
@@ -946,6 +1033,23 @@ class PlcModulesSaController extends Controller
             return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
         }
     }
+
+    //============================== EDIT SA FOLLOW UP BY ID TO EDIT ==============================
+    public function get_sa_follow_up_to_edit(Request $request){
+        $sa_data = PLCModuleSA::with([
+            'plc_sa_fu_assessment_details_finding',
+        ])
+        ->where('id', $request->sa_follow_up_id)
+        ->get();
+
+        $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
+        // return $fu_assesment_details_and_finding_details;
+        return response()->json([
+            'sa_data' => $sa_data,
+            'fu_details' => $fu_assesment_details_and_finding_details,
+        ]); 
+    }
+    
 
     //============================== DELETE SA DATA ==============================
     public function delete_sa_data(Request $request){
@@ -1062,7 +1166,7 @@ class PlcModulesSaController extends Controller
             'get_oec_not_good_status' => count($get_oec_not_good_status),
             'sa_second_half_status' => count($sa_second_half_status),
             'category' => $request->category,
-            'test' => count($get_sa_status)
+            'count' => count($get_sa_status)
         ]);
     }
 

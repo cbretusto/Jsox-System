@@ -16,7 +16,7 @@ $layout = 'layouts.super_user_layout';
             $title = 'PMI-03 Changing Sales Prices';
         } elseif (Session::get('pmi_plc_category_id') == 4) {
             $pmi_category = 'PMI-04';
-            $title = 'PMI-04 Changing Sales Qty';
+            $title = 'PMI-04 Changing Sales Quantities Before Invoice Issuance';
         } elseif (Session::get('pmi_plc_category_id') == 5) {
             $pmi_category = 'PMI-05';
             $title = 'PMI-05 Invoice Issuance';
@@ -192,6 +192,9 @@ $layout = 'layouts.super_user_layout';
                             <li class="nav-item" id="navSaModule">
                                 <a class="nav-link" id="+-tab" data-toggle="tab" href="#SA-TabId" role="tab" aria-controls="SA-TabId" aria-selected="false">SA</a>
                             </li>
+                            <?php else: ?>
+
+                            
                         <?php endif; ?>
                     </ul>
                 </div>
@@ -229,7 +232,7 @@ $layout = 'layouts.super_user_layout';
                                             </table>
                                         </div>
                                         <br><hr>
-                                        <h1 class="position-absolute">Revision History Conformance</h1>
+                                        <h2 class="position-absolute">Revision History Conformance</h2>
                                         <button class="btn btn-info mb-3" data-toggle="modal" data-target="#addConformanceModal" id="addBtnConformance"  style="float: right; margin-right: 10px;"><i class="far fa-edit"></i> Add Conformance</button>
                                         <div class="table-responsive">
                                             <table id="plcModuleRevisionHistoryConformanceDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
@@ -239,6 +242,7 @@ $layout = 'layouts.super_user_layout';
                                                         <th style="width: 5%">Year</th>
                                                         <th style="width: 15%">Section</th>
                                                         <th style="width: 15%">Name</th>
+                                                        <th style="width: 15%">Status</th>
                                                         <th style="width: 5%">Action</th>
                                                     </tr>
                                                 </thead>
@@ -317,6 +321,7 @@ $layout = 'layouts.super_user_layout';
                                             <table id="plcModulesSaDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr>
+                                                        <th rowspan="2">Fiscal Year</th>
                                                         <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                         <th rowspan="2">&nbsp;</th>
                                                         <th rowspan="2">Control <br> No.</th>
@@ -328,6 +333,7 @@ $layout = 'layouts.super_user_layout';
                                                         <th colspan="3">3. Roll forward</th>
                                                         <th colspan="3">4. Follow up</th>
                                                     </tr>
+                                                    
                                                     <tr>
                                                         <th>Assessment details <br> and Findings</th>
                                                         <th>Status</th>
@@ -409,6 +415,17 @@ $layout = 'layouts.super_user_layout';
                                     <option value="34">PMI-34 Sales from PPS to TS,CN</option>
                                     <option value="35">PMI-35 Daily Cash in Bank Monitoring</option>
                                     <option value="36">PMI -36 Cash in Bank Monthly Monitoring</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Audit Period:</label>
+                                <select name="select_audit_period" id="selectAuditPeriodId">
+                                    <option selected disabled value="0">-----------------</option>
+                                    <option value="PLC">PLC</option>
+                                    <option value="first-half">First Half</option>
+                                    <option value="second-half">Second Half</option>
+                                    <option value="closed-out">Close out</option>
                                 </select>
                             </div>
 
@@ -860,6 +877,37 @@ $layout = 'layouts.super_user_layout';
             </div>
         </div>
     </div> <!-- CHANGE CONFORMANCE STAT MODAL END -->
+
+    <!-- APPROVED DISAPPROVED CONFORMANCE START -->
+    <div class="modal fade" id="modalTabletApprovedDisapproved">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title" id="h4ChangeApprovalStat"><i class=""></i> System Confirmation </h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formApprovedDisapproved">
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body">
+                        <label class="col-form-label">Remark:</label>
+                        <textarea type="text" class="form-control" id="txtApprovedDisapprovedRemarks" name="remarks" placeholder="Remark"></textarea>
+                        <label id="lblChangeApprovalStatLabel"></label>
+                        <input type="text" name="revision_history_id" id="txtApprovalId">
+                        <input type="text" name="approver_id" id="txtApproverId">
+                        <input type="text" name="approval_status" id="txtApprovalStat">
+                        <input type="text" name="approval_order" id="txtApprovalOrder" value="0">
+                        <br>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+                        <button type="submit" id="btnChangePmiItClcAssessmentStat" class="btn btn-dark"><i id="iBtnApprovedDisapprovedIcon" class="fa fa-check"></i> Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- APPROVED DISAPPROVED CONFORMANCE END -->
 
     
     <!-- EDIT MODAL START -->
@@ -1671,7 +1719,7 @@ $layout = 'layouts.super_user_layout';
 
 
     
-    <!-- EDIT MODAL START -->
+    <!-- EDIT SA MODAL START -->
     <div class="modal fade" id="modalEditSaData" style="overflow-y: scroll;">
         <div class="modal-dialog modal-xl-custom">
             <div class="modal-content">
@@ -1729,7 +1777,7 @@ $layout = 'layouts.super_user_layout';
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label>Checked by:</label>
                                                 <select class="form-control sel_assessed_by select2bs4" id="selectEditCheckedBy" name="view_checked_by"></select>
-                                                <input type="hidden" class="form-control" id="txtEditSaCheckedBy" name="checked_by" value="Jeannie Miranda" readonly>
+                                                <input type="hidden" class="form-control" id="txtEditSaCheckedBy" name="checked_by" value="Jeannie M. Miranda" readonly>
                                             </div>
                                         </div>
 
@@ -1750,14 +1798,11 @@ $layout = 'layouts.super_user_layout';
                                                                 </div>
                                                                 <div id="divDicAssessmentDetailsAndFindings">
                                                                     
-                                                                    <div class="form-group col-sm-12">
-                                                                        <input class="" type="file" id="DicAttachment" name="dic_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                        <input type="text" class="d-none" id="txtDicEditOrigFile" name="dicEditOrigFile" readonly><br>
-                                                                        <input type="checkbox" class="form-check-input checked d-none" name="dic_checkbox" id="DicCheckBox">
-                                                                        <label class="d-none" id="DicReuploadFile">Re-upload File</label>
-                                                                        
-                                                                        <br>
-                                                                    </div> 
+                                                                    <input class="" type="file" id="DicAttachment" name="dic_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                                    <input type="text" class="d-none" id="txtDicEditOrigFile" name="dicEditOrigFile" readonly><br>
+                                                                    <input type="checkbox" class="form-check-input checked d-none" name="dic_checkbox" id="DicCheckBox">
+                                                                    <label class="d-none" id="DicReuploadFile">Re-upload File</label>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1800,13 +1845,11 @@ $layout = 'layouts.super_user_layout';
                                                                 </div>
                                                                 <div id="divOecAssessmentDetailsAndFindings">
                                                                     
-                                                                    <div class="form-group col-sm-12">
-                                                                        <input type="file" class="" id="OecAttachment" name="oec_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                        <input type="text" class="d-none" id="txtOecAttachment" name="txt_oec_attachment" readonly><br>
-                                                                        <input type="checkbox" class="form-check-input d-none checked" name="oec_checkbox" id="OecCheckBox">
-                                                                        <label class="d-none" id="OecReuploadFile">Re-upload File</label>
-                                                                        <br>
-                                                                    </div> 
+                                                                    <input type="file" class="" id="OecAttachment" name="oec_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                                    <input type="text" class="d-none" id="txtOecAttachment" name="txt_oec_attachment" readonly><br>
+                                                                    <input type="checkbox" class="form-check-input d-none checked" name="oec_checkbox" id="OecCheckBox">
+                                                                    <label class="d-none" id="OecReuploadFile">Re-upload File</label>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1875,14 +1918,12 @@ $layout = 'layouts.super_user_layout';
                                                                 </div>
                                                                 <div id="divRfAssessmentDetailsAndFindings">
                                                                     
-                                                                    <div class="form-group col-sm-12">
-                                                                        <input type="file" class="" id="RfAttachment" name="rf_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                        <input type="text" class="d-none" id="txtRfAttachment" name="txt_rf_attachment" readonly><br>
+                                                                    <input type="file" class="" id="RfAttachment" name="rf_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                                    <input type="text" class="d-none" id="txtRfAttachment" name="txt_rf_attachment" readonly><br>
 
-                                                                        <input type="checkbox" class="form-check-input d-none checked" name="rf_checkbox" id="chckRfCheckBox">
-                                                                        <label class="d-none" id="txtRfReuploadFile">Re-upload File</label>
-                                                                        <br>
-                                                                    </div> 
+                                                                    <input type="checkbox" class="form-check-input d-none checked" name="rf_checkbox" id="chckRfCheckBox">
+                                                                    <label class="d-none" id="txtRfReuploadFile">Re-upload File</label>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1907,77 +1948,6 @@ $layout = 'layouts.super_user_layout';
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-lg-12 mx-auto">
-                                                <div class="card">
-                                                    
-                                                    <div class="card-header">
-                                                        
-                                                        <h5><strong>4. Follow up</strong></h5>
-                                                        <br>
-                                                        <div class="row justify-content-between text-left">
-                                                            <div class="form-group col-sm-6 flex-column d-flex">
-                                                                <label>Assessed by:</label>
-                                                                <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpAssessedBy" name="view_follow_up_assessed_by"></select>
-                                                                <input type="hidden" class="form-control" id="txtEditFollowUpAssessedBy" name="follow_up_assessed_by" value="Ma. Arlene A. Dela Cruz" readonly>
-                                                            </div>
-
-                                                            <div class="form-group col-sm-6 flex-column d-flex">
-                                                                <label>Checked by:</label>
-                                                                <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpCheckedBy" name="view_follow_up_checked_by"></select>
-                                                                <input type="hidden" class="form-control" id="txtEditFollowUpCheckedBy" name="follow_up_checked_by" value="Jeannie M. Miranda" readonly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Improvement plans:</label>
-                                                            <textarea type="text" class="form-control" rows="4" name="fu_improvement" id="txtEditSaFuImprovement" autocomplete= "off"></textarea>
-                                                        </div>
-
-                                                        <div class="card" id="cardFuAssessmentDetailsAndFindings">
-                                                            <div class="card-header">
-                                                                <input type="hidden" name="fu_assessment_details_findings_counter" id="addFuAssessmentDetailsAndFindingsCounter" value="1">
-                                                                <div class="form-group">
-                                                                    <span class="badge badge-secondary"># 1.</span>
-                                                                    <label>Assesment details & Findings:</label>
-                                                                    <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowFuAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
-                                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowFuAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
-                                                                    <textarea type="text" class="form-control" rows="4" name="fu_assessment" id="txtEditSaFuAssessment" autocomplete= "off"></textarea>
-                                                                </div>
-                                                                <div id="divFuAssessmentDetailsAndFindings">
-                                                                    
-                                                                    <div class="form-group col-sm-12">
-                                                                        <input type="file" class="" id="FuAttachment" name="fu_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                        <input type="text" class="d-none" id="txtFuAttachment" name="txt_fu_attachment" readonly><br>
-
-                                                                        <input type="checkbox" class="form-check-input d-none checked" name="fu_checkbox" id="chckFuCheckBox">
-                                                                        <label class="d-none" id="txtFuReuploadFile">Re-upload File</label>
-                                                                        <br>
-                                                                    </div> 
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Status:</label>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuGStatus" value="G">
-                                                                <label class="form-check-label" for="inlineRadio1">Good</label>
-                                                            </div>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuNGStatus" value="NG">
-                                                                <label class="form-check-label" for="inlineRadio2">Not Good</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaNoFuSample" value="No Sample">
-                                                                <label class="form-check-label" for="inlineRadio2">No Sample</label>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-outline-dark btn-sm fu_button" data-toggle="modal" data-target="#modalSelectFile"  button-session4="4" name="select_files3" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -1991,7 +1961,96 @@ $layout = 'layouts.super_user_layout';
                 </form>
             </div>
         </div>
-    </div><!-- EDIT MODAL END -->
+    </div><!-- EDIT SA MODAL END -->
+
+    <!-- SA FOLLOW UP MODAL START -->
+    <div class="modal fade" id="modalSaFollowUp">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content"> <!--START-->
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Follow up</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="formEditSaFollowUp" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+                    <div class="col-lg-12 mx-auto">
+                        <div class="modal-body">
+                            <input type="hidden" name="sa_follow_up_id" id="txtEditSaFollowUpId">
+                            <input type="hidden" name="category_name" id="txtCategoryNameId" value="<?php echo e(Session::get('pmi_plc_category_id')); ?>">
+                            <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="<?php echo e($pmi_category); ?>">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row justify-content-between text-left">
+                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                            <label>Assessed by:</label>
+                                            <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpAssessedBy" name="follow_up_assessed_by"></select>
+                                            
+                                        </div>
+
+                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                            <label>Checked by:</label>
+                                            <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpCheckedBy" name="follow_up_checked_by"></select>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Improvement plans:</label>
+                                        <textarea type="text" class="form-control" rows="4" name="fu_improvement" id="txtEditSaFuImprovement" autocomplete= "off"></textarea>
+                                    </div>
+
+                                    <div class="card" id="cardFuAssessmentDetailsAndFindings">
+                                        <div class="card-header">
+                                            <input type="hidden" name="fu_assessment_details_findings_counter" id="addFuAssessmentDetailsAndFindingsCounter" value="1">
+                                            <div class="form-group">
+                                                <span class="badge badge-secondary"># 1.</span>
+                                                <label>Assesment details & Findings:</label>
+                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowFuAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
+                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowFuAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
+                                                <textarea type="text" class="form-control" rows="4" name="fu_assessment" id="txtEditSaFuAssessment" autocomplete= "off"></textarea>
+                                            </div>
+                                            <div id="divFuAssessmentDetailsAndFindings">
+                                                
+                                                <input type="file" class="" id="FuAttachment" name="fu_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                <input type="text" class="d-none" id="txtFuAttachment" name="txt_fu_attachment" readonly><br>
+
+                                                <input type="checkbox" class="form-check-input d-none checked" name="fu_checkbox" id="chckFuCheckBox">
+                                                <label class="d-none" id="txtFuReuploadFile">Re-upload File</label>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Status:</label>&nbsp;&nbsp;&nbsp;
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuGStatus" value="G">
+                                            <label class="form-check-label" for="inlineRadio1">Good</label>
+                                        </div>&nbsp;&nbsp;&nbsp;
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuNGStatus" value="NG">
+                                            <label class="form-check-label" for="inlineRadio2">Not Good</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaNoFuSample" value="No Sample">
+                                            <label class="form-check-label" for="inlineRadio2">No Sample</label>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-dark btn-sm fu_button" data-toggle="modal" data-target="#modalSelectFile"  button-session4="4" name="select_files3" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnEditSaFollowUp" class="btn btn-dark"><i id="iBtnEditSaFollowUpIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- SA FOLLOW UP MODAL END -->
 
     
     <input type="hidden" class="form-control" name="get_category" id="txtGetCategory1" value="<?php echo e($pmi_category); ?>">
@@ -2193,7 +2252,7 @@ $layout = 'layouts.super_user_layout';
         </div>
     </div><!-- APPROVE MODAL END -->
 
-    <!-- DATE CASH RECEIVED MODAL START -->
+    <!-- DATE  MODAL START -->
     <div class="modal fade" id="modalFirstHalfYecApprovedDate">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -2299,11 +2358,12 @@ $layout = 'layouts.super_user_layout';
                     {"data": "year",orderable: false},
                     {"data": "dept_sect",orderable: false},
                     {"data": "name",orderable: false},
+                    {"data": "approval_status",orderable: false},
                     {"data": "action",orderable: false},
                 ],
                 "columnDefs": [{
                     className: 'align-middle',
-                    targets: [0]
+                    targets: [0, 1]
                 }, ],
             });
             //VIEW PLC MODULES CONFORMANCE DATATABLES END
@@ -2453,6 +2513,7 @@ $layout = 'layouts.super_user_layout';
                     }
                 },
                 "columns": [
+                    {"data": "fiscal_year", orderable: false, visible: false},
                     {"data": "action", orderable: false},
                     {"data": "approval_status", orderable: false},
                     {"data": "control_id", orderable: false},
@@ -2472,7 +2533,7 @@ $layout = 'layouts.super_user_layout';
                 ],
                 "columnDefs": [
                     // { className: "align-top", targets: [2, 3, 4, 5, 7, 9, 10, 12, 13, 15] },
-                    { className: "align-middle", targets: [0, 1] },
+                    { className: "align-middle", targets: [0, 1, 2] },
                 ],
             });
             //VIEW PLC MODULES SA DATATABLES END
@@ -2646,6 +2707,10 @@ $layout = 'layouts.super_user_layout';
                 reloadDataTablePlcSa();
             });
 
+            $("#formEditSaFollowUp").on('hidden.bs.modal', function () {
+                reloadDataTablePlcSa();
+            });
+
             $("#modalEditSaData").on('hidden.bs.modal', function () {
                 // edit_dic_reload = $('#removeRowDicAssessmentDetailsAndFindings').val('');
                 // edit_oec_reload = $('#removeRowOecAssessmentDetailsAndFindings').val('');
@@ -2715,6 +2780,37 @@ $layout = 'layouts.super_user_layout';
             $("#editConformanceForm").submit(function(event) {
                 event.preventDefault();
                 EditConformance();
+            });
+
+            //============================== APPROVED DISAPPROVED ==============================
+            $(document).on('click', '.actionRevHistoryConformanceApprovedDisapproved', function(){
+                let revisionHistoryConformanceId = $(this).attr('revision_history_conformance-id');
+                let approverId = $(this).attr('revision_history_conformance_approver-id');
+                let approvalStatus = $(this).attr('status');
+
+                $("#txtApprovalId").val(revisionHistoryConformanceId);
+                console.log('Revision History ID:', revisionHistoryConformanceId);
+
+                $("#txtApproverId").val(approverId);
+                console.log('Approver ID:', approverId);
+
+                $("#txtApprovalStat").val(approvalStatus);
+                console.log('Approval Status:', approvalStatus);
+
+                GetRevisionHistoryConformanceId(revisionHistoryConformanceId);
+
+                if(approvalStatus == 2){
+                    // $("#lblChangeApprovalStatLabel").text('Are you sure to approve?');
+                    $("#h4ChangeApprovalStat").html('<i class="fa fa-thumbs-down"></i> Are you sure to disapprove?');
+                }
+                else{
+                    // $("#lblChangeApprovalStatLabel").text('Are you sure to disapprove?');
+                    $("#h4ChangeApprovalStat").html('<i class="fa fa-thumbs-up"></i> Are you sure to approve?');
+                }
+            });
+            $("#formApprovedDisapproved").submit(function(event){
+                event.preventDefault();
+                ApprovedDisapproved();
             });
 
             //============================== EDIT REVISION HISTORY ==============================
@@ -2952,6 +3048,27 @@ $layout = 'layouts.super_user_layout';
                         });
                     }
                 }, 500);
+            });
+
+            $("#formEditSaModule").submit(function(event){
+                event.preventDefault();
+                EditSaModuleData();
+                dataTablePlcModuleSa.draw();
+            });
+
+            //============================== EDIT SA FOLLOW UP ==============================
+            $(document).on('click', '.actionEditSaFollowUp', function(){
+                let plccategoryName  = $('#txtPlcCategoryName').val();
+                let plccategoryId  = $('#txtCategoryNameId').val();
+                let saFollowUpId = $(this).attr('sa_data-id');
+
+                $("#txtEditSaFollowUpId").val(saFollowUpId);
+                GetSaFollowUp(saFollowUpId);
+
+                console.log('SA Edit Button:');
+                console.log(' *Plc Category Name:', plccategoryName);
+                console.log(' *Plc Category ID:', plccategoryId);
+                console.log(' *Edit SA ID:', saFollowUpId);
 
                 //FU
                 setTimeout(() => {
@@ -2973,10 +3090,9 @@ $layout = 'layouts.super_user_layout';
                     }
                 }, 500);
             });
-
-            $("#formEditSaModule").submit(function(event){
+            $("#formEditSaFollowUp").submit(function(event){
                 event.preventDefault();
-                EditSaModuleData();
+                EditSaFollowUp();
                 dataTablePlcModuleSa.draw();
             });
 
@@ -3407,7 +3523,7 @@ $layout = 'layouts.super_user_layout';
                     html +='                                    </div>';
                     html +='                                </div>';
                     html +='                            </div>';
-                    
+
                     html +='                            <div class="row justify-content-between text-left">';
                     html +='                                <div class="form-group col-sm-3 flex-column d-flex">';
                     html +='                                    <div class="form-group">';
@@ -3430,7 +3546,7 @@ $layout = 'layouts.super_user_layout';
                     html +='                                    </div>';
                     html +='                                </div>';
                     html +='                            </div>';
-                    
+
                     html +='                        </div>';
                     html +='                    </div>';
                     html +='                </div>';
@@ -3821,8 +3937,9 @@ $layout = 'layouts.super_user_layout';
                 // console.log($('#formViewWPRequest').serialize());
                 let year_id = $('#selectYearId').val();
                 let select_category = $('#selectCategoryId').val();
+                let select_audit_period = $('#selectAuditPeriodId').val();
 
-                window.location.href = `export_summary/${year_id}/${select_category}`;
+                window.location.href = `export_summary/${year_id}/${select_category}/${select_audit_period}`;
                 // console.log(year_id);
                 // console.log(select_category);
                 $('#modalExportSummary').modal('hide');

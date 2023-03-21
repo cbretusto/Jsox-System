@@ -20,6 +20,9 @@ class CreateRevisionHistoryDeptSectConformancesTable extends Migration
             $table->string('counter')->nullable();
             $table->longText('dept_sect')->nullable();
             $table->longText('name')->nullable();
+            $table->longText('remark')->nullable()->comment = 'Approved / Disapproved';
+            $table->unsignedTinyInteger('approval_status')->default(0)->comment = '0-Pending, 1-Approved, 2-Disapproved';
+            $table->string('time_date')->nullable()->comment = 'Approved / Disapproved';
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
             

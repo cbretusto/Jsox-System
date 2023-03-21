@@ -142,6 +142,7 @@ Route::post('/no_revision_history', 'PlcModulesController@no_revision_history');
 Route::post('/add_conformance', 'PlcModulesController@add_conformance');
 Route::get('/get_revision_history_id_to_edit', 'PlcModulesController@get_revision_history_id_to_edit');
 Route::get('/get_revision_history_conformance_id_to_edit', 'PlcModulesController@get_revision_history_conformance_id_to_edit');
+Route::post('/rev_history_conformance_approved_disapproved', 'PlcModulesController@rev_history_conformance_approved_disapproved')->name('rev_history_conformance_approved_disapproved');
 Route::post('/edit_revision_history', 'PlcModulesController@edit_revision_history');
 Route::post('/edit_revision_history_conformance', 'PlcModulesController@edit_revision_history_conformance');
 Route::get('/load_user_management_rev', 'PlcModulesController@load_user_management_rev');
@@ -179,6 +180,8 @@ Route::post('/disapproved_sa_data', 'PlcModulesSaController@disapproved_sa_data'
 Route::post('/yec_approved_date', 'PlcModulesSaController@yec_approved_date')->name('yec_approved_date');
 Route::get('/get_yec_approved_date', 'PlcModulesSaController@get_yec_approved_date')->name('get_yec_approved_date');
 Route::get('/count_pmi_category_by_id', 'PlcModulesSaController@count_pmi_category_by_id');
+Route::get('/get_sa_follow_up_to_edit', 'PlcModulesSaController@get_sa_follow_up_to_edit');
+Route::post('/edit_sa_follow_up', 'PlcModulesSaController@edit_sa_follow_up');
 
 //============================= SELECT PLC EVIDENCE CONTROLLER ================================
 Route::get('/view_select_plc_evidences', 'SelectPlcEvidenceController@view_select_plc_evidences');
@@ -261,7 +264,7 @@ Route::get('/export_it_clc_summary/{year_id}/{audit_period}', 'ExportItClcContro
 Route::get('/export_fcrp_clc_summary/{year_id}/{audit_period}', 'ExportFcrpClcController@export_fcrp_clc_summary');
 
 
-Route::get('/export_summary/{year_id}/{select_category}', 'ExportSummaryController@export_summary');
+Route::get('/export_summary/{year_id}/{select_category}/{select_audit_period}', 'ExportSummaryController@export_summary');
 
 Route::get('/get_ppc_section_data', 'AnalyticsController@get_ppc_section_data');
 Route::get('/get_ppc_whse_tscn_data', 'AnalyticsController@get_ppc_whse_tscn_data');
@@ -271,3 +274,13 @@ Route::get('/get_logistics_data', 'AnalyticsController@get_logistics_data');
 
 Route::get('/export_ng_report/{year_id}/{dept_id}', 'AnalyticsController@export_ng_report');
 Route::get('/view_pps_data', 'AnalyticsController@view_pps_data');
+
+// Import Controller
+Route::post('/import_pmi_clc', 'ImportController@import_pmi_clc');
+Route::post('/import_pmi_fcrp', 'ImportController@import_pmi_fcrp');
+Route::post('/import_pmi_it_clc', 'ImportController@import_pmi_it_clc');
+
+// Import Assessment Controller
+Route::post('/import_pmi_clc_assessment', 'ImportAssessmentController@import_pmi_clc_assessment');
+Route::post('/import_pmi_fcrp_assessment', 'ImportAssessmentController@import_pmi_fcrp_assessment');
+Route::post('/import_pmi_it_clc_assessment', 'ImportAssessmentController@import_pmi_it_clc_assessment');

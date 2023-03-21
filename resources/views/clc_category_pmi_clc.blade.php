@@ -12,10 +12,10 @@
             $layout = 'layouts.user_layout';
         }
     @endphp
-@endauth
+@endauth 
 
-{{-- Here I removed the @auth because the dashboard isn't loading properly --}}
-@extends($layout)
+<!-- Here I removed the auth because the dashboard isn't loading properly -->
+ @extends($layout)
 
 @section('title', 'PMI CLC')
 
@@ -64,9 +64,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary">
-                            {{-- <div class="card-header">
+                            <!-- <div class="card-header">
                                 <h3 class="card-title">PMI CLC</h3>
-                            </div> --}}
+                            </div> -->
                             <div class="card-body table-responsive">
                                 <ul class="nav nav-tabs" id="tabPmiClcCategory" role="tablist">
                                     <li class="nav-item">
@@ -81,7 +81,9 @@
                                 <div class="tab-content table-responsive" id="tabPmiClcCategory">
                                     <div class="tab-pane fade show active" id="pmiClc" role="tabpanel" aria-labelledby="tabPmiClc">
                                         <div style="float: right;">
-                                            <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddPmiClc" id=""><i class="fa fa-plus"></i>  Add PMI CLC </button>
+                                            <button class="btn btn-info mt-2" data-toggle="modal" data-target="#modalExportClcSummary"><i class="fa fa-download"></i>  Export CLC Summary  </button>
+                                            <button class="btn btn-primary mt-2" data-toggle="modal"  data-target="#modalImportPmiClcExcel" id="modalImportPmiClc" ><i class="fas fa-file-upload"></i> Import Excel</button>
+                                            <!-- <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddPmiClc" id=""><i class="fa fa-plus"></i>  Add PMI CLC </button> -->
                                         </div> <br><br>
                                         <div class="table responsive">
                                             <table id="tblPmiClc" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
@@ -89,7 +91,6 @@
                                                     <tr style="text-align:center">
                                                         <th>&nbsp;</th>
                                                         <th>No.</th>
-                                                        <th>Fiscal Year</th>
                                                         <th>Title</th>
                                                         <th>Control Objectives</th>
                                                         <th>Internal Control</th>
@@ -111,7 +112,8 @@
                                         </div>
                                         <div style="float: right;">
                                             <button class="btn btn-info" data-toggle="modal" data-target="#modalExportClcSummary"><i class="fa fa-download"></i>  Export CLC Summary  </button>
-                                            <button class="btn btn-dark" data-toggle="modal" data-target="#modalAddPmiClcAssessment" id="btnShowAddPmiClcCategoryModal"><i class="fa fa-plus"></i>  Add PMI CLC ASSESSMENT </button>
+                                            <button class="btn btn-primary" data-toggle="modal"  data-target="#modalImportPmiClcAssessmentExcel" id="modalImportPmiClcAssessment" ><i class="fas fa-file-upload"></i> Import Excel</button>
+                                            <!-- <button class="btn btn-dark" data-toggle="modal" data-target="#modalAddPmiClcAssessment" id="btnShowAddPmiClcCategoryModal"><i class="fa fa-plus"></i>  Add PMI CLC ASSESSMENT </button> -->
                                         </div> <br><br>
                                         <div class="table-responsive">
                                             <table id="tblPmiClcAssessment" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
@@ -128,7 +130,6 @@
                                                         <th>Review Findings</th>
                                                         <th>Follow-up Details</th>
                                                         <th style="width: 3%">G / NG</th>
-                                                        {{-- <th>Uploaded <br> File</th> --}}
                                                         <th style="width: 8%">Action</th>
                                                     </tr>
                                                 </thead>
@@ -343,6 +344,37 @@
         </div>
     </div> <!-- CHANGE STAT MODAL END -->
 
+    <!-- IMPORT PMI CLC MODAL START -->
+    <div class="modal fade" id="modalImportPmiClcExcel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fas fa-file-import"></i> Import PMI CLC</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formImportPmiClc" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>File</label>
+                                <input type="file" class="form-control h-50" name="import_pmi_clc_file" id="fileImportPmiClc" accept=".xlsx, .xls, .csv" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnImportPmiClc" class="btn btn-dark"><i id="iconImportPmiClc" class="fa fa-check"></i> Import</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- IMPORT PMI CLC MODAL END -->
+
     <!-- ======================================= START PMI CLC ASSESSMENT ======================================= -->
     <!-- MODALS -->
     <div class="modal fade" id="modalExportClcSummary">
@@ -357,19 +389,19 @@
                 <div class="modal-body">
                     <div class="col-sm-12">
                         <div class="row">
-                                <div class="col-sm-6">
-                                    {{-- <label>Fiscal Year:</label> --}}
-                                    <select class="form-control selectFiscalYear position-absolute select2bs4" name="select_year" id="selectYearId" aria-controls="">
-                                        <!-- Code generated -->
-                                    </select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label>Audit Period:</label>
-                                    <select name="select_audit_period" id="selectAuditPeriod">
-                                        <option value="1">First Half</option>
-                                        <option value="2">Second Half</option>
-                                    </select>
-                                </div>
+                            <div class="col-sm-12">
+                                <label>Fiscal Year:</label>
+                                <select class="form-control selectFiscalYear position-absolute select2bs4" name="select_year" id="selectYearId" aria-controls="">
+                                    <!-- Code generated -->
+                                </select><br>
+                            </div><br>
+                            <div class="col-sm-12">
+                                <label>Audit Period:</label><br>
+                                <select name="select_audit_period" id="selectAuditPeriod">
+                                    <option value="1">First Half</option>
+                                    <option value="2">Second Half</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,7 +414,7 @@
     </div><!-- /.modal -->
 
     <!-- ADD MODAL START -->
-    <div class="modal fade" id="modalAddPmiClcAssessment">
+    <!-- <div class="modal fade" id="modalAddPmiClcAssessment">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
@@ -392,7 +424,7 @@
                     </button>
                 </div>
                 <form method="post" id="formAddPmiClcAssessment" enctype="multipart/form-data">
-                    @csrf
+                    (@)csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group">
@@ -408,7 +440,7 @@
                 </form>
             </div>
         </div>
-    </div><!-- ADD MODAL END -->
+    </div> --> <!-- ADD MODAL END -->
 
     <!-- EDIT MODAL START -->
     <div class="modal fade" id="modalEditPmiClcAssessment">
@@ -425,10 +457,19 @@
                     <div class="modal-body">
                         <input type="hidden" class="form-control" name="pmi_clc_assessment_id" id="txtEditPmiClcAssessmentId">
                         <div class="row">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <div class="input-group mb-2">
+                            <div class="form-group col-sm-4 flex-column d-flex">
+                                <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
+                                        <span class="input-group-text"><strong>No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+                                    </div>
+                                    <input type="number" id="txtEditPmiClcAssessmentNo" name="pmi_clc_no" style="width: 60%;">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-4 flex-column d-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-default"><strong>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong></span>
                                     </div>
                                     <select class="form-control select2bs4 selectPmiClcTitle" name="titles" id="selectEditPmiClcAssessmentTitle" style="width: 50%;">
                                         <option selected disabled value="">--Select--</option>
@@ -451,7 +492,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-sm-6 flex-column d-flex">
+                            <div class="form-group col-sm-4 flex-column d-flex">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><strong>Year: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
@@ -465,7 +506,6 @@
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Control Objective:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="3" id="txtEditPmiClcAssessmentControlObjectives" name="control_objectives"></textarea>
                                 </div>
                             </div>
@@ -473,7 +513,6 @@
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Internal Control:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4">
                                     <textarea type="text" class="form-control" rows="3" id="txtEditPmiClcAssessmentInternalControls" name="internal_controls"></textarea>
                                 </div>
                             </div>
@@ -501,7 +540,6 @@
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Detected Problems & Improvement Plans:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="3" id="txtEditPmiClcAssessmentDetectedProblemsImprovementPlans" name="detected_problems_improvement_plans"></textarea>
                                 </div>
                             </div>
@@ -509,7 +547,6 @@
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Review Findings:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="3" id="txtEditPmiClcAssessmentReviewFindings" name="review_findings"></textarea>
                                 </div>
                             </div>
@@ -517,7 +554,6 @@
                             <div class="form-group col-sm-12 flex-column d-flex">
                                 <div class="form-group col-sm-12">
                                     <label class="col-form-label">Follow-up Details:</label>
-                                    <input type="hidden" class="form-control" name="" rows="4" cols="50">
                                     <textarea type="text" class="form-control" rows="3" id="txtEditPmiClcAssessmentFollowupDetails" name="follow_up_details"></textarea>
                                 </div>
                             </div>
@@ -577,6 +613,37 @@
             </div>
         </div>
     </div> <!-- CHANGE STAT MODAL END -->
+
+    <!-- IMPORT PMI CLC MODAL START -->
+    <div class="modal fade" id="modalImportPmiClcAssessmentExcel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fas fa-file-import"></i> Import Pmi CLC Assessment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formImportPmiClcAssessment" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label>File</label>
+                                <input type="file" class="form-control h-50" name="import_pmi_clc_assessment_file" id="fileImportPmiClcAssessment" accept=".xlsx, .xls, .csv" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnImportPmiClcAssessment" class="btn btn-dark"><i id="iconImportPmiClcAssessment" class="fa fa-check"></i> Import</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- IMPORT PMI CLC MODAL END -->
 @endsection
 
 <!-- {{-- JS CONTENT --}} -->
@@ -588,6 +655,7 @@
         let dataTableClcEvidences;
         let dataTableSelectClcEvidences;
 
+        
         $(document).ready(function () {
 
             bsCustomFileInput.init();
@@ -617,7 +685,7 @@
                 "columns":[
                     { "data" : "status" },
                     { "data" : "no" },
-                    { "data" : "fiscal_year" },
+                    // { "data" : "fiscal_year" },
                     { "data" : "titles" },
                     { "data" : "control_objectives" },
                     { "data" : "internal_controls" },
@@ -640,7 +708,7 @@
 
                 "columns":[
                     { "data" : "status" },
-                    { "data" : "id" },
+                    { "data" : "no" },
                     { "data" : "fiscal_year" },
                     { "data" : "titles" },
                     { "data" : "control_objectives" },
@@ -658,7 +726,7 @@
                 ],
             });// END OF DATATABLE
 
-            //============================ ADD CLC CATEGORY ============================
+            //============================ ADD PMI CLC ============================
             $("#formAddPmiClc").submit(function(event){
                 event.preventDefault();
                 AddPmiClc();
@@ -701,6 +769,33 @@
                 ChangePmiClcStatus();
             });
 
+            // ========================= IMPORT PMI CLC EXCEL =========================
+            $('#formImportPmiClc').submit(function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: 'import_pmi_clc',
+                    method: 'post',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if(response['result'] == 1){
+                            $('#modalImportPmiClcExcel').modal('hide');
+                            $('#formImportPmiClc')[0].reset();
+                            toastr.success('Import Data Successful!');
+                            dataTablePmiClc.draw();
+                        }
+                        else{
+                            toastr.error('Import Failed! Please Check File');
+                            $('#modalImportPmiClcExcel').modal('hide');
+                            $('#formImportPmiClc')[0].reset();
+                        }
+                    }
+                });
+            })
 
             // ============================ AUTO ADD CREATED BY USER ============================
             $(document).on('click', '#btnShowAddPmiClcCategoryModal, .actionEditPmiClcAssessment', function() {
@@ -719,7 +814,7 @@
                 });
             });
 
-            //============================ ADD CLC CATEGORY ============================
+            //============================ ADD PMI CLC ASSESSMENT ============================
             $("#formAddPmiClcAssessment").submit(function(event){
                 event.preventDefault();
                 AddPmiClcAssessment();
@@ -746,7 +841,7 @@
             $("#txtAddPmiClcEvidenceFile").removeClass('is-invalid');
             $("#txtAddPmiClcEvidenceFile").attr('title', '');
 
-            //============================== EDIT PMI CLC CATEGORY ==============================
+            //============================== EDIT PMI CLC ASSESSMENT ==============================
             $(document).on('click', '.actionEditPmiClcAssessment', function(){
                 let pmiClcAssessmentId = $(this).attr('pmi_clc_assessment-id');
 
@@ -760,7 +855,7 @@
                 EditPmiClcAssessment();
             });
 
-            //============================== CHANGE PMI CLC STATUS ==============================
+            //============================== CHANGE PMI CLC ASSESSMENT STATUS ==============================
             $(document).on('click', '.actionChangePmiClcAssessmentStat', function(){
                 let pmiClcAssessmentStat = $(this).attr('status');
                 let pmiClcAssessmentId = $(this).attr('pmi_clc_assessment-id');
@@ -781,6 +876,34 @@
                 event.preventDefault();
                 ChangePmiClcAssessmentStatus();
             });
+
+            // ========================= IMPORT PMI CLC ASSESSMENT EXCEL =========================
+            $('#formImportPmiClcAssessment').submit(function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: 'import_pmi_clc_assessment',
+                    method: 'post',
+                    data: new FormData(this),
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if(response['result'] == 1){
+                            $('#modalImportPmiClcAssessmentExcel').modal('hide');
+                            $('#formImportPmiClcAssessment')[0].reset();
+                            toastr.success('Import Data Successful!');
+                            dataTablePmiClcAssessment.draw();
+                        }
+                        else{
+                            toastr.error('Import Failed! Please Check File');
+                            $('#modalImportPmiClcAssessmentExcel').modal('hide');
+                            $('#formImportPmiClcAssessment')[0].reset();
+                        }
+                    }
+                });
+            })
 
             // ========================= RELOAD DATATABLE =========================
             function reloadDataTableClcEvidences() {
@@ -805,20 +928,18 @@
             $("#selFiscalYear").on('change', function() {
                 dataTablePmiClcAssessment.column(2).search($(this).val()).draw();
             });
-
         }); // JQUERY DOCUMENT READY END
 
         $('#btnExportClcSummary').on('click', function(){
+            // console.log($('#formViewWPRequest').serialize());
+            let year_id = $('#selectYearId').val();
+            let audit_period = $('#selectAuditPeriod').val();
+            // let selected_month = $('#selectMonthId').val();
 
-        // console.log($('#formViewWPRequest').serialize());
-        let year_id = $('#selectYearId').val();
-        let audit_period = $('#selectAuditPeriod').val();
-        // let selected_month = $('#selectMonthId').val();
-
-        window.location.href = `export_clc_summary/${year_id}/${audit_period}`;
-        console.log(year_id);
-        // console.log(selected_month);
-        $('#modalExportClcSummary').modal('hide');
+            window.location.href = `export_clc_summary/${year_id}/${audit_period}`;
+            console.log(year_id);
+            // console.log(selected_month);
+            $('#modalExportClcSummary').modal('hide');
 
         });
 

@@ -29,14 +29,17 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
     use Exportable;
     protected $date;
     protected $rev_history_details;
+    protected $conformance_data;
 
     //
     function __construct(
     $date,
-    $rev_history_details
+    $rev_history_details,
+    $conformance_data
     ){
         $this->date = $date;
         $this->rev_history_details = $rev_history_details;
+        $this->conformance_data = $conformance_data;
 
     }
 
@@ -56,6 +59,7 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
         {
 
             $rev_history = $this->rev_history_details;
+            $conformance = $this->conformance_data;
 
             $arial_font13 = array(
                 'font' => array(
@@ -84,14 +88,16 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
                 )
             );
 
-            $arial_font12 = array(
+            $arial_font11 = array(
                 'font' => array(
                     'name'      =>  'Arial',
-                    'size'      =>  12,
+                    'size'      =>  11,
                     // 'bold'      =>  true,
                     // 'italic'      =>  true
                 )
             );
+
+
 
             $hv_center = array(
                 'alignment' => [
@@ -146,6 +152,33 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
                 ]
             );
 
+            $arial_font14_bold = array(
+                'font' => array(
+                    'name'      =>  'Arial',
+                    'size'      =>  14,
+                    'bold'      =>  true,
+                    // 'italic'      =>  true
+                )
+            );
+
+            $arial_font12_bold_underline = array(
+                'font' => array(
+                    'name'      =>  '12',
+                    'size'      =>  14,
+                    'bold'      =>  true,
+                    'underline'      =>  true
+                )
+            );
+
+            $arial_font12 = array(
+                'font' => array(
+                    'name'      =>  'Arial',
+                    'size'      =>  12,
+                    // 'bold'      =>  true,
+                    // 'italic'      =>  true
+                )
+            );
+
 
             return [
                 AfterSheet::class => function(AfterSheet $event) use (
@@ -159,8 +192,12 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
                     $hcv_top,
                     $arial_font14,
                     $arial_font12_bold,
-                    $arial_font12,
-                    $rev_history
+                    $arial_font11,
+                    $rev_history,
+                    $conformance,
+                    $arial_font14_bold,
+                    $arial_font12_bold_underline,
+                    $arial_font12
                 )  {
 
                     //EXCEL FORMAT
@@ -314,12 +351,16 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
 
                             for ($j=0; $j < count($rev_history[$i]->details_of_revision_details); $j++){
 
-                                $event->sheet->setCellValue('F'.$start_col,$rev_history[$i]->details_of_revision_details[$j]->details_of_revision);
-                                $event->sheet->getDelegate()->getStyle('F'.$start_col)->getAlignment()->setWrapText(true);
-                                $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($hlv_top);
-                                $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($arial_font12);
-
                                 $rev_details = $rev_history[$i]->details_of_revision_details[$j]->details_of_revision;
+
+
+                                if($rev_history[$i]->reason_for_revision_details[$q]->groupby == $rev_history[$i]->details_of_revision_details[$j]->groupby){
+                                    $event->sheet->setCellValue('F'.$start_col,$rev_history[$i]->details_of_revision_details[$j]->details_of_revision);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($hlv_top);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($arial_font12);
+
+                                }
 
                                 $var = str_replace('"',"",$rev_details);
                                 $strlen = strlen($var);
@@ -334,6 +375,9 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
                                 $in_charge = "";
 
                                 for ($d=0; $d < count($rev_history[$i]->concern_dept_sect_inchanrge_details); $d++){
+                                    $event->sheet->getDelegate()->getStyle('A'.$start_col.':G'.$start_col)->applyFromArray($styleBorderAll);
+                                    $event->sheet->getDelegate()->mergeCells('C'.$start_col.':D'.$start_col);
+
 
                                     if($rev_history[$i]->reason_for_revision_details[$q]->groupby == $rev_history[$i]->details_of_revision_details[$j]->groupby &&
                                         $rev_history[$i]->reason_for_revision_details[$q]->groupby == $rev_history[$i]->concern_dept_sect_inchanrge_details[$d]->groupby){
@@ -353,30 +397,75 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
                                         $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
 
                                     }
-
                                     // if($dept_counter > 1){
                                     //     $start_col++;
                                     //     $dept_counter--;
                                     // }
                                 }
 
-                                // if($details_for_revision_counter > 1){
-                                //     $start_col++;
-                                //     $details_for_revision_counter--;
-                                // }
+                                if($details_for_revision_counter > 1){
+                                    $end_col = $start_col + $details_for_revision_counter -1;
+                                    $event->sheet->getDelegate()->mergeCells('A'.$start_col.':A'.$end_col);
+                                    $event->sheet->getDelegate()->mergeCells('B'.$start_col.':B'.$end_col);
+                                    $start_col++;
+                                    $details_for_revision_counter--;
+                                }
 
                             }
 
-                            if($reason_counter > 1){
-                                $start_col++;
-                                $reason_counter--;
-                            }
+                            // if($reason_counter > 1){
+                            //     $start_col++;
+                            //     $reason_counter--;
+                            // }
                         }
 
                         $start_col++;
                         // $details_col++;
                         // $dept_col++;
                     }
+
+                    $conformance_start_col = $start_col + 1;
+                    $conformance_start_col_tags = $start_col + 3;
+                    $conformance_start_col_data = $start_col + 5;
+
+
+                    $event->sheet->getDelegate()->getStyle('A'.$conformance_start_col)->applyFromArray($arial_font14_bold);
+
+                    $event->sheet->getDelegate()->getStyle('A'.$conformance_start_col_tags.':F'.$conformance_start_col_tags)->applyFromArray($arial_font12_bold_underline);
+                    $event->sheet->getDelegate()->getStyle('A'.$conformance_start_col_tags.':F'.$conformance_start_col_tags)->applyFromArray($hv_center);
+
+                    $event->sheet->getDelegate()->mergeCells('B'.$conformance_start_col_tags.':D'.$conformance_start_col_tags);
+
+
+
+                    $event->sheet->setCellValue('A'.$conformance_start_col,'CONFORMANCE:');
+                    $event->sheet->setCellValue('A'.$conformance_start_col_tags,'Section');
+                    $event->sheet->setCellValue('B'.$conformance_start_col_tags,'Name');
+                    $event->sheet->setCellValue('E'.$conformance_start_col_tags,'Signature');
+                    $event->sheet->setCellValue('F'.$conformance_start_col_tags,'Date');
+
+
+
+                    for ($p=0; $p < count($conformance); $p++) {
+
+                        // $event->sheet->setCellValue('A'.$conformance_start_col_data,$conformance[$p]);
+
+                        for ($n=0; $n < count($conformance[$p]->conformance_details) ; $n++) {
+
+                        $event->sheet->getDelegate()->mergeCells('B'.$conformance_start_col_data.':D'.$conformance_start_col_data);
+                        $event->sheet->getDelegate()->getStyle('A'.$conformance_start_col_data.':F'.$conformance_start_col_data)->applyFromArray($arial_font11);
+
+                        $event->sheet->setCellValue('A'.$conformance_start_col_data,$conformance[$p]->conformance_details[$n]->dept_sect);
+                        $event->sheet->setCellValue('B'.$conformance_start_col_data,$conformance[$p]->conformance_details[$n]->name);
+
+
+                        $conformance_start_col_data++;
+                        }
+                    }
+
+
+
+
                 },
             ];
         }

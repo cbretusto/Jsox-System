@@ -47,43 +47,58 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Evidences</h3>
-                            </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-3 mr-2"> 
-                                        <label><strong>Fiscal Year:</strong></label>
-                                        <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
-                                            <!-- Code generated -->
-                                        </select>
-                                    </div>
-                                    <div class=" col-sm-3"> 
-                                        <label class="form-control-label">Audit Period:</label> 
-                                        <select class="form-control" id="selAuditPeriod" name="audit_period">
-                                            <option selected disabled value="">-- Select Audit Period --</option>
-                                            <option value="First Half">First Half</option>
-                                            <option value="Second Half">Second Half</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div>       
-                                    <button class="btn btn-info " data-toggle="modal" data-target="#modalAddClcEvidences" id="btnShowAddClcEvidencesModal" style="float: right;"><i class="fa fa-plus"></i>  Add CLC Evidence </button>
-                                </div> <br><br>
+                                <ul class="nav nav-tabs" id="tabPmiClcCategory" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tabPmiCLC" data-toggle="tab" href="#pmiCLC" role="tab" aria-controls="pmiCLC" aria-selected="false" a-value="PMI CLC">PMI CLC</a>
+                                    </li>
 
-                                <div class="table responsive" style="height: 666px; overflow-y: scroll;">
-                                    <table id="tblClcEvidences" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
-                                        <thead>
-                                            <tr style="text-align:center">
-                                            <th>Date Uploaded</th>
-                                            <th>Fiscal Year & Audit Period</th>
-                                            <th>Category</th>
-                                            <th>CLC Uploaded File</th>
-                                            <th>Uploaded By</th>
-                                            <th>Action</th>
-                                            </tr>
-                                        </thead>            
-                                    </table>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tabPmiFCRP" data-toggle="tab" href="#pmiFCRP" role="tab" aria-controls="pmiFCRP" aria-selected="true" a-value="PMI FCRP">PMI FCRP</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tabPmiItCLC" data-toggle="tab" href="#pmiItCLC" role="tab" aria-controls="pmiItCLC" aria-selected="true" a-value="PMI IT-CLC">PMI IT-CLC</a>
+                                    </li>
+                                </ul>
+                                
+                                <div class="tab-content table-responsive" id="tabPmiClcCategory">
+                                    <div class="tab-pane show active" id="pmiCLC" role="tabpanel" aria-labelledby="tabPmiCLC">
+                                        <div class="row">
+                                            <div class="col-sm-3 mr-2"> 
+                                                <label><strong>Fiscal Year:</strong></label>
+                                                <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selFiscalYear" aria-controls="">
+                                                    <!-- Code generated -->
+                                                </select>
+                                            </div>
+                                            <div class=" col-sm-3"> 
+                                                <label class="form-control-label">Audit Period:</label> 
+                                                <select class="form-control" id="selAuditPeriod" name="audit_period">
+                                                    <option selected disabled value="">-- Select Audit Period --</option>
+                                                    <option value="First Half">First Half</option>
+                                                    <option value="Second Half">Second Half</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>       
+                                            <button class="btn btn-info " data-toggle="modal" data-target="#" id="btnShowAddClcEvidencesModal" style="float: right;" value="PMI CLC"><i class="fa fa-plus"></i> <span>Add CLC Evidence</span> </button>
+                                        </div> <br><br>
+
+                                        <div class="table responsive" style="height: 666px; overflow-y: scroll;">
+                                            <table id="tblClcEvidences" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
+                                                <thead>
+                                                    <tr style="text-align:center">
+                                                    <th>Date Uploaded</th>
+                                                    <th>Fiscal Year & Audit Period</th>
+                                                    <th>Category</th>
+                                                    <th>CLC Uploaded File</th>
+                                                    <th>Uploaded By</th>
+                                                    <th>Action</th>
+                                                    </tr>
+                                                </thead>            
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +159,8 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Category:</strong></span>
                                             </div>
-                                            <select class="form-control select2bs4 selectClcCategory" name="clc_category" id="selAddClcCategory" required></select>
+                                            <input type="text" class="form-control" name="clc_category" id="txtAddClcCategory" readonly>
+                                            
                                         </div>
                                     </div>
                                     
@@ -219,7 +235,8 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Category:</strong></span>
                                             </div>
-                                            <select class="form-control select2bs4 selectClcCategory" name="clc_category" id="selEditClcCategory" required></select>
+                                            <input type="text" name="clc_category" id="txtEditClcCategory">
+                                            
                                         </div>
                                     </div>
 
@@ -277,12 +294,15 @@
             GetFiscalYear($(".selectFiscalYear"));
         
             dataTableClcEvidences = $("#tblClcEvidences").DataTable({ 
-                "processing" : false,
+                "processing" : true,
                 "serverSide" : true,
                 "responsive": true,
                 "order": [[ 0, "desc" ]],
                 "ajax" : {
                     url: "view_clc_evidences",
+                    data: function (param){
+                        param.title = $("#btnShowAddClcEvidencesModal").val();
+                    },
                 },
 
                 "columns":[
@@ -394,24 +414,26 @@
 
             $("#selAuditPeriod").on('change', function() {
                 dataTableClcEvidences.search($("#selAuditPeriod").val()).draw();
-            });
+            }); 
             
-            // //============================== DELETE CLC EVIDENCE ==============================
-            // // aDeleteReport is generated by datatables to collect the id of the specified rows
-            // $(document).on('click', '.actionDeleteClcEvidences', function(){
-            //     let clc_evidencesId = $(this).attr('clc_evidences-id');
-            //     $("#txtDeleteClcEvidenceId").val(clc_evidencesId);
-            //     console.log(clc_evidencesId);
-            //     $("#modalDeleteClcEvidences").modal('hide');
-            // });
+            $(document).on('click', '#tabPmiCLC, #tabPmiFCRP, #tabPmiItCLC', function() {
+                let textAValue = $(this).attr('a-value');
 
-            // // The DeleteReport(); function is inside public/js/my_js/FileRecord.js
-            // // after the submission, the ajax request will pass the formDeleteReport(form) of data(input) in the uri(delete_report)
-            // // then the controller will handle that uri to use specific method called delete_report() inside FileRecordController
-            // $("#formDeleteClcEvidence").submit(function(event){
-            //     event.preventDefault();
-            //     DeleteClcEvidence();
-            // });
+                $('#btnShowAddClcEvidencesModal span').html("Add "+textAValue)
+                $('#btnShowAddClcEvidencesModal').val(textAValue);
+                dataTableClcEvidences.draw();
+                // console.log(btnValue);
+                // $('#modalAddClcEvidences').modal('show');
+                // $('#txtAddClcCategory').val(btnValue);
+            });
+
+            $(document).on('click', '#btnShowAddClcEvidencesModal', function() {
+                let btnValue = $(this).val();
+
+                // console.log(btnValue);
+                $('#modalAddClcEvidences').modal('show');
+                $('#txtAddClcCategory').val(btnValue);
+            });
 
         }); // JQUERY DOCUMENT READY END
     </script>                  

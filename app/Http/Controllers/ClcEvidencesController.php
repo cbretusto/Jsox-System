@@ -17,8 +17,10 @@ Use App\RapidXUser;
 
 class ClcEvidencesController extends Controller
 {
-    public function view_clc_evidences(){
-        $clc_evidences = ClcEvidences::where('logdel',0)->get();
+    public function view_clc_evidences(Request $request){
+        $clc_evidences = ClcEvidences::where('logdel',0)
+        ->where('clc_category', $request->title)
+        ->get();
         // return $clc_evidences;
         return DataTables::of($clc_evidences)
 
@@ -220,8 +222,8 @@ class ClcEvidencesController extends Controller
 
                 ClcEvidences::insert([
                     'date_uploaded' => $request->date_uploaded,
-                    'fiscal_year'          => $request->fiscal_year,
-                    'audit_period'   => $request->audit_period,
+                    'fiscal_year'   => $request->fiscal_year,
+                    'audit_period'  => $request->audit_period,
                     'clc_category'  => $request->clc_category,
                     'uploaded_by'   => $request->uploaded_by,
                     'uploaded_file' => $multiple_file_uploaded,
@@ -236,10 +238,10 @@ class ClcEvidencesController extends Controller
 
     //====================================== DOWNLOAD FILE ======================================
     public function download_file_clc_evidence(Request $request, $id){
-        // $clc_evidences = ClcEvidences::where('id', $id)->first();
-        // $file =  storage_path() . "/app/public/clc_evidences/" . $id;
+        $clc_evidences = ClcEvidences::where('id', $id)->first();
+        $file =  storage_path() . "/app/public/clc_evidences/" . $id;
         // return $clc_evidences;
-        // return Response::download($file, "test");  
+        return Response::download($file);  
     }
 
     //============================== GET CLC CATEGORY BY ID TO EDIT ==============================
@@ -251,13 +253,11 @@ class ClcEvidencesController extends Controller
     // ========================================= EDIT CLC EVIDENCE ===================================================
     public function edit_clc_evidences(Request $request){
         date_default_timezone_set('Asia/Manila');
-        // session_start();
         
         $data = $request->all();
-
         $rules = [
-            'clc_category'   => 'required|string|max:255',
-            'uploaded_file'   => 'required',
+            'clc_category'  => 'required|string|max:255',
+            'uploaded_file' => 'required',
         ];
 
         $validator = Validator::make($data, $rules);
@@ -277,8 +277,8 @@ class ClcEvidencesController extends Controller
                 ClcEvidences::where('id', $request->clc_evidences_id)
                 ->update([
                     'date_uploaded' => $request->date_uploaded,
-                    'fiscal_year'          => $request->fiscal_year,
-                    'audit_period'   => $request->audit_period,
+                    'fiscal_year'   => $request->fiscal_year,
+                    'audit_period'  => $request->audit_period,
                     'clc_category'  => $request->clc_category,
                     'updated_by'    => $request->updated_by,
                     'uploaded_file' => $multiple_file_uploaded,

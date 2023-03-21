@@ -341,7 +341,7 @@ class PlcCapaController extends Controller{
                         for($b = 0; $b < count($single_dic_capa_analysis); $b++){
                             $single_original_filename_dic_capa_analysis = $single_dic_capa_analysis[$b]->getClientOriginalName();
                             array_push($single_dic_capa_analysis_array, $single_original_filename_dic_capa_analysis);
-                            Storage::putFileAs('public/plc_sa_capa_analysis_attachment', $single_dic_capa_analysis[$b],  $single_original_filename_dic_capa_analysis);
+                            Storage::putFileAs('public/plc_sa_capa_analysis_attachment', $single_dic_capa_analysis[$b], $single_original_filename_dic_capa_analysis);
                         }
                         $single_upload_dic_capa_analysis_attachment = implode(', ', $single_dic_capa_analysis_array);
                     }else{
@@ -355,7 +355,7 @@ class PlcCapaController extends Controller{
                         for($bb = 0; $bb < count($single_dic_corrective_action); $bb++){
                             $single_original_filename_dic_corrective_action = $single_dic_corrective_action[$bb]->getClientOriginalName();
                             array_push($single_dic_corrective_action_array, $single_original_filename_dic_corrective_action);
-                            Storage::putFileAs('public/plc_sa_corrective_action_attachment', $single_dic_corrective_action[$bb],  $single_original_filename_dic_corrective_action);
+                            Storage::putFileAs('public/plc_sa_corrective_action_attachment', $single_dic_corrective_action[$bb], $single_original_filename_dic_corrective_action);
                         }
                         $single_upload_dic_corrective_action_attachment = implode(', ', $single_dic_corrective_action_array);
                     }else{
@@ -369,7 +369,7 @@ class PlcCapaController extends Controller{
                         for($bbb = 0; $bbb < count($single_dic_preventive_action); $bbb++){
                             $single_original_filename_dic_preventive_action = $single_dic_preventive_action[$bbb]->getClientOriginalName();
                             array_push($single_dic_preventive_action_array, $single_original_filename_dic_preventive_action);
-                            Storage::putFileAs('public/plc_sa_preventive_action_attachment', $single_dic_preventive_action[$bbb],  $single_original_filename_dic_preventive_action);
+                            Storage::putFileAs('public/plc_sa_preventive_action_attachment', $single_dic_preventive_action[$bbb], $single_original_filename_dic_preventive_action);
                         }
                         $single_upload_dic_preventive_action_attachment = implode(', ', $single_dic_preventive_action_array);
                     }else{
@@ -383,7 +383,7 @@ class PlcCapaController extends Controller{
                         for($bbbb = 0; $bbbb < count($single_dic_statement_of_finding); $bbbb++){
                             $single_original_filename_dic_statement_of_findings = $single_dic_statement_of_finding[$bbbb]->getClientOriginalName();
                             array_push($single_dic_statement_of_findings_array, $single_original_filename_dic_statement_of_findings);
-                            Storage::putFileAs('public/plc_sa_capa_statement_of_findings', $single_dic_statement_of_finding[$bbbb],  $single_original_filename_dic_statement_of_findings);
+                            Storage::putFileAs('public/plc_sa_capa_statement_of_findings', $single_dic_statement_of_finding[$bbbb], $single_original_filename_dic_statement_of_findings);
                         }
                         $single_upload_dic_statement_of_findings_attachment = implode(', ', $single_dic_statement_of_findings_array);
                     }else{
@@ -426,7 +426,7 @@ class PlcCapaController extends Controller{
                             for($c = 0; $c < count($multiple_oec_capa_analysis); $c++){
                                 $multiple_original_filename_oec_capa_analysis = $multiple_oec_capa_analysis[$c]->getClientOriginalName();
                                 array_push($multiple_oec_capa_analysis_array, $multiple_original_filename_oec_capa_analysis);
-                                Storage::putFileAs('public/plc_sa_capa_analysis_attachment', $multiple_oec_capa_analysis[$c],  $multiple_original_filename_oec_capa_analysis);
+                                Storage::putFileAs('public/plc_sa_capa_analysis_attachment', $multiple_oec_capa_analysis[$c], $multiple_original_filename_oec_capa_analysis);
                             }
                             $multiple_upload_oec_capa_analysis_attachment = implode(', ', $multiple_oec_capa_analysis_array);
                         }else{
@@ -440,7 +440,7 @@ class PlcCapaController extends Controller{
                             for($cc = 0; $cc < count($multiple_oec_corrective_action); $cc++){
                                 $multiple_original_filename_oec_corrective_action = $multiple_oec_corrective_action[$cc]->getClientOriginalName();
                                 array_push($multiple_oec_corrective_action_array, $multiple_original_filename_oec_corrective_action);
-                                Storage::putFileAs('public/plc_sa_corrective_action_attachment', $multiple_oec_corrective_action[$cc],  $multiple_original_filename_oec_corrective_action);
+                                Storage::putFileAs('public/plc_sa_corrective_action_attachment', $multiple_oec_corrective_action[$cc], $multiple_original_filename_oec_corrective_action);
                             }
                             $multiple_upload_oec_corrective_action_attachment = implode(', ', $multiple_oec_corrective_action_array);
                         }else{
@@ -454,7 +454,7 @@ class PlcCapaController extends Controller{
                             for($ccc = 0; $ccc < count($multiple_oec_preventive_action); $ccc++){
                                 $multiple_original_filename_oec_preventive_action = $multiple_oec_preventive_action[$ccc]->getClientOriginalName();
                                 array_push($multiple_oec_preventive_action_array, $multiple_original_filename_oec_preventive_action);
-                                Storage::putFileAs('public/plc_sa_preventive_action_attachment', $multiple_oec_preventive_action[$ccc],  $multiple_original_filename_oec_preventive_action);
+                                Storage::putFileAs('public/plc_sa_preventive_action_attachment', $multiple_oec_preventive_action[$ccc], $multiple_original_filename_oec_preventive_action);
                             }
                             $multiple_upload_oec_preventive_action_attachment = implode(', ', $multiple_oec_preventive_action_array);
                         }else{
@@ -468,7 +468,7 @@ class PlcCapaController extends Controller{
                             for($cccc = 0; $cccc < count($multiple_oec_statement_of_finding); $cccc++){
                                 $multiple_original_filename_oec_statement_of_findings = $multiple_oec_statement_of_finding[$cccc]->getClientOriginalName();
                                 array_push($multiple_oec_statement_of_findings_array, $multiple_original_filename_oec_statement_of_findings);
-                                Storage::putFileAs('public/plc_sa_capa_statement_of_findings', $multiple_oec_statement_of_finding[$cccc],  $multiple_original_filename_oec_statement_of_findings);
+                                Storage::putFileAs('public/plc_sa_capa_statement_of_findings', $multiple_oec_statement_of_finding[$cccc], $multiple_original_filename_oec_statement_of_findings);
                             }
                             $multiple_upload_oec_statement_of_findings_attachment = implode(', ', $multiple_oec_statement_of_findings_array);
                         }else{
@@ -520,7 +520,7 @@ class PlcCapaController extends Controller{
                         for($dd = 0; $dd < count($single_oec_corrective_action); $dd++){
                             $single_original_filename_oec_corrective_action = $single_oec_corrective_action[$dd]->getClientOriginalName();
                             array_push($single_oec_corrective_action_array, $single_original_filename_oec_corrective_action);
-                            Storage::putFileAs('public/plc_sa_corrective_action_attachment', $single_oec_corrective_action[$dd],  $single_original_filename_oec_corrective_action);
+                            Storage::putFileAs('public/plc_sa_corrective_action_attachment', $single_oec_corrective_action[$dd], $single_original_filename_oec_corrective_action);
                         }
                         $single_upload_oec_corrective_action_attachment = implode(', ', $single_oec_corrective_action_array);
                     }else{
@@ -534,7 +534,7 @@ class PlcCapaController extends Controller{
                         for($ddd = 0; $ddd < count($single_oec_preventive_action); $ddd++){
                             $single_original_filename_oec_preventive_action = $single_oec_preventive_action[$ddd]->getClientOriginalName();
                             array_push($single_oec_preventive_action_array, $single_original_filename_oec_preventive_action);
-                            Storage::putFileAs('public/plc_sa_preventive_action_attachment', $single_oec_preventive_action[$ddd],  $single_original_filename_oec_preventive_action);
+                            Storage::putFileAs('public/plc_sa_preventive_action_attachment', $single_oec_preventive_action[$ddd], $single_original_filename_oec_preventive_action);
                         }
                         $single_upload_oec_preventive_action_attachment = implode(', ', $single_oec_preventive_action_array);
                     }else{
@@ -548,7 +548,7 @@ class PlcCapaController extends Controller{
                         for($dddd = 0; $dddd < count($single_oec_statement_of_finding); $dddd++){
                             $single_original_filename_oec_statement_of_findings = $single_oec_statement_of_finding[$dddd]->getClientOriginalName();
                             array_push($single_oec_statement_of_findings_array, $single_original_filename_oec_statement_of_findings);
-                            Storage::putFileAs('public/plc_sa_capa_statement_of_findings', $single_oec_statement_of_finding[$dddd],  $single_original_filename_oec_statement_of_findings);
+                            Storage::putFileAs('public/plc_sa_capa_statement_of_findings', $single_oec_statement_of_finding[$dddd], $single_original_filename_oec_statement_of_findings);
                         }
                         $single_upload_oec_statement_of_findings_attachment = implode(', ', $single_oec_statement_of_findings_array);
                     }else{
