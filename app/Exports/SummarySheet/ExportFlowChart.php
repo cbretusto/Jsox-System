@@ -202,32 +202,32 @@ class ExportFlowChart implements  FromView, WithTitle, WithEvents
                     $event->sheet->getColumnDimension('BB')->setWidth(2);
                     $event->sheet->getColumnDimension('BC')->setWidth(2);
 
-                    $event->sheet->setCellValue('B1','Process Code');
-                    $event->sheet->setCellValue('B2','Process Name');
-                    $event->sheet->setCellValue('B3','Process Owner');
-                    $event->sheet->setCellValue('K1',':');
-                    $event->sheet->setCellValue('K2',':');
-                    $event->sheet->setCellValue('K3',':');
-                    $event->sheet->setCellValue('AV4','Version');
-                    $event->sheet->setCellValue('BA4',':');
-                    $event->sheet->setCellValue('BB4',$flow_chart_details[0]->version_no);
-                    $event->sheet->getDelegate()->getStyle('AV4:BB4')->applyFromArray($arial_font12_bold);
-                    $event->sheet->getDelegate()->getStyle('B1:B3')->applyFromArray($arial_font12);
-                    $event->sheet->getDelegate()->getStyle('K1:K3')->applyFromArray($arial_font12);
-                    $event->sheet->getDelegate()->getStyle('M1:M3')->applyFromArray($arial_font12);
+                    // $event->sheet->setCellValue('B1','Process Code');
+                    // $event->sheet->setCellValue('B2','Process Name');
+                    // $event->sheet->setCellValue('B3','Process Owner');
+                    // $event->sheet->setCellValue('K1',':');
+                    // $event->sheet->setCellValue('K2',':');
+                    // $event->sheet->setCellValue('K3',':');
+                    // $event->sheet->setCellValue('AV4','Version');
+                    // $event->sheet->setCellValue('BA4',':');
+                    // $event->sheet->setCellValue('BB4',$flow_chart_details[0]->version_no);
+                    // $event->sheet->getDelegate()->getStyle('AV4:BB4')->applyFromArray($arial_font12_bold);
+                    // $event->sheet->getDelegate()->getStyle('B1:B3')->applyFromArray($arial_font12);
+                    // $event->sheet->getDelegate()->getStyle('K1:K3')->applyFromArray($arial_font12);
+                    // $event->sheet->getDelegate()->getStyle('M1:M3')->applyFromArray($arial_font12);
 
 
-                    $plc_category = $flow_chart_details[0]->plc_categories_details->plc_category;
-                    $process_code = substr($plc_category, 0,6);
-                    $process_name = substr($plc_category, 7);
+                    // $plc_category = $flow_chart_details[0]->plc_categories_details->plc_category;
+                    // $process_code = substr($plc_category, 0,6);
+                    // $process_name = substr($plc_category, 7);
 
-                    $process_owner = $flow_chart_details[0]->process_owner;
+                    // $process_owner = $flow_chart_details[0]->process_owner;
 
-                    // dd($process_owner);
+                    // // dd($process_owner);
 
-                    $event->sheet->setCellValue('M1',$process_code);
-                    $event->sheet->setCellValue('M2',$process_name);
-                    $event->sheet->setCellValue('M3',$process_owner);
+                    // $event->sheet->setCellValue('M1',$process_code);
+                    // $event->sheet->setCellValue('M2',$process_name);
+                    // $event->sheet->setCellValue('M3',$process_owner);
                     // $event->sheet->setCellValue('M3',);
 
                     if($flow_chart_details[0]->flow_chart != null){
@@ -238,7 +238,7 @@ class ExportFlowChart implements  FromView, WithTitle, WithEvents
                         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
                         $drawing->setPath(public_path(("/storage/flow_chart/".$flow_chart)));
                         $drawing->setWidth(750);
-                        $drawing->setCoordinates('A5');
+                        $drawing->setCoordinates('A2');
                         // $drawing->setOffsetY($dividedByLengthWithBreaks);
                         $drawing->setOffsetX(40);
                         $drawing->setWorksheet($event->sheet->getDelegate());

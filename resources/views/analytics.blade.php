@@ -27,15 +27,18 @@
                 <div class="col">
                     <select id="selectGraphToDisplayId" name="select_graph_to_display">
                         <option disabled selected>Select Graph to Display</option>
-                        <option value="PPC">PPC</option>
-                        <option value="PPC Warehouse">PPC WHSE - TS/CN</option>
-                        <option value="PPS PPC">PPC WHSE - PPS</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Logistics">Logistics</option>
+                                    <option value="Logistics">Logistics</option>
+                                    <option value="PPC-TSCN">PPC TS/CN</option>
+                                    <option value="Warehouse-TSCN">Warehouse-TS/CN</option>
+                                    <option value="PPS-Production">PPS-Production</option>
+                                    <option value="PPS-WHSE">PPS-Warehouse</option>
+                                    <option value="IAS">IAS</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="PPS-PPC">PPS-PPC</option>
 
                     </select><br><br>
 
-                    <button class="btn btn-primary margin-top: -200px;" data-toggle="modal" data-target="#modalExportNgReport"><i class="fas fa-download"></i> Export NG Report
+                    {{-- <button class="btn btn-primary margin-top: -200px;" data-toggle="modal" data-target="#modalExportNgReport"><i class="fas fa-download"></i> Export NG Report --}}
                     </button>
                 </div>
             </div>
@@ -46,13 +49,14 @@
             <section class="content">
                 <div class="container-fluid">
 
-                    <div style="margin-left: 200px;" id="allSectionChartId"></div>
+                    <div style="margin-left: 200px; text-align: center;"  id="allSectionChartId"></div>
+                    <div style="margin-left: 200px; text-align: center; margin-top: 20px;"  id="companyWideFindingsChartId"></div>
                     <div style="row">
-                        <div style="margin-left: 20px; margin-top: 10px;" id="ppcChartId"></div>
-                        <div style="margin-left: 525px; margin-top: -200px;" id="ppcWhseTsCnChartId"></div>
-                        <div style="margin-left: 1035px; margin-top: -200px;" id="ppcWhsePpsChartId"></div>
-                        <div style="margin-left: 300px; margin-top: 30px;" id="financeChartId"></div>
-                        <div style="margin-left: 850px; margin-top: -200px;" id="logisticsChartId"></div>
+                        <div hidden style="margin-left: 20px; margin-top: 10px;" id="ppcChartId"></div>
+                        <div hidden style="margin-left: 525px; margin-top: -200px;" id="ppcWhseTsCnChartId"></div>
+                        <div hidden style="margin-left: 1035px; margin-top: -200px;" id="ppcWhsePpsChartId"></div>
+                        <div hidden style="margin-left: 300px; margin-top: 30px;" id="financeChartId"></div>
+                        <div hidden style="margin-left: 850px; margin-top: -200px;" id="logisticsChartId"></div>
                     </div>
 
                 </div>
@@ -61,7 +65,7 @@
         </div>
 
          <!-- MODALS -->
-    <div class="modal fade" id="modalExportNgReport">
+    {{-- <div class="modal fade" id="modalExportNgReport">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
@@ -87,16 +91,17 @@
                                     ?>
                                 </select>
                                 <select name="select_dept" id="selectDeptId">
-                                    <option value="PPC">PPC</option>
-                                    <option value="PPC Warehouse">PPC WHSE - TS/CN</option>
-                                    <option value="PPS PPC">PPC WHSE - PPS</option>
-                                    <option value="Finance">Finance</option>
                                     <option value="Logistics">Logistics</option>
+                                    <option value="PPC-TS/CN">PPC TS/CN</option>
+                                    <option value="Warehouse-TSCN">Warehouse-TS/CN</option>
+                                    <option value="PPS-Production">PPS-Production</option>
+                                    <option value="PPS-WHSE">PPS-WHSE</option>
+                                    <option value="IAS">IAS</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="PPS-PPC">PPS-PPC</option>
                                 </select>
 
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -106,7 +111,7 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    </div><!-- /.modal --> --}}
 
 
          <!-- MODALS -->
@@ -132,7 +137,7 @@
                             </div>
 
                             <div class="col-sm-6">
-                                <table id="viewPPSData" class="table table-lg table-bordered table-striped table-hover w-100">
+                                <table id="viewData" class="table table-lg table-bordered table-striped table-hover w-100">
                                     <thead>
                                         <tr style="text-align:center">
                                         <th>Year</th>
@@ -154,472 +159,275 @@
 
 @section('js_content')
     <script type="text/javascript">
-
-
-        let data_ppc,
-            year;
-
-        let data_ppc_whse_tscn,
-            tscn_year;
-
-        let data_ppc_pps_whse,
-        ppsc_year;
-
-        let finance_data,
-        fin_year;
-
-        let logistics_data,
-        log_year;
-
+        let chartData, year;
 
         google.charts.load('current', {packages: ['corechart', 'bar']});
         google.charts.setOnLoadCallback(drawChartForAllDeptNG);
-        google.charts.setOnLoadCallback(drawPpcChart);
-        google.charts.setOnLoadCallback(drawPpcWhseTsCnChart);
-        google.charts.setOnLoadCallback(drawPpcWhsePpsChart);
-        google.charts.setOnLoadCallback(drawFinanceChart);
-        google.charts.setOnLoadCallback(drawLogiscticsChart);
+        google.charts.setOnLoadCallback(drawChartForCompanyWideFindings);
 
         function drawChartForAllDeptNG() {
-
-            var data = google.visualization.arrayToDataTable([
+            // 'Logistics','PPC-TSCN', 'Warehouse-TSCN', 'PPS-Production', 'PPS-WHSE', 'IAS', 'Finance', 'PPS-PPC'
+            let array = [
                 ['NG Counts',
-                'PPC', { role: 'annotation' },
-                'PPC WHSE - TS/CN', {role: 'annotation'},
-                'PPC WHSE - PPS', {role: 'annotation'},
-                'FINANCE', {role: 'annotation'},
-                'LOGISTICS',{role: 'annotation'}
+                'Logistics', { role: 'annotation' },
+                'PPC-TSCN', {role: 'annotation'},
+                'Warehouse-TSCN', {role: 'annotation'},
+                'PPS-Production', {role: 'annotation'},
+                 'PPS-WHSE', {role: 'annotation'},
+                'IAS',{role: 'annotation'},
+                'Finance',{role: 'annotation'},
+                'PPS-PPC',{role: 'annotation'}
                 ],
+                ['2013', 6,'6',3,'3',3,'3',0,'',0,'',0,'',11,'11',0,''],
+                ['2014', 1,'1',0,'',2,'2',0,'',1,'1',1,'1',1,'1',0,''],
+                ['2015', 3,'3',0,'',3,'3',0,'',7,'7',0,'',5,'5',2,'2'],
+                ['2016', 1,'1',1,'1',5,'5',2,'2',4,'4',0,'',4,'4',0,''],
+                ['2017', 1,'1',1,'1',5,'5',5,'5',1,'1',0,'',2,'2',0,''],
+                ['2018', 0,'',1,'1',4,'4',1,'1',3,'3',0,'',2,'2',1,'1'],
+                ['2019', 2,'2',2,'2',6,'6',0,'',1,'1',0,'',3,'3',4,'4'],
+                ['2020', 1,'1',2,'2',2,'2',0,'',0,'',0,'',1,'1',2,'2'],
+                ['2021', 2,'2',4,'4',2,'2',0,'',0,'',0,'',2,'2',0,''],
 
-                ['2018', 8, '8',6,'6',8,'8',7,'7',4,'1'],
-                ['2019', 5, '5',5,'5',6,'6',5,'5',4,'1'],
-                ['2020', 4, '4',4,'4',4,'4',5,'5',4,'1'],
-                ['2021', 5, '5',4,'4',4,'4',4,'4',4,'1'],
-
-            ]);
-
-            var options = {
-                title: "Section with NG Reports",
-                width: 1200,
-                height: 400,
-                legend: {
-                    position: 'bottom',
-                    maxLines: 80,
-                    textStyle: {
-                    color: 'black',
-                    fontSize: 16
+            ]
+            $.ajax({
+                type: "get",
+                url: "get_data_for_chart_per_section",
+                // data: "data",
+                dataType: "json",
+                success: function (response) {
+                    for(let x =0; x<response['aray'].length;x++){
+                        // console.log(response['aray'][x]);
+                        array.push(response['aray'][x]);
                     }
-
-                },
-
-                bar: { groupWidth: '75%' },
-                isStacked: true,
-            };
-
-            var chart = new google.visualization.ColumnChart(document.getElementById('allSectionChartId'));
-            chart.draw(data, options);
-        }
-
-        function drawPpcChart() {
-            $.ajax({
-                url: "get_ppc_section_data",
-                type: "get",
-                // data: {
-                //     select_id : '1'
-                // },
-                dataType: "json",
-                success: function (response) {
-                    // console.log(response);
-                    data_ppc = response['ppc_section_data'];
-                    ppc_year = response['ppc_year'];
+                    // console.log(array);
                 }
             });
-
-            var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Element');
-                data.addColumn('number', 'NG');
-                data.addColumn({ role: 'style' });
-                data.addColumn({ role: 'annotation' });
-
-                setTimeout(() => {
-                let arrayTo = [];
-                // console.log(year.length)
-                for(let i = 0; i < ppc_year.length; i++){
-                    blue = "#3864cc";
-                    ngCount = data_ppc[i].length;
-                    ngCount_annotation = ngCount.toString();
-                    let dataForChart = [ppc_year[i],data_ppc[i].length,blue,ngCount_annotation];
-                    arrayTo.push(dataForChart);
-                }
-
-                data.addRows(arrayTo);
-
-            var view = new google.visualization.DataView(data);
-
-            var options = {
-                title: "PPC Section",
-                width: 500,
-                height: 200,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-            };
-
-            var options2 = {
-                // title: "PPC Section",
-                width: 800,
-                height: 400,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-                backgroundColor: '#f1f8e9',
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById("ppcChartId"));
-            var chart2 = new google.visualization.ColumnChart(document.getElementById("ppcChartId2"));
-            chart.draw(view, options);
-            chart2.draw(view, options2);
-            }, 1000);
-
-        }
-
-        function drawPpcWhseTsCnChart() {
-
-            $.ajax({
-                url: "get_ppc_whse_tscn_data",
-                type: "get",
-                // data: {
-                //     select_id : '1'
-                // },
-                dataType: "json",
-                success: function (response) {
-                    // console.log(response);
-                    data_ppc_whse_tscn = response['ppc_whse_tscn_data'];
-                    tscn_year = response['ppc_whse_tscn_year'];
-                }
-            });
-
-            var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Element');
-                data.addColumn('number', 'NG');
-                data.addColumn({ role: 'style' });
-                data.addColumn({ role: 'annotation' });
-
-
             setTimeout(() => {
-                let arrayTo = [];
-                // console.log(year.length)
-                for(let i = 0; i < tscn_year.length; i++){
-                    red_orange = "#e03c14";
-                    ngCount = data_ppc_whse_tscn[i].length;
-                    ngCount_annotation = ngCount.toString();
-                    let dataForChart = [tscn_year[i],data_ppc_whse_tscn[i].length,red_orange,ngCount_annotation];
-                    arrayTo.push(dataForChart);
-                }
-
-
-                data.addRows(arrayTo);
-
-            var view = new google.visualization.DataView(data);
-
-            var options = {
-                title: "PPC WHSE - TS/CN",
-                width: 500,
-                height: 200,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-            };
-            var options2 = {
-                // title: "PPC WHSE - TS/CN",
-                width: 800,
-                height: 400,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-                backgroundColor: '#f1f8e9',
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById("ppcWhseTsCnChartId"));
-            var chart2 = new google.visualization.ColumnChart(document.getElementById("ppcWhseTsCnChartId2"));
-            chart.draw(view, options);
-            chart2.draw(view, options2);
-            }, 1000);
-
-        }
-
-        function drawPpcWhsePpsChart() {
-
-            $.ajax({
-                url: "get_ppc_whse_pps_data",
-                type: "get",
-                // data: {
-                //     select_id : '1'
-                // },
-                dataType: "json",
-                success: function (response) {
-                    // console.log(response);
-                    data_ppc_pps_whse = response['ppc_whse_pps_data'];
-                    ppsc_year = response['ppc_whse_pps_year'];
-                }
-            });
-
-            var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Element');
-                data.addColumn('number', 'NG');
-                data.addColumn({ role: 'style' });
-                data.addColumn({ role: 'annotation' });
-
-
-            setTimeout(() => {
-
-                let arrayTo = [];
-                // console.log(year.length)
-                for(let i = 0; i < ppsc_year.length; i++){
-                    y_orange = "#ff9c04";
-                    ngCount = data_ppc_pps_whse[i].length;
-                    ngCount_annotation = ngCount.toString();
-                    let dataForChart = [ppsc_year[i],data_ppc_pps_whse[i].length,y_orange,ngCount_annotation];
-                    arrayTo.push(dataForChart);
-                }
-
-                data.addRows(arrayTo);
-
-            var view = new google.visualization.DataView(data);
-
-            var options = {
-                title: "PPC WHSE - PPS",
-                width: 500,
-                height: 200,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-            };
-            var options2 = {
-                // title: "PPC WHSE - PPS",
-                width: 800,
-                height: 400,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-                backgroundColor: '#f1f8e9',
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById("ppcWhsePpsChartId"));
-            var chart2 = new google.visualization.ColumnChart(document.getElementById("ppcWhsePpsChartId2"));
-            chart.draw(view, options);
-            chart2.draw(view, options2);
-            }, 1000);
-
-            }
-
-            function drawFinanceChart() {
-
-                $.ajax({
-                    url: "get_finance_data",
-                    type: "get",
-                    // data: {
-                    //     select_id : '1'
-                    // },
-                    dataType: "json",
-                    success: function (response) {
-                        // console.log(response);
-                        finance_data = response['finance_data'];
-                        fin_year = response['finance_year'];
-                    }
-                });
-
-                var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Element');
-                    data.addColumn('number', 'NG');
-                    data.addColumn({ role: 'style' });
-                    data.addColumn({ role: 'annotation' });
-
-
-                setTimeout(() => {
-
-                let arrayTo = [];
-                // console.log(year.length)
-                for(let i = 0; i < fin_year.length; i++){
-                    green = "#18941c";
-                    ngCount = finance_data[i].length;
-                    ngCount_annotation = ngCount.toString();
-                    let dataForChart = [fin_year[i],finance_data[i].length,green,ngCount_annotation];
-                    arrayTo.push(dataForChart);
-                }
-                    data.addRows(arrayTo);
-
-                var view = new google.visualization.DataView(data);
+                var data = google.visualization.arrayToDataTable(array);
 
                 var options = {
-                    title: "Finance",
-                    width: 500,
-                    height: 200,
-                    bar: {groupWidth: "95%"},
-                    legend: { position: "none" },
+                    title: "Audit Findings Summary Per Section",
+                    width: 1200,
+                    height: 400,
+                    legend: { position: 'right', maxLines: 3},
+                        textStyle: {
+                        color: 'black',
+                        fontSize: 16
+                        },
+                    vAxis: {
+                        ticks: [0, 10, 20, 30]
+                    },
+                    bar: { groupWidth: '75%' },
+                    isStacked: true,
                 };
-                var options2 = {
-                // title: "Finance",
-                width: 800,
-                height: 400,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-                backgroundColor: '#f1f8e9',
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('allSectionChartId'));
+                chart.draw(data, options);
+            }, 300);
+           
+        }
+
+        function drawChartForCompanyWideFindings() {
+            // 'Logistics','PPC-TSCN', 'Warehouse-TSCN', 'PPS-Production', 'PPS-WHSE', 'IAS', 'Finance', 'PPS-PPC'
+            let array = [
+                ['NG Counts',
+                'PMI', { role: 'annotation' },
+                'DTT', {role: 'annotation'},
+                'YEC', {role: 'annotation'},
+                ],
+
+                ['2013', 22,'22',1,'1',0,''],
+                ['2014', 5,'5',0,'',1,'1'],
+                ['2015', 20,'20',0,'',0,''],
+                ['2016', 16,'16',1,'1',0,''],
+                ['2017', 15,'15',0,'',0,''],
+                ['2018', 11,'11',1,'1',0,''],
+                ['2019', 18,'18',0,'',0,''],
+                ['2020', 8,'8',0,'',0,''],
+                ['2021', 9,'9',0,'',0,''],
+
+
+            ]
+            // $.ajax({
+            //     type: "get",
+            //     url: "get_data_for_chart_per_section",
+            //     // data: "data",
+            //     dataType: "json",
+            //     success: function (response) {
+            //         for(let x =0; x<response['aray'].length;x++){
+            //             // console.log(response['aray'][x]);
+            //             array.push(response['aray'][x]);
+            //         }
+            //         // console.log(array);
+            //     }
+            // });
+            setTimeout(() => {
+                var data = google.visualization.arrayToDataTable(array);
+
+                var options = {
+                    title: "Co-Wide Audit Findings Summary",
+                    width: 1200,
+                    height: 400,
+                    legend: { position: 'right', maxLines: 3},
+
+                        textStyle: {
+                        color: 'black',
+                        fontSize: 16
+                        },
+                        series: {
+                        0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+                        1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+                    },
+                    vAxis: {
+                        ticks: [0, 10, 20,30]
+                    },
+                    bar: { groupWidth: '75%' },
+                    isStacked: true,
                 };
-                var chart = new google.visualization.ColumnChart(document.getElementById("financeChartId"));
-                var chart2 = new google.visualization.ColumnChart(document.getElementById("financeChartId2"));
-                chart.draw(view, options);
-                chart2.draw(view, options2);
-                }, 1000);
 
-            }
+                var chart = new google.visualization.ColumnChart(document.getElementById('companyWideFindingsChartId'));
+                chart.draw(data, options);
+            }, 300);
+           
+        }
 
-            function drawLogiscticsChart() {
+        function ajaxCall(){
+            $.ajax({
+                url: "get_logistics_data",
+                type: "get",
+                data: {
+                    'department' : $('#selectGraphToDisplayId').find(":selected").val()
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
 
-                $.ajax({
-                    url: "get_logistics_data",
-                    type: "get",
-                    // data: {
-                    //     select_id : '1'
-                    // },
-                    dataType: "json",
-                    success: function (response) {
-                        // console.log(response);
-                        logistics_data = response['logistics_data'];
-                        log_year = response['logistics_year'];
-                    }
-                });
+                    chartData = response['logistics_data'];
+                    year = response['logistics_year'];
+                }
+            });
+
+        }
+
+            function drawChartsPerSection() {
+                ajaxCall();
+
 
                 var data = new google.visualization.DataTable();
                     data.addColumn('string', 'Element');
                     data.addColumn('number', 'NG');
                     data.addColumn({ role: 'style' });
                     data.addColumn({ role: 'annotation' });
+
+                var colorR = Math.floor((Math.random() * 256));
+                var colorG = Math.floor((Math.random() * 256));
+                var colorB = Math.floor((Math.random() * 256));
+                var random_color = "rgb(" + colorR + "," + colorG + "," + colorB + ")";
 
 
                 setTimeout(() => {
 
                     let arrayTo = [];
-                // console.log(year.length)
-                    for(let i = 0; i < log_year.length; i++){
-                        violet = "#a0049c";
-                        ngCount = logistics_data[i].length;
+                // console.log(log_year.length)
+                    for(let i = 0; i < year.length; i++){
+                        // violet = "#a0049c";
+                        ngCount = chartData[i].length;
+                        console.log("ng count", ngCount);
                         ngCount_annotation = ngCount.toString();
-                        let dataForChart = [log_year[i],logistics_data[i].length,violet,ngCount_annotation];
+                        let dataForChart = [year[i],chartData[i].length,random_color,ngCount_annotation];
                         arrayTo.push(dataForChart);
                     }
 
-                    //===============FOR RANDOM COLOR=========================//
+                    data.addRows(arrayTo);
 
-                    //     // var colorR = Math.floor((Math.random() * 256));
-                    //     // var colorG = Math.floor((Math.random() * 256));
-                    //     // var colorB = Math.floor((Math.random() * 256));
-                    //     // var random_color = "rgb(" + colorR + "," + colorG + "," + colorB + ")";
+                    var view = new google.visualization.DataView(data);
 
-
-                data.addRows(arrayTo);
-
-                var view = new google.visualization.DataView(data);
-
-                var options = {
-                    title: "Logistics",
-                    width: 500,
-                    height: 200,
+                    var options = {
+                        // title: "Logistics",
+                        width: 500,
+                        height: 200,
+                        bar: {groupWidth: "95%"},
+                        legend: { position: "none" },
+                        vAxis: {
+                            format: 'none'
+                        },
+                    };
+                    var options2 = {
+                    // title: "Logistics",
+                    width: 800,
+                    height: 400,
                     bar: {groupWidth: "95%"},
                     legend: { position: "none" },
-                };
-                var options2 = {
-                // title: "Logistics",
-                width: 800,
-                height: 400,
-                bar: {groupWidth: "95%"},
-                legend: { position: "none" },
-                backgroundColor: '#f1f8e9',
-                };
-                var chart = new google.visualization.ColumnChart(document.getElementById("logisticsChartId"));
-                var chart2 = new google.visualization.ColumnChart(document.getElementById("logisticsChartId2"));
-                chart.draw(view, options);
-                chart2.draw(view, options2);
+                    backgroundColor: '#f1f8e9',
+                    };
+                    var chart = new google.visualization.ColumnChart(document.getElementById("logisticsChartId"));
+                    var chart2 = new google.visualization.ColumnChart(document.getElementById("logisticsChartId2"));
+                    chart.draw(view, options);
+                    chart2.draw(view, options2);
                 }, 1000);
 
             }
 
-            $('#btnExportNgReport').on('click', function(){
+            // $('#btnExportNgReport').on('click', function(){
 
-            // console.log($('#formViewWPRequest').serialize());
-            let year_id = $('#selectYearWithNgId').val();
-            let dept_id = $('#selectDeptId').val();
-            // let selected_month = $('#selectMonthId').val();
+            // // console.log($('#formViewWPRequest').serialize());
+            // let year_id = $('#selectYearWithNgId').val();
+            // let dept_id = $('#selectDeptId').val();
+            // // let selected_month = $('#selectMonthId').val();
 
-            window.location.href = `export_ng_report/${year_id}/${dept_id}`;
-            // console.log(year_id);
-            // console.log(selected_month);
-            $('#modalExportNgReport').modal('hide');
+            // window.location.href = `export_ng_report/${year_id}/${dept_id}`;
+            // // console.log(year_id);
+            // // console.log(selected_month);
+            // $('#modalExportNgReport').modal('hide');
+            
+            // });
 
 
-            });
             let section = "";
             $(function() {
-
                 $('#selectGraphToDisplayId').on('change',function(e){
                     // $(this).val('');
-                    let first = $("#selectGraphToDisplayId option:first").val();
                     $("#section_title").text($(this).find(":selected").val());
                     section = ($(this).find(":selected").val());
                     console.log(section);
                     $('#modalShowGraph').modal("show");
-                    if($('#selectGraphToDisplayId').val() == 'PPC') {
-                        $(this).val(first);
-                        $(this).find(":selected").text($(this).find(":selected").val());
-                        // $(this).val('PPC');
-                        $('#ppcChartId2').show();
-                        $('#ppcWhseTsCnChartId2').hide();
-                        $('#ppcWhsePpsChartId2').hide();
-                        $('#financeChartId2').hide();
-                        $('#logisticsChartId2').hide();
+                    dataTableLogisticsData.draw();
 
-                    } else if($('#selectGraphToDisplayId').val() == 'PPC Warehouse'){
-                        $(this).val(first);
-                        $(this).find(":selected").text($(this).find(":selected").val());
-                        $('#ppcWhseTsCnChartId2').show();
-                        $('#ppcChartId2').hide();
-                        $('#ppcWhsePpsChartId2').hide();
-                        $('#financeChartId2').hide();
-                        $('#logisticsChartId2').hide();
+                    if($('#selectGraphToDisplayId').val() == 'PPC-TSCN') {
+                        google.charts.setOnLoadCallback(drawChartsPerSection);
+                    } else if($('#selectGraphToDisplayId').val() == 'Warehouse-TSCN'){
+                        google.charts.setOnLoadCallback(drawChartsPerSection);
                     }
-                    else if($('#selectGraphToDisplayId').val() == 'PPS PPC'){
-                        $(this).val(first);
-                        $(this).find(":selected").text($(this).find(":selected").val());
-                        $('#ppcWhsePpsChartId2').show();
-                        $('#ppcChartId2').hide();
-                        $('#ppcWhseTsCnChartId2').hide();
-                        $('#financeChartId2').hide();
-                        $('#logisticsChartId2').hide();
+                    else if($('#selectGraphToDisplayId').val() == 'PPS-Production'){
+                        google.charts.setOnLoadCallback(drawChartsPerSection);
                     } else if($('#selectGraphToDisplayId').val() == 'Finance'){
-                        $(this).val(first);
-                        $(this).find(":selected").text($(this).find(":selected").val());
-                        $('#financeChartId2').show();
-                        $('#ppcChartId2').hide();
-                        $('#ppcWhsePpsChartId2').hide();
-                        $('#ppcWhseTsCnChartId2').hide();
-                        $('#logisticsChartId2').hide();
+                        google.charts.setOnLoadCallback(drawChartsPerSection);
                     } else if($('#selectGraphToDisplayId').val() == 'Logistics'){
-                        $(this).val(first);
-                        // console.log($('#selectGraphToDisplayId').val());
-                        $(this).find(":selected").text($(this).find(":selected").val());
-                        $('#logisticsChartId2').show();
-                        $('#ppcWhsePpsChartId2').hide();
-                        $('#ppcChartId2').hide();
-                        $('#ppcWhseTsCnChartId2').hide();
-                        $('#financeChartId2').hide();
-
+                        google.charts.setOnLoadCallback(drawChartsPerSection);
+                    }
+                    else if($('#selectGraphToDisplayId').val() == 'PPS-WHSE'){
+                    google.charts.setOnLoadCallback(drawChartsPerSection);
+                    }else if($('#selectGraphToDisplayId').val() == 'PPS-PPC'){
+                    google.charts.setOnLoadCallback(drawChartsPerSection);
+                    }
+                    else if($('#selectGraphToDisplayId').val() == 'IAS'){
+                    google.charts.setOnLoadCallback(drawChartsPerSection);
                     }
 
-                    dataTablePpcData.draw();
                 });
             });
 
-            // $('#modalShowGraph').on('hidden.bs.modal', function () {
-            //     location.reload();
-            // })
+            $('#modalShowGraph').on('hidden.bs.modal', function () {
+            location.reload();
+            })
 
 
-            dataTablePpcData = $("#viewPPSData").DataTable({
+
+            dataTableLogisticsData = $("#viewData").DataTable({
                 "processing" : false,
                 "serverSide" : true,
                 "ajax" : {
-                    url: "view_pps_data",
+                    url: "view_logistics_data",
 
                     data: function (param){
                         param.id = section;
@@ -630,10 +438,12 @@
                 },
                 "columns":[
                     { "data" : "year" },
-                    { "data" : "control_no" },
+                    { "data" : "control_id" },
                     { "data" : "summary_of_findings" },
                 ],
             });// END OF DATATABLE
+
+
 
     </script>
 @endsection

@@ -5,6 +5,7 @@ use App\PlcCategory;
 use App\PlcCapaStatementOfFindings;
 use App\PLCModuleSAOecAssessmentDetailsAndFindings;
 use App\PLCModuleSADicAssessmentDetailsAndFindings;
+use App\PLCModuleRCMInternalControl;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +35,10 @@ class PlcCapa extends Model
 
     public function capa_details(){
         return $this->hasMany(PlcCapaStatementOfFindings::class, 'plc_capa_id', 'id');
+    }
+
+    public function control_id(){
+        return $this->hasMany(PLCModuleRCMInternalControl::class,'rcm_id','rcm_id')->where('status', '0')->where('logdel', 0);
     }
 
     // public function plc_sa_capa_analysis_details(){

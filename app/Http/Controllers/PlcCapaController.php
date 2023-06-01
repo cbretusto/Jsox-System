@@ -18,6 +18,7 @@ use App\PlcCapaEvidences;
 use App\UserManagement;
 use App\PLCModuleRCM;
 use App\PLCModuleSA;
+use App\PLCModule;
 use App\RapidXUser;
 use App\PlcCapa;
 
@@ -179,19 +180,19 @@ class PlcCapaController extends Controller{
             }
             return $result;
         })
+        ->rawColumns([
+            'action',
+            'control_id',
+            'internal_control',
+            'statement_of_findings',
+            'capa_analysis',
+            'corrective_action',
+            'preventive_action',
+            'commitment_date',
+            'in_charge'
+        ])
+        ->make(true);
 
-            ->rawColumns([
-                'action',
-                'control_id',
-                'internal_control',
-                'statement_of_findings',
-                'capa_analysis',
-                'corrective_action',
-                'preventive_action',
-                'commitment_date',
-                'in_charge'
-            ])
-            ->make(true);
     }
 
     //================================================= GET PLC CAPA BY ID TO EDIT =================================================
@@ -246,7 +247,7 @@ class PlcCapaController extends Controller{
                 $update_plc_capa
             );
             // return $request;
-            
+
             PlcCapaStatementOfFindings::where('plc_capa_id', $request->plc_capa_id)->delete();
             // ======================================================================================================================================================================
             // ===================================================================== DIC STATEMENT OF FINDINGS ======================================================================
@@ -494,7 +495,7 @@ class PlcCapaController extends Controller{
                             $multiple_oec_statement_of_findings
                         );
                     }else{
-                    
+
                     }
                 }
             }else{ // SINGLE INSERT
@@ -569,7 +570,7 @@ class PlcCapaController extends Controller{
                     $single_oec_statement_of_findings['preventive_action_attachment'] =  $single_upload_oec_preventive_action_attachment;
                     $single_oec_statement_of_findings['commitment_date'] = $request->input("oec_commitment_date_0");
                     $single_oec_statement_of_findings['in_charge'] = $request->input("oec_capa_in_charge_0");
-                    
+
                     PlcCapaStatementOfFindings::insert([
                         $single_oec_statement_of_findings
                     ]);
@@ -591,25 +592,46 @@ class PlcCapaController extends Controller{
 
     // ============================================== EXPORT ==============================================
     public function export_capa(Request $request,$year_id,$fiscal_year_id,$dept_id){
+        // $get_plc_capa = PlcCapa::with(['control_id'])
+        // ->where('logdel',0)
+        // ->get();
+        // $get_control_id = PLCModuleRCMInternalControl::where('rcm_id',$get_plc_capa[1]->plc_sa_info->rcm_info[1]->rcm_id)->where('counter',$get_plc_capa[1]->plc_sa_info->rcm_internal_control_counter)->get();
+        // return $get_plc_capa[0]->rcm_id;
+        // return $get_plc_capa[0]->control_id[0]->rcm_id;
 
-        $get_plc_capa = PlcCapa::with([
-            'plc_sa_info',
-            'capa_details',
-            'plc_sa_info.rcm_info',
-            'plc_sa_info.plc_categories'
-        ])
-        // ->where('plc_sa_info.concerned_dept',$dept_id)
+        // return $get_plc_capa[0]->rcm_internal_control_counter;
+        // return $get_plc_capa[0]->control_id[0]->counter;
+
+        // return $get_plc_capa[0]->control_id[0]->internal_control;
+        // for ($i=0; $i < count($get_plc_capa); $i++) { 
+        //     return $get_plc_capa[$i];
+        // }
+        $get_control_id = array();
+        $get_plc_capa = PlcCapa::with('plc_sa_info','plc_category_info','capa_details')
+        ->whereHas('plc_sa_info', function($query) use($dept_id){
+            $query->where('concerned_dept',$dept_id);
+        })
         ->where('logdel',0)
         ->get();
 
+        // $get_plc_capa = collect($get_plc_capa)->where('plc_sa_info.concerned_dept', $dept_id)->flatten();
 
-        $get_plc_capa = collect($get_plc_capa)->where('plc_sa_info.concerned_dept',$dept_id)->flatten();
+        // return $get_plc_capa;
 
-        return $get_plc_capa;
+
+        for ($i=0; $i < count($get_plc_capa); $i++) { 
+            $get_control_id[] = PLCModuleRCMInternalControl::where('rcm_id', $get_plc_capa[$i]->rcm_id)
+            ->where('counter', $get_plc_capa[$i]->rcm_internal_control_counter)
+            ->where('status', 0)->first();
+            // $get_control_id = $test[$i]->internal_control;
+        }
+
+        // return $get_control_id;
+
 
         $date = date('Ymd',strtotime(NOW()));
         // return $date;
-        return Excel::download(new CapaExports($date,$get_plc_capa,$fiscal_year_id), 'JSOX CAPA REPORT.xlsx');
+        return Excel::download(new CapaExports($date,$get_plc_capa ,$fiscal_year_id,$year_id,$get_control_id,$dept_id), $dept_id. ' JSOX CAPA REPORT.xlsx');
         // return Excel::download(new audit_result($date,$plc_module_sa), 'PMI FY21 PLC Audit Result - '.$date.'.xlsx');
     }
 }

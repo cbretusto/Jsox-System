@@ -167,6 +167,7 @@ Route::post('/edit_rcm_data', 'PlcModulesRcmController@edit_rcm_data');
 Route::post('/delete_rcm_data', 'PlcModulesRcmController@delete_rcm_data');
 Route::get('/get_rcm_data_id_to_view', 'PlcModulesRcmController@get_rcm_data_id_to_view');
 Route::post('/change_plc_rcm_stat', 'PlcModulesRcmController@change_plc_rcm_stat')->name('change_plc_rcm_stat');
+Route::post('/copy_rcm_data', 'PlcModulesRcmController@copy_rcm_data')->name('copy_rcm_data');
 
 //===========================PLC MODULES SA CONTROLLER =============================
 Route::get('/view_plc_sa_data', 'PlcModulesSaController@view_plc_sa_data');
@@ -182,6 +183,8 @@ Route::get('/get_yec_approved_date', 'PlcModulesSaController@get_yec_approved_da
 Route::get('/count_pmi_category_by_id', 'PlcModulesSaController@count_pmi_category_by_id');
 Route::get('/get_sa_follow_up_to_edit', 'PlcModulesSaController@get_sa_follow_up_to_edit');
 Route::post('/edit_sa_follow_up', 'PlcModulesSaController@edit_sa_follow_up');
+Route::get('/get_sa_second_half_to_edit', 'PlcModulesSaController@get_sa_second_half_to_edit');
+Route::post('/edit_sa_second_half', 'PlcModulesSaController@edit_sa_second_half');
 
 //============================= SELECT PLC EVIDENCE CONTROLLER ================================
 Route::get('/view_select_plc_evidences', 'SelectPlcEvidenceController@view_select_plc_evidences');
@@ -273,7 +276,10 @@ Route::get('/get_finance_data', 'AnalyticsController@get_finance_data');
 Route::get('/get_logistics_data', 'AnalyticsController@get_logistics_data');
 
 Route::get('/export_ng_report/{year_id}/{dept_id}', 'AnalyticsController@export_ng_report');
-Route::get('/view_pps_data', 'AnalyticsController@view_pps_data');
+// Route::get('/view_pps_data', 'AnalyticsController@view_pps_data');
+Route::get('/view_logistics_data', 'AnalyticsController@view_logistics_data');
+
+Route::get('/get_data_for_chart_per_section', 'AnalyticsController@get_data_for_chart_per_section');
 
 // Import Controller
 Route::post('/import_pmi_clc', 'ImportController@import_pmi_clc');

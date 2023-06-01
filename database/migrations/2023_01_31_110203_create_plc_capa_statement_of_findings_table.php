@@ -18,7 +18,7 @@ class CreatePlcCapaStatementOfFindingsTable extends Migration
             $table->bigInteger('plc_capa_id')->unsigned();
             $table->string('category')->nullable();
             $table->string('assessment_status')->default(0)->comment = '0-DIC,1-OEC,2-RFA';
-            $table->string('counter')->nullable();
+            $table->unsignedTinyInteger('counter')->unsigned();
             $table->longText('statement_of_findings')->nullable();
             $table->longText('dic_statement_of_findings')->nullable();
             $table->text('dic_attachment')->nullable();
@@ -32,7 +32,7 @@ class CreatePlcCapaStatementOfFindingsTable extends Migration
             $table->text('corrective_action_attachment')->nullable();
             $table->longText('preventive_action')->nullable();
             $table->text('preventive_action_attachment')->nullable();
-            $table->string('commitment_date');
+            $table->string('commitment_date')->nullable();
             $table->string('in_charge')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();

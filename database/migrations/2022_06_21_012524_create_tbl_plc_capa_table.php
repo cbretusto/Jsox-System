@@ -17,7 +17,7 @@ class CreateTblPlcCapaTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('sa_id')->unsigned();
             $table->bigInteger('rcm_id')->unsigned();
-            $table->bigInteger('rcm_internal_control_counter')->unsigned();
+            $table->string('rcm_internal_control_counter')->nullable();
             $table->string('category')->nullable();
             $table->string('prepared_by')->nullable();
             $table->string('approved_by')->nullable();

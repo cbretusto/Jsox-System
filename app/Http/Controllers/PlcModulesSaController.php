@@ -14,6 +14,7 @@ use Carbon\Carbon;
 //MODEL
 use App\PlcCapa;
 use App\RapidXUser;
+use App\FiscalYear;
 use App\PLCModuleSA;
 use App\PLCModuleRCM;
 use App\UserManagement;
@@ -36,6 +37,7 @@ class PlcModulesSaController extends Controller
         ->where('logdel', 0)
         ->get();
         // return $plc_module_sa[0]->rcm_info;
+        // return $plc_module_sa[0]->rcm_info[0]->key_control;
 
         session_start();
         $rapidx_name = $_SESSION['rapidx_name'];
@@ -47,8 +49,6 @@ class PlcModulesSaController extends Controller
             $result = '';
             if($get_rcm_control_no[0]->status == 0 ){
                 $result .= $get_rcm_control_no[0]->control_id;
-            }else{
-
             }
             return $result;
         })
@@ -58,8 +58,6 @@ class PlcModulesSaController extends Controller
             $result = '';
             if($get_rcm_internal_control[0]->status == 0 ){
                 $result .= $get_rcm_internal_control[0]->internal_control;
-            }else{
-
             }
             return $result;
         })
@@ -69,8 +67,6 @@ class PlcModulesSaController extends Controller
             $result = "<center>";
                 if($key_control[0]->status == 0 ){
                     $result .= $key_control[0]->key_control;
-                }else{
-
                 }
             $result .= '</center>';
             return $result;
@@ -81,8 +77,6 @@ class PlcModulesSaController extends Controller
             $result = "<center>";
                 if($it_control[0]->status == 0 ){
                     $result .= $it_control[0]->it_control;
-                }else{
-
                 }
             $result .= '</center>';
             return $result;
@@ -239,6 +233,8 @@ class PlcModulesSaController extends Controller
         })
 
         ->addColumn('approval_status', function($plc_module_sa) {
+            $second_half_status = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('counter', $plc_module_sa->rcm_internal_control_counter)->where('logdel',0)->get();
+
 			$result = "";
 			$result .= '<center>';
             if($plc_module_sa->approver_status == 0){
@@ -253,21 +249,31 @@ class PlcModulesSaController extends Controller
             }
             else if($plc_module_sa->approver_status == 2){
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
-                if($plc_module_sa->rcm_info[0]->it_control != null || $plc_module_sa->rcm_info[0]->key_control != null){
-                    $result .= '<span class="badge badge badge-warning nowrap"><strong>(Second Half) <br> For Approval <br> -Jr Auditor</br></strong></span>';
+                for ($i=0; $i < count($second_half_status); $i++) {
+                    if($second_half_status[$i]->key_control != null || $plc_module_sa->dic_status == 'NG' || $plc_module_sa->oec_status == 'NG'){
+                        if($plc_module_sa->second_half_assessed_by != null){
+                            $result .= '<span class="badge badge badge-warning nowrap"><strong>(Second Half) <br> For Approval <br> -Jr Auditor</br></strong></span>';
+                        }else{
+                            $result .= '<span class="badge badge badge-info nowrap">For Update <br> Second Half</span>';
+                        }
+                    }
                 }
             }
             else if($plc_module_sa->approver_status == 3){
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
                 $result .= '<span class="badge badge badge-warning nowrap"><strong>(Second Half) <br> For Approval <br> -IAS Manager</br></strong></span>';
-            }
-            else if($plc_module_sa->approver_status == 4){
+            }else if($plc_module_sa->approver_status == 4){
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
                 $result .= '<span class="badge badge badge-success nowrap"><strong>(Second Half) <br> Approved</strong></span>';
+                if($plc_module_sa->rf_status == 'NG' && $plc_module_sa->follow_up_assessed_by == null){
+                    $result .= '<span class="badge badge badge-info nowrap mt-2">For Update <br> Follow Up</span>';
+                }
             }else if($plc_module_sa->approver_status == 5){
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(Second Half) <br> Approved</strong></span>';
-                $result .= '<span class="badge badge badge-warning nowrap"><strong>(Follow Up) <br> For Appproval <br> -Jr. Auditor</strong></span>';
+                if($plc_module_sa->follow_up_assessed_by != null){
+                    $result .= '<span class="badge badge badge-warning nowrap"><strong>(Follow Up) <br> For Appproval <br> -Jr. Auditor</strong></span>';
+                }
             }else if($plc_module_sa->approver_status == 6){
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(First Half) <br> Approved</strong></span>';
                 $result .= '<span class="badge badge badge-success mb-2 nowrap"><strong>(Second Half) <br> Approved</strong></span>';
@@ -292,12 +298,26 @@ class PlcModulesSaController extends Controller
 		})
 
         ->addColumn('action', function ($plc_module_sa) use ($rapidx_name){
+            $second_half_approve_btn = PLCModuleRCMInternalControl::where('rcm_id', $plc_module_sa->rcm_id)->where('counter', $plc_module_sa->rcm_internal_control_counter)->where('logdel',0)->get();
             $result = "";
-            $result = '<center>';
-            $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditSaData"  style="width:85px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalEditSaData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit </button>';
+            $result .= '<center>';
+            // $result .=  $second_half_approve_btn;
+            // if(($plc_module_sa->approval_status == 0 || 1 || 8)){
+                $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditSaDataFirstHalf"  style="width:90px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalEditSaDataFirstHalf" data-keyboard="false" title="Edit First Half"><i class="nav-icon fas fa-edit"></i> 1st Half </button>';
+            // }
+            
+            for ($i=0; $i < count($second_half_approve_btn); $i++) { 
+                if($second_half_approve_btn[$i]->key_control != null || $plc_module_sa->dic_status == 'NG' || $plc_module_sa->oec_status == 'NG'){
+                    if(($plc_module_sa->approval_status == 2 || 3 || 9)){
+                        $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditSaDataSecondHalf"  style="width:90px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalEditSaDataSecondHalf" data-keyboard="false" title="Edit Second Half"><i class="nav-icon fas fa-edit"></i> 2nd Half </button>';
+                    }
+                }
+            }
             
             if($plc_module_sa->rf_status == 'NG'){
-                $result .= '<button type="button" class="btn btn-dark btn-sm text-center actionEditSaFollowUp"  style="width:85px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalSaFollowUp" data-keyboard="false"> Follow Up </button>';
+                if(($plc_module_sa->approval_status == 4 || 5 || 6 || 10)){
+                    $result .= '<button type="button" class="btn btn-dark btn-sm text-center actionEditSaFollowUp"  style="width:90px;margin:2%;" sa_data-id="' . $plc_module_sa->id . '" data-toggle="modal" data-target="#modalSaFollowUp" data-keyboard="false"> Follow Up </button>';
+                }
             }
 
             switch ($plc_module_sa->approver_status)
@@ -416,8 +436,6 @@ class PlcModulesSaController extends Controller
         $sa_data = PLCModuleSA::with([
             'plc_sa_dic_assessment_details_finding',
             'plc_sa_oec_assessment_details_finding',
-            'plc_sa_rf_assessment_details_finding',
-            'plc_sa_fu_assessment_details_finding',
             'rcm_info'
         ])
         ->where('id', $request->sa_data_id)
@@ -425,8 +443,6 @@ class PlcModulesSaController extends Controller
 
         $dic_assesment_details_and_finding_details = PLCModuleSADicAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $oec_assesment_details_and_finding_details = PLCModuleSAOecAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
-        $rf_assesment_details_and_finding_details = PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
-        $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
         $rcm_internal_control = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('counter', $sa_data[0]->rcm_internal_control_counter)->where('status', 0)->get();
 
         $saModule = array(
@@ -437,12 +453,6 @@ class PlcModulesSaController extends Controller
         }
         if(isset($oec_assesment_details_and_finding_details)){
             $saModule['oec_details'] = $oec_assesment_details_and_finding_details;
-        }
-        if(isset($rf_assesment_details_and_finding_details)){
-            $saModule['rf_details'] = $rf_assesment_details_and_finding_details;
-        }
-        if(isset($fu_assesment_details_and_finding_details)){
-            $saModule['fu_details'] = $fu_assesment_details_and_finding_details;
         }
         if(isset($rcm_internal_control)){
             $saModule['rcm_internal_control'] = $rcm_internal_control;
@@ -459,14 +469,14 @@ class PlcModulesSaController extends Controller
         );  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
     }
 
-    // ========================================= EDIT SA MODULE ===================================================
+    // ========================================= EDIT SA FIRST HALF MODULE ===================================================
     public function edit_sa_module(Request $request){
         date_default_timezone_set('Asia/Manila');
         $get_approver_status = PLCModuleSA::where('id', $request->sa_data_id)->get();
         $data = $request->all();
         $rules = [
-            // 'control_no'        => 'required|string|max:255',
-            // 'internal_control'  => 'required|string|max:555',
+            'view_assessed_by'        => 'required|string|max:255',
+            'view_checked_by'  => 'required|string|max:555',
             // 'dic_assessment'    => 'required|string|max:555',
             // 'dic_status'        => 'required|string|max:555',
             // 'oec_assessment'    => 'required|string|max:555',
@@ -490,16 +500,10 @@ class PlcModulesSaController extends Controller
                 'view_assessed_by'              => $request->view_assessed_by,
                 'checked_by'                    => $request->checked_by,
                 'view_checked_by'               => $request->view_checked_by,
+                'second_half_assessed_by'       => '',
+                'second_half_checked_by'        => '',
                 'dic_status'                    => $request->dic_status,
                 'oec_status'                    => $request->oec_status,
-                'second_half_assessed_by'       => $request->second_half_assessed_by,
-                'view_second_half_assessed_by'  => $request->view_second_half_assessed_by,
-                'second_half_checked_by'        => $request->second_half_checked_by,
-                'view_second_half_checked_by'   => $request->view_second_half_checked_by,
-                'rf_improvement'                => $request->rf_improvement,
-                'rf_status'                     => $request->rf_status,
-                'fu_improvement'                => $request->fu_improvement,
-                'fu_status'                     => $request->fu_status,
                 'concerned_dept'                => $request->concerned_dept,
                 'non_key_control'               => $request->non_key_control,
                 'updated_at'                    => date('Y-m-d H:i:s')
@@ -525,7 +529,7 @@ class PlcModulesSaController extends Controller
                 'sa_id'     => $request->sa_data_id,
                 'category'  => $request->category_name,
                 'rcm_id'    => $plc_capa[0]->rcm_id,
-                'rcm_internal_control_counter'    => $request->sa_counter,
+                'rcm_internal_control_counter'  => $request->sa_counter,
             ];
             
             if(PlcCapa::where('sa_id', $request->sa_data_id)->exists()){
@@ -594,7 +598,7 @@ class PlcModulesSaController extends Controller
                     ]);
                 }
 
-                $arr_upload_file_dic_II    = array();
+                $arr_upload_file_dic_II = array();
                 for($index = 2; $index <= $request->dic_assessment_details_findings_counter; $index++){
                     $dic_files = $request->file("dic_attachment_".$index);
                     if(isset($dic_files)){
@@ -626,7 +630,7 @@ class PlcModulesSaController extends Controller
                     'sa_id'                         => $request->sa_data_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
-                    'dic_status'                        => $request->dic_status,
+                    'dic_status'                    => $request->dic_status,
                     'created_at'                    => date('Y-m-d H:i:s'),
                 );
 
@@ -770,13 +774,52 @@ class PlcModulesSaController extends Controller
                 }
             }//END OEC ASSESSMENT DETAILS AND FINDINGS
 
-            //START RF ASSESSMENT DETAILS AND FINDINGS
-            $arr_upload_file_rf    = array();
+            return response()->json(['result' => "1"]);
+        }
+        else{
+            return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
+        }
+    }
+
+    // ========================================= EDIT SA SECOND HALF ===================================================
+    public function edit_sa_second_half(Request $request){
+        date_default_timezone_set('Asia/Manila');
+        $get_approver_status = PLCModuleSA::where('id', $request->sa_second_half_id)->get();
+        $data = $request->all();
+        $rules = [
+            'view_second_half_assessed_by'     => 'required|string|max:555',
+            'view_second_half_checked_by'     => 'required|string|max:555',
+        ];
+        // return $sa_data[0]->approver_status;
+        $validator = Validator::make($data, $rules);
+        if($validator->passes()){
+            $update_sa = [
+                'second_half_assessed_by'       => $request->second_half_assessed_by,
+                'view_second_half_assessed_by'  => $request->view_second_half_assessed_by,
+                'second_half_checked_by'        => $request->second_half_checked_by,
+                'view_second_half_checked_by'   => $request->view_second_half_checked_by,
+                'follow_up_assessed_by'         => '',
+                'follow_up_checked_by'          => '',
+                'approver_status'               => 2,
+                'rf_improvement'                => $request->rf_improvement,
+                'rf_status'                     => $request->rf_status,
+                'updated_at'                    => date('Y-m-d H:i:s')
+            ];
+
+            //Start Update query
+            PLCModuleSA::where('id', $request->sa_second_half_id)
+            ->update(
+                $update_sa
+            );
+            //Start Update query
+
+           //START RF ASSESSMENT DETAILS AND FINDINGS
+            $arr_upload_file_rf = array();
             if($request->rf_assessment_details_findings_counter > 1){ // Multiple Insert
-                PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $request->sa_data_id)->delete();
+                PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $request->sa_second_half_id)->delete();
 
                 $rf_edit_array = array(
-                    'sa_id'                         => $request->sa_data_id,
+                    'sa_id'                         => $request->sa_second_half_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
                     'created_at'                    => date('Y-m-d H:i:s'),
@@ -816,7 +859,7 @@ class PlcModulesSaController extends Controller
                     ]);
                 }
 
-                $arr_upload_file_rf_II    = array();
+                $arr_upload_file_rf_II = array();
                 for($index = 2; $index <= $request->rf_assessment_details_findings_counter; $index++){
                     $rf_files = $request->file("rf_attachment_".$index);
                     if(isset($rf_files)){
@@ -848,12 +891,12 @@ class PlcModulesSaController extends Controller
                 $rf_files = $request->file("rf_attachment");
                 // return "may check";
                 $rf_update_array = array(
-                    'sa_id'                         => $request->sa_data_id,
+                    'sa_id'                         => $request->sa_second_half_id,
                     'category'                      => $request->category_name,
                     'counter'                       => 1,
                     'created_at'                    => date('Y-m-d H:i:s'),
                 );
-                PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $request->sa_data_id)->delete();
+                PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $request->sa_second_half_id)->delete();
                 // return $rf_files;
                 if(isset($rf_files)){
                     if(count($rf_files) > 0 ){
@@ -894,7 +937,8 @@ class PlcModulesSaController extends Controller
         $get_approver_status = PLCModuleSA::where('id', $request->sa_follow_up_id)->get();
         $data = $request->all();
         $rules = [
-            // 'fu_attachment'     => 'required|string|max:555',
+            'follow_up_assessed_by'     => 'required|string|max:555',
+            'follow_up_checked_by'     => 'required|string|max:555',
         ];
         // return $sa_data[0]->approver_status;
         $validator = Validator::make($data, $rules);
@@ -1034,21 +1078,44 @@ class PlcModulesSaController extends Controller
         }
     }
 
-    //============================== EDIT SA FOLLOW UP BY ID TO EDIT ==============================
-    public function get_sa_follow_up_to_edit(Request $request){
+    //============================== EDIT SA SECOND HALF BY ID TO EDIT ==============================
+    public function get_sa_second_half_to_edit(Request $request){
         $sa_data = PLCModuleSA::with([
-            'plc_sa_fu_assessment_details_finding',
+            'plc_sa_rf_assessment_details_finding',
         ])
-        ->where('id', $request->sa_follow_up_id)
+        ->where('id', $request->sa_second_half_id)
         ->get();
+        // return  $sa_data;
 
-        $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
-        // return $fu_assesment_details_and_finding_details;
+        $rf_assesment_details_and_finding_details = PLCModuleSARfAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
+        // return $rf_assesment_details_and_finding_details;
+        $rcm_internal_control_details = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('counter', $sa_data[0]->rcm_internal_control_counter)->where('status', 0)->get();
+
         return response()->json([
             'sa_data' => $sa_data,
-            'fu_details' => $fu_assesment_details_and_finding_details,
+            'rf_details' => $rf_assesment_details_and_finding_details,
+            'ric_details' => $rcm_internal_control_details,
         ]); 
     }
+
+    //============================== EDIT SA FOLLOW UP BY ID TO EDIT ==============================
+    public function get_sa_follow_up_to_edit(Request $request){
+    $sa_data = PLCModuleSA::with([
+        'plc_sa_fu_assessment_details_finding',
+    ])
+    ->where('id', $request->sa_follow_up_id)
+    ->get();
+
+    $fu_assesment_details_and_finding_details = PLCModuleSAFuAssessmentDetailsAndFindings::where('sa_id', $sa_data[0]->id)->get();
+    // return $fu_assesment_details_and_finding_details;
+    $rcm_internal_control_details = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[0]->rcm_id)->where('counter', $sa_data[0]->rcm_internal_control_counter)->where('status', 0)->get();
+
+    return response()->json([
+        'sa_data' => $sa_data,
+        'fu_details' => $fu_assesment_details_and_finding_details,
+        'ric_details' => $rcm_internal_control_details,
+    ]); 
+}
     
 
     //============================== DELETE SA DATA ==============================
@@ -1103,7 +1170,7 @@ class PlcModulesSaController extends Controller
             return response()->json(['result' => 1]);
     }
 
-    // ================== APPROVE BUTTON==================
+    // ================== DISAPPROVE BUTTON==================
     public function disapproved_sa_data(Request $request){
         date_default_timezone_set('Asia/Manila');
 
@@ -1144,29 +1211,36 @@ class PlcModulesSaController extends Controller
 
     //============================== COUNT STATUS BY CATEGORY //==============================
     public function count_pmi_category_by_id(Request $request){
-        $get_sa_status = PLCModuleSA::where('category', $request->category)->where('logdel', 0)->get();
-
+        $get_fiscal_year = FiscalYear::where('status', 1)->where('logdel', 0)->orderBy('fiscal_year', 'desc')->first();
+        $get_sa_status = PLCModuleSA::where('category', $request->category)->where('logdel', 0)->where('fiscal_year', $get_fiscal_year->fiscal_year)->get();
+        // $get_sa_status = PLCModuleSA::where('category', $request->category)->where('logdel', 0)->get();
+        // return $get_sa_status;
         //FIRST HALF
-        $get_dic_good_status = collect($get_sa_status)->where('dic_status', 'G');
-        $get_oec_good_status = collect($get_sa_status)->where('oec_status', 'G');
-        $sa_first_half_status = collect($get_sa_status)->where('approver_status', '2');
+        $get_dic_good_status        = collect($get_sa_status)->where('dic_status', 'G');
+        $get_oec_good_status        = collect($get_sa_status)->where('oec_status', 'G');
+        $get_dic_not_good_status    = collect($get_sa_status)->where('dic_status', 'NG');
+        $get_oec_not_good_status    = collect($get_sa_status)->where('oec_status', 'NG');
+        $sa_first_half_status       = collect($get_sa_status)->where('approver_status', '2');
 
         //SECOND HALF
-        $get_dic_not_good_status = collect($get_sa_status)->where('dic_status', 'NG');
-        $get_oec_not_good_status = collect($get_sa_status)->where('oec_status', 'NG');
-        $sa_second_half_status = collect($get_sa_status)->where('approver_status', '4');
+        $get_rf_good_status     = collect($get_sa_status)->where('rf_status', 'G');
+        $get_rf_not_good_status = collect($get_sa_status)->where('rf_status', 'NG');
+        $sa_second_half_status  = collect($get_sa_status)->where('approver_status', '4');
 
-        // return count($get_sa_status);
+        // return "data ".count($get_sa_status);
 
         return response()->json(['get_sa_status' => $get_sa_status,
-            'get_dic_good_status' => count($get_dic_good_status),
-            'get_oec_good_status' => count($get_oec_good_status),
-            'sa_first_half_status' => count($sa_first_half_status),
-            'get_dic_not_good_status' => count($get_dic_not_good_status),
-            'get_oec_not_good_status' => count($get_oec_not_good_status),
-            'sa_second_half_status' => count($sa_second_half_status),
-            'category' => $request->category,
-            'count' => count($get_sa_status)
+            'get_dic_good_status'       => count($get_dic_good_status),
+            'get_oec_good_status'       => count($get_oec_good_status),
+            'get_dic_not_good_status'   => count($get_dic_not_good_status),
+            'get_oec_not_good_status'   => count($get_oec_not_good_status),
+            'sa_first_half_status'      => count($sa_first_half_status),
+
+            'get_rf_good_status'        => count($get_rf_good_status),
+            'get_rf_not_good_status'    => count($get_rf_not_good_status),
+            'sa_second_half_status'     => count($sa_second_half_status),
+            'category'                  => $request->category,
+            'count'                     => count($get_sa_status)
         ]);
     }
 

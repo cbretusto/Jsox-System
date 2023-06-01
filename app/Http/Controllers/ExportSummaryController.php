@@ -64,7 +64,7 @@ class ExportSummaryController extends Controller
         'rcm_info'
         )
         ->where('logdel',0)
-        // ->where('status',0)
+        ->where('fiscal_year',$year_id)
         ->where('category', '=',$select_category)
         ->get();
 
@@ -82,6 +82,7 @@ class ExportSummaryController extends Controller
         )
         ->where('category', '=',$select_category)
         ->where('logdel',0)
+        ->where('fiscal_year', $year_id)
         ->get();
 
         $plc_category = $rev_history_details[0]->plc_category_details->plc_category;

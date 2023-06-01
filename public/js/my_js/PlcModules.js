@@ -684,9 +684,11 @@ function GetRevisionHistoryConformanceId(revisionHistoryConformanceId){
                 $("#txtApprovalOrder").val(revision_history_conformance[0].approval_order);
             
                 console.log('Conformance Details:', conformance_details);
+
                 for (let x = 0; x <= revision_history_conformance.length; x++) {
                     $('#removeEditRowConformance')[0].click();
                 }
+                
                 for (let conformanceCounter = 0; conformanceCounter < conformance_details.length; conformanceCounter++) {
                     if(conformanceCounter > 0){
                         $('#addEditRowConformance')[0].click();

@@ -15,7 +15,7 @@ class CreatePlcModuleRcmInternalControlsTable extends Migration
     {
         Schema::create('plc_module_rcm_internal_controls', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('rcm_id');
+            $table->bigInteger('rcm_id')->unsigned();
             $table->string('category')->nullable();
             $table->string('counter')->nullable();
             $table->string('control_id')->nullable();

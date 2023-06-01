@@ -16,7 +16,7 @@ class CreateTblPLCModuleSa extends Migration
         Schema::create('tbl_plc_module_sa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('rcm_id')->unsigned();
-            $table->bigInteger('rcm_internal_control_counter')->unsigned();
+            $table->unsignedTinyInteger('rcm_internal_control_counter')->unsigned();
             $table->string('category')->nullable();
             $table->string('fiscal_year')->nullable();
             $table->string('assessed_by')->comment = 'Approver - IAS Jr Auditor (First Half)';

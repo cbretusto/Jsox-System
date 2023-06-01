@@ -486,21 +486,16 @@ class PlcModulesController extends Controller
         }
     }//===== ADD REVISION HISTORY FUNCTION END ====//
 
-    //=====NO REVISION HISTORY FUNCTION ====//
+    // ===== NO REVISION HISTORY FUNCTION =====
     public function no_revision_history(Request $request){
         date_default_timezone_set('Asia/Manila');
         session_start();
 
-
         $data = $request->all();
-
-
         $validator = Validator::make($data, [
-
         ]);
         if ($validator->fails()){
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
-
         }else{
             $prasis_uwner = $request->nr_process_owner;
             if($prasis_uwner != null){
@@ -511,8 +506,8 @@ class PlcModulesController extends Controller
             $no_revision = [
                 'no_revision' => $request->no_revision,
                 'category'      => $request->category_name,
-                'process_owner' => $add_revision_process_owner,
                 'version_no'    => $request->version_no,
+                'process_owner' => $add_revision_process_owner,
                 'logdel'        => 0,
                 'created_at'    => date('Y-m-d H:i:s')
             ];
@@ -520,6 +515,15 @@ class PlcModulesController extends Controller
             $get_id = PLCModule::insertGetId(
                 $no_revision
             );
+
+            RevisionHistoryReasonForRevision::insert([
+                'plc_module_id'         => $get_id,
+                'reason_for_revision'   => $request->reason_for_revision,
+                'groupby'               => 0,
+                'counter'               => 0,
+                'reason_for_revision'   => $request->reason_for_revision,
+                'created_at'            => date('Y-m-d H:i:s')
+            ]);
 
             PLCModuleFlowChart::insert([
                 'rev_history_id'    => $get_id,
@@ -532,7 +536,7 @@ class PlcModulesController extends Controller
 
             return response()->json(['result' => "1"]);
         }
-    }//=====NO REVISION HISTORY FUNCTION END ====//
+    }// ===== NO REVISION HISTORY FUNCTION END =====
 
     //============================== GET PLC REVISION HISTORY BY ID TO EDIT ==============================
     public function get_revision_history_id_to_edit(Request $request){
@@ -549,12 +553,12 @@ class PlcModulesController extends Controller
         for ($i=0; $i < $reason_for_revision_groupby ; $i++) {
             $reason_for_revision_array[] = collect($reason_for_revision_details)->where('groupby', $i)->flatten(0)->toArray();
         }
+
         $details_of_revision_groupby =RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
         $details_of_revision_details = RevisionHistoryDetailsOfRevision::where('plc_module_id', $revision_history[0]->id)->where('logdel', 0)->get();
         for ($ii=0; $ii < $details_of_revision_groupby ; $ii++) {
             $details_of_revision_array[] = collect($details_of_revision_details)->where('groupby', $ii)->flatten(0)->toArray();
         }
-
 
         $concern_Dept_sect_incharge_groupby = RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $revision_history[0]->id)->distinct()->count('groupby');
         $concern_Dept_sect_incharge_details = RevisionHistoryConcernDeptSectIncharge::where('plc_module_id', $revision_history[0]->id)->where('logdel', 0)->get();
@@ -590,7 +594,6 @@ class PlcModulesController extends Controller
 
         $validator = Validator::make($data, [
             // 'edit_plc_category' => 'required|string|max:255'
-
         ]);
 
         if($validator->fails()) {

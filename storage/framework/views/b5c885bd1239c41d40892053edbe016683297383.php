@@ -78,12 +78,9 @@
                                             <div class="text-right mt-2 ml-2">
                                                 <button class="btn btn-primary mr-2" data-toggle="modal"
                                                 data-target="#modalExportSummary"
-                                                style="float: left;"><i class="fas fa-download"></i> Export Summary
+                                                style="float: left;"><i class="fas fa-download"></i> Export CAPA
                                                 </button>
-                                                <button class="btn btn-primary mr-2" data-toggle="modal"
-                                                data-target="#modalExportAuditResult"
-                                                style="float: left;"><i class="fas fa-download"></i> Export Audit Result
-                                                </button>
+                                                
                                             </div><br><br>
                                             <div class="table-responsive">
                                                 <table id="plcCapaTable" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
@@ -118,7 +115,7 @@
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark">
-                <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export Summary</h4>
+                <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export CAPA</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -147,11 +144,14 @@
 
                             <label>Select Section/Dept.:</label>
                             <select name="select_dept" id="selectDeptId">
-                                <option value="PPC">PPC</option>
-                                <option value="Warehouse">Warehouse</option>
+                                <option value="Logistics">Logistics</option>
+                                <option value="PPC-TSCN">PPC TS/CN</option>
+                                <option value="Warehouse-TSCN">Warehouse-TS/CN</option>
+                                <option value="PPS-Production">PPS-Production</option>
+                                <option value="PPS-WHSE">PPS-Warehouse</option>
+                                <option value="IAS">IAS</option>
                                 <option value="Finance">Finance</option>
-                                <option value="Logistics-Traffic">Logistics-Traffic</option>
-                                <option value="Logistics-Purchasing">Logistics-Purchasing</option>
+                                <option value="PPS-PPC">PPS-PPC</option>
                             </select>
                         </div>
                     </div>
@@ -430,7 +430,7 @@
                                                                     <label>CAPA Person In-Charge(s):</label>
                                                                     <select class="form-control selJsoxUser select2bs4" name="oec_capa_in_charge_0" id="oecCapaInCharge_0"></select>
                                                                 </div>
-                                                                
+
                                                                 <div class="col-sm-6">
                                                                     <label>Commitment Date:</label>
                                                                     <input type="date" class="form-control" id="txtOecCommitmentDate_0" name="oec_commitment_date_0">
@@ -674,7 +674,7 @@
                 html +='                <label>CAPA Person In-Charge(s):</label>';
                 html +='                <select class="form-control selJsoxUser select2bs4" name="dic_capa_in_charge_'+dicStatementOfFindingsCounter+'" id="dicCapaInCharge_'+dicStatementOfFindingsCounter+'"></select>';
                 html +='            </div>';
-                
+
                 html +='            <div class="col-sm-6">';
                 html +='                <label>Commitment Date:</label>';
                 html +='                <input type="date" class="form-control" id="txtDicdCommitmentDate_'+dicStatementOfFindingsCounter+'" name="dic_commitment_date_'+dicStatementOfFindingsCounter+'">';
@@ -683,7 +683,7 @@
                 // html +='    </div>';
 
                 html +='</div>';
-                
+
             $('#dicStatementFindingsCounter').val(dicStatementOfFindingsCounter);
             $('#cardDicStatementOfFindings').append(html);
 

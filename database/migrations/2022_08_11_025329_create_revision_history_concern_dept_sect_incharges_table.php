@@ -15,7 +15,7 @@ class CreateRevisionHistoryConcernDeptSectInchargesTable extends Migration
     {
         Schema::create('revision_history_concern_dept_sect_incharges', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('plc_module_id')->nullable()->comment = 'revision history ID';
+            $table->bigInteger('plc_module_id')->unsigned()->comment = 'revision history ID';
             $table->string('category')->nullable();
             $table->string('groupby')->nullable()->comment = 'count per card';
             $table->string('counter')->nullable();

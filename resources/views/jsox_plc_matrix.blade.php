@@ -55,7 +55,7 @@
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="tabjsoxPlcMatrices" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link" id="tabMatrixRecordRecord" data-toggle="tab" href="#matrixRecord" role="tab" aria-controls="matrixRecord" aria-selected="false">Matrix</a>
+                                        <a class="nav-link active" id="tabMatrixRecordRecord" data-toggle="tab" href="#matrixRecord" role="tab" aria-controls="matrixRecord" aria-selected="false">Matrix</a>
                                     </li>
 
                                     <li class="nav-item">
@@ -349,21 +349,6 @@
                                             <input type="text" class="form-control" id="txtAddControlNo" name="control_no" autocomplete="off"> 
                                         </div> 
                                     </div>
-                                    <div class="border-top border-bottom">
-                                        <div class="col-sm-12 float-right" id="divAddDocument">
-                                            <input type="hidden" name="document_number" id="addDocumentCounter" value="1">
-                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2 mt-1" id="addRowDocument"><i class="fa fa-plus"></i> Add Row</button>
-                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 mt-1 d-none" id="removeRowDocument"><i class="fas fa-times"></i> Remove Row</button>
-                                        </div>
-                                        <div class="form-group col-sm-12 flex-column d-flex" id="idDocumentDiv"> 
-                                            <div class="input-group mb-1">
-                                                <div class="input-group-prepend">
-                                                    -<span class="input-group-text ml-2" id="inputGroup-sizing-default"><strong>1. Document: &nbsp;&nbsp;&nbsp; </strong></span>
-                                                </div>
-                                                <input type="text" class="form-control" id="txtAddDocument_1" name="document_1" autocomplete="off"> 
-                                            </div> 
-                                        </div>
-                                    </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex mt-2"> 
                                         <div class="input-group">
@@ -391,6 +376,22 @@
                                             <input type="text" class="form-control" id="txtAddInCharge" name="in_charge" autocomplete="off"> 
                                         </div> 
                                         <input type="hidden" class="form-control" id="txtAddCreatedBy" name="created_by" readonly>
+                                    </div>
+
+                                    <div class="border-top">
+                                        <div class="col-sm-12 float-right" id="divAddDocument">
+                                            <input type="hidden" name="document_number" id="addDocumentCounter" value="1">
+                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2 mt-1" id="addRowDocument"><i class="fa fa-plus"></i> Add Row</button>
+                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 mt-1 d-none" id="removeRowDocument"><i class="fas fa-times"></i> Remove Row</button>
+                                        </div>
+                                        <div class="form-group col-sm-12 flex-column d-flex" id="idDocumentDiv"> 
+                                            <div class="input-group mb-1">
+                                                <div class="input-group-prepend">
+                                                    -<span class="input-group-text ml-2" id="inputGroup-sizing-default"><strong>1. Document: &nbsp;&nbsp;&nbsp; </strong></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="txtAddDocument_1" name="document_1" autocomplete="off"> 
+                                            </div> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -452,22 +453,6 @@
                                             <input type="text" class="form-control" id="txtEditDocument" name="document"> 
                                         </div> 
                                     </div> --}}
-                                    <div class="border-top border-bottom">
-                                        <div class="col-sm-12 float-right" id="divAddDocumentEdit">
-                                            <input type="hidden" name="document_number" id="addDocumentCounterEdit" value="1">
-                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2 mt-1" id="addRowDocumentEdit"><i class="fa fa-plus"></i> Add Row</button>
-                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 mt-1 d-none" id="removeRowDocumentEdit"><i class="fas fa-times"></i> Remove Row</button>
-                                        </div>
-                                        <div class="form-group col-sm-12 flex-column d-flex" id="idDocumentDivEdit"> 
-
-                                            <div class="input-group mb-1">
-                                                <div class="input-group-prepend">
-                                                    -<span class="input-group-text ml-2" id="inputGroup-sizing-default"><strong>1. Document: &nbsp;&nbsp;&nbsp; </strong></span>
-                                                </div>
-                                                <input type="text" class="form-control" id="txtEditDocument_1" name="document_1" autocomplete="off"> 
-                                            </div> 
-                                        </div>
-                                    </div>
 
                                     <div class="form-group col-sm-12 flex-column d-flex mt-2"> 
                                         <div class="input-group">
@@ -495,6 +480,23 @@
                                             <input type="text" class="form-control" id="txtEditInCharge" name="in_charge"> 
                                         </div> 
                                         <input type="hidden" class="form-control" id="txtUpdatedBy" name="updated_by" readonly>
+                                    </div>
+
+                                    <div class="border-top">
+                                        <div class="col-sm-12 float-right" id="divAddDocumentEdit">
+                                            <input type="hidden" name="document_number" id="addDocumentCounterEdit" value="1">
+                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2 mt-1" id="addRowDocumentEdit"><i class="fa fa-plus"></i> Add Row</button>
+                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 mt-1 d-none" id="removeRowDocumentEdit"><i class="fas fa-times"></i> Remove Row</button>
+                                        </div>
+                                        <div class="form-group col-sm-12 flex-column d-flex" id="idDocumentDivEdit"> 
+
+                                            <div class="input-group mb-1">
+                                                <div class="input-group-prepend">
+                                                    -<span class="input-group-text ml-2" id="inputGroup-sizing-default"><strong>1. Document: &nbsp;&nbsp;&nbsp; </strong></span>
+                                                </div>
+                                                <input type="text" class="form-control" id="txtEditDocument_1" name="document_1" autocomplete="off"> 
+                                            </div> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>

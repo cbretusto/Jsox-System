@@ -473,3 +473,71 @@ function GetRcmDataView(getRcmDataID){
         }
     });
 }
+
+function CopyRcmData(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formCopyRcmData')[0]);
+
+	$.ajax({
+        url: "copy_rcm_data",
+        method: "post",
+        // data: $('#formCopyRcmData').serialize(),
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnCopyRcmDataIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnCopyRcmData").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving RCM Data Failed!');
+
+                if(response['error']['sel_fiscal_year'] === undefined){
+                    $("#selFiscalYear").removeClass('is-invalid');
+                    $("#selFiscalYear").attr('title', '');
+                }
+                else{
+                    $("#selFiscalYear").addClass('is-invalid');
+                    $("#selFiscalYear").attr('title', response['error']['sel_fiscal_year']);
+                }
+            }
+            else if(response['result'] == 1){
+                $("#modalCopyRcmData").modal('hide');
+                $("#formCopyRcmData")[0].reset();
+                toastr.success('RCM Data was succesfully saved!');
+                dataTablePlcModuleRCM.draw(); // reload the tables after insertion
+                dataTablePlcModuleSa.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnCopyRcmDataIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnCopyRcmData").removeAttr('disabled');
+            $("#iBtnCopyRcmDataIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnCopyRcmDataIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnCopyRcmData").removeAttr('disabled');
+            $("#iBtnCopyRcmDataIcon").addClass('fa fa-check');
+        }
+    });
+}
+

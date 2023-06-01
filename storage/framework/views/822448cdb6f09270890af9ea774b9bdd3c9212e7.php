@@ -273,146 +273,146 @@
 <?php $__env->startSection('js_content'); ?>
     <script type="text/javascript">
 
-            $('.selectAddPlcCategory').select2({
-                theme: 'bootstrap4'
-            });
-            GetPlcCategory($(".selectAddPlcCategory"));
+        $('.selectAddPlcCategory').select2({
+            theme: 'bootstrap4'
+        });
+        GetPlcCategory($(".selectAddPlcCategory"));
 
-             // ============================== VIEW PLC EVIDENCES DATATABLES  START ==============================
-             GetFiscalYear($(".selectFiscalYear"));
+        // ============================== VIEW PLC EVIDENCES DATATABLES  START ==============================
+        GetFiscalYear($(".selectFiscalYear"));
 
-            dataTablePlcEvidences = $("#plcEvidencesTable").DataTable({
-                "processing" : false,
-                "serverSide" : true,
-                "responsive": true,
-                "order": [[ 0, "desc" ]],
-                // "scrollX": true,
-                // "scrollX": "100%",
-                "language": {
-                    "info": "Showing _START_ to _END_ of _TOTAL_ records",
-                    "lengthMenu":     "Show _MENU_ records",
-                },
-                "ajax" : {
-                    url: "view_plc_evidences", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
-                },
-                "columns":[
-                    { "data" : "date_uploaded"},
-                    { "data" : "fiscal_year_audit_period", orderable:false },
-                    { "data" : "plc_category", orderable:false },
-                    { "data" : "plc_evidences", orderable:false },
-                    { "data" : "uploaded_by", orderable:false},
-                    // { "data" : "updated_a1"},
-                    // { "data" : "revised_by"},
-                    { "data" : "action", orderable:false, searchable:false }
-                ],
-            });
-            //VIEW PLC EVIDENCES DATATABLES END
+        dataTablePlcEvidences = $("#plcEvidencesTable").DataTable({
+            "processing" : false,
+            "serverSide" : true,
+            "responsive": true,
+            "order": [[ 0, "desc" ]],
+            // "scrollX": true,
+            // "scrollX": "100%",
+            "language": {
+                "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                "lengthMenu":     "Show _MENU_ records",
+            },
+            "ajax" : {
+                url: "view_plc_evidences", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
+            },
+            "columns":[
+                { "data" : "date_uploaded"},
+                { "data" : "fiscal_year_audit_period", orderable:false },
+                { "data" : "plc_category"},
+                { "data" : "plc_evidences", orderable:false },
+                { "data" : "uploaded_by", orderable:false},
+                // { "data" : "updated_a1"},
+                // { "data" : "revised_by"},
+                { "data" : "action", orderable:false, searchable:false }
+            ],
+        });
+        //VIEW PLC EVIDENCES DATATABLES END
 
-            //VIEW REVISED PLC EVIDENCES DATABLES
-            // dataTableRevisedPlcEvidences = $("#tblRevisedPlcEvidences").DataTable({
-            //     "processing" : false,
-            //     "serverSide" : true,
-            //     "responsive": true,
-            //     // "scrollX": true,
-            //     // "scrollX": "100%",
-            //     "language": {
-            //         "info": "Showing _START_ to _END_ of _TOTAL_ records",
-            //         "lengthMenu":     "Show _MENU_ records",
-            //     },
-            //     "ajax" : {
-            //         url: "view_revised_plc_evidences", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
-            //     },
-            //     "columns":[
-            //         // { "data" : "id" },
-            //         { "data" : "plc_category"},
-            //         { "data" : "plc_evidences"},
-            //         // { "data" : "date_uploaded"},
-            //         // { "data" : "uploaded_by"},
-            //         { "data" : "updated_a1"},
-            //         { "data" : "revised_by"},
+        //VIEW REVISED PLC EVIDENCES DATABLES
+        // dataTableRevisedPlcEvidences = $("#tblRevisedPlcEvidences").DataTable({
+        //     "processing" : false,
+        //     "serverSide" : true,
+        //     "responsive": true,
+        //     // "scrollX": true,
+        //     // "scrollX": "100%",
+        //     "language": {
+        //         "info": "Showing _START_ to _END_ of _TOTAL_ records",
+        //         "lengthMenu":     "Show _MENU_ records",
+        //     },
+        //     "ajax" : {
+        //         url: "view_revised_plc_evidences", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
+        //     },
+        //     "columns":[
+        //         // { "data" : "id" },
+        //         { "data" : "plc_category"},
+        //         { "data" : "plc_evidences"},
+        //         // { "data" : "date_uploaded"},
+        //         // { "data" : "uploaded_by"},
+        //         { "data" : "updated_a1"},
+        //         { "data" : "revised_by"},
 
-            //     ],
-            // });
-            //VIEW REVISED PLC EVIDENCE DATATABLES END
+        //     ],
+        // });
+        //VIEW REVISED PLC EVIDENCE DATATABLES END
 
-            $('#btnAddPlcEvidencesModal').on('click', function()
-                {
-                    $.ajax
-                    ({
-                        url: "get_rapidx_user",
-                        method: "get",
-                        dataType: "json",
-                        beforeSend: function(){
-                        },
-                        success: function(response)
-                        {
-                            let result = response['get_user'];
-                            console.log(result[0].name);
-                            $('#txtAddNameofUploader').val(result[0].name);
-
-                        },
-                    });
-
-                });
-
-                //============================ ADD REPORT ============================
-                $("#formAddPlcEvidences").submit(function(event){
-                    event.preventDefault(); // to stop the form submission
-                    AddPlcEvidences();
-                });
-
-                //============================== EDIT USER ==============================
-            // actionEditUser is generated by datatables and open the modalEditUser(modal) to collect the id of the specified rows
-            $(document).on('click', '.actionEditPlcEvidences', function(){
+        $('#btnAddPlcEvidencesModal').on('click', function()
+            {
                 $.ajax
-                    ({
-                        url: "get_rapidx_user",
-                        method: "get",
-                        dataType: "json",
-                        beforeSend: function(){
-                        },
-                        success: function(response)
-                        {
-                            let result = response['get_user'];
-                            // console.log(result[0].name);
-                            $('#txtEditPlcUploadedById').val(result[0].name);
+                ({
+                    url: "get_rapidx_user",
+                    method: "get",
+                    dataType: "json",
+                    beforeSend: function(){
+                    },
+                    success: function(response)
+                    {
+                        let result = response['get_user'];
+                        console.log(result[0].name);
+                        $('#txtAddNameofUploader').val(result[0].name);
 
-                        },
-                    });
-                // the user-id (attr) is inside the datatables of UserController that will be use to collect the user-id
-                let plcEvidencesID = $(this).attr('plc_evidences-id');
-
-                // console.log(plcEvidencesID);
-                // after clicking the actionEditUser(button) the userId will be pass to the txtEditUserId(input=hidden) and when the form is submitted this will be pass to ajax and collect user-id that will be use to query the user-id in the UserController to update the user
-                $("#txtPlcEvidenceId").val(plcEvidencesID);
-
-                $("#txtEditFiscalYear").attr('disabled', 'disabled');
-                $("#selEditAuditPeriod").attr('disabled', 'disabled');
-                $("#selectEditPlcCategory").attr('disabled', 'disabled');
-                $("#txtEditReportUploaded_File").attr('disabled', 'disabled');
-
-
-                // COLLECT THE userId AND PASS TO INPUTS, BASED ON THE CLICKED ROWS
-                // GetUserByIdToEdit() function is inside User.js and pass the userId as an argument when passing the ajax that will be use to query the user-id of get_user_by_id() method inside UserController and pass the fetched user based on that query as $user(variable) to pass the values in the inputs of modalEditUser and also to validate the fetched values, inside GetUserByIdToEdit under User.js
-                GetPlcEvidences(plcEvidencesID);
+                    },
+                });
 
             });
 
-            // The EditUser(); function is inside public/js/my_js/User.js
-            // after the submission, the ajax request will pass the formEditUser(form) of its data(input) in the uri(edit_user)
-            // then the controller will handle that uri to use specific method called edit_user() inside UserController
-            $("#editPlcEvidencesForm").submit(function(event){
-                event.preventDefault();
-                EditPlcEvidences();
+            //============================ ADD REPORT ============================
+            $("#formAddPlcEvidences").submit(function(event){
+                event.preventDefault(); // to stop the form submission
+                AddPlcEvidences();
             });
 
-            $("#selFiscalYear").on('change', function() {
-                dataTablePlcEvidences.column(1).search($(this).val()).draw();
-            });
+            //============================== EDIT USER ==============================
+        // actionEditUser is generated by datatables and open the modalEditUser(modal) to collect the id of the specified rows
+        $(document).on('click', '.actionEditPlcEvidences', function(){
+            $.ajax
+                ({
+                    url: "get_rapidx_user",
+                    method: "get",
+                    dataType: "json",
+                    beforeSend: function(){
+                    },
+                    success: function(response)
+                    {
+                        let result = response['get_user'];
+                        // console.log(result[0].name);
+                        $('#txtEditPlcUploadedById').val(result[0].name);
 
-            $("#selAuditPeriod").on('change', function() {
-                dataTablePlcEvidences.search($("#selAuditPeriod").val()).draw();
-            });
+                    },
+                });
+            // the user-id (attr) is inside the datatables of UserController that will be use to collect the user-id
+            let plcEvidencesID = $(this).attr('plc_evidences-id');
+
+            // console.log(plcEvidencesID);
+            // after clicking the actionEditUser(button) the userId will be pass to the txtEditUserId(input=hidden) and when the form is submitted this will be pass to ajax and collect user-id that will be use to query the user-id in the UserController to update the user
+            $("#txtPlcEvidenceId").val(plcEvidencesID);
+
+            $("#txtEditFiscalYear").attr('disabled', 'disabled');
+            $("#selEditAuditPeriod").attr('disabled', 'disabled');
+            $("#selectEditPlcCategory").attr('disabled', 'disabled');
+            $("#txtEditReportUploaded_File").attr('disabled', 'disabled');
+
+
+            // COLLECT THE userId AND PASS TO INPUTS, BASED ON THE CLICKED ROWS
+            // GetUserByIdToEdit() function is inside User.js and pass the userId as an argument when passing the ajax that will be use to query the user-id of get_user_by_id() method inside UserController and pass the fetched user based on that query as $user(variable) to pass the values in the inputs of modalEditUser and also to validate the fetched values, inside GetUserByIdToEdit under User.js
+            GetPlcEvidences(plcEvidencesID);
+
+        });
+
+        // The EditUser(); function is inside public/js/my_js/User.js
+        // after the submission, the ajax request will pass the formEditUser(form) of its data(input) in the uri(edit_user)
+        // then the controller will handle that uri to use specific method called edit_user() inside UserController
+        $("#editPlcEvidencesForm").submit(function(event){
+            event.preventDefault();
+            EditPlcEvidences();
+        });
+
+        $("#selFiscalYear").on('change', function() {
+            dataTablePlcEvidences.column(1).search($(this).val()).draw();
+        });
+
+        $("#selAuditPeriod").on('change', function() {
+            dataTablePlcEvidences.search($("#selAuditPeriod").val()).draw();
+        });
 
     </script>
 <?php $__env->stopSection(); ?>

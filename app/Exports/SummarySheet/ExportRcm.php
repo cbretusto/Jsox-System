@@ -156,7 +156,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
 
                     $event->sheet->getColumnDimension('A')->setWidth(2);
                     $event->sheet->getColumnDimension('B')->setWidth(5);
-                    $event->sheet->getColumnDimension('C')->setWidth(35);
+                    $event->sheet->getColumnDimension('C')->setWidth(45);
                     $event->sheet->getColumnDimension('D')->setWidth(20);
                     $event->sheet->getColumnDimension('E')->setWidth(35);
                     $event->sheet->getColumnDimension('F')->setWidth(11);
@@ -228,6 +228,8 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                     $event->sheet->setCellValue('B2',$plc_category);
                     $event->sheet->getDelegate()->getStyle('B2')->applyFromArray($arial_font11);
                     $event->sheet->getDelegate()->getStyle('B2')->applyFromArray($hlv_center);
+                    $event->sheet->getDelegate()->getStyle('B2')->getAlignment()->setWrapText(true);
+
 
                     $event->sheet->setCellValue('B4',"Objective No.");
                     $event->sheet->getStyle('B4')->getAlignment()->setTextRotation(-90);
@@ -569,7 +571,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                                 ->getStartColor()
                                 ->setARGB('c0c0c0');
 
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(60);
+                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(120);
                             }
 
                             $event->sheet->setCellValue('Q'.$start_col, $rcm_details[$i]->rcm_info[$x]->internal_control);

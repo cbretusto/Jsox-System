@@ -151,12 +151,19 @@ $layout = 'layouts.super_user_layout';
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <input type="hidden" id="plc_categories" value="<?php echo Session::get('pmi_plc_category_id') ?>">
-                        <h1>{{ $title }}</h1>
+                        @if (!empty($title))
+                            <h1>{{ $title }}</h1>
+                        @endif
+                        {{-- @php
+                            isset($title) ? $title : undefined; 
+                        @endphp --}}
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('plc_dashboard') }}">PLC Dashboard</a></li>
-                            <li class="breadcrumb-item active">{{ $title }}</li>
+                            @if (!empty($title))
+                                <li class="breadcrumb-item active">{{ $title }}</li>
+                            @endif                        
                         </ol>
                     </div>
                 </div>
@@ -209,7 +216,7 @@ $layout = 'layouts.super_user_layout';
                                     <div class="tab-pane fade show active" id="revisionHistoryId" role="tabpanel" aria-labelledby="revision-management-tab">
                                         <div class="mt-4">
                                             <button class="btn btn-info" data-toggle="modal" data-target="#modalNoRevision" id="btnNoRevisionModal" style="float: right; margin-right: 10px;"><i class="far fa-edit"></i> No Revision</button>
-                                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddRevision" id="btnAddRevisionModal" style="float: right; margin-right: 10px;"><i class="far fa-edit"></i> Add Revision</button>
+                                            <button class="btn btn-dark" data-toggle="modal" data-target="#modalAddRevision" id="btnAddRevisionModal" style="float: right; margin-right: 10px;"><i class="far fa-edit"></i> Add Revision</button>
                                             <button class="btn btn-primary mr-2" data-toggle="modal"data-target="#modalExportSummary"style="float: right;"><i class="fas fa-download"></i> Export Summary</button>
                                         </div>
                                         <br><br>
@@ -283,8 +290,9 @@ $layout = 'layouts.super_user_layout';
                                             </select>
                                         </div>
                                         <div class="text-right">
-                                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddRcmData" style="float: right;"><i class="fa fa-plus fa-md"></i> Add RCM Data</button>
-                                        </div><br> <br>
+                                            <button class="btn btn-dark mr-2" data-toggle="modal" data-target="#modalAddRcmData"><i class="fa fa-plus fa-md"></i> Add RCM Data</button>
+                                            <button class="btn btn-info" data-toggle="modal" data-target="#modalCopyRcmData" style="float: right;"><i class="fa fa-plus fa-md"></i> Copy RCM Data</button>
+                                        </div><br>
 
                                         <div class="table-responsive" >
                                             <table id="plcModuleRcmDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
@@ -314,16 +322,16 @@ $layout = 'layouts.super_user_layout';
                                             </select>
                                         </div>
                                         <div style="float: right;">
-                                            <a href = 'export/{{ Session::get("pmi_plc_category_id") }}'><button class="btn btn-primary"><i class="fas fa-file-export"></i> Export Audit Result</button></a>
+                                            {{-- <a href = 'export/{{ Session::get("pmi_plc_category_id") }}'><button class="btn btn-primary"><i class="fas fa-file-export"></i> Export Audit Result</button></a> --}}
                                             <button type="button" class="btn btn-dark text-center actionFirstHalfYecApprovedDate mt-2 mb-2" data-toggle="modal" data-target="#modalFirstHalfYecApprovedDate" data-keyboard="false"><i class="far fa-calendar-check">&nbsp;</i>YEC Approved Date</button>
                                         </div>
                                             <div class="table-responsive">
                                             <table id="plcModulesSaDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr>
-                                                        <th rowspan="2">Fiscal Year</th>
-                                                        <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                                        <th rowspan="2" class="text-center pl-5 pr-5">Action</th>
                                                         <th rowspan="2">&nbsp;</th>
+                                                        <th rowspan="2">Fiscal Year</th>
                                                         <th rowspan="2">Control <br> No.</th>
                                                         <th rowspan="2">Key <br> Control</th>
                                                         <th rowspan="2">IT <br> Control</th>
@@ -579,12 +587,13 @@ $layout = 'layouts.super_user_layout';
                     @csrf
                     <div class="modal-body">
                         <p style="text-align: center; font-size: 25px;">Are you sure that there is no revision?</p>
-                        <input type="text" class="form-control" name="no_revision" id="txtNoRevisionId" value=""><br>
+                        <input type="text" class="form-control mb-3" name="no_revision" id="txtNoRevisionId" value="">
                         <label>Version No.</label>
-                        <input type="number" class="form-control" name="version_no" id="txtVersionNo" autocomplete="off">
+                        <input type="number" class="form-control mb-3" name="version_no" id="txtVersionNo" autocomplete="off">
+                        <label>Reason for Revision</label>
+                        <input type="text" class="form-control mb-3" name="reason_for_revision" id="txtReasonForRevision" value="">
                         <label>Process Owner</label>
                         <select class="form-control sel-user-process-owner select2bs4" id="nrProcessOwnerId" name="nr_process_owner[]" multiple></select>
-
 
                         <input type="hidden" name="category_name" id="txtCategoryNameId" value="{{ Session::get('pmi_plc_category_id') }}">
                     </div>
@@ -619,10 +628,6 @@ $layout = 'layouts.super_user_layout';
                             <div class="card-body">
                                 <div id="divAddConformance">
                                     <input type="hidden" name="add_conformance_counter" id="addConformanceCounter" value="0">
-                                    <!-- <div class="form-group col-sm-6 flex-column">
-                                        <label>Year:</label>
-                                        <input type="year" class="form-control" name="year" id="txtAddYear" required>
-                                    </div> -->
                                     <div class="col-sm-3 mb-2">
                                         <label><strong>Fiscal Year:</strong></label>
                                         <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selAddFiscalYearRevHistory" aria-controls="">
@@ -684,10 +689,6 @@ $layout = 'layouts.super_user_layout';
                                     <div class="card-body">
                                         <div id="divEditConformance">
                                             <input type="hidden" name="edit_conformance_counter" id="editConformanceCounter" value="0">
-                                            {{-- <div class="form-group col-sm-6 flex-column">
-                                                <label>Year:</label>
-                                                <input type="year" class="form-control" name="year" id="txtEditYear" required>
-                                            </div> --}}
                                             <div class="col-sm-3 mb-2">
                                                 <label><strong>Fiscal Year:</strong></label>
                                                 <select class="form-control selectFiscalYear position-absolute select2bs4" name="year_value" id="selEditFiscalYearRevHistory" aria-controls="">
@@ -746,7 +747,6 @@ $layout = 'layouts.super_user_layout';
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Process Owner</label>
                                         <select class="form-control sel-user-process-owner select2bs4" id="selectEditProcessOwner" name="edit_revision_history_process_owner[]" multiple required></select>
-                                        {{-- <select class="form-control select2bs4" id="selectEditProcessOwner" name="edit_revision_history_process_owner[]" multiple></select> --}}
                                     </div>
 
                                     <div class="col-sm-4">
@@ -754,16 +754,10 @@ $layout = 'layouts.super_user_layout';
                                             <label>Revision Date</label>
                                             <div class="input-group">
                                                 <input type="date" class="form-control" name="edit_revision_history_date" id="txtEditRevisionHistoryDate">
-                                                {{-- &nbsp;-&nbsp; --}}
                                                 <input type="text" class="form-control" name="edit_no_revision_history" id="txtEditNoRevisionHistory">
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="form-group col-sm-4 flex-column d-flex">
-                                        <label>Revision Date</label>
-                                        <input type="date" class="form-control" name="edit_revision_history_date" id="txtEditRevisionHistoryDate">
-                                        <input type="text" class="form-control" name="edit_revision_history_date" id="txtEditRevisionHistoryDate">
-                                    </div> --}}
 
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label>Version No.</label>
@@ -1209,20 +1203,20 @@ $layout = 'layouts.super_user_layout';
                                     <div class="form-group">
                                         <input type="hidden" class="form-control" name="rcm_data_id" id="txtRcmDataId">
                                         <label>Control Objective:</label>
-                                        <textarea type="text" class="form-control" rows="5" name="edit_control_objective"
+                                        <textarea type="text" class="form-control" rows="4" name="edit_control_objective"
                                         id="txtEditControlObjectiveId" autocomplete= "off"></textarea>
                                     </div>
 
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label>Risk Summary:</label>
-                                            <textarea type="text" class="form-control" rows="5" name="edit_risk_summary"
+                                            <textarea type="text" class="form-control" rows="4" name="edit_risk_summary"
                                             id="txtEditRiskSummary" autocomplete= "off"></textarea>
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label>Risk Detail:</label>
-                                            <textarea type="text" class="form-control" rows="5" name="edit_risk_detail"
+                                            <textarea type="text" class="form-control" rows="4" name="edit_risk_detail"
                                             id="txtEditRiskDetailId" autocomplete= "off"></textarea>
                                         </div>
                                     </div>
@@ -1409,7 +1403,37 @@ $layout = 'layouts.super_user_layout';
         </div>
     </div> <!-- CHANGE STAT MODAL END -->
 
-    <!---------------------------------- VIEW DATA RCM --------------------------------->
+    <!-- COPY RCM DATA MODAL START -->
+    <div class="modal fade" id="modalCopyRcmData">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm">
+                <div class="modal-header bg-info">
+                    <h4 class="modal-title" id=""><i class="fas fa-copy"></i> Copy RCM Data</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formCopyRcmData">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group flex-column d-flex">
+                            <input type="hidden" name="category_name" id="txtCategoryNameId"value="{{ Session::get('pmi_plc_category_id') }}">
+                            <label>Year:</label>
+                            <select class="form-control selectFiscalYear select2bs4" name="sel_fiscal_year" id="selFiscalYear">
+                                <!-- Code generated -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                        <button type="submit" id="btnCopyRcmData" class="btn btn-info"><i id="iBtnCopyRcmDataIcon" class="fa fa-check"></i> Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- COPY RCM DATA MODAL END -->
+
+    <!-- ======================================== VIEW DATA RCM ========================================>
     <div class="modal fade" id="modalViewRcmData" data-backdrop="static">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -1733,12 +1757,12 @@ $layout = 'layouts.super_user_layout';
 
 
     {{-- ======================================================= SA MODULE ============================================================= --}}
-    <!-- EDIT SA MODAL START -->
-    <div class="modal fade" id="modalEditSaData" style="overflow-y: scroll;">
+    <!-- EDIT SA FIRST HALF MODAL START -->
+    <div class="modal fade" id="modalEditSaDataFirstHalf" style="overflow-y: scroll;">
         <div class="modal-dialog modal-xl-custom">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Edit SA</h4>
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> First Half</h4>
                     <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1751,7 +1775,11 @@ $layout = 'layouts.super_user_layout';
                                 <div class="form-group col-sm-3 flex-column d-flex">
                                     <input type="hidden" name="sa_data_id" id="txtEditSaDataId">
                                     <input type="hidden" name="category_name" id="txtCategoryNameId" value="{{ Session::get('pmi_plc_category_id') }}">
-                                    <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
+                                    @if(empty($pmi_category))
+                                    
+                                    @else
+                                        <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
+                                    @endif
                                     <input type="hidden" name="sa_counter" id="txtSACounter" value="">
                                 </div>
 
@@ -1764,7 +1792,6 @@ $layout = 'layouts.super_user_layout';
                                     <div class="form-group col-sm-4">
                                         <label>Year:</label>
                                         <input type="text" class="form-control" name="fiscal_year" id="txtFiscalYear" readonly>
-                                        <input type="hidden" class="form-control" name="year" id="getCurrentYear" readonly>
                                     </div>
 
                                     <div class="form-group col-sm-4">
@@ -1777,194 +1804,111 @@ $layout = 'layouts.super_user_layout';
                                     <label>Internal Control:</label>
                                     <textarea type="text" class="form-control" name="internal_control" rows="5" id="txtEditSaInternalControl" autocomplete= "off" readonly></textarea>
                                 </div>
-                                <div id="accordion">
-                                    <button type="button" class="btn btn-light w-100" data-toggle="collapse"  data-target="#plcSaFirstHalf" aria-expanded="false" aria-controls="plcSaFirstHalf"><i class="fa fa-arrow-down"></i>
-                                        &nbsp;&nbsp;<strong>FIRST HALF <br> Design and Implementation of Controls&nbsp;&nbsp;&&nbsp;&nbsp;Operating Effectiveness of Controls</strong>
-                                    </button>
-                                    <div class="collapse" id="plcSaFirstHalf" data-parent="#accordion"><br>
-                                        <div class="row justify-content-between text-left">
-                                            <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label>Assessed by:</label>
-                                                <select class="form-control sel_assessed_by select2bs4" id="selectEditAssessedBy" name="view_assessed_by"></select>
-                                                <input type="hidden" class="form-control" id="txtEditAssessedby" name="assessed_by" value="Ma. Arlene A. Dela Cruz" readonly>
-                                            </div>
-                                            <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label>Checked by:</label>
-                                                <select class="form-control sel_assessed_by select2bs4" id="selectEditCheckedBy" name="view_checked_by"></select>
-                                                <input type="hidden" class="form-control" id="txtEditSaCheckedBy" name="checked_by" value="Jeannie M. Miranda" readonly>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-lg-12 mx-auto">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5><strong>1. Design and Implementation of Controls</strong></h5>
-                                                        <div class="card" id="cardDicAssessmentDetailsAndFindings">
-                                                            <div class="card-header">
-                                                                <input type="hidden" name="dic_assessment_details_findings_counter" id="addDicAssessmentDetailsAndFindingsCounter" value="1">
-                                                                <div class="form-group">
-                                                                    <span class="badge badge-secondary"># 1.</span>
-                                                                    <label>Assesment details & Findings:</label>
-                                                                    <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowDicAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
-                                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowDicAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
-                                                                    <textarea type="text" class="form-control" rows="4" name="dic_assessment" id="txtEditSaDicAssessment" autocomplete= "off"></textarea>
-                                                                </div>
-                                                                <div id="divDicAssessmentDetailsAndFindings">
-                                                                    {{-- Chan 03-23-2022 --}}
-                                                                    <input class="" type="file" id="DicAttachment" name="dic_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                    <input type="text" class="d-none" id="txtDicEditOrigFile" name="dicEditOrigFile" readonly><br>
-                                                                    <input type="checkbox" class="form-check-input checked d-none" name="dic_checkbox" id="DicCheckBox">
-                                                                    <label class="d-none" id="DicReuploadFile">Re-upload File</label>
-                                                                    {{-- Chan 03-23-2022 --}}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Status:</label>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="dic_status" id="txtEditSaDicGStatus" value="G">
-                                                                <label class="form-check-label" for="inlineRadio1">Good</label>
-                                                            </div>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="dic_status" id="txtEditSaDicNGStatus" value="NG">
-                                                                <label class="form-check-label" for="inlineRadio2">Not Good</label>
-                                                            </div>
-
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="dic_status" id="txtEditSaDicNoSample" value="No Sample">
-                                                                <label class="form-check-label" for="inlineRadio2">No Sample</label>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-outline-dark btn-sm dic_button" data-toggle="modal" data-target="#modalSelectFile" button-session1="1" name="select_files" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-lg-12 mx-auto">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5><strong>2. Operating Effectiveness of Controls</strong></h5>
-                                                        <div class="card" id="cardOecAssessmentDetailsAndFindings">
-                                                            <div class="card-header">
-                                                                <input type="hidden" name="oec_assessment_details_findings_counter" id="addOecAssessmentDetailsAndFindingsCounter" value="1">
-                                                                <div class="form-group">
-                                                                    <span class="badge badge-secondary"># 1.</span>
-                                                                    <label>Assesment details & Findings:</label>
-                                                                    <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowOecAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
-                                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowOecAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
-                                                                    <textarea type="text" class="form-control" rows="4" name="oec_assessment" id="txtEditSaOecAssessment" autocomplete= "off"></textarea>
-                                                                </div>
-                                                                <div id="divOecAssessmentDetailsAndFindings">
-                                                                    {{-- Chan 03-23-2022 --}}
-                                                                    <input type="file" class="" id="OecAttachment" name="oec_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                    <input type="text" class="d-none" id="txtOecAttachment" name="txt_oec_attachment" readonly><br>
-                                                                    <input type="checkbox" class="form-check-input d-none checked" name="oec_checkbox" id="OecCheckBox">
-                                                                    <label class="d-none" id="OecReuploadFile">Re-upload File</label>
-                                                                    {{-- Chan 03-23-2022 --}}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Status:</label>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="oec_status" id="txtEditSaOecGStatus" value="G">
-                                                                <label class="form-check-label" for="inlineRadio1">Good</label>
-                                                            </div>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="oec_status" id="txtEditSaOecNGStatus" value="NG">
-                                                                <label class="form-check-label" for="inlineRadio2">Not Good</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="oec_status" id="txtEditSaOecNoSample" value="No Sample">
-                                                                <label class="form-check-label" for="inlineRadio2">No Sample</label>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-outline-dark btn-sm oec_button" data-toggle="modal" data-target="#modalSelectFile"  button-session2="2" name="select_files1" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="row justify-content-between text-left">
+                                    <div class="form-group col-sm-6 flex-column d-flex">
+                                        <label>Assessed by:</label>
+                                        <select class="form-control sel_assessed_by select2bs4" id="selectEditAssessedBy" name="view_assessed_by"></select>
+                                        <input type="hidden" class="form-control" id="txtEditAssessedby" name="assessed_by" value="Krisha Anne A. Apines" readonly>
+                                    </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex">
+                                        <label>Checked by:</label>
+                                        <select class="form-control sel_assessed_by select2bs4" id="selectEditCheckedBy" name="view_checked_by"></select>
+                                        <input type="hidden" class="form-control" id="txtEditSaCheckedBy" name="checked_by" value="Jeannie M. Miranda" readonly>
                                     </div>
                                 </div>
-                                <hr>
-                                <div id="accordion">
-                                    <button type="button" class="btn btn-light w-100" data-toggle="collapse"  data-target="#plcSaSecondHalf" aria-expanded="false" aria-controls="plcSaSecondHalf"><i class="fa fa-arrow-down"></i>
-                                        &nbsp;&nbsp;<strong>SECOND HALF <br> Roll forward&nbsp;&nbsp;&&nbsp;&nbsp;Follow up</strong>
-                                    </button>
-                                    <div class="collapse" id="plcSaSecondHalf" data-parent="#accordion"><br>
-                                        <div class="row justify-content-between text-left">
-                                            <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label>Assessed by:</label>
-                                                <select class="form-control sel_assessed_by select2bs4" id="selectViewSecondHalfAssessedBy" name="view_second_half_assessed_by"></select>
-                                                <input type="hidden" class="form-control" id="txtEditSecondHalfAssessedBy" name="second_half_assessed_by" value="Ma. Arlene A. Dela Cruz" readonly>
-                                            </div>
 
-                                            <div class="form-group col-sm-6 flex-column d-flex">
-                                                <label>Checked by:</label>
-                                                <select class="form-control sel_assessed_by select2bs4" id="selectViewSecondHalfCheckedBy" name="view_second_half_checked_by"></select>
-                                                <input type="hidden" class="form-control" id="txtEditSecondHalfCheckedBy" name="second_half_checked_by" value="Jeannie M. Miranda" readonly>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-lg-12 mx-auto">
-                                                <div class="card">
+                                <div class="row">
+                                    <div class="col-lg-12 mx-auto">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5><strong>1. Design and Implementation of Controls</strong></h5>
+                                                <div class="card" id="cardDicAssessmentDetailsAndFindings">
                                                     <div class="card-header">
-                                                        <h5><strong>3. Roll forward</strong></h5>
-                                                        <br>
+                                                        <input type="hidden" name="dic_assessment_details_findings_counter" id="addDicAssessmentDetailsAndFindingsCounter" value="1">
                                                         <div class="form-group">
-                                                            <label>Improvement plans:</label>
-                                                            <textarea type="text" class="form-control" rows="2" name="rf_improvement" id="txtEditSaRfImprovement" autocomplete= "off"></textarea>
+                                                            <span class="badge badge-secondary"># 1.</span>
+                                                            <label>Assesment details & Findings:</label>
+                                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowDicAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
+                                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowDicAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
+                                                            <textarea type="text" class="form-control" rows="4" name="dic_assessment" id="txtEditSaDicAssessment" autocomplete= "off"></textarea>
                                                         </div>
-
-                                                        <div class="card" id="cardRfAssessmentDetailsAndFindings">
-                                                            <div class="card-header">
-                                                                <input type="hidden" name="rf_assessment_details_findings_counter" id="addRfAssessmentDetailsAndFindingsCounter" value="1">
-                                                                <div class="form-group">
-                                                                    <span class="badge badge-secondary"># 1.</span>
-                                                                    <label>Assesment details & Findings:</label>
-                                                                    <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowRfAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
-                                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowRfAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
-                                                                    <textarea type="text" class="form-control" rows="4" name="rf_assessment" id="txtEditSaRfAssessment" autocomplete= "off"></textarea>
-                                                                </div>
-                                                                <div id="divRfAssessmentDetailsAndFindings">
-                                                                    {{-- Chan 03-23-2022 --}}
-                                                                    <input type="file" class="" id="RfAttachment" name="rf_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                                    <input type="text" class="d-none" id="txtRfAttachment" name="txt_rf_attachment" readonly><br>
-
-                                                                    <input type="checkbox" class="form-check-input d-none checked" name="rf_checkbox" id="chckRfCheckBox">
-                                                                    <label class="d-none" id="txtRfReuploadFile">Re-upload File</label>
-                                                                    {{-- Chan 03-23-2022 --}}
-                                                                </div>
-                                                            </div>
+                                                        <div id="divDicAssessmentDetailsAndFindings">
+                                                            <!-- Chan 03-23-2022 -->
+                                                            <input class="" type="file" id="DicAttachment" name="dic_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                            <input type="text" class="d-none" id="txtDicEditOrigFile" name="dicEditOrigFile" readonly><br>
+                                                            <input type="checkbox" class="form-check-input checked d-none" name="dic_checkbox" id="DicCheckBox">
+                                                            <label class="d-none" id="DicReuploadFile">Re-upload File</label>
+                                                            <!-- Chan 03-23-2022 -->
                                                         </div>
-
-                                                        <div class="form-group">
-                                                            <label>Status:</label>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="rf_status" id="txtEditSaRfGStatus" value="G">
-                                                                <label class="form-check-label" for="inlineRadio1">Good</label>
-                                                            </div>&nbsp;&nbsp;&nbsp;
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="rf_status" id="txtEditSaRfNGStatus" value="NG">
-                                                                <label class="form-check-label" for="inlineRadio2">Not Good</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input radioBtn" type="radio"  name="rf_status" id="txtEditSaRfNoSample" value="No Sample">
-                                                                <label class="form-check-label" for="inlineRadio2">No Sample</label>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-outline-dark btn-sm rf_button" data-toggle="modal" data-target="#modalSelectFile"  button-session3="3" name="select_files2" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label>Status:</label>&nbsp;&nbsp;&nbsp;
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radioBtn" type="radio"  name="dic_status" id="txtEditSaDicGStatus" value="G">
+                                                        <label class="form-check-label" for="inlineRadio1">Good</label>
+                                                    </div>&nbsp;&nbsp;&nbsp;
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radioBtn" type="radio"  name="dic_status" id="txtEditSaDicNGStatus" value="NG">
+                                                        <label class="form-check-label" for="inlineRadio2">Not Good</label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radioBtn" type="radio"  name="dic_status" id="txtEditSaDicNoSample" value="No Sample">
+                                                        <label class="form-check-label" for="inlineRadio2">No Sample</label>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-dark btn-sm dic_button" data-toggle="modal" data-target="#modalSelectFile" button-session1="1" name="select_files" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-lg-12 mx-auto">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5><strong>2. Operating Effectiveness of Controls</strong></h5>
+                                                <div class="card" id="cardOecAssessmentDetailsAndFindings">
+                                                    <div class="card-header">
+                                                        <input type="hidden" name="oec_assessment_details_findings_counter" id="addOecAssessmentDetailsAndFindingsCounter" value="1">
+                                                        <div class="form-group">
+                                                            <span class="badge badge-secondary"># 1.</span>
+                                                            <label>Assesment details & Findings:</label>
+                                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowOecAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
+                                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowOecAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
+                                                            <textarea type="text" class="form-control" rows="4" name="oec_assessment" id="txtEditSaOecAssessment" autocomplete= "off"></textarea>
+                                                        </div>
+                                                        <div id="divOecAssessmentDetailsAndFindings">
+                                                            <!-- Chan 03-23-2022 -->
+                                                            <input type="file" class="" id="OecAttachment" name="oec_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                            <input type="text" class="d-none" id="txtOecAttachment" name="txt_oec_attachment" readonly><br>
+                                                            <input type="checkbox" class="form-check-input d-none checked" name="oec_checkbox" id="OecCheckBox">
+                                                            <label class="d-none" id="OecReuploadFile">Re-upload File</label>
+                                                            <!-- Chan 03-23-2022 -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Status:</label>&nbsp;&nbsp;&nbsp;
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radioBtn" type="radio"  name="oec_status" id="txtEditSaOecGStatus" value="G">
+                                                        <label class="form-check-label" for="inlineRadio1">Good</label>
+                                                    </div>&nbsp;&nbsp;&nbsp;
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radioBtn" type="radio"  name="oec_status" id="txtEditSaOecNGStatus" value="NG">
+                                                        <label class="form-check-label" for="inlineRadio2">Not Good</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input radioBtn" type="radio"  name="oec_status" id="txtEditSaOecNoSample" value="No Sample">
+                                                        <label class="form-check-label" for="inlineRadio2">No Sample</label>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-dark btn-sm oec_button" data-toggle="modal" data-target="#modalSelectFile"  button-session2="2" name="select_files1" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1975,12 +1919,135 @@ $layout = 'layouts.super_user_layout';
                 </form>
             </div>
         </div>
-    </div><!-- EDIT SA MODAL END -->
+    </div><!-- EDIT SA FIRST HALF MODAL END -->
+
+    <!-- SA SECOND HALF MODAL START -->
+    <div class="modal fade" id="modalEditSaDataSecondHalf">
+        <div class="modal-dialog modal-xl-custom">
+            <div class="modal-content"> <!--START-->
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Second Half</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="formEditSaSecondHalf" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="sa_second_half_id" id="txtEditSaSecondHalfId">
+                    <input type="hidden" name="category_name" id="txtCategoryNameId" value="{{ Session::get('pmi_plc_category_id') }}">
+                    @if(empty($pmi_category))
+                                        
+                    @else
+                        <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
+                    @endif
+
+                    <div class="card-body">
+                        <div class="row text-left">
+                            <div class="form-group col-sm-4">
+                                <label>Control No.</label>
+                                <input type="text" class="form-control" name="control_no" id="txtEditSaControlNoSecondHalf" autocomplete= "off" readonly>
+                            </div>
+
+                            <div class="form-group col-sm-4">
+                                <label>Year:</label>
+                                <input type="text" class="form-control" name="fiscal_year" id="txtFiscalYearSecondHalf" readonly>
+                            </div>
+
+                            <div class="form-group col-sm-4">
+                                <label>Concerned Department:</label>
+                                <input type="text" class="form-control" name="concerned_dept" id="selectEditDeptSecondHalf" autocomplete= "off" readonly>
+                                <!-- <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDept" name="concerned_dept"></select> -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Internal Control:</label>
+                            <textarea type="text" class="form-control" name="internal_control" rows="5" id="txtEditSaInternalControlSecondHalf" autocomplete= "off" readonly></textarea>
+                        </div>
+
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label>Assessed by:</label>
+                                <select class="form-control sel_assessed_by select2bs4" id="selectViewSecondHalfAssessedBy" name="view_second_half_assessed_by"></select>
+                                <input type="hidden" class="form-control" id="txtEditSecondHalfAssessedBy" name="second_half_assessed_by" value="Krisha Anne A. Apines" readonly>
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label>Checked by:</label>
+                                <select class="form-control sel_assessed_by select2bs4" id="selectViewSecondHalfCheckedBy" name="view_second_half_checked_by"></select>
+                                <input type="hidden" class="form-control" id="txtEditSecondHalfCheckedBy" name="second_half_checked_by" value="Jeannie M. Miranda" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 mx-auto">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5><strong>3. Roll forward</strong></h5>
+                                        <br>
+                                        <div class="form-group">
+                                            <label>Improvement plans:</label>
+                                            <textarea type="text" class="form-control" rows="2" name="rf_improvement" id="txtEditSaRfImprovement" autocomplete= "off"></textarea>
+                                        </div>
+
+                                        <div class="card" id="cardRfAssessmentDetailsAndFindings">
+                                            <div class="card-header">
+                                                <input type="hidden" name="rf_assessment_details_findings_counter" id="addRfAssessmentDetailsAndFindingsCounter" value="1">
+                                                <div class="form-group">
+                                                    <span class="badge badge-secondary"># 1.</span>
+                                                    <label>Assesment details & Findings:</label>
+                                                    <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowRfAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
+                                                    <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowRfAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
+                                                    <textarea type="text" class="form-control" rows="4" name="rf_assessment" id="txtEditSaRfAssessment" autocomplete= "off"></textarea>
+                                                </div>
+                                                <div id="divRfAssessmentDetailsAndFindings">
+                                                    <!-- Chan 03-23-2022 -->
+                                                    <input type="file" class="" id="RfAttachment" name="rf_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                    <input type="text" class="d-none" id="txtRfAttachment" name="txt_rf_attachment" readonly><br>
+
+                                                    <input type="checkbox" class="form-check-input d-none checked" name="rf_checkbox" id="chckRfCheckBox">
+                                                    <label class="d-none" id="txtRfReuploadFile">Re-upload File</label>
+                                                    <!-- Chan 03-23-2022 -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Status:</label>&nbsp;&nbsp;&nbsp;
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input radioBtn" type="radio"  name="rf_status" id="txtEditSaRfGStatus" value="G">
+                                                <label class="form-check-label" for="inlineRadio1">Good</label>
+                                            </div>&nbsp;&nbsp;&nbsp;
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input radioBtn" type="radio"  name="rf_status" id="txtEditSaRfNGStatus" value="NG">
+                                                <label class="form-check-label" for="inlineRadio2">Not Good</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input radioBtn" type="radio"  name="rf_status" id="txtEditSaRfNoSample" value="No Sample">
+                                                <label class="form-check-label" for="inlineRadio2">No Sample</label>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-dark btn-sm rf_button" data-toggle="modal" data-target="#modalSelectFile"  button-session3="3" name="select_files2" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnEditSaSecondHalf" class="btn btn-dark"><i id="iBtnEditSaSecondHalfIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- SA SECOND HALF MODAL END -->
 
     <!-- SA FOLLOW UP MODAL START -->
     <div class="modal fade" id="modalSaFollowUp">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content"> <!--START-->
+        <div class="modal-dialog modal-xl-custom">
+            <!--START-->
+            <div class="modal-content"> 
                 <div class="modal-header bg-dark">
                     <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Follow up</h4>
                     <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
@@ -1990,70 +2057,94 @@ $layout = 'layouts.super_user_layout';
 
                 <form id="formEditSaFollowUp" enctype="multipart/form-data">
                     @csrf
-                    <div class="col-lg-12 mx-auto">
-                        <div class="modal-body">
-                            <input type="hidden" name="sa_follow_up_id" id="txtEditSaFollowUpId">
-                            <input type="hidden" name="category_name" id="txtCategoryNameId" value="{{ Session::get('pmi_plc_category_id') }}">
-                            <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row justify-content-between text-left">
-                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label>Assessed by:</label>
-                                            <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpAssessedBy" name="follow_up_assessed_by"></select>
-                                            {{-- <input type="hidden" class="form-control" id="txtEditFollowUpAssessedBy" name="follow_up_assessed_by" value="Ma. Arlene A. Dela Cruz" readonly> --}}
-                                        </div>
+                    <input type="hidden" name="sa_follow_up_id" id="txtEditSaFollowUpId">
+                    <input type="hidden" name="category_name" id="txtCategoryNameId" value="{{ Session::get('pmi_plc_category_id') }}">
+                    @if(empty($pmi_category))
+                                        
+                    @else
+                    <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
+                    @endif
+                    <div class="card-body">
+                        <div class="row text-left">
+                            <div class="form-group col-sm-4">
+                                <label>Control No.</label>
+                                <input type="text" class="form-control" name="control_no" id="txtEditSaControlNoFollowUp" autocomplete= "off" readonly>
+                            </div>
 
-                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label>Checked by:</label>
-                                            <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpCheckedBy" name="follow_up_checked_by"></select>
-                                            {{-- <input type="hidden" class="form-control" id="txtEditFollowUpCheckedBy" name="follow_up_checked_by" value="Jeannie M. Miranda" readonly> --}}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Improvement plans:</label>
-                                        <textarea type="text" class="form-control" rows="4" name="fu_improvement" id="txtEditSaFuImprovement" autocomplete= "off"></textarea>
-                                    </div>
+                            <div class="form-group col-sm-4">
+                                <label>Year:</label>
+                                <input type="text" class="form-control" name="fiscal_year" id="txtFiscalYearFollowUp" readonly>
+                            </div>
 
-                                    <div class="card" id="cardFuAssessmentDetailsAndFindings">
-                                        <div class="card-header">
-                                            <input type="hidden" name="fu_assessment_details_findings_counter" id="addFuAssessmentDetailsAndFindingsCounter" value="1">
-                                            <div class="form-group">
-                                                <span class="badge badge-secondary"># 1.</span>
-                                                <label>Assesment details & Findings:</label>
-                                                <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowFuAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
-                                                <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowFuAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
-                                                <textarea type="text" class="form-control" rows="4" name="fu_assessment" id="txtEditSaFuAssessment" autocomplete= "off"></textarea>
-                                            </div>
-                                            <div id="divFuAssessmentDetailsAndFindings">
-                                                {{-- Chan 03-23-2022 --}}
-                                                <input type="file" class="" id="FuAttachment" name="fu_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                <input type="text" class="d-none" id="txtFuAttachment" name="txt_fu_attachment" readonly><br>
+                            <div class="form-group col-sm-4">
+                                <label>Concerned Department:</label>
+                                <input type="text" class="form-control" name="concerned_dept" id="selectEditDeptFollowUp" autocomplete= "off" readonly>
+                            </div>
+                        </div>
 
-                                                <input type="checkbox" class="form-check-input d-none checked" name="fu_checkbox" id="chckFuCheckBox">
-                                                <label class="d-none" id="txtFuReuploadFile">Re-upload File</label>
-                                                {{-- Chan 03-23-2022 --}}
-                                            </div>
-                                        </div>
+                        <div class="form-group">
+                            <label>Internal Control:</label>
+                            <textarea type="text" class="form-control" name="internal_control" rows="5" id="txtEditSaInternalControlFollowUp" autocomplete= "off" readonly></textarea>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5><strong>3. Roll forward</strong></h5>
+                                <br>
+                                <div class="row justify-content-between text-left">
+                                    <div class="form-group col-sm-6 flex-column d-flex">
+                                        <label>Assessed by:</label>
+                                        <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpAssessedBy" name="follow_up_assessed_by"></select>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Status:</label>&nbsp;&nbsp;&nbsp;
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuGStatus" value="G">
-                                            <label class="form-check-label" for="inlineRadio1">Good</label>
-                                        </div>&nbsp;&nbsp;&nbsp;
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuNGStatus" value="NG">
-                                            <label class="form-check-label" for="inlineRadio2">Not Good</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaNoFuSample" value="No Sample">
-                                            <label class="form-check-label" for="inlineRadio2">No Sample</label>
-                                        </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex">
+                                        <label>Checked by:</label>
+                                        <select class="form-control sel_assessed_by select2bs4" id="selectViewFollowUpCheckedBy" name="follow_up_checked_by"></select>
                                     </div>
-                                    <button type="button" class="btn btn-outline-dark btn-sm fu_button" data-toggle="modal" data-target="#modalSelectFile"  button-session4="4" name="select_files3" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
                                 </div>
+                                <div class="form-group">
+                                    <label>Improvement plans:</label>
+                                    <textarea type="text" class="form-control" rows="4" name="fu_improvement" id="txtEditSaFuImprovement" autocomplete= "off"></textarea>
+                                </div>
+
+                                <div class="card" id="cardFuAssessmentDetailsAndFindings">
+                                    <div class="card-header">
+                                        <input type="hidden" name="fu_assessment_details_findings_counter" id="addFuAssessmentDetailsAndFindingsCounter" value="1">
+                                        <div class="form-group">
+                                            <span class="badge badge-secondary"># 1.</span>
+                                            <label>Assesment details & Findings:</label>
+                                            <button type="button" class="btn btn-sm btn-dark float-right mb-2" id="addRowFuAssessmentDetailsAndFindings"><i class="fa fa-plus"></i> Add Row</button>
+                                            <button type="button" class="btn btn-sm btn-danger float-right mr-2 mb-2 d-none" id="removeRowFuAssessmentDetailsAndFindings"><i class="fas fa-times"></i> Remove Row</button>
+                                            <textarea type="text" class="form-control" rows="4" name="fu_assessment" id="txtEditSaFuAssessment" autocomplete= "off"></textarea>
+                                        </div>
+                                        <div id="divFuAssessmentDetailsAndFindings">
+                                            <!-- Chan 03-23-2022 -->
+                                            <input type="file" class="" id="FuAttachment" name="fu_attachment[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                            <input type="text" class="d-none" id="txtFuAttachment" name="txt_fu_attachment" readonly><br>
+
+                                            <input type="checkbox" class="form-check-input d-none checked" name="fu_checkbox" id="chckFuCheckBox">
+                                            <label class="d-none" id="txtFuReuploadFile">Re-upload File</label>
+                                            <!-- Chan 03-23-2022 -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status:</label>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuGStatus" value="G">
+                                        <label class="form-check-label" for="inlineRadio1">Good</label>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaFuNGStatus" value="NG">
+                                        <label class="form-check-label" for="inlineRadio2">Not Good</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input radioBtn" type="radio"  name="fu_status" id="txtEditSaNoFuSample" value="No Sample">
+                                        <label class="form-check-label" for="inlineRadio2">No Sample</label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-dark btn-sm fu_button" data-toggle="modal" data-target="#modalSelectFile"  button-session4="4" name="select_files3" id="btnShowModalSelectFile"><i class="fa fa-plus-circle"></i> Add Reference Document</button>
                             </div>
                         </div>
                     </div>
@@ -2066,14 +2157,18 @@ $layout = 'layouts.super_user_layout';
         </div>
     </div> <!-- SA FOLLOW UP MODAL END -->
 
-    {{-- $pmi_category = 'PMI-01'; --}}
-    <input type="hidden" class="form-control" name="get_category" id="txtGetCategory1" value="{{ $pmi_category }}">
-
+    <!-- $pmi_category = 'PMI-01'; -->
+    @if(empty($pmi_category))
+                                        
+    @else
+        <input type="hidden" class="form-control" name="get_category" id="txtGetCategory1" value="{{ $pmi_category }}">
+    @endif
     <!-- Chan March 16, 2022 -->
     <!-- SELECT PMI PLC EVIDENCES TABLE MODAL START (ADD REFERENCE DOCUMENT) -->
     <div class="modal fade" id="modalSelectFile">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content"> <!--START-->
+            <!--START-->
+            <div class="modal-content"> 
                 <div class="modal-header bg-dark">
                     <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> SELECT PLC EVIDENCES - REFERENCE DOCUMENT</h4>
                     <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
@@ -2082,7 +2177,11 @@ $layout = 'layouts.super_user_layout';
                 </div>
 
                 <div class="form-group col-sm-12">
-                    <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
+                    @if(empty($pmi_category))
+                                        
+                    @else
+                        <input type="hidden" name="plc_category_name" id="txtPlcCategoryName" value="{{ $pmi_category }}">
+                    @endif
                 </div>
                     <div class="card-header">
                         <div class="modal-body">
@@ -2114,7 +2213,7 @@ $layout = 'layouts.super_user_layout';
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                {{-- GET UPLOADED FILE ID --}}
+                <!-- GET UPLOADED FILE ID -->
                 <div class="form-group col-sm-12">
                     <input type="hidden" name="uploaded_file_id" id="txtUploadedFileId">
                     <input type="hidden" name="assessment_details_and_findings" id="txtAssessmentDetailsAndFindingsId">
@@ -2417,7 +2516,6 @@ $layout = 'layouts.super_user_layout';
                 },
                 "ajax": {
                     url: "view_plc_modules_flow_chart",
-                    // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
                     data: function(param) {
                         param.session = $("input[name='session_name']").val();
                     }
@@ -2447,20 +2545,19 @@ $layout = 'layouts.super_user_layout';
                 "responsive": true,
                 // "scrollX": true,
                 // "scrollX": "100%",
-                "language": {
-                    "info": "Showing _START_ to _END_ of _TOTAL_ records",
-                    "lengthMenu": "Show _MENU_ records",
-                },
+                // "language": {
+                //     "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                //     "lengthMenu": "Show _MENU_ records",
+                // },
                 "ajax": {
                     url: "view_plc_modules_rcm",
-                    // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
                     data: function(param) {
                         param.session = $("input[name='session_name']").val();
                     }
                 },
                 "columns": [
                     {"data": "status", orderable: false},
-                    {"data": "fiscal_year", orderable: false, visible: false},
+                    {"data": "fiscal_year", orderable: false},
                     {"data": "control_objective", orderable: false},
                     {"data": "risk_summary", orderable: false},
                     {"data": "risk_detail", orderable: false},
@@ -2521,15 +2618,14 @@ $layout = 'layouts.super_user_layout';
                 },
                 "ajax": {
                     url: "view_plc_sa_data",
-                    // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
                     data: function(param) {
                         param.session = $("input[name='session_name']").val();
                     }
                 },
                 "columns": [
-                    {"data": "fiscal_year", orderable: false, visible: false},
                     {"data": "action", orderable: false},
                     {"data": "approval_status", orderable: false},
+                    {"data": "fiscal_year", orderable: false},
                     {"data": "control_id", orderable: false},
                     {"data": "key_control", orderable: false},
                     {"data": "it_control", orderable: false},
@@ -2553,7 +2649,7 @@ $layout = 'layouts.super_user_layout';
             //VIEW PLC MODULES SA DATATABLES END
 
             $("#selFiscalYearSa").on('change', function() {
-                dataTablePlcModuleSa.column(0).search($(this).val()).draw();
+                dataTablePlcModuleSa.column(2).search($(this).val()).draw();
             });
 
             // Chan March 16, 2022
@@ -2597,7 +2693,7 @@ $layout = 'layouts.super_user_layout';
             });// END OF DATATABLE
 
             // Chan March 16, 2022
-            //============================== SELECT ADD CLC EVIDENCES FILE ==============================
+            //============================== SELECT ADD PLC EVIDENCES FILE ==============================
             $(document).on('click', '.actionSelectPlcEvidences', function(){
                 let plccategoryId  = $('#txtCategoryId').val();
                 let saId = $('#txtEditSaDataId').val();
@@ -2617,12 +2713,6 @@ $layout = 'layouts.super_user_layout';
                 $("#selectPlcEvidencesId").val(selectplcevidenceId);
                 $("#selectPlcEvidencesFile").val(selectplcevidence);
             });
-
-            // $(document).on('click', '#btnShowModalSelectFile', function(){
-            //     let plccategoryName  = $('#txtPlcCategoryName').val();
-            //     console.log('Add Reference Document');
-            //     console.log(' *Plc Category Name:', plccategoryName);
-            // });
 
             // Chan March 16, 2022
             // ========================= GET UPLOADED FILE ID =========================
@@ -2725,7 +2815,7 @@ $layout = 'layouts.super_user_layout';
                 reloadDataTablePlcSa();
             });
 
-            $("#modalEditSaData").on('hidden.bs.modal', function () {
+            $("#modalEditSaDataFirstHalf").on('hidden.bs.modal', function () {
                 // edit_dic_reload = $('#removeRowDicAssessmentDetailsAndFindings').val('');
                 // edit_oec_reload = $('#removeRowOecAssessmentDetailsAndFindings').val('');
                 // edit_rf_reload = $('#removeRowRfAssessmentDetailsAndFindings').val('');
@@ -2933,7 +3023,7 @@ $layout = 'layouts.super_user_layout';
                 EditRcmData();
             });
 
-             //============================== CHANGE PMI CLC STATUS ==============================
+             //============================== CHANGE RCM STATUS ==============================
             $(document).on('click', '.actionChangePlcRcmStat', function(){
                 let plcrcmStat = $(this).attr('status');
                 let plcrcmId = $(this).attr('plc_module_rcm-id');
@@ -2964,6 +3054,12 @@ $layout = 'layouts.super_user_layout';
                 GetRcmDataView(getRcmDataID);
             });
 
+            // ============================ COPY RCM DATA ============================
+            $("#modalCopyRcmData").submit(function(event) {
+                event.preventDefault();
+                CopyRcmData();
+            });
+
             //============================== DELETE SA DATA ==============================
             $(document).on('click', '.actionDeleteSaData', function(){
 
@@ -2982,8 +3078,8 @@ $layout = 'layouts.super_user_layout';
             LoadUserListProcessOwner($('.sel-user-process-owner'));
             LoadConcernedDepartment($('.sel-user-concerned-department'));
 
-            //============================== EDIT SA DATA ==============================
-            $(document).on('click', '.actionEditSaData', function(){
+            //============================== EDIT SA FIRST HALF ==============================
+            $(document).on('click', '.actionEditSaDataFirstHalf', function(){
                 let plccategoryName  = $('#txtPlcCategoryName').val();
                 let plccategoryId  = $('#txtCategoryNameId').val();
                 let saDataId = $(this).attr('sa_data-id');
@@ -3042,6 +3138,27 @@ $layout = 'layouts.super_user_layout';
                         });
                     }
                 }, 500);
+            });
+
+            $("#formEditSaModule").submit(function(event){
+                event.preventDefault();
+                EditSaModuleData();
+                dataTablePlcModuleSa.draw();
+            });
+
+            //============================== EDIT SA SECOND HALF ==============================
+            $(document).on('click', '.actionEditSaDataSecondHalf', function(){
+                let plccategoryName  = $('#txtPlcCategoryName').val();
+                let plccategoryId  = $('#txtCategoryNameId').val();
+                let saSecondHalfId = $(this).attr('sa_data-id');
+
+                $("#txtEditSaSecondHalfId").val(saSecondHalfId);
+                GetSaSecondHalf(saSecondHalfId);
+
+                console.log('SA Edit Button:');
+                console.log(' *Plc Category Name:', plccategoryName);
+                console.log(' *Plc Category ID:', plccategoryId);
+                console.log(' *Edit SA ID:', saSecondHalfId);
 
                 // RF
                 setTimeout(() => {
@@ -3063,10 +3180,9 @@ $layout = 'layouts.super_user_layout';
                     }
                 }, 500);
             });
-
-            $("#formEditSaModule").submit(function(event){
+            $("#formEditSaSecondHalf").submit(function(event){
                 event.preventDefault();
-                EditSaModuleData();
+                EditSaSecondHalf();
                 dataTablePlcModuleSa.draw();
             });
 
@@ -3973,7 +4089,7 @@ $layout = 'layouts.super_user_layout';
 
                 var html = '   <div class="row generatedDiv"  id="row_'+deptSectInChargeCounter+'">';
                     html += '       <div class="form-group col-sm-6 flex-column">';
-                    html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectAddDepartment_'+deptSectInChargeCounter+'" name="concerned_dept_'+deptSectInChargeCounter+'[]" multiple></select>';
+                    html += '           <select class="form-control sel-user-concerned-department_'+deptSectInChargeCounter+' select2bs4" id="selectAddDepartment_'+deptSectInChargeCounter+'" name="concerned_dept_'+deptSectInChargeCounter+'[]" multiple></select>';
                     html += '       </div>';
                     html += '       <div class="form-group col-sm-6 flex-column">';
                     html += '           <textarea type="text" class="form-control" rows="1" id="selectAddProcessInCharge_'+deptSectInChargeCounter+'" name="in_charge_'+deptSectInChargeCounter+'"></textarea>';
@@ -3987,7 +4103,7 @@ $layout = 'layouts.super_user_layout';
                     theme: 'bootstrap4'
                 });
 
-                LoadConcernedDepartment($('.sel-user-concerned-department'));
+                LoadConcernedDepartment($('.sel-user-concerned-department_'+deptSectInChargeCounter+''));
             });
 
             //====================================================== REMOVE DEPT / SECT & IN-CHARGE ROW ======================================================
@@ -4020,7 +4136,7 @@ $layout = 'layouts.super_user_layout';
 
                 var html = '   <div class="row generatedDiv"  id="row_'+editDeptSectInChargeCounter+'">';
                     html += '       <div class="form-group col-sm-6 flex-column">';
-                    html += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectEditDepartment_'+editDeptSectInChargeCounter+'" name="concerned_dept_'+editDeptSectInChargeCounter+'[]" multiple></select>';
+                    html += '           <select class="form-control sel-user-concerned-department_'+editDeptSectInChargeCounter+' select2bs4" id="selectEditDepartment_'+editDeptSectInChargeCounter+'" name="concerned_dept_'+editDeptSectInChargeCounter+'[]" multiple></select>';
                     html += '       </div>';
                     html += '       <div class="form-group col-sm-6 flex-column">';
                     html += '           <textarea type="text" class="form-control" rows="1" id="selectEditProcessInCharge_'+editDeptSectInChargeCounter+'" name="in_charge_'+editDeptSectInChargeCounter+'"></textarea>';
@@ -4034,7 +4150,7 @@ $layout = 'layouts.super_user_layout';
                     theme: 'bootstrap4'
                 });
 
-                LoadConcernedDepartment($('.sel-user-concerned-department'));
+                LoadConcernedDepartment($('.sel-user-concerned-department_'+editDeptSectInChargeCounter+''));
             });
 
             //====================================================== REMOVE DEPT / SECT & IN-CHARGE ROW ======================================================
@@ -4103,7 +4219,7 @@ $layout = 'layouts.super_user_layout';
                     html += '           <div class="row justify-content-between text-left">';
                     html += '               <div class="form-group col-sm-6 flex-column d-flex">';
                     html += '                   <label>Concerned Dept/Section</label>';
-                    html += '                   <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_0_' +revisionHistoryCounter + '" name="multiple_concerned_dept_0_' + revisionHistoryCounter +'[]" multiple></select>';
+                    html += '                   <select class="form-control sel-user-concerned-department_0_'+revisionHistoryCounter +' select2bs4" id="selectMultipleRowAddDepartment_0_'+revisionHistoryCounter + '" name="multiple_concerned_dept_0_' + revisionHistoryCounter +'[]" multiple></select>';
                     html += '               </div>';
                     html += '               <div class="form-group col-sm-6">';
                     html += '                   <label>In-Charge</label>';
@@ -4124,7 +4240,7 @@ $layout = 'layouts.super_user_layout';
                     theme: 'bootstrap4'
                 });
 
-                LoadConcernedDepartment($('.sel-user-concerned-department'));
+                LoadConcernedDepartment($('.sel-user-concerned-department_0_'+revisionHistoryCounter +''));
 
                 //=================================================================================================================================================================
                 //=============================================================== ADD MULTIPLE REASON FOR REVISION ================================================================
@@ -4221,7 +4337,7 @@ $layout = 'layouts.super_user_layout';
 
                     var xxx = '   <div class="row" id="divMultipleAddDeptSectInChargeHeader_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'">';
                         xxx += '       <div class="form-group col-sm-6 flex-column">';
-                        xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowAddDepartment_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'[]" multiple></select>';
+                        xxx += '           <select class="form-control sel-user-concerned-department_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+' select2bs4" id="selectMultipleRowAddDepartment_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'[]" multiple></select>';
                         xxx += '       </div>';
                         xxx += '       <div class="form-group col-sm-6 flex-column">';
                         xxx += '           <textarea type="text" class="form-control" rows="1" id="selectMultipleAddProcessInCharge_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+'"></textarea>';
@@ -4234,7 +4350,7 @@ $layout = 'layouts.super_user_layout';
                         theme: 'bootstrap4'
                     });
 
-                    LoadConcernedDepartment($('.sel-user-concerned-department'));
+                    LoadConcernedDepartment($('.sel-user-concerned-department_'+multipleDeptSectInChargeCounter+'_'+addRowDeptSectInChargePerCard+''));
                 });
                 //============================= REMOVE MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
                 $('#removeRowMultipleDeptSectInCharge_'+revisionHistoryCounter).on('click', function(e){
@@ -4430,7 +4546,7 @@ $layout = 'layouts.super_user_layout';
 
                     var xxx = '   <div class="row" id="divMultipleEditDeptSectInChargeHeader_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'">';
                         xxx += '       <div class="form-group col-sm-6 flex-column">';
-                        xxx += '           <select class="form-control sel-user-concerned-department select2bs4" id="selectMultipleRowEditDepartment_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'[]" multiple></select>';
+                        xxx += '           <select class="form-control sel-user-concerned-department_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+' select2bs4" id="selectMultipleRowEditDepartment_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_concerned_dept_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'[]" multiple></select>';
                         xxx += '       </div>';
                         xxx += '       <div class="form-group col-sm-6 flex-column">';
                         xxx += '           <textarea type="text" class="form-control" rows="1" id="selectEditMultipleProcessInCharge_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'" name="multiple_in_charge_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+'"></textarea>';
@@ -4443,8 +4559,9 @@ $layout = 'layouts.super_user_layout';
                         theme: 'bootstrap4'
                     });
 
-                    LoadConcernedDepartment($('.sel-user-concerned-department'));
+                    LoadConcernedDepartment($('.sel-user-concerned-department_'+editMultipleDeptSectInChargeCounter+'_'+editRowDeptSectInChargePerCard+''));
                 });
+
                 //============================= REMOVE MULTIPLE DEPT / SECT & IN-CHARGE ROW =============================
                 $('#removeEditRowMultipleDeptSectInCharge_'+editRevisionHistoryCounter).on('click', function(e){
                     editRemoveRowDeptSectInChargePerCard = $(this).closest('.editRemoveBtnMultipleDeptSectInCharge').val();
@@ -4580,6 +4697,7 @@ $layout = 'layouts.super_user_layout';
                 }
             });
 
+            //==============================================================================================
             var optionValues = [];
             $('#selectEditProcessOwner').each(function(){
                 if($.inArray(this.value, optionValues) >-1){
