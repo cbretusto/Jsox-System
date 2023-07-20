@@ -11,6 +11,7 @@ use DataTables;
 //MODEL
 use App\FiscalYear;
 use App\ClcEvidences;
+use App\PLCModuleRCM;
 
 class FiscalYearController extends Controller
 {
@@ -23,10 +24,10 @@ class FiscalYearController extends Controller
         ->addColumn('status', function($fiscalYear){
             $result = "<center>";
             if($fiscalYear->status == 1){
-                $result .= '<span class="badge badge-pill badge-success">Active</span>';
+                $result .= '<span class="badge badge-pill badge-warning">Ongoing</span>';
             }
             else{
-                $result .= '<span class="badge badge-pill badge-danger">Inactive</span>';
+                $result .= '<span class="badge badge-pill badge-success">Closed</span>';
             }
                 $result .= '</center>';
                 return $result;
@@ -39,9 +40,9 @@ class FiscalYearController extends Controller
                         <div class="dropdown-menu dropdown-menu-right">'; // dropdown-menu start
             if($fiscalYear->status == 1){
                 $result .= '<button class="dropdown-item text-center actionEditFiscalYear" type="button" fiscalYear-id="' . $fiscalYear->id . '" data-toggle="modal" data-target="#modalEditFiscalYear" data-keyboard="false">Edit</button>';
-                $result .= '<button class="dropdown-item text-center actionChangeFiscalYearStat" type="button" fiscalYear-id="' . $fiscalYear->id . '" status="2" data-toggle="modal" data-target="#modalChangeFiscalYearStat" data-keyboard="false">Deactivate</button>';
+                $result .= '<button class="dropdown-item text-center actionChangeFiscalYearStat" type="button" fiscalYear-id="' . $fiscalYear->id . '" status="1" data-toggle="modal" data-target="#modalChangeFiscalYearStat" data-keyboard="false">Lock RCM</button>';
             }else{
-                $result .= '<button class="dropdown-item text-center actionChangeFiscalYearStat" type="button" fiscalYear-id="' . $fiscalYear->id . '" status="1" data-toggle="modal" data-target="#modalChangeFiscalYearStat" data-keyboard="false">Activate</button>';
+                $result .= '<center><span class="badge badge-pill badge-dark">Working hard for something we don’t care about is called stress. <br>Working hard for something we love is called passion. <3</span></center>';
             }
                 $result .= '</div>'; // dropdown-menu end
                 $result .= '</div></center>';
@@ -67,21 +68,26 @@ class FiscalYearController extends Controller
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
         }
         else{
-            DB::beginTransaction();
-            try{
-                $user_id = FiscalYear::insert([
+            $year = FiscalYear::where('logdel', 0)->orderBy('id', 'desc')->get(); 
+            FiscalYear::where('id', $year[0]->id)
+            ->update([
+                'status' => 2,
+            ]);
+            // DB::beginTransaction();
+            // try{
+                FiscalYear::insert([
                     'fiscal_year' => $request->fiscal_year,
                     'status' => 1,
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
                 
-                DB::commit();
+                // DB::commit();
                 return response()->json(['result' => "1"]);
-            }
-            catch(\Exception $e) {
-                DB::rollback();
-                return response()->json(['result' => $e]);
-            }
+            // }
+            // catch(\Exception $e) {
+            //     DB::rollback();
+            //     return response()->json(['result' => $e]);
+            // }
         }
     }
 
@@ -113,7 +119,7 @@ class FiscalYearController extends Controller
                 $user_id = FiscalYear::where('id', $request->fiscal_year_id)
                 ->update([
                     'fiscal_year' => $request->fiscal_year,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 
                 DB::commit();
@@ -131,19 +137,20 @@ class FiscalYearController extends Controller
         date_default_timezone_set('Asia/Manila');
 
         $data = $request->all(); // collect all input fields
-
         $validator = Validator::make($data, [
             'fiscal_year_id' => 'required',
             'status' => 'required',
         ]);
 
         if($validator->passes()){
-            FiscalYear::where('id', $request->fiscal_year_id)
-            ->update([
-                'status' => $request->status,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]
-            );
+            $get_fiscal_year = FiscalYear::where('id', $request->fiscal_year_id)->get();
+            $close_rcm_data = PLCModuleRCM::where('fiscal_year', $get_fiscal_year[0]->fiscal_year)->where('logdel', 0)->get();
+            for ($i = 0; $i < count($close_rcm_data); $i++){
+                if($close_rcm_data[$i]->fiscal_year == $get_fiscal_year[0]->fiscal_year){
+                    PLCModuleRCM::where('id', $close_rcm_data[$i]->id)->update(['data_status' => $request->status]);
+                    // PLCModuleRCM::where('id', $close_rcm_data[$i]->id)->update(['data_status' => 0]);
+                }
+            }
             return response()->json(['result' => "1"]);
         }
         else{
@@ -153,14 +160,49 @@ class FiscalYearController extends Controller
     
     //============================== GET FISCAL YEAR LIST ==============================
     public function load_fiscal_year_list(Request $request){
-        $getFiscalYearList = FiscalYear::where('status', 1)->where('logdel', 0)->get();
+        $getFiscalYearList = FiscalYear::where('logdel', 0)->get();
+
         return response()->json(['getFiscalYearList' => $getFiscalYearList]);
     }
     
-    //============================== GET SEARCH FISCAL YEAR ==============================
-    // public function search_fiscal_year(Request $request){
-    //     $searchFiscalYear = FiscalYear::with(['search_fiscal_year_details'])->where('fiscal_year', $request->fiscal_year)->get();
-    //     // return $searchFiscalYear;
-    //     return response()->json(['searchFiscalYear' => $searchFiscalYear]);
-    // }
+    //============================== EDIT FISCAL YEAR ==============================
+    public function edit_updated_at(Request $request){
+        date_default_timezone_set('Asia/Manila');
+
+        $data = $request->all();
+        // return $data;
+        $rules = [
+            'year_value' => 'required|string|max:255',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
+        }
+        else{
+            // DB::beginTransaction();
+            // try{
+                FiscalYear::where('fiscal_year', $request->year_value)
+                ->update([
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                
+                // DB::commit();
+                return response()->json(['result' => "1"]);
+            // }
+            // catch(\Exception $e) {
+            //     DB::rollback();
+            //     return response()->json(['result' => $e]);
+            // }
+        }
+    }
+
+    //============================== GET ACTIVE FISCAL YEAR ==============================
+    public function get_active_fiscal_year(Request $request){
+        $year = FiscalYear::where('logdel', 0)->orderBy('updated_at', 'desc')->get(); 
+        // return $year;
+        return response()->json(['get_year' => $year]);
+    }
+
 }

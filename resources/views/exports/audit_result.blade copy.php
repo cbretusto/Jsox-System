@@ -1,7 +1,16 @@
 <table>
+
+    <?php
+    for($q= 0; $q < count($data); $q++){
+
+        $year = $data[$q]->year;
+        $result = substr("$year",2);
+    }
+    ?>
+
     <tr>
         <th>
-            <b>PMI FY21</b>
+            <b>PMI FY</b>
         </th>
         <th>
             <b>Process Level Control (PLC) Audit Status</b>
@@ -29,10 +38,10 @@
         <td rowspan="2">Status</td>
     </tr>
     <tr>
-        <td style="font-size: 10px">{{ $data[0]->assessed_by }}</td>
-        <td style="font-size: 10px">{{ $data[0]->checked_by }}</td>
-        <td style="font-size: 10px">{{ $data[0]->second_half_assessed_by }}</td>
-        <td style="font-size: 10px">{{ $data[0]->second_half_checked_by }}</td>
+        {{-- <td style="font-size: 10px">{{ $data[0]->view_assessed_by }}</td>
+        <td style="font-size: 10px">{{ $data[0]->view_checked_by }}</td>
+        <td style="font-size: 10px">{{ $data[0]->view_second_half_assessed_by }}</td>
+        <td style="font-size: 10px">{{ $data[0]->view_second_half_checked_by }}</td> --}}
     </tr>
 
     <tr>
@@ -47,7 +56,7 @@
                 echo "<td>
                     </td>";
             }
-            else if($status_check[0] == 1){
+            else if($status_check[0] == 1 ){
                 echo "<td>
                     &#10003;
                     </td>";
@@ -75,7 +84,7 @@
                     </td>";
             }else if ($assessment_status[0] == null){
             echo "<td>
-                N/A
+
                 </td>";
             }
         ?>
@@ -114,7 +123,7 @@
             echo "<td>
                 Good
                 </td>";
-                
+
         }elseif($second_assessment_status[0] == 'No Good'){
             echo "<td>
                 No Good
@@ -122,7 +131,7 @@
             }else{
 
             echo "<td>
-                N/A
+
                 </td>";
 
         }
@@ -133,6 +142,7 @@
     <tr>
         <td>PMI-02</td>
         <td>Shipment Preparation</td>
+
         <?php
             if($status_check[1] == 0){
                 echo "<td>
@@ -159,20 +169,19 @@
         ?>
 
         <?php
-        if($assessment_status[1] == 'Good'){
+            if($assessment_status[1] == 'Good'){
+                echo "<td>
+                    Good
+                    </td>";
+            }else if($assessment_status[1] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else if ($assessment_status[1] == null){
             echo "<td>
-                Good
-                </td>";
-        }else if($assessment_status[1] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-        }else if ($assessment_status[1] == null){
-            echo "<td>
-                N/A
-                </td>";
-        }
 
+                </td>";
+            }
         ?>
 
         <?php
@@ -192,10 +201,10 @@
                 </td>";
         }else{
             echo "<td>
-                
+
                 </td>";
             echo "<td>
-                
+
                 </td>";
         }
         ?>
@@ -209,14 +218,15 @@
             echo "<td>
                 Good
                 </td>";
-                
+
         }elseif($second_assessment_status[1] == 'No Good'){
             echo "<td>
                 No Good
                 </td>";
             }else{
+
             echo "<td>
-                N/A
+
                 </td>";
 
         }
@@ -227,6 +237,7 @@
     <tr>
         <td>PMI-03</td>
         <td>Changing Sales Prices</td>
+
         <?php
             if($status_check[2] == 0){
                 echo "<td>
@@ -253,20 +264,19 @@
         ?>
 
         <?php
-        if($assessment_status[2] == 'Good'){
+            if($assessment_status[2] == 'Good'){
+                echo "<td>
+                    Good
+                    </td>";
+            }else if($assessment_status[2] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else if ($assessment_status[2] == null){
             echo "<td>
-                Good
-                </td>";
-        }else if($assessment_status[2] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-        }else if ($assessment_status[2] == null){
-            echo "<td>
-                N/A
-                </td>";
-        }
 
+                </td>";
+            }
         ?>
 
         <?php
@@ -284,7 +294,7 @@
             echo "<td>
                 &#10003;
                 </td>";
-        }else {
+        }else{
             echo "<td>
 
                 </td>";
@@ -303,14 +313,15 @@
             echo "<td>
                 Good
                 </td>";
-                
+
         }elseif($second_assessment_status[2] == 'No Good'){
             echo "<td>
                 No Good
                 </td>";
             }else{
+
             echo "<td>
-                N/A
+
                 </td>";
 
         }
@@ -320,7 +331,9 @@
 
     <tr>
         <td>PMI-04</td>
-        <td>Changing Sales Qty. (before invoice issuance)</td>
+        <td>Changing Sales Qty. (before invoice issuance)
+        </td>
+
         <?php
             if($status_check[3] == 0){
                 echo "<td>
@@ -347,20 +360,19 @@
         ?>
 
         <?php
-        if($assessment_status[3] == 'Good'){
+            if($assessment_status[3] == 'Good'){
+                echo "<td>
+                    Good
+                    </td>";
+            }else if($assessment_status[3] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else if ($assessment_status[3] == null){
             echo "<td>
-                Good
-                </td>";
-        }else if($assessment_status[3] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-        }else if ($assessment_status[3] == null){
-            echo "<td>
-                N/A
-                </td>";
-        }
 
+                </td>";
+            }
         ?>
 
         <?php
@@ -378,7 +390,7 @@
             echo "<td>
                 &#10003;
                 </td>";
-        }else {
+        }else{
             echo "<td>
 
                 </td>";
@@ -397,15 +409,17 @@
             echo "<td>
                 Good
                 </td>";
-                
+
         }elseif($second_assessment_status[3] == 'No Good'){
             echo "<td>
                 No Good
                 </td>";
             }else{
+
             echo "<td>
-                N/A
+
                 </td>";
+
         }
         ?>
 
@@ -414,7 +428,7 @@
     <tr>
         <td>PMI-05</td>
         <td>Invoice Issuance (to YEC)</td>
-    
+
         <?php
             if($status_check[4] == 0){
                 echo "<td>
@@ -441,6 +455,7 @@
         ?>
 
         <?php
+
         if($assessment_status[4] == 'Good'){
             echo "<td>
                 Good
@@ -449,9 +464,9 @@
             echo "<td>
                 No Good
                 </td>";
-        }else if ($assessment_status[4] == null){
+        }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -472,7 +487,7 @@
             echo "<td>
                 &#10003;
                 </td>";
-        }else {
+        }else{
             echo "<td>
 
                 </td>";
@@ -491,23 +506,26 @@
             echo "<td>
                 Good
                 </td>";
-                
+
         }elseif($second_assessment_status[4] == 'No Good'){
             echo "<td>
                 No Good
                 </td>";
             }else{
+
             echo "<td>
-                N/A
+
                 </td>";
+
         }
         ?>
-            
+
     </tr>
 
     <tr>
         <td>PMI-06</td>
         <td>Changing Sales Invoices -1</td>
+
         <?php
             if($status_check[5] == 0){
                 echo "<td>
@@ -533,22 +551,24 @@
             }
         ?>
 
-            <?php
-            if($assessment_status[5] == 'Good'){
-                echo "<td>
-                    Good
-                    </td>";
-            }else if($assessment_status[5] == 'No Good'){
-                echo "<td>
-                    No Good
-                    </td>";
-            }else{
-                echo "<td>
-                    N/A
-                    </td>";
-            }
+        <?php
 
-            ?>
+        if($assessment_status[5] == 'Good'){
+            echo "<td>
+                Good
+                </td>";
+        }else if($assessment_status[5] == 'No Good'){
+            echo "<td>
+                No Good
+                </td>";
+        }else{
+            echo "<td>
+
+                </td>";
+        }
+
+        ?>
+
 
         <?php
         if($second_half_status_check[5] == 3){
@@ -565,7 +585,7 @@
             echo "<td>
                 &#10003;
                 </td>";
-        }else {
+        }else{
             echo "<td>
 
                 </td>";
@@ -576,26 +596,28 @@
         ?>
 
         <?php
-        if($second_assessment_status[5] == 'Not tested (non-key control)'){
-            echo "<td>
-                Not tested (non-key control)
-                </td>";
-        }elseif($second_assessment_status[5] == 'Good'){
-            echo "<td>
-                Good
-                </td>";
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-        }elseif($second_assessment_status[5] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-        }
+        //     echo "<td>
+        //
+        //         </td>";
+
+        // }
         ?>
+
     </tr>
 
     <tr>
@@ -627,22 +649,22 @@
             }
         ?>
 
-            <?php
+        <?php
             if($assessment_status[6] == 'Good'){
-                echo "<td>
-                    Good
-                    </td>";
+            echo "<td>
+                Good
+                </td>";
             }else if($assessment_status[6] == 'No Good'){
                 echo "<td>
                     No Good
                     </td>";
             }else{
                 echo "<td>
-                    N/A
+
                     </td>";
             }
 
-            ?>
+        ?>
 
         <?php
         if($second_half_status_check[6] == 3){
@@ -659,7 +681,7 @@
             echo "<td>
                 &#10003;
                 </td>";
-        }else {
+        }else{
             echo "<td>
 
                 </td>";
@@ -670,126 +692,129 @@
         ?>
 
         <?php
-        if($second_assessment_status[6] == 'Not tested (non-key control)'){
-            echo "<td>
-                Not tested (non-key control)
-                </td>";
-        }elseif($second_assessment_status[6] == 'Good'){
-            echo "<td>
-                Good
-                </td>";
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-        }elseif($second_assessment_status[6] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-        }
+        //     echo "<td>
+        //
+        //         </td>";
+
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-08</td>
         <td>Verifying Monthly Data (With Sakura)</td>
-        <?php
-        if($status_check[7] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[7] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[7] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[7] == 'Good'){
+            if($status_check[7] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[7] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[7] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+            if($assessment_status[7] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[7] == 'No Good'){
+            }else if($assessment_status[7] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[7] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[7] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
+
+                </td>";
+            echo "<td>
+
                 </td>";
         }
-
         ?>
 
-    <?php
-    if($second_half_status_check[7] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[7] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-        echo "<td>
-                
-            </td>";
-        echo "<td>
-                
-            </td>";
-    }
-    ?>
+        <?php
+        if($second_assessment_status[7] == 'Not tested (non-key control)'){
+            echo "<td>
+                Not tested (non-key control)
+                </td>";
+        }elseif($second_assessment_status[7] == 'Good'){
+            echo "<td>
+                Good
+                </td>";
 
-    <?php
-    if($second_assessment_status[7] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[7] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
-
-    }elseif($second_assessment_status[7] == 'No Good'){
-        
+        }elseif($second_assessment_status[7] == 'No Good'){
             echo "<td>
                 No Good
                 </td>";
             }else{
-                
+
             echo "<td>
-                N/A
+
                 </td>";
 
         }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-09</td>
         <td>Purchase Orders (to YEC)</td>
+
         <?php
             if($status_check[8] == 0){
                 echo "<td>
@@ -812,32 +837,24 @@
                 echo "<td>
                     &#10003;
                     </td>";
-            }else{
-        echo "<td>
-            
-            </td>";
-        echo "<td>
-
-            </td>";
-    }
+            }
         ?>
 
-            <?php
+        <?php
             if($assessment_status[8] == 'Good'){
-                echo "<td>
-                    Good
-                    </td>";
+            echo "<td>
+                Good
+                </td>";
             }else if($assessment_status[8] == 'No Good'){
                 echo "<td>
                     No Good
                     </td>";
             }else{
                 echo "<td>
-                    N/A
+
                     </td>";
             }
-
-            ?>
+        ?>
 
         <?php
         if($second_half_status_check[8] == 3){
@@ -855,136 +872,139 @@
                 &#10003;
                 </td>";
         }else{
-        echo "<td>
-        
-            </td>";
-        echo "<td>
-        
-            </td>";
-    }
+            echo "<td>
+
+                </td>";
+            echo "<td>
+
+                </td>";
+        }
         ?>
 
         <?php
-        if($second_assessment_status[8] == 'Not tested (non-key control)'){
-            echo "<td>
-                Not tested (non-key control)
-                </td>";
-        }elseif($second_assessment_status[8] == 'Good'){
-            echo "<td>
-                Good
-                </td>";
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-        }elseif($second_assessment_status[8] == 'No Good'){
-           
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-                
-            echo "<td>
-                N/A
-                </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-        }
+        //     echo "<td>
+        //
+        //         </td>";
+
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-10</td>
         <td>P/O Placement to CN, PPS Suppliers</td>
-        <?php
-        if($status_check[9] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[9] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[9] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[9] == 'Good'){
+            if($status_check[9] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[9] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[9] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+            if($assessment_status[9] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[9] == 'No Good'){
+            }else if($assessment_status[9] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[9] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[9] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
-                </td>";
-        }
 
-        ?>
-
-    <?php
-    if($second_half_status_check[9] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[9] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-            echo "<td>
-            
                 </td>";
             echo "<td>
-                
+
                 </td>";
         }
         ?>
 
-    <?php
-    if($second_assessment_status[9] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[9] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+        <?php
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-    }elseif($second_assessment_status[9] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-        }
+        //     echo "<td>
+        //
+        //         </td>";
+
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-11</td>
         <td>Changing P/Os for CN, PPS Suppliers</td>
+
         <?php
             if($status_check[10] == 0){
                 echo "<td>
@@ -1008,25 +1028,23 @@
                     &#10003;
                     </td>";
             }
-            
         ?>
 
-            <?php
+        <?php
             if($assessment_status[10] == 'Good'){
-                echo "<td>
-                    Good
-                    </td>";
+            echo "<td>
+                Good
+                </td>";
             }else if($assessment_status[10] == 'No Good'){
                 echo "<td>
                     No Good
                     </td>";
             }else{
                 echo "<td>
-                    N/A
+
                     </td>";
             }
-
-            ?>
+        ?>
 
         <?php
         if($second_half_status_check[10] == 3){
@@ -1045,133 +1063,138 @@
                 </td>";
         }else{
             echo "<td>
-            
+
                 </td>";
             echo "<td>
-            
+
                 </td>";
         }
         ?>
 
         <?php
-        if($second_assessment_status[10] == 'Not tested (non-key control)'){
-            echo "<td>
-                Not tested (non-key control)
-                </td>";
-        }elseif($second_assessment_status[10] == 'Good'){
-            echo "<td>
-                Good
-                </td>";
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-        }elseif($second_assessment_status[10] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-        }
+        //     echo "<td>
+        //
+        //         </td>";
+
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-12</td>
         <td>Receiving Shipments from YEC</td>
-        <?php
-        if($status_check[11] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[11] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[11] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[11] == 'Good'){
+            if($status_check[11] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[11] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[11] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+            if($assessment_status[11] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[11] == 'No Good'){
+            }else if($assessment_status[11] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[11] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[11] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
+
+                </td>";
+            echo "<td>
+
                 </td>";
         }
-
         ?>
 
-    <?php
-    if($second_half_status_check[11] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[11] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-        echo "<td>
-        
-            </td>";
-        echo "<td>
-        
-            </td>";
-    }
-    ?>
+        <?php
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-    <?php
-    if($second_assessment_status[11] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[11] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-    }elseif($second_assessment_status[11] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        //     echo "<td>
+        //
+        //         </td>";
 
-        }
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-13</td>
         <td>Generation of NG Reports</td>
+
         <?php
             if($status_check[12] == 0){
                 echo "<td>
@@ -1198,20 +1221,19 @@
         ?>
 
         <?php
-        if($assessment_status[12] == 'Good'){
+            if($assessment_status[12] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[12] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-        }else{
-            echo "<td>
-                N/A
-                </td>";
-        }
+            }else if($assessment_status[12] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
 
+                    </td>";
+            }
         ?>
 
         <?php
@@ -1231,7 +1253,7 @@
                 </td>";
         }else{
             echo "<td>
-    
+
                 </td>";
             echo "<td>
 
@@ -1240,25 +1262,26 @@
         ?>
 
         <?php
-        if($second_assessment_status[12] == 'Not tested (non-key control)'){
-            echo "<td>
-                Not tested (non-key control)
-                </td>";
-        }elseif($second_assessment_status[12] == 'Good'){
-            echo "<td>
-                Good
-                </td>";
-                
-        }elseif($second_assessment_status[12] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-        }
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
+
+        //     echo "<td>
+        //
+        //         </td>";
+
+        // }
         ?>
 
     </tr>
@@ -1266,373 +1289,381 @@
     <tr>
         <td>PMI-14</td>
         <td>Handling Correct YEC Invoices</td>
-        <?php
-        if($status_check[13] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[13] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[13] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[13] == 'Good'){
+            if($status_check[13] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[13] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[13] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+             if($assessment_status[13] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[13] == 'No Good'){
+            }else if($assessment_status[13] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[13] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[13] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
+
+                </td>";
+            echo "<td>
+
                 </td>";
         }
-
         ?>
 
-    <?php
-    if($second_half_status_check[13] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[13] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-        echo "<td>
-        
-            </td>";
-        echo "<td>
-        
-            </td>";
-    }
-    ?>
+        <?php
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-    <?php
-    if($second_assessment_status[13] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[13] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-    }elseif($second_assessment_status[13] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        //     echo "<td>
+        //
+        //         </td>";
 
-        }
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-15</td>
         <td>Handling Incorrect YEC Invoices</td>
-        <?php
-        if($status_check[14] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[14] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[14] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[14] == 'Good'){
+            if($status_check[14] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[14] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[14] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+            if($assessment_status[14] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[14] == 'No Good'){
+            }else if($assessment_status[14] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[14] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[14] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
+
+                </td>";
+            echo "<td>
+
                 </td>";
         }
-
         ?>
 
-    <?php
-    if($second_half_status_check[14] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[14] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-        echo "<td>
-        
-            </td>";
-        echo "<td>
-        
-            </td>";
-    }
-    ?>
+        <?php
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-    <?php
-    if($second_assessment_status[14] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[14] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-    }elseif($second_assessment_status[14] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        //     echo "<td>
+        //
+        //         </td>";
 
-        }
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-16</td>
         <td>Vouchering</td>
-        <?php
-        if($status_check[15] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[15] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[15] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[15] == 'Good'){
+            if($status_check[15] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[15] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[15] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+            if($assessment_status[15] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[15] == 'No Good'){
+            }else if($assessment_status[15] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[15] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[15] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
+
+                </td>";
+            echo "<td>
+
                 </td>";
         }
-
         ?>
 
-    <?php
-    if($second_half_status_check[15] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[15] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-        echo "<td>
-        
-            </td>";
-        echo "<td>
-        
-            </td>";
-    }
-    ?>
+        <?php
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-    <?php
-    if($second_assessment_status[15] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[15] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-    }elseif($second_assessment_status[15] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        //     echo "<td>
+        //
+        //         </td>";
 
-        }
+        // }
         ?>
+
     </tr>
 
     <tr>
         <td>PMI-17</td>
         <td>Check Payments by Peso</td>
-        <?php
-        if($status_check[16] == 0){
-            echo "<td>
-
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[16] == 1){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                </td>";
-        }
-        else if($status_check[16] == 2){
-            echo "<td>
-                &#10003;
-                </td>";
-            echo "<td>
-                &#10003;
-                </td>";
-        }
-    ?>
 
         <?php
-        if($assessment_status[16] == 'Good'){
+            if($status_check[16] == 0){
+                echo "<td>
+
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[16] == 1){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    </td>";
+            }
+            else if($status_check[16] == 2){
+                echo "<td>
+                    &#10003;
+                    </td>";
+                echo "<td>
+                    &#10003;
+                    </td>";
+            }
+        ?>
+
+        <?php
+            if($assessment_status[16] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[16] == 'No Good'){
+            }else if($assessment_status[16] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
+        ?>
+
+        <?php
+        if($second_half_status_check[16] == 3){
             echo "<td>
-                No Good
+                &#10003;
+                </td>";
+            echo "<td>
+                </td>";
+        }
+        else if($second_half_status_check[16] == 4){
+            echo "<td>
+                &#10003;
+                </td>";
+            echo "<td>
+                &#10003;
                 </td>";
         }else{
             echo "<td>
-                N/A
+
+                </td>";
+            echo "<td>
+
                 </td>";
         }
-
         ?>
 
-    <?php
-    if($second_half_status_check[16] == 3){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            </td>";
-    }
-    else if($second_half_status_check[16] == 4){
-        echo "<td>
-            &#10003;
-            </td>";
-        echo "<td>
-            &#10003;
-            </td>";
-    }else{
-        echo "<td>
-        
-            </td>";
-        echo "<td>
-        
-            </td>";
-    }
-    ?>
+        <?php
+        // if($second_assessment_status[0] == 'Not tested (non-key control)'){
+        //     echo "<td>
+        //         Not tested (non-key control)
+        //         </td>";
+        // }elseif($second_assessment_status[0] == 'Good'){
+        //     echo "<td>
+        //         Good
+        //         </td>";
 
-    <?php
-    if($second_assessment_status[16] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[16] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+        // }elseif($second_assessment_status[0] == 'No Good'){
+        //     echo "<td>
+        //         No Good
+        //         </td>";
+        //     }else{
 
-    }elseif($second_assessment_status[16] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+        //     echo "<td>
+        //
+        //         </td>";
 
-        }
+        // }
         ?>
+
     </tr>
 
     <tr>
@@ -1664,19 +1695,19 @@
     ?>
 
         <?php
-        if($assessment_status[17] == 'Good'){
+            if($assessment_status[17] == 'Good'){
             echo "<td>
                 Good
                 </td>";
-        }else if($assessment_status[17] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-        }else{
-            echo "<td>
-                N/A
-                </td>";
-        }
+            }else if($assessment_status[17] == 'No Good'){
+                echo "<td>
+                    No Good
+                    </td>";
+            }else{
+                echo "<td>
+
+                    </td>";
+            }
 
         ?>
 
@@ -1697,35 +1728,35 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[17] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[17] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[17] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[17] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[17] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[17] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
-        ?>
+    //     }
+    //     ?>
     </tr>
 
     <tr>
@@ -1767,7 +1798,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -1790,34 +1821,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[18] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[18] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[18] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[18] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-        }elseif($second_assessment_status[18] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    //     }elseif($second_assessment_status[18] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -1860,7 +1891,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -1883,34 +1914,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[19] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[19] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[19] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[19] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[19] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[19] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -1953,7 +1984,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -1976,34 +2007,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[20] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[20] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[20] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[20] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[20] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[20] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2046,7 +2077,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2069,34 +2100,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[21] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[21] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[21] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[21] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[21] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[21] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2139,7 +2170,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2162,34 +2193,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[22] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[22] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[22] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[22] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[22] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[22] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2232,7 +2263,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2255,34 +2286,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[23] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[23] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[23] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[23] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[23] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[23] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2325,7 +2356,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2348,34 +2379,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[24] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[24] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[24] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[24] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[24] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[24] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2418,7 +2449,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2441,34 +2472,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[25] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[25] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[25] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[25] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[25] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[25] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2511,7 +2542,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2534,34 +2565,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[26] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[26] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[26] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[26] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[26] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[26] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2604,7 +2635,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2627,34 +2658,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[27] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[27] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[27] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[27] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[27] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[27] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2697,7 +2728,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2720,34 +2751,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[28] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[28] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[28] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[28] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[28] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[28] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2790,7 +2821,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2813,34 +2844,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[29] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[29] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[29] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[29] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[29] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[29] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2883,7 +2914,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2906,34 +2937,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[30] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[30] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[30] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[30] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-        }elseif($second_assessment_status[30] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    //     }elseif($second_assessment_status[30] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -2976,7 +3007,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -2999,34 +3030,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[31] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[31] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[31] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[31] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[31] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[31] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -3069,7 +3100,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -3092,34 +3123,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[32] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[32] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[32] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[32] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[32] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[32] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -3162,7 +3193,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -3185,34 +3216,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[33] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[33] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[33] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[33] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[33] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[33] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -3255,7 +3286,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -3278,34 +3309,34 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[34] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[34] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[34] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[34] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[34] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[34] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
 
@@ -3348,7 +3379,7 @@
                 </td>";
         }else{
             echo "<td>
-                N/A
+
                 </td>";
         }
 
@@ -3371,35 +3402,37 @@
             </td>";
     }else{
         echo "<td>
-        
+
             </td>";
         echo "<td>
-        
+
             </td>";
     }
     ?>
 
     <?php
-    if($second_assessment_status[35] == 'Not tested (non-key control)'){
-        echo "<td>
-            Not tested (non-key control)
-            </td>";
-    }elseif($second_assessment_status[35] == 'Good'){
-        echo "<td>
-            Good
-            </td>";
+    // if($second_assessment_status[35] == 'Not tested (non-key control)'){
+    //     echo "<td>
+    //         Not tested (non-key control)
+    //         </td>";
+    // }elseif($second_assessment_status[35] == 'Good'){
+    //     echo "<td>
+    //         Good
+    //         </td>";
 
-    }elseif($second_assessment_status[35] == 'No Good'){
-            echo "<td>
-                No Good
-                </td>";
-            }else{
-            echo "<td>
-                N/A
-                </td>";
+    // }elseif($second_assessment_status[35] == 'No Good'){
+    //         echo "<td>
+    //             No Good
+    //             </td>";
+    //         }else{
+    //         echo "<td>
+    //
+    //             </td>";
 
-        }
+    //     }
         ?>
     </tr>
+
+
 
 </table>

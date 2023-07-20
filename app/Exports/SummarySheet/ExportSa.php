@@ -184,14 +184,14 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $event->sheet->getColumnDimension('D')->setWidth(4);
                     $event->sheet->getColumnDimension('E')->setWidth(5);
                     $event->sheet->getColumnDimension('F')->setWidth(5);
-                    $event->sheet->getColumnDimension('G')->setWidth(45);
-                    $event->sheet->getColumnDimension('H')->setWidth(42);
-                    $event->sheet->getColumnDimension('I')->setWidth(8);
-                    $event->sheet->getColumnDimension('J')->setWidth(42);
-                    $event->sheet->getColumnDimension('K')->setWidth(8);
-                    $event->sheet->getColumnDimension('L')->setWidth(30);
+                    $event->sheet->getColumnDimension('G')->setWidth(50);
+                    $event->sheet->getColumnDimension('H')->setWidth(50);
+                    $event->sheet->getColumnDimension('I')->setWidth(10);
+                    $event->sheet->getColumnDimension('J')->setWidth(70);
+                    $event->sheet->getColumnDimension('K')->setWidth(10);
+                    $event->sheet->getColumnDimension('L')->setWidth(50);
                     $event->sheet->getColumnDimension('M')->setWidth(45);
-                    $event->sheet->getColumnDimension('N')->setWidth(8);
+                    $event->sheet->getColumnDimension('N')->setWidth(10);
                     $event->sheet->getDelegate()->getStyle('B4:N7')->applyFromArray($styleBorderAll);
 
 
@@ -378,8 +378,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
-
+                                            // $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
                                         }
 
                                             $internal_ctrl_var = str_replace('"',"",$internal_control);
@@ -390,11 +389,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $totalLines = count(explode('\n',$internal_control)) * 20;
                                             $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
 
-                                        if ($strlen_internal < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_internal < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
                                     $start_col++;
                                 }
 
@@ -429,14 +428,14 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $event->sheet->getColumnDimension('D')->setWidth(4);
                     $event->sheet->getColumnDimension('E')->setWidth(5);
                     $event->sheet->getColumnDimension('F')->setWidth(5);
-                    $event->sheet->getColumnDimension('G')->setWidth(45);
-                    $event->sheet->getColumnDimension('H')->setWidth(42);
-                    $event->sheet->getColumnDimension('I')->setWidth(8);
-                    $event->sheet->getColumnDimension('J')->setWidth(42);
-                    $event->sheet->getColumnDimension('K')->setWidth(8);
-                    $event->sheet->getColumnDimension('L')->setWidth(30);
+                    $event->sheet->getColumnDimension('G')->setWidth(50);
+                    $event->sheet->getColumnDimension('H')->setWidth(50);
+                    $event->sheet->getColumnDimension('I')->setWidth(10);
+                    $event->sheet->getColumnDimension('J')->setWidth(70);
+                    $event->sheet->getColumnDimension('K')->setWidth(10);
+                    $event->sheet->getColumnDimension('L')->setWidth(50);
                     $event->sheet->getColumnDimension('M')->setWidth(45);
-                    $event->sheet->getColumnDimension('N')->setWidth(8);
+                    $event->sheet->getColumnDimension('N')->setWidth(10);
                     $event->sheet->getDelegate()->getStyle('B4:N7')->applyFromArray($styleBorderAll);
 
 
@@ -623,7 +622,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+                                            // $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
 
                                         }
 
@@ -635,11 +634,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $totalLines = count(explode('\n',$internal_control)) * 20;
                                             $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
 
-                                        if ($strlen_internal < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_internal < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
 
 
                                         $dicCounter = count($sa_details[$i]->plc_sa_dic_assessment_details_finding);
@@ -683,22 +682,23 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                 // DRAWINGS SAVED FOR LATER :)
-                                            }else{
-                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                $drawing->setWidth(100);
-                                                $drawing->setCoordinates('H'.$start_col);
-                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                                $drawing->setOffsetX(45);
-                                                $drawing->setWorksheet($event->sheet->getDelegate());
                                             }
+                                            // else{
+                                            //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                            //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                            //     $drawing->setWidth(100);
+                                            //     $drawing->setCoordinates('H'.$start_col);
+                                            //     $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                            //     $drawing->setOffsetX(45);
+                                            //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                            // }
 
 
-                                        if ($strlen_dic < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_dic < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
 
                                         if($dic_status == 'G' || $dic_status == 'No Sample' && $approval_status == 2 || $approval_status == 3){
                                             $event->sheet->getDelegate()->getStyle('J'.$start_col.':N'.$start_col)
@@ -777,15 +777,16 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                 // DRAWINGS SAVED FOR LATER :)
-                                            }else{
-                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                $drawing->setWidth(100);
-                                                $drawing->setCoordinates('J'.$start_col);
-                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
-                                                $drawing->setOffsetX(60);
-                                                $drawing->setWorksheet($event->sheet->getDelegate());
                                             }
+                                            // else{
+                                            //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                            //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                            //     $drawing->setWidth(100);
+                                            //     $drawing->setCoordinates('J'.$start_col);
+                                            //     $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
+                                            //     $drawing->setOffsetX(60);
+                                            //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                            // }
 
                                             $event->sheet->getDelegate()->getStyle('J'.$start_col)->getAlignment()->setWrapText(true);
                                             $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($arial_font12);
@@ -795,11 +796,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font12_bold);
                                             // $event->sheet->setCellValue('Q'.$start_col,$strlen_oec);
 
-                                            if ($strlen_oec < 150){
-                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                            }else{
-                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
-                                            }
+                                            // if ($strlen_oec < 150){
+                                            //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                            // }else{
+                                            //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                            // }
 
                                         }
 
@@ -846,14 +847,14 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $event->sheet->getColumnDimension('D')->setWidth(4);
                     $event->sheet->getColumnDimension('E')->setWidth(5);
                     $event->sheet->getColumnDimension('F')->setWidth(5);
-                    $event->sheet->getColumnDimension('G')->setWidth(45);
-                    $event->sheet->getColumnDimension('H')->setWidth(42);
-                    $event->sheet->getColumnDimension('I')->setWidth(8);
-                    $event->sheet->getColumnDimension('J')->setWidth(42);
-                    $event->sheet->getColumnDimension('K')->setWidth(8);
-                    $event->sheet->getColumnDimension('L')->setWidth(30);
+                    $event->sheet->getColumnDimension('G')->setWidth(50);
+                    $event->sheet->getColumnDimension('H')->setWidth(50);
+                    $event->sheet->getColumnDimension('I')->setWidth(10);
+                    $event->sheet->getColumnDimension('J')->setWidth(70);
+                    $event->sheet->getColumnDimension('K')->setWidth(10);
+                    $event->sheet->getColumnDimension('L')->setWidth(50);
                     $event->sheet->getColumnDimension('M')->setWidth(45);
-                    $event->sheet->getColumnDimension('N')->setWidth(8);
+                    $event->sheet->getColumnDimension('N')->setWidth(10);
                     $event->sheet->getDelegate()->getStyle('B4:N7')->applyFromArray($styleBorderAll);
 
 
@@ -1040,7 +1041,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+                                            // $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
 
                                         }
 
@@ -1052,11 +1053,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $totalLines = count(explode('\n',$internal_control)) * 20;
                                             $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
 
-                                        if ($strlen_internal < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_internal < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
 
 
                                         $dicCounter = count($sa_details[$i]->plc_sa_dic_assessment_details_finding);
@@ -1100,22 +1101,24 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                 // DRAWINGS SAVED FOR LATER :)
-                                            }else{
-                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                $drawing->setWidth(100);
-                                                $drawing->setCoordinates('H'.$start_col);
-                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                                $drawing->setOffsetX(45);
-                                                $drawing->setWorksheet($event->sheet->getDelegate());
                                             }
+                                            
+                                            // else{
+                                            //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                            //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                            //     $drawing->setWidth(100);
+                                            //     $drawing->setCoordinates('H'.$start_col);
+                                            //     $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                            //     $drawing->setOffsetX(45);
+                                            //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                            // }
 
 
-                                        if ($strlen_dic < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_dic < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
 
                                         // if($dic_status == 'G' || $dic_status == 'No Sample' && $approval_status == 2 || $approval_status == 3 && $key_control != 'X' && $it_control != 'X'){
                                         //     $event->sheet->getDelegate()->getStyle('J'.$start_col.':N'.$start_col)
@@ -1192,15 +1195,17 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                 // DRAWINGS SAVED FOR LATER :)
-                                            }else{
-                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                $drawing->setWidth(100);
-                                                $drawing->setCoordinates('J'.$start_col);
-                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
-                                                $drawing->setOffsetX(60);
-                                                $drawing->setWorksheet($event->sheet->getDelegate());
                                             }
+                                            
+                                            // else{
+                                            //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                            //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                            //     $drawing->setWidth(100);
+                                            //     $drawing->setCoordinates('J'.$start_col);
+                                            //     $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
+                                            //     $drawing->setOffsetX(60);
+                                            //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                            // }
 
                                             $event->sheet->setCellValue('J'.$start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings);
                                             $event->sheet->setCellValue('K'.$start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_status);
@@ -1212,11 +1217,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font12_bold);
                                             // $event->sheet->setCellValue('Q'.$start_col,$strlen_oec);
 
-                                            if ($strlen_oec < 150){
-                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                            }else{
-                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
-                                            }
+                                            // if ($strlen_oec < 150){
+                                            //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                            // }else{
+                                            //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                            // }
 
                                         }
 
@@ -1233,6 +1238,8 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             ->getStartColor()
                                             ->setARGB('c0c0c0');
                                         }
+                                        
+                                       
 
                                         $rf_counter = count($sa_details[$i]->plc_sa_rf_assessment_details_finding);
 
@@ -1319,7 +1326,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $dividedByLength = $strlen_rf / 33;
                                                 $weDontDieWeMultiply = 20 * $dividedByLength;
                                                 $totalLines = count(explode('\n',$rf_assessment)) * 20;
-                                                $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
+                                                $dividedByLengthWithBreaks = round($weDontDieWeMultiply);
 
                                                 // dd($dividedByLengthWithBreaks);
 
@@ -1334,7 +1341,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
 
 
                                                 if ($strlen_rf < 150){
-                                                    $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                                    // $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
                                                     if($rf_attachment != null ){
 
                                                         // DRAWINGS SAVED FOR LATER :)
@@ -1342,22 +1349,24 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                         $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$rf_attachment)));
                                                         $drawing->setWidth(200);
                                                         $drawing->setCoordinates('M'.$rf_start_col);
-                                                        $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                        $drawing->setOffsetY($dividedByLengthWithBreaks - 40);
                                                         $drawing->setOffsetX(40);
                                                         $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                         // DRAWINGS SAVED FOR LATER :)
-                                                    }else{
-                                                        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                        $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                        $drawing->setWidth(100);
-                                                        $drawing->setCoordinates('M'.$rf_start_col);
-                                                        $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                                        $drawing->setOffsetX(60);
-                                                        $drawing->setWorksheet($event->sheet->getDelegate());
                                                     }
+                                                    
+                                                    // else{
+                                                    //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                    //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                    //     $drawing->setWidth(100);
+                                                    //     $drawing->setCoordinates('M'.$rf_start_col);
+                                                    //     $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                    //     $drawing->setOffsetX(60);
+                                                    //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                                    // }
                                                 }else{
-                                                    $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                                    // $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
                                                     if($rf_attachment != null ){
 
                                                         // DRAWINGS SAVED FOR LATER :)
@@ -1365,20 +1374,22 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                         $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$rf_attachment)));
                                                         $drawing->setWidth(200);
                                                         $drawing->setCoordinates('M'.$rf_start_col);
-                                                        $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                        $drawing->setOffsetY($dividedByLengthWithBreaks - 40);
                                                         $drawing->setOffsetX(40);
                                                         $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                         // DRAWINGS SAVED FOR LATER :)
-                                                    }else{
-                                                        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                        $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                        $drawing->setWidth(100);
-                                                        $drawing->setCoordinates('M'.$rf_start_col);
-                                                        $drawing->setOffsetY($dividedByLengthWithBreaks + 150);
-                                                        $drawing->setOffsetX(60);
-                                                        $drawing->setWorksheet($event->sheet->getDelegate());
                                                     }
+                                                    
+                                                    // else{
+                                                    //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                    //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                    //     $drawing->setWidth(100);
+                                                    //     $drawing->setCoordinates('M'.$rf_start_col);
+                                                    //     $drawing->setOffsetY($dividedByLengthWithBreaks);
+                                                    //     $drawing->setOffsetX(60);
+                                                    //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                                    // }
                                                 }
 
                                             }
@@ -1387,6 +1398,15 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             //     $rf_start_col++;
                                             //     $rf_counter--;
                                             // }
+
+                                            if($oec_status == NULL){
+                                                $event->sheet->getDelegate()->getStyle('J'.$start_col.':K'.$start_col)
+                                                ->getFill()
+                                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                                                ->getStartColor()
+                                                ->setARGB('c0c0c0');
+                                            }
+                                            
                                             if($oec_counter > 1 && $rf_counter > 1){
                                                 $start_col++;
                                                 $rf_start_col++;
@@ -1436,14 +1456,17 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $event->sheet->getColumnDimension('D')->setWidth(4);
                     $event->sheet->getColumnDimension('E')->setWidth(5);
                     $event->sheet->getColumnDimension('F')->setWidth(5);
-                    $event->sheet->getColumnDimension('G')->setWidth(45);
-                    $event->sheet->getColumnDimension('H')->setWidth(42);
-                    $event->sheet->getColumnDimension('I')->setWidth(8);
-                    $event->sheet->getColumnDimension('J')->setWidth(42);
-                    $event->sheet->getColumnDimension('K')->setWidth(8);
-                    $event->sheet->getColumnDimension('L')->setWidth(30);
+                    $event->sheet->getColumnDimension('G')->setWidth(50);
+                    $event->sheet->getColumnDimension('H')->setWidth(50);
+                    $event->sheet->getColumnDimension('I')->setWidth(10);
+                    $event->sheet->getColumnDimension('J')->setWidth(70);
+                    $event->sheet->getColumnDimension('K')->setWidth(10);
+                    $event->sheet->getColumnDimension('L')->setWidth(50);
                     $event->sheet->getColumnDimension('M')->setWidth(45);
-                    $event->sheet->getColumnDimension('N')->setWidth(8);
+                    $event->sheet->getColumnDimension('N')->setWidth(10);
+                    $event->sheet->getColumnDimension('O')->setWidth(50);
+                    $event->sheet->getColumnDimension('P')->setWidth(50);
+                    $event->sheet->getColumnDimension('Q')->setWidth(10);
                     $event->sheet->getDelegate()->getStyle('B4:N7')->applyFromArray($styleBorderAll);
 
 
@@ -1585,6 +1608,49 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                     $start_col = 8;
                     for ($i=0; $i < count($sa_details); $i++){
 
+                        $event->sheet->setCellValue('O4',"Follow-up Ending");
+                        $event->sheet->getDelegate()->getStyle('O4')->applyFromArray($hv_center);
+                        $event->sheet->getDelegate()->getStyle('O4')->applyFromArray($arial_font12);
+
+                        $event->sheet->setCellValue('O7',"Improvement Plans");
+                        $event->sheet->getDelegate()->getStyle('O7')->applyFromArray($hv_center);
+                        $event->sheet->getDelegate()->getStyle('O7')->applyFromArray($arial_font12);
+
+                        $event->sheet->setCellValue('P7',"Assessment details & Findings");
+                        $event->sheet->getDelegate()->getStyle('P7')->applyFromArray($hv_center);
+                        $event->sheet->getDelegate()->getStyle('P7')->applyFromArray($arial_font12);
+
+                        $event->sheet->setCellValue('Q7',"Status");
+                        $event->sheet->getDelegate()->getStyle('Q7')->applyFromArray($hv_center);
+                        $event->sheet->getDelegate()->getStyle('Q7')->applyFromArray($arial_font12);
+
+                        
+
+                        $event->sheet->getDelegate()->mergeCells('O4:Q6');
+
+                        $event->sheet->getDelegate()->getStyle('O4:Q7')
+                        ->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()
+                        // ->setARGB('DD4B39');
+                        ->setARGB('50D050');
+
+                        $follow_up_improvement = $sa_details[$i]->fu_improvement;
+                        $follow_up_status = $sa_details[$i]->fu_status;
+
+                        $event->sheet->setCellValue('O'.$start_col, $follow_up_improvement);
+                        $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($hlv_top);
+                        $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($arial_font12);
+                        $event->sheet->getDelegate()->getStyle('O'.$start_col)->getAlignment()->setWrapText(true);
+
+                        if($follow_up_status == 'G'){
+                            $event->sheet->setCellValue('Q'.$start_col, 'G');
+                            $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($hcv_top);
+                            $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($arial_font12_bold);
+                        }
+
+                       
+
                         for($m=0; $m < count($sa_details[$i]->rcm_info); $m++){
 
                                 $internal_control = $sa_details[$i]->rcm_info[$m]->internal_control;
@@ -1630,7 +1696,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hlv_top);
                                             $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($arial_font12);
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
+                                            // $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(100);
 
                                         }
 
@@ -1642,11 +1708,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $totalLines = count(explode('\n',$internal_control)) * 20;
                                             $dividedByLengthWithBreaks = round($weDontDieWeMultiply + $totalLines);
 
-                                        if ($strlen_internal < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_internal < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
 
 
                                         $dicCounter = count($sa_details[$i]->plc_sa_dic_assessment_details_finding);
@@ -1690,22 +1756,24 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                 // DRAWINGS SAVED FOR LATER :)
-                                            }else{
-                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                $drawing->setWidth(100);
-                                                $drawing->setCoordinates('H'.$start_col);
-                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                                $drawing->setOffsetX(45);
-                                                $drawing->setWorksheet($event->sheet->getDelegate());
                                             }
+                                            
+                                            // else{
+                                            //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                            //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                            //     $drawing->setWidth(100);
+                                            //     $drawing->setCoordinates('H'.$start_col);
+                                            //     $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                            //     $drawing->setOffsetX(45);
+                                            //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                            // }
 
 
-                                        if ($strlen_dic < 150){
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                        }else{
-                                            $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
-                                        }
+                                        // if ($strlen_dic < 150){
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                        // }else{
+                                        //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(350);
+                                        // }
 
                                         if($key_control == NULL && $it_control == NULL && $dic_status == 'G' || $dic_status == 'No Sample' && $approval_status == 2 || $approval_status == 3){
                                             $event->sheet->getDelegate()->getStyle('J'.$start_col.':N'.$start_col)
@@ -1782,15 +1850,17 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                 $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                 // DRAWINGS SAVED FOR LATER :)
-                                            }else{
-                                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                $drawing->setWidth(100);
-                                                $drawing->setCoordinates('J'.$start_col);
-                                                $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
-                                                $drawing->setOffsetX(60);
-                                                $drawing->setWorksheet($event->sheet->getDelegate());
                                             }
+                                            
+                                            // else{
+                                            //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                            //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                            //     $drawing->setWidth(100);
+                                            //     $drawing->setCoordinates('J'.$start_col);
+                                            //     $drawing->setOffsetY($dividedByLengthWithBreaks + 200);
+                                            //     $drawing->setOffsetX(60);
+                                            //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                            // }
 
                                             $event->sheet->setCellValue('J'.$start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_assessment_details_findings);
                                             $event->sheet->setCellValue('K'.$start_col,$sa_details[$i]->plc_sa_oec_assessment_details_finding[$x]->oec_status);
@@ -1802,11 +1872,11 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $event->sheet->getDelegate()->getStyle('K'.$start_col)->applyFromArray($arial_font12_bold);
                                             // $event->sheet->setCellValue('Q'.$start_col,$strlen_oec);
 
-                                            if ($strlen_oec < 150){
-                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
-                                            }else{
-                                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
-                                            }
+                                            // if ($strlen_oec < 150){
+                                            //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                            // }else{
+                                            //     $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                            // }
 
                                         }
 
@@ -1903,7 +1973,7 @@ class ExportSa implements  FromView, WithTitle, WithEvents
 
 
                                             if ($strlen_rf < 150){
-                                                $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
+                                                // $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 80);
                                                 if($rf_attachment != null ){
 
                                                     // DRAWINGS SAVED FOR LATER :)
@@ -1916,17 +1986,18 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                     $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                     // DRAWINGS SAVED FOR LATER :)
-                                                }else{
-                                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                    $drawing->setWidth(100);
-                                                    $drawing->setCoordinates('J'.$rf_start_col);
-                                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
-                                                    $drawing->setOffsetX(60);
-                                                    $drawing->setWorksheet($event->sheet->getDelegate());
                                                 }
+                                                // else{
+                                                //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                //     $drawing->setWidth(100);
+                                                //     $drawing->setCoordinates('J'.$rf_start_col);
+                                                //     $drawing->setOffsetY($dividedByLengthWithBreaks + 40);
+                                                //     $drawing->setOffsetX(60);
+                                                //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                                // }
                                             }else{
-                                                $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
+                                                // $event->sheet->getDelegate()->getRowDimension($rf_start_col)->setRowHeight($dividedByLengthWithBreaks + 150);
                                                 if($rf_attachment != null ){
 
                                                     // DRAWINGS SAVED FOR LATER :)
@@ -1939,15 +2010,16 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                                     $drawing->setWorksheet($event->sheet->getDelegate());
 
                                                     // DRAWINGS SAVED FOR LATER :)
-                                                }else{
-                                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
-                                                    $drawing->setWidth(100);
-                                                    $drawing->setCoordinates('J'.$rf_start_col);
-                                                    $drawing->setOffsetY($dividedByLengthWithBreaks + 150);
-                                                    $drawing->setOffsetX(60);
-                                                    $drawing->setWorksheet($event->sheet->getDelegate());
                                                 }
+                                                // else{
+                                                //     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                                //     $drawing->setPath(public_path(("/storage/plc_sa_attachment/white.png")));
+                                                //     $drawing->setWidth(100);
+                                                //     $drawing->setCoordinates('J'.$rf_start_col);
+                                                //     $drawing->setOffsetY($dividedByLengthWithBreaks + 150);
+                                                //     $drawing->setOffsetX(60);
+                                                //     $drawing->setWorksheet($event->sheet->getDelegate());
+                                                // }
                                             }
 
                                         }
@@ -1957,55 +2029,18 @@ class ExportSa implements  FromView, WithTitle, WithEvents
                                             $rf_counter--;
                                         }
 
-                                    }
+                            }
 
-
-                                $event->sheet->setCellValue('O4',"Follow-up Ending");
-                                $event->sheet->getDelegate()->getStyle('O4')->applyFromArray($hv_center);
-                                $event->sheet->getDelegate()->getStyle('O4')->applyFromArray($arial_font12);
-
-                                $event->sheet->setCellValue('O7',"Improvement Plans");
-                                $event->sheet->getDelegate()->getStyle('O7')->applyFromArray($hv_center);
-                                $event->sheet->getDelegate()->getStyle('O7')->applyFromArray($arial_font12);
-
-                                $event->sheet->setCellValue('P7',"Assessment details & Findings");
-                                $event->sheet->getDelegate()->getStyle('P7')->applyFromArray($hv_center);
-                                $event->sheet->getDelegate()->getStyle('P7')->applyFromArray($arial_font12);
-
-                                $event->sheet->setCellValue('Q7',"Status");
-                                $event->sheet->getDelegate()->getStyle('Q7')->applyFromArray($hv_center);
-                                $event->sheet->getDelegate()->getStyle('Q7')->applyFromArray($arial_font12);
-
-                                $event->sheet->getColumnDimension('O')->setWidth(30);
-                                $event->sheet->getColumnDimension('P')->setWidth(45);
-                                $event->sheet->getColumnDimension('Q')->setWidth(8);
-
-                                $event->sheet->getDelegate()->mergeCells('O4:Q6');
-
-                                $event->sheet->getDelegate()->getStyle('O4:Q7')
-                                ->getFill()
-                                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                                ->getStartColor()
-                                // ->setARGB('DD4B39');
-                                ->setARGB('50D050');
-
-
+                                $fu_start_col = $start_col - 1;
 
                                 for ($q=0; $q <count($sa_details[$i]->plc_sa_fu_assessment_details_finding) ; $q++) {
-                                    $follow_up_improvement = $sa_details[$i]->fu_improvement;
-                                    $follow_up_status = $sa_details[$i]->fu_status;
                                     $follow_up_assessment = $sa_details[$i]->plc_sa_fu_assessment_details_finding[$q]->fu_assessment_details_findings;
 
 
-                                        $event->sheet->setCellValue('O'.$start_col, $follow_up_improvement);
-                                        $event->sheet->setCellValue('P'.$start_col, $follow_up_assessment);
-                                        $event->sheet->setCellValue('Q'.$start_col, 'G');
-                                        $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($hlv_top);
-                                        $event->sheet->getDelegate()->getStyle('O'.$start_col)->applyFromArray($arial_font12);
-                                        $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($hlv_top);
-                                        $event->sheet->getDelegate()->getStyle('P'.$start_col)->applyFromArray($arial_font12);
-                                        $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($hcv_top);
-                                        $event->sheet->getDelegate()->getStyle('Q'.$start_col)->applyFromArray($arial_font12);
+                                        $event->sheet->setCellValue('P'.$fu_start_col, $follow_up_assessment);
+                                        $event->sheet->getDelegate()->getStyle('P'.$fu_start_col)->applyFromArray($hlv_top);
+                                        $event->sheet->getDelegate()->getStyle('P'.$fu_start_col)->applyFromArray($arial_font12);
+                                        $event->sheet->getDelegate()->getStyle('P'.$fu_start_col)->getAlignment()->setWrapText(true);
 
                                 }
 

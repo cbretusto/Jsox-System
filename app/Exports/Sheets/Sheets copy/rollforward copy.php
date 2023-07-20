@@ -25,18 +25,17 @@ class rollforward implements FromView, WithTitle, WithEvents
     use Exportable;
 
     protected $date;
-    protected $plc_module_rf_details;
-    // protected $range1;
 
-    function __construct($date,$plc_module_rf_details)
+
+    function __construct($date)
     {
         $this->date = $date;
-        $this->plc_module_rf_details = $plc_module_rf_details;
+
     }
 
 
     public function view(): View {
-        return view('exports.roll_forward', ['date' => $this->date,'rf_details' => $this->plc_module_rf_details]);
+        return view('exports.roll_forward', ['date' => $this->date]);
     }
 
 
@@ -49,7 +48,6 @@ class rollforward implements FromView, WithTitle, WithEvents
     // for designs
     public function registerEvents(): array
     {
-        $get_rf_detais = $this->plc_module_rf_details;
 
         $style1 = array(
             'font' => array(
@@ -113,7 +111,7 @@ class rollforward implements FromView, WithTitle, WithEvents
         );
 
         return [
-            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex,$get_rf_detais)  {
+            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex)  {
 
 
 
@@ -215,11 +213,11 @@ class rollforward implements FromView, WithTitle, WithEvents
                 $a = 2;
                 $b = 2;
 
-                for($i = 0; $i < count($get_rf_detais); $i++){
-                    // dd(count($get_concerned_dept));
-                    // $exploded_concerned_dept = explode (',', $get_concerned_dept[$i]->concerned_dept);
-                    $a++;
-                }
+                // for($i = 0; $i < count($get_rf_detais); $i++){
+                //     // dd(count($get_concerned_dept));
+                //     // $exploded_concerned_dept = explode (',', $get_concerned_dept[$i]->concerned_dept);
+                //     $a++;
+                // }
 
                 $result = 'A'.$b.':E'.$a;
 

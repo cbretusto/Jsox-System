@@ -91,23 +91,29 @@ class UserManagementController extends Controller
             return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
         }
         else{
-            DB::beginTransaction();
-            try{
-                $user_id = UserManagement::insert([
-                    'rapidx_name' => $request->rapidx_name,
-                    'department' => $request->rapidx_department,
-                    'status' => 1,
-                    'user_level_ID' => $request->input('user_level_ID'),
-                    'created_at' => date('Y-m-d H:i:s')
-                ]);
+            // DB::beginTransaction();
+            // try{
+                if(!UserManagement::where('rapidx_name', $request->rapidx_name)->exists()){
+                    $getData = RapidXUser::where('name',$request->rapidx_name)->get();
+                    $user_id = UserManagement::insert([
+                        'rapidx_name' => $request->rapidx_name,
+                        'email' => $getData[0]->email,
+                        'department' => $request->rapidx_department,
+                        'status' => 1,
+                        'user_level_ID' => $request->input('user_level_ID'),
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]);
+                    return response()->json(['result' => "1"]);
+                }else{
+                    return response()->json(['result' => "0"]);
+                }
                 
-                DB::commit();
-                return response()->json(['result' => "1"]);
-            }
-            catch(\Exception $e) {
-                DB::rollback();
-                return response()->json(['result' => $e]);
-            }
+                // DB::commit();
+            // }
+            // catch(\Exception $e) {
+            //     DB::rollback();
+            //     return response()->json(['result' => $e]);
+            // }
         }
     }
 
@@ -140,9 +146,12 @@ class UserManagementController extends Controller
         else{
             /* DB::beginTransaction();*/
             try{
+                $getData = RapidXUser::where('name',$request->rapidx_name)->get();
+                // return $getData[0]->email;
                 UserManagement::where('id', $request->user_id)
                 ->update([ // The update method expects an array of column and value pairs representing the columns that should be updated.
                     'rapidx_name' => $request->rapidx_name,
+                    'email' => $getData[0]->email,
                     'department' => $request->rapidx_department,
                     'user_level_ID' => $request->input('user_level_ID'),
                     'updated_at' => date('Y-m-d H:i:s'),
@@ -158,7 +167,6 @@ class UserManagementController extends Controller
             }
         }
     }
-
 
     //============================== CHANGE USER STAT ==============================
     public function change_user_stat(Request $request){        

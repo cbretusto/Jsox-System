@@ -28,7 +28,7 @@ class PLCModuleSA extends Model
     }
 
     public function plc_categories(){
-        return $this->hasOne(PlcCategory::class, 'id', 'category');
+        return $this->hasOne(PlcCategory::class, 'plc_category_no', 'category');
     }
 
     public function plc_sa_dic_assessment_details_finding(){

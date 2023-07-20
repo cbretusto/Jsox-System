@@ -7,65 +7,64 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\PlcCategory;
+use App\UserManagement;
 use DataTables;
 
 class PlcCategoryController extends Controller
 {
      //===== ADD PLC CATEGORY FUNCTION ====//
- public function add_plc_category(Request $request)
- {
-     date_default_timezone_set('Asia/Manila');
-     session_start();
+    public function add_plc_category(Request $request)
+    {
+        date_default_timezone_set('Asia/Manila');
+        session_start();
 
-     $data = $request->all();
+        $data = $request->all();
 
-     $validator = Validator::make($data, [
-         'plc_category' => 'required'
+        $validator = Validator::make($data, [
+            'plc_category' => 'required'
+        ]);
 
-     ]);
-
-     if ($validator->fails())
-     {
-         return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
-     } else
-        {
-
+        if ($validator->fails()){
+            return response()->json(['validation' => 'hasError', 'error' => $validator->messages()]);
+        }else{
             PlcCategory::insert([
-                    'plc_category' => $request->plc_category,
-                    'status' => 0,
-                    'logdel' => 0
-              ]);
-
+                'plc_category' => $request->plc_category,
+                'status' => 0,
+                'logdel' => 0
+            ]);
             return response()->json(['result' => "1"]);
-
-
         }
- }
- //===== ADD PLC CATEGORY FUNCTION END ====//
+    }
+    //===== ADD PLC CATEGORY FUNCTION END ====//
 
     public function view_plc_category()
     {
-        $plc_category = PlcCategory::all();
-
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        $plc_category = PlcCategory::where('logdel', 0)->get();
+        $get_user_level = UserManagement::where('rapidx_name', $rapidx_name)->get();
+        
         return DataTables::of($plc_category)
         ->addColumn('category',function($plc_category){
             $result = $plc_category->plc_category;
             return $result;
         })
-        ->addColumn('action', function ($plc_category){
+        
+        ->addColumn('action', function ($plc_category) use($get_user_level){
             $result = "";
             $result = "<center>";
-            //===== DISPLAY DELETE BUTTON IN PLC CATEGORY DATATABLES =====//
-            // $result .= '<button type="button" class="btn btn-danger actionDeletePlcCategory" plc_category-id="' . $plc_category->id . '" data-toggle="modal" data-target="#modalDeletePlcCategory" data-keyboard="false"><i class="fas fa-times"></i></button>';
-            if ($plc_category->logdel == 0) {
-                $result .= '<button class="btn btn-primary btn-sm  text-center actionEditPlcCategory" plc_category-id="' . $plc_category->id . '" data-toggle="modal" data-target="#modalEditPLCCategory" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
-                $result .= '<button class="btn btn-danger btn-sm text-center actionDeactivatePlcCategory" plc_category-id="' . $plc_category->id . '"  data-toggle="modal" data-target="#modalDeactivatePlcCategory" data-keyboard="false"><i class ="fa fa-ban"></i>  Deactivate</button>';
-            } else {
-                $result .= '<button class="btn btn-success btn-sm text-center actionActivatePlcCategory" plc_category-id="' . $plc_category->id . '"  data-toggle="modal" data-target="#modalActivatePlcCategory" data-keyboard="false"><i class ="fa fa-key"></i>  Activate</button>';
+            if($get_user_level[0]->user_level_id == 3){
+                if ($plc_category->logdel == 0) {
+                    $result .= '<button class="btn btn-primary btn-sm  text-center actionEditPlcCategory" plc_category-id="' . $plc_category->id . '" data-toggle="modal" data-target="#modalEditPLCCategory" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                    $result .= '<button class="btn btn-danger btn-sm text-center actionDeactivatePlcCategory" plc_category-id="' . $plc_category->id . '"  data-toggle="modal" data-target="#modalDeactivatePlcCategory" data-keyboard="false"><i class ="fa fa-ban"></i>  Deactivate</button>';
+                }else {
+                    $result .= '<button class="btn btn-success btn-sm text-center actionActivatePlcCategory" plc_category-id="' . $plc_category->id . '"  data-toggle="modal" data-target="#modalActivatePlcCategory" data-keyboard="false"><i class ="fa fa-key"></i>  Activate</button>';
+                }
+            }else{
+                $result .= '<button class="m-r-15 text-muted btn" data-toggle="modal" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
             }
+            $result .= "<center>";
             return $result;
-            $result = "<center>";
-
         })
         ->addColumn('status', function($plc_category){
             $result = "<center>";
@@ -160,7 +159,7 @@ class PlcCategoryController extends Controller
 
     //============================== GET PLC CATEGORY ==============================
     public function get_plc_category(Request $request){
-        $plcCategory = PlcCategory::where('logdel', 0)->get();
+        $plcCategory = PlcCategory::where('logdel', 0)->where('status', 0)->get();
 
         return response()->json(['plc_category' => $plcCategory]);
     }

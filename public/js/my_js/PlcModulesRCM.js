@@ -526,6 +526,8 @@ function CopyRcmData(){
                 toastr.success('RCM Data was succesfully saved!');
                 dataTablePlcModuleRCM.draw(); // reload the tables after insertion
                 dataTablePlcModuleSa.draw(); // reload the tables after insertion
+            }else{
+                alert('Close the previous fiscal year to ensure you may copy the RCM Data.');
             }
 
             $("#iBtnCopyRcmDataIcon").removeClass('fa fa-spinner fa-pulse');

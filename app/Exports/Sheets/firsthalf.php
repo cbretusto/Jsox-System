@@ -2,6 +2,8 @@
 
 namespace App\Exports\Sheets;
 
+use App\Model\PLCModuleSA;
+
 // use App\FactorItemList;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -25,23 +27,37 @@ class firsthalf implements FromView, WithTitle, WithEvents
     use Exportable;
 
     protected $date;
-    protected $plc_module_sa_concerned_dept;
-    // protected $range1;
+    protected $sa_ng_data;
+    protected $get_control_id;
+    protected $plc_category;
+    protected $year;
 
-    function __construct($date,$plc_module_sa_concerned_dept)
+
+    function __construct(
+        $date,
+        $sa_ng_data,
+        $get_control_id,
+        $plc_category,
+        $year
+    )
     {
         $this->date = $date;
-        $this->plc_module_sa_concerned_dept = $plc_module_sa_concerned_dept;
+        $this->sa_ng_data = $sa_ng_data;
+        $this->get_control_id = $get_control_id;
+        $this->plc_category = $plc_category;
+        $this->year = $year;
+
     }
 
 
     public function view(): View {
-        return view('exports.first_half', ['date' => $this->date,'concerned_dept' =>$this->plc_module_sa_concerned_dept]);
+        return view('exports.first_half', ['date' => $this->date]);
     }
 
 
     public function title(): string
     {
+
         return '1stHalf';
     }
 
@@ -50,45 +66,59 @@ class firsthalf implements FromView, WithTitle, WithEvents
     public function registerEvents(): array
     {
 
+        $sa_ng_data = $this->sa_ng_data;
+        $get_control_id = $this->get_control_id;
+        $plc_category = $this->plc_category;
+        $year = $this->year;
 
-        $get_concerned_dept = $this->plc_module_sa_concerned_dept;
-
-        // dd($get_concerned_dept);
-
-
-        $style1 = array(
+        $arial_font_12 = array(
             'font' => array(
                 'name'      =>  'Arial',
                 'size'      =>  12,
-                // 'color'      =>  'red',
-                // 'italic'      =>  true
             )
         );
 
-        $stylex = array(
+        $arial_font_12_red = array(
             'font' => array(
                 'name'      =>  'Arial',
-                'size'      =>  10,
-                // 'color'      =>  'red',
-                // 'italic'      =>  true
+                'size'      =>  12,
+                'color'      =>  ['argb' => 'EB2B02'],
             )
         );
 
-        $style2 = array(
+        $arial_font_12_bold = array(
+            'font' => array(
+                'name'      =>  'Arial',
+                'size'      =>  12,
+                'bold'      =>  true
+            )
+        );
+
+        $arial_font_14_bold = array(
+            'font' => array(
+                'name'      =>  'Arial',
+                'size'      =>  14,
+                'bold'      =>  true
+            )
+        );
+
+        $hv_center = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
             ]
         );
 
-        $style3 = array(
+        $hl_center = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
                 'vertical' => Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
             ]
         );
 
-        $style4 = array(
+        $hr_center = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
                 'vertical' => Alignment::VERTICAL_CENTER,
@@ -108,132 +138,158 @@ class firsthalf implements FromView, WithTitle, WithEvents
                 ],
             ],
         ];
-        $style5 = array(
-            'font' => array(
-                'name'      =>  'Arial',
-                'size'      =>  14,
-                // 'color'      =>  'red',
-                // 'italic'      =>  true
-            )
-        );
 
         return [
-            AfterSheet::class => function(AfterSheet $event) use ($style1,$style2,$style3, $style4,$styleBorderBottomThin,$styleBorderAll,$style5,$stylex,$get_concerned_dept)  {
+            AfterSheet::class => function(AfterSheet $event) use (
+                $arial_font_12,
+                $arial_font_12_red,
+                $arial_font_12_bold,
+                $arial_font_14_bold,
+                $hv_center,
+                $hl_center, 
+                $hr_center,
+                $styleBorderBottomThin,
+                $styleBorderAll,
+                $sa_ng_data,
+                $get_control_id,
+                $plc_category,
+                $year
+            ){
+                    $event->sheet->getColumnDimension('A')->setWidth(15);
+                    $event->sheet->getColumnDimension('B')->setWidth(15);
+                    $event->sheet->getColumnDimension('C')->setWidth(20);
+                    $event->sheet->getColumnDimension('D')->setWidth(20);
+                    $event->sheet->getColumnDimension('E')->setWidth(60);
+                    $event->sheet->getColumnDimension('F')->setWidth(80);
+                    $event->sheet->getColumnDimension('G')->setWidth(50);
+                    $event->sheet->getColumnDimension('H')->setWidth(50);
+                    $event->sheet->getColumnDimension('I')->setWidth(20);
+                    $event->sheet->getColumnDimension('J')->setWidth(30);
+
+                    $event->sheet->getDelegate()->getRowDimension('2')->setRowHeight(30);
 
 
-                $event->sheet->getDelegate()->getStyle('A1')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E3')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E4')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E5')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E6')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E7')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E8')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E9')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E10')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E11')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('E12')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('B2')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('D2')->getAlignment()->setWrapText(true);
+                    $event->sheet->setCellValue('A1', 'PMI FY'.$year);
+                    $event->sheet->setCellValue('B1', 'Details of Findings (1st Half)');
+                    $event->sheet->setCellValue('F1', 'Improvement Plan');
+                    $event->sheet->getDelegate()->mergeCells('F1:I1');
 
-                $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(35);
+                    $event->sheet->setCellValue('A2', 'Section');
+                    $event->sheet->setCellValue('B2', 'No. of Findings');
+                    $event->sheet->setCellValue('C2', 'Process Name');
+                    $event->sheet->setCellValue('D2', 'Internal Control No. Affected');
+                    $event->sheet->setCellValue('E2', 'Statement of Findings');
+                    $event->sheet->setCellValue('F2', 'Analysis');
+                    $event->sheet->setCellValue('G2', 'Corrective action');
+                    $event->sheet->setCellValue('H2', 'Preventive action');
+                    $event->sheet->setCellValue('I2', 'Commitment Date');
+                    $event->sheet->setCellValue('J2', 'In-Charge');
 
+                    $event->sheet->getDelegate()->getStyle('A1:J2')->applyFromArray($arial_font_12_bold);
+                    $event->sheet->getDelegate()->getStyle('A2:J2')->applyFromArray($hv_center);
+                    $event->sheet->getDelegate()->getStyle('F1:J1')->applyFromArray($hv_center);
+                    $event->sheet->getDelegate()->getStyle('A2:J2')->getAlignment()->setWrapText(true);
 
-            $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($styleBorderAll);
-
-
-                $event->sheet->getColumnDimension('A')->setWidth(20);
-                $event->sheet->getColumnDimension('B')->setWidth(15);
-                $event->sheet->getColumnDimension('C')->setWidth(40);
-                $event->sheet->getColumnDimension('D')->setWidth(25);
-                $event->sheet->getColumnDimension('E')->setWidth(50);
+                    $start_col = 3;
+                    $start_col_aff = 3;
 
 
+                    for ($i=0; $i <count($sa_ng_data); $i++) { 
+                        $event->sheet->setCellValue('A'.$start_col,$sa_ng_data[$i]->concerned_dept);
+                        $event->sheet->setCellValue('B'.$start_col,'1');
+                        $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($hv_center);
+                        $event->sheet->getDelegate()->getStyle('A'.$start_col)->applyFromArray($hl_center);
+                        $event->sheet->getDelegate()->getStyle('A2'.':'.'J'.$start_col)->applyFromArray($styleBorderAll);
+                        
+                        $oec_ng_data = array();
+                        $dic_ng_data = array();
+                        $oec_dic_ng_data = array();
+                        
+                        for ($c=0; $c <count($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding); $c++){ 
 
-                $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($style1);
-                $event->sheet->getDelegate()->getStyle('A3')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A4')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A5')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A6')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A7')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A8')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A9')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A10')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A11')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A12')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C3')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C4')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C5')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C6')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C7')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C8')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C9')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C10')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C11')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('C12')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('B3')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B4')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B5')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B6')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B7')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B8')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B9')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B10')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B11')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('B12')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D3')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D4')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D5')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D6')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D7')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D8')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D9')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D10')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D11')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('D12')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('E3')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E4')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E5')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E6')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E7')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E8')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E9')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E10')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E11')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('E12')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($style2);
-                $event->sheet->getDelegate()->getStyle('A3:E3')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A4:E4')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A5:E5')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A6:E6')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A7:E7')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A8:E8')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A9:E9')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A10:E10')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A11:E11')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A12:E12')->applyFromArray($stylex);
-                $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style3);
-                $event->sheet->getDelegate()->getStyle('A1:B1')->applyFromArray($style5);
+                            for ($d=0; $d <count($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding) ; $d++) { 
+                                if($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == 'NG' && ($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_status == 'G'  || $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$d]->dic_status == NULL)){
 
-                $a = 2;
-                $b = 2;
+                                    
+                                    if($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->counter >= 1){
+                                        $affected_oec_data = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_assessment_details_findings;
+                                        $oec_ng_data[] = $affected_oec_data;
+                                        $event->sheet->setCellValue('E'.$start_col,implode(PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL,$oec_ng_data));
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                    }else{
+                                        $affected_oec_data = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_assessment_details_findings;
+                                        $event->sheet->setCellValue('E'.$start_col,$affected_oec_data);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                    }
+                                }
+                                else if($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_status == 'NG' && ($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == 'G' || $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == NULL)){
+                                    if($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->counter >= 1){
+                                        $affected_dic_data = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_assessment_details_findings;
+                                        $dic_ng_data[] = $affected_dic_data;
+                                        $event->sheet->setCellValue('E'.$start_col,implode(PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL,$dic_ng_data));
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+        
+                                    }else{
+                                        $affected_dic_data = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_assessment_details_findings;
+                                        $event->sheet->setCellValue('E'.$start_col,$affected_dic_data);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                    }
+                                }else if($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == 'NG' && 
+                                        $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_status == 'NG'){
+                                    $oec_dic_ng_data[] = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_assessment_details_findings;
+                                    $oec_dic_ng_data[] = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_assessment_details_findings;
+                                    $event->sheet->setCellValue('E'.$start_col,implode(PHP_EOL,$oec_dic_ng_data));
+                                    $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
 
-                for($i = 0; $i < count($get_concerned_dept); $i++){
-                    // dd(count($get_concerned_dept));
-                    // $exploded_concerned_dept = explode (',', $get_concerned_dept[$i]->concerned_dept);
-                    $a++;
-                }
+                                }
+                                $dic_attachment = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_attachment;
 
-                $result = 'A'.$b.':E'.$a;
+                                if($dic_attachment != null ){
 
-                // dd($result);
+                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$dic_attachment)));
+                                    $drawing->setWidth(250);
+                                    $drawing->setOffsetY(120);
+                                    $drawing->setOffsetX(60);
+                                    $drawing->setCoordinates('E'.$start_col);
+                                    $drawing->setWorksheet($event->sheet->getDelegate());
+                                }
+                                    
+                            }
+                            $oec_attachment = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_attachment;
 
-            $event->sheet->getDelegate()->getStyle((string)$result)->applyFromArray($styleBorderAll);
+                            if($oec_attachment != null ){
 
+                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$oec_attachment)));
+                                $drawing->setWidth(250);
+                                $drawing->setOffsetY(120);
+                                $drawing->setOffsetX(60);
+                                $drawing->setCoordinates('E'.$start_col);
+                                $drawing->setWorksheet($event->sheet->getDelegate());
+                            }
 
-                // dd(count($exploded_concerned_dept));
+                            
+                            
+                        }
 
+                        $start_col++;
 
+                    }
 
+                    for ($u=0; $u <count($get_control_id) ; $u++) { 
+                        $event->sheet->setCellValue('D'.$start_col_aff,$get_control_id[$u]->control_id);
+                        $event->sheet->getDelegate()->getStyle('D'.$start_col_aff)->applyFromArray($hl_center);
+                        for ($x=0; $x <count($plc_category) ; $x++) { 
+                            if($get_control_id[$u]->category == $plc_category[$x]->id){
+                                $event->sheet->setCellValue('C'.$start_col_aff,$plc_category[$x]->plc_category);
+                                $event->sheet->getDelegate()->getStyle('C'.$start_col_aff)->applyFromArray($hl_center);
+                                $event->sheet->getDelegate()->getStyle('C'.$start_col_aff)->getAlignment()->setWrapText(true);
+
+                            }
+                        }
+                        $start_col_aff++;
+                    }
             },
         ];
     }

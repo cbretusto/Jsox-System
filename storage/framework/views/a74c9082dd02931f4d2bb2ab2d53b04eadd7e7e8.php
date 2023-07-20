@@ -9,9 +9,41 @@
         <!--- Main content --->
         <section class="content">
             <div class="container-fluid">
+                <div class="row mt-3">
+                    <div class="form-group col-4 border-dark border-right">
+                        <form id="formUpdatedAtFiscalYear">
+                            <?php echo csrf_field(); ?>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default"><strong>Fiscal Year: </strong></span>
+                                </div>
+                                <select class="form-control selectFiscalYear select2bs4" name="year_value" id="selFiscalYearDashboard"></select>
+                                <button class="btn btn-sm btn-dark ml-2" data-toggle="modal" id="btnEditUpdatedAtFiscalYear">Dashboard Summary Result</button>                        
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="form-group col-4 border-dark border-right">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default"><strong>PLC LISTING: </strong></span>
+                            </div>
+                            <select class="form-control selectPlcCategory select2bs4" name="plc_sa_record" id="selPlcSaRecord"></select>
+                            <button class="btn btn-sm btn-dark ml-2" id="btnShowSaRecord">Show PLC SA Record</button>                        
+                        </div>
+                    </div>
+
+                    <div class="form-group col-4 flex-column d-flex">
+                        <button class="btn btn-dark ml-2 float-right" id="🤸🏻darren🤸🏼_🤸🏽lang🤸🏿_🤸‍♂️sakalam🤸‍♀️">
+                            <i class="fas fa-download"></i> Export Audit Summary 
+                        </button>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow mt-3 border border-dark" id="pmi_1" status="1">
+                        
+                        <div class="info-box shadow mt-3 border" style="background-color:#A6E0FC" id="pmi_1" status="1">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 01 Receiving Orders</strong></h2><br>
@@ -41,7 +73,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow mt-3 border border-dark" id="pmi_10" status="10">
+                        <div class="info-box shadow mt-3 border" style="background-color:#A6E0FC" id="pmi_10" status="10">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 10 PO Placement to CNPPS Suppliers</strong></h2><br>
@@ -71,7 +103,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow mt-3 border border-dark" id="pmi_19" status="19">
+                        <div class="info-box shadow mt-3 border" style="background-color:#A6E0FC" id="pmi_19" status="19">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 19 Billing <br> ( NOT FOR TESTING )</strong></h2><br>
@@ -82,7 +114,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow mt-3 border border-dark" id="pmi_28" status="28">
+                        <div class="info-box shadow mt-3 border" style="background-color:#A6E0FC" id="pmi_28" status="28">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 28 Physical Count - PPS</strong></h2><br>
@@ -112,7 +144,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_2" status="2">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_2" status="2">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 02 Shipment Preparation</strong></h2><br>
@@ -142,7 +174,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_11" status="11">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_11" status="11">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 11 Changing POs for CNPPS Suppliers</strong></h2><br>
@@ -172,7 +204,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_20" status="20">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_20" status="20">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 20 Offset Arrangement to YEC</strong></h2><br>
@@ -202,7 +234,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_29" status="29">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_29" status="29">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title" style="font-size:16px; "><strong>PMI - 29 Handling Invoices from CNPPS Suppliers</strong></h2><br>
@@ -232,7 +264,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_3" status="3">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_3" status="3">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 03 Changing Sales Prices</strong></h2><br>
@@ -262,7 +294,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_12" status="12">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_12" status="12">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 12 Receiving Shipments from YEC</strong></h2><br>
@@ -292,7 +324,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_21" status="21">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_21" status="21">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 21 Collection from YEC</strong></h2><br>
@@ -322,7 +354,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_30" status="30">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_30" status="30">
                             <div class="">
                                 <h2 class="card-title" style="font-size:16px; "><strong>PMI - 30 Handling of Discrepancies (Invoice vs Actual Shipment) to CNPPS Suppliers <br> ( NOT FOR TESTING )</strong></h2><br>
                                 <input type="hidden" id="count_pmi_30" value="30">
@@ -331,7 +363,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_4" status="4">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_4" status="4">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title" style="font-size:16px;"><strong>PMI-04 Changing Sales Quantities <br> Before Invoice Issuance ( NOT FOR TESTING )</strong></h2><br>
@@ -342,7 +374,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_13" status="13">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_13" status="13">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 13 Generation of NG Reports</strong></h2><br>
@@ -372,7 +404,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_22" status="22">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_22" status="22">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 22 Issuing Debit and Credit Memos</strong></h2><br>
@@ -402,7 +434,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_31" status="31">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_31" status="31">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 31 Inventory Evaluation</strong></h2><br>
@@ -432,7 +464,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_5" status="5">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_5" status="5">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 05 Invoice Issuance</strong></h2><br>
@@ -462,7 +494,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_14" status="14">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_14" status="14">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 14 Handling Correct YEC Invoices</strong></h2><br>
@@ -492,7 +524,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_23" status="23">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_23" status="23">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 23 Posting Collections</strong></h2><br>
@@ -522,7 +554,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_32" status="32">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_32" status="32">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 32 Correcting Monthly Data</strong></h2><br>
@@ -552,7 +584,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_6" status="6">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_6" status="6">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 06 Changing Sales Invoice1</strong></h2><br>
@@ -582,7 +614,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_15" status="15">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_15" status="15">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 15 Handling Incorrect YEC Invoices</strong></h2><br>
@@ -612,7 +644,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_24" status="24">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_24" status="24">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 24 Physical Count</strong></h2><br>
@@ -642,7 +674,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_33" status="33">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_33" status="33">
                             <div class="">
                                 <h4 class="card-title" style="font-size:16px; "><strong>PMI - 33 Handling Discrepancies (Supplier Invoice vs Purchase Order) to CNPPS Suppliers <br> ( NOT FOR TESTING )</strong></h4><br>
                                 <input type="hidden" id="count_pmi_33" value="33">
@@ -651,7 +683,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_7" status="7">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_7" status="7">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 07 Changing Sales Invoice2</strong></h2><br>
@@ -681,7 +713,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_16" status="16">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_16" status="16">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 16 Vouchering</strong></h2><br>
@@ -711,7 +743,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_25" status="25">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_25" status="25">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 25 Devaluation of Slow-moving</strong></h2><br>
@@ -741,7 +773,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_34" status="34">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_34" status="34">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 34 Sales from PPS to TS, CN</strong></h2><br>
@@ -771,7 +803,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_8" status="8">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_8" status="8">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 08 Verifying Monthly Data</strong></h2><br>
@@ -801,7 +833,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_17" status="17">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_17" status="17">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 17 Check payment by Peso</strong></h2><br>
@@ -831,7 +863,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_26" status="26">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_26" status="26">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 26 Returning Defect Materials to YEC</strong></h2><br>
@@ -861,7 +893,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_35" status="35">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_35" status="35">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 35 Daily Cash in Bank Monitoring</strong></h2><br>
@@ -891,7 +923,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_9" status="9">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_9" status="9">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 09 Purchase Orders <br> ( NOT FOR TESTING )</strong></h2><br>
@@ -902,7 +934,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_18" status="18">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_18" status="18">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 18 E-Payment by Dollar</strong></h2><br>
@@ -932,7 +964,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_27" status="27">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_27" status="27">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title" style="font-size:15px;"><strong>PMI - 27 Receiving Shipment from CNPPS Suppliers</strong></h2><br>
@@ -962,7 +994,7 @@
                     </div>
 
                     <div class="col-3 mb-1">
-                        <div class="info-box bg-dark shadow border border-dark" id="pmi_36" status="36">
+                        <div class="info-box shadow border" style="background-color:#A6E0FC" id="pmi_36" status="36">
                             <div class="info-box-content">
                                 <div class="">
                                     <h2 class="card-title"><strong>PMI - 36 Cash in Bank Monthly Monitoring <br> ( NOT FOR TESTING )</strong></h2><br>
@@ -976,12 +1008,250 @@
             </div>
         </section>
     </div>
+
+    <!-- MODALS -->
+    <div class="modal fade" id="modalExportAuditResult">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> Export Audit Result</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Select Year:</label>
+                            <select name="select_year" id="selectAuditYearId">
+                                <?php
+                                    $year_now = date('Y');
+
+                                    for($i = 2022; $i <= $year_now; $i++){
+                                        echo "<option value =".$i.">
+                                            ".$i."
+                                            </option>";
+                                    }
+                                ?>
+                            </select>
+
+                            <label>Select Audit Period:</label>
+                            <select name="select_fiscal_year" id="selectAuditFiscalYearId">
+                                <option value="1">First Half</option>
+                                <option value="2">Second Half</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                <button type="submit" id="btnExportAuditResult" class="btn btn-dark"><i id="BtnExportAuditResult" class="fa fa-check"></i> Export</button>
+            </div>
+        </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- SHOW PLC SA DATATABLE START -->
+    <div class="modal fade overflow-auto" id="modalSaRecord">
+        <div class="modal-dialog modal-xl-custom">
+            <!--START-->
+            <div class="modal-content"> 
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PLC SA RECORD</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="card-header">
+                        
+                        <div class="modal-body">
+                            <table id="plcModulesSaRecordDataTables" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Fiscal Year</th>
+                                        <th rowspan="2">Control <br> No.</th>
+                                        <th rowspan="2">Key <br> Control</th>
+                                        <th rowspan="2">IT <br> Control</th>
+                                        <th rowspan="2">Internal Control</th>
+                                        <th colspan="2">1. Design and Implementation of Controls</th>
+                                        <th colspan="2">2. Operating Effectiveness of Controls &nbsp;</th>
+                                        <th colspan="3">3. Roll forward</th>
+                                        <th colspan="3">4. Follow up</th>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th>Assessment details <br> and Findings</th>
+                                        <th>Status</th>
+
+                                        <th>Assessment details <br> and Findings</th>
+                                        <th>Status</th>
+
+                                        <th>Improvement plans</th>
+                                        <th>Assessment details and Findings</th>
+                                        <th>Status</th>
+
+                                        <th>Improvement plans</th>
+                                        <th>Assessment details and Findings</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!--END-->
+        </div>
+    </div> <!-- SHOW PLC SA DATATABLE END -->
+
+    <!-- VIEW REFERENCE DOCUMENT PLC EVIDENCES TABLE MODAL START -->
+    <div class="modal fade overflow-auto" id="modalViewUploadedFile">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content"> <!--START-->
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> PLC EVIDENCES - REFERENCE DOCUMENT</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- GET UPLOADED FILE ID -->
+                <div class="form-group col-sm-12">
+                    <input type="hidden" name="uploaded_file_id" id="txtUploadedFileId">
+                    <input type="hidden" name="assessment_details_and_findings" id="txtAssessmentDetailsAndFindingsId">
+                </div>
+                    <div class="card-header">
+                        <div class="modal-body">
+                            <table id="ViewPlcEvidenceTable" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
+                                <thead>
+                                    <tr style="text-align:center">
+                                    <th>PLC Category</th>
+                                    <th>Fiscal Year</th>
+                                    <th>PLC Evidences File</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!--END-->
+        </div>
+    </div> <!-- VIEW REFERENCE DOCUMENT PLC EVIDENCES TABLE MODAL END -->
 <?php $__env->stopSection(); ?>
 
 <!--- JS CONTENT --->
 <?php $__env->startSection('js_content'); ?>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            GetPlcCategory($(".selectPlcCategory"));
+            GetFiscalYear($(".selectFiscalYear"));
+            GetActiveFiscalYear();
+            $('#btnEditUpdatedAtFiscalYear').on('click', function(event) {    
+                event.preventDefault();
+                let selectFiscalYearDashboard = $('#selFiscalYearDashboard').val();
+                console.log('selectFiscalYearDashboard', selectFiscalYearDashboard)
+                UpdatedAtFiscalYear();
+            });
+
+            $('#🤸🏻darren🤸🏼_🤸🏽lang🤸🏿_🤸‍♂️sakalam🤸‍♀️').on('click', function(){
+                $('#modalExportAuditResult').modal('show');
+            });
+            $('#btnExportAuditResult').on('click', function(){
+                let audit_year_id = $('#selectAuditYearId').val();
+                let audit_fiscal_year_id = $('#selectAuditFiscalYearId').val();
+
+                window.location.href = `export/<?php echo e(Session::get("pmi_plc_category_id")); ?>/${audit_year_id}/${audit_fiscal_year_id}`;
+                $('#modalExportAuditResult').modal('hide');
+            });
+
+            $('#btnShowSaRecord').on('click', function(){
+                let category = $('#selPlcSaRecord').val();
+                if(category != null){
+                    $('#modalSaRecord').modal('show');
+                    //VIEW PLC MODULES SA DATATABLES
+                    dataTablePlcModuleSa = $("#plcModulesSaRecordDataTables").DataTable({
+                        "processing": false,
+                        "serverSide": true,
+                        "responsive": true,
+                        // "scrollX": true,
+                        // "scrollX": "100%",
+                        "bDestroy": true,
+                        "language": {
+                            "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                            "lengthMenu": "Show _MENU_ records",
+                        },
+                        "order": [[ 0, "desc" ]],
+                        "ajax": {
+                            url: "view_plc_sa_record",
+                            data: function(param) {
+                                // param.session = $("input[name='plc_sa_record']").val();
+                                param.session = $("#selPlcSaRecord").val();
+                            }
+                        },
+                        "columns": [
+                            {"data": "fiscal_year"},
+                            {"data": "control_id", orderable: false},
+                            {"data": "key_control", orderable: false},
+                            {"data": "it_control", orderable: false},
+                            {"data": "internal_control", orderable: false},
+                            {"data": "dic_assessment", orderable: false},
+                            {"data": "dic_status", orderable: false},
+                            {"data": "oec_assessment", orderable: false},
+                            {"data": "oec_status", orderable: false},
+                            {"data": "rf_improvement", orderable: false},
+                            {"data": "rf_assessment", orderable: false},
+                            {"data": "rf_status", orderable: false},
+                            {"data": "fu_improvement", orderable: false},
+                            {"data": "fu_assessment", orderable: false},
+                            {"data": "fu_status", orderable: false},
+                        ],
+                        "columnDefs": [
+                            // { className: "align-top", targets: [2, 3, 4, 5, 7, 9, 10, 12, 13, 15] },
+                            { className: "align-middle", targets: [0, 1] },
+                        ],
+                    });
+                    //VIEW PLC MODULES SA DATATABLES END
+                }else{
+                    alert('Select PLC Category');
+                }
+            });
+            
+            // ======================= PLC VIEW DATA TABLE =======================
+            dataTableViewPlcEvidences = $("#ViewPlcEvidenceTable").DataTable({
+                "processing" : false,
+                "serverSide" : true,
+                "ajax" : {
+                    url: "view_pmi_plc_evidences_file",
+                    data: function (param){
+                        param.id = $('#txtUploadedFileId').val();
+                        param.buttonid = $('#txtAssessmentDetailsAndFindingsId').val();
+                    },
+                },
+                "columns":[
+                    { "data" : "category_details.plc_category" },
+                    { "data" : "fiscal_year" },
+                    { "data" : "plc_evidences" },
+                ],
+            });// END OF DATATABLE
+
+            // ========================= GET UPLOADED FILE ID =========================
+            $(document).on('click','.actionViewUploadedFile', function(){
+                let id = $(this).attr('sa_data-id');
+                let buttonid = $(this).attr('button-id');
+
+                $('#txtUploadedFileId').val(id);
+                $('#txtAssessmentDetailsAndFindingsId').val(buttonid);
+                console.log('View Attachment ID:', id);
+                console.log('Assesment details & Findings ID:', buttonid);
+                dataTablePlcModuleSa.draw();
+                dataTableViewPlcEvidences.draw();
+            });
+
             //PMI - 01
             setTimeout(() => {
                 let countPmiCategory = $('#count_pmi_1').val();

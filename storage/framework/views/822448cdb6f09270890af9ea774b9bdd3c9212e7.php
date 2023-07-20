@@ -79,7 +79,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <button class="btn btn-dark mt-1" data-toggle="modal" data-target="#modalAddPlcEvidences" id = "btnAddPlcEvidencesModal"
+                                        <button class="btn btn-dark mt-1 myButton" data-toggle="modal" data-target="#modalAddPlcEvidences" id = "btnAddPlcEvidencesModal"
                                         style="float: right;"><i class="fas fa-plus"></i> Add
                                         PLC Evidences</button></div><br><br>
 
@@ -89,8 +89,8 @@
                                             width="100%" style="white-space: pre-wrap;">
                                             <thead>
                                                 <tr style="text-align:center">
-                                                    <th style="width: 10%">Date Uploaded</th>
-                                                    <th style="width: 10%">Fiscal Year and Audit Period</th>
+                                                    <th style="width: 10%">Fiscal Year </th>
+                                                    <th style="width: 10%">Audit Period</th>
                                                     <th style="width: 30%">PLC Category</th>
                                                     <th style="width: 20%">PLC Evidences File Name</th>
                                                     <th style="width: 15%">Uploaded By</th>
@@ -285,24 +285,22 @@
             "processing" : false,
             "serverSide" : true,
             "responsive": true,
-            "order": [[ 0, "desc" ]],
+            "order":  [[ 0, "desc" ], [2, "asc"]],
             // "scrollX": true,
             // "scrollX": "100%",
-            "language": {
-                "info": "Showing _START_ to _END_ of _TOTAL_ records",
-                "lengthMenu":     "Show _MENU_ records",
-            },
+            // "language": {
+            //     "info": "Showing _START_ to _END_ of _TOTAL_ records",
+            //     "lengthMenu":     "Show _MENU_ records",
+            // },
             "ajax" : {
                 url: "view_plc_evidences", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
             },
             "columns":[
-                { "data" : "date_uploaded"},
-                { "data" : "fiscal_year_audit_period", orderable:false },
+                { "data" : "fiscal_year"},
+                { "data" : "audit_period"},
                 { "data" : "plc_category"},
                 { "data" : "plc_evidences", orderable:false },
                 { "data" : "uploaded_by", orderable:false},
-                // { "data" : "updated_a1"},
-                // { "data" : "revised_by"},
                 { "data" : "action", orderable:false, searchable:false }
             ],
         });
@@ -407,7 +405,7 @@
         });
 
         $("#selFiscalYear").on('change', function() {
-            dataTablePlcEvidences.column(1).search($(this).val()).draw();
+            dataTablePlcEvidences.column(0).search($(this).val()).draw();
         });
 
         $("#selAuditPeriod").on('change', function() {

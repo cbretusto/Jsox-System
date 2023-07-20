@@ -21,72 +21,58 @@
                         <p>Return to RapidX</p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
+
+                <li class="nav-item has-treeview" id="dashboard">
                     <a href="{{ route('dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
+                        <p><strong>Dashboard</strong></p>
                     </a>
                 </li>
 
-                {{-- <li class="nav-header font-weight-bold">Administrator Management</li>
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('user_management') }}" class="nav-link">
-                        <i class="nav-icon far fa-user"></i>
-                        <p>User Manangment</p>
+                <li class="nav-header font-weight-bold"><strong>User Management</strong></li>
+                <li class="nav-item has-treeview" id="" >
+                    <a href="storage/app/public/one_page_standard/JSOX Database One Page Standard.pdf" target="_blank"  class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>One Page Standard</p>
                     </a>
                 </li>
 
                 <li class="nav-header"></li>
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('plc_dashboard') }}" class="nav-link">
-                        <i class="nav-icon far fa-clipboard"></i>
-                        <p>PLC Dashboard</p>
-                    </a>
-                </li>
-
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview navBar" id="plc_category_id" >
                     <a href="{{ route('plc_category') }}" class="nav-link">
-                        <i class="nav-icon far fa-folder"></i>
-                        <p>PLC Category</p>
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>PLC Listing</p>
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('plc_evidences') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-upload"></i>
-                        <p>PLC Evidences</p>
-                    </a>
-                </li>
-
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview navBar" id="jsox_plc_matrix_id">
                     <a href="{{ route('jsox_plc_matrix') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-upload"></i>
-                        <p>Jsox PLC Matrix</p>
+                        <i class="nav-icon fas fa-clipboard"></i>
+                        <p>Sample Matrix</p>
                     </a>
                 </li>
 
-                <li class="nav-header"></li>
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('clc_dashboard') }}" class="nav-link">
-                        <i class="nav-icon far fa-clipboard"></i>
-                        <p>CLC Dashboard</p>
+                <li class="nav-item has-treeview navBar" id="plc_evidences_id">
+                    <a href="{{ route('plc_evidences') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file-download"></i>
+                        <p>Evidences</p>
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('clc_category') }}" class="nav-link">
-                        <i class="nav-icon far fa-folder"></i>
-                        <p>CLC Category</p>
+                <li class="nav-item has-treeview navBar">
+                    <a href="{{ route('plc_capa') }}" class="nav-link">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <span>Corrective/Preventive <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action (CAPA)</span>
                     </a>
                 </li>
 
-
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('clc_evidences') }}" class="nav-link">
-                        <i class="nav-icon far fa-file"></i>
-                        <p>CLC Evidences</p>
+                <li class="nav-item has-treeview navBar" id="analytics_id">
+                    <a href="{{ route('analytics') }}" class="nav-link">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>Analytics</p>
                     </a>
-                </li> --}}
+                </li>
+                
             </ul>
         </nav>
     </div><!-- Sidebar -->

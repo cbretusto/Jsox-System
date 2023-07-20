@@ -935,8 +935,11 @@
             let year_id = $('#selectYearId').val();
             let audit_period = $('#selectAuditPeriod').val();
             // let selected_month = $('#selectMonthId').val();
+            
 
             window.location.href = `export_clc_summary/${year_id}/${audit_period}`;
+            // window.location.href = `export_it_clc_summary/${year_id}/${audit_period}`;
+            // window.location.href = `export_fcrp_clc_summary/${year_id}/${audit_period}`;
             console.log(year_id);
             // console.log(selected_month);
             $('#modalExportClcSummary').modal('hide');

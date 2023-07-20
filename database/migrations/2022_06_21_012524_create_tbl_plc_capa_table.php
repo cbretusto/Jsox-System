@@ -23,6 +23,10 @@ class CreateTblPlcCapaTable extends Migration
             $table->string('approved_by')->nullable();
             $table->string('issued_date')->nullable();
             $table->string('due_date')->nullable();
+            $table->string('second_half_prepared_by')->nullable();
+            $table->string('second_half_approved_by')->nullable();
+            $table->string('second_half_issued_date')->nullable();
+            $table->string('second_half_due_date')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });

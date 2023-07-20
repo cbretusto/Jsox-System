@@ -3,8 +3,9 @@
 namespace App;
 use App\PlcCategory;
 use App\PlcCapaStatementOfFindings;
-use App\PLCModuleSAOecAssessmentDetailsAndFindings;
 use App\PLCModuleSADicAssessmentDetailsAndFindings;
+use App\PLCModuleSAOecAssessmentDetailsAndFindings;
+use App\PLCModuleSARfAssessmentDetailsAndFindings;
 use App\PLCModuleRCMInternalControl;
 
 use Illuminate\Database\Eloquent\Model;
@@ -32,9 +33,12 @@ class PlcCapa extends Model
     public function plc_sa_oec_assessment_details_findings_details(){
         return $this->hasMany(PLCModuleSAOecAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id')->where('oec_status', 'NG')->where('logdel', 0);
     }
+    public function plc_sa_rf_assessment_details_findings_details(){
+        return $this->hasMany(PLCModuleSARfAssessmentDetailsAndFindings::class, 'sa_id', 'sa_id')->where('rf_status', 'NG')->where('logdel', 0);
+    }
 
     public function capa_details(){
-        return $this->hasMany(PlcCapaStatementOfFindings::class, 'plc_capa_id', 'id');
+        return $this->hasMany(PlcCapaStatementOfFindings::class, 'plc_capa_id', 'id')->where('logdel', 0);
     }
 
     public function control_id(){

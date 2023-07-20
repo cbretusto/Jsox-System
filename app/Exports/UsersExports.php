@@ -35,42 +35,45 @@ class UsersExports implements  WithMultipleSheets
 
     use Exportable;
     protected $date;
-    protected $plc_module_sa;
-    protected $status_check_array;
-    protected $assessment_status_array_dic;
-    protected $yec_date_arr;
-    protected $second_half_status_check_array;
-    protected $second_assessment_status_array;
-    protected $first_half_affected_status_arr;
-    protected $second_assessment_status_array_rf;
-    protected $fu_affected_internal_control_arr;
-    protected $second_assessment_status_array_fu;
-    protected $plc_module_sa_concerned_dept;
-    protected $plc_module_rf_details;
-    protected $plc_section;
     protected $audit_fiscal_year_id;
+    protected $plc_category;
+    protected $sa_ng_data;
+    protected $sa_rf_ng_data;
+    protected $first_half_affected_status_arr;
+    protected $get_control_id;
+    protected $second_half_affected_status_arr;
+    protected $get_2nd_half_id;
+    protected $key_ctrl_arr;
+    protected $year;
 
 
 
 
     //
-    function __construct($date,$plc_module_sa,$status_check_array,$assessment_status_array_dic,$yec_date_arr,$second_half_status_check_array,$second_assessment_status_array,$first_half_affected_status_arr,$second_assessment_status_array_rf,$fu_affected_internal_control_arr,$second_assessment_status_array_fu,$plc_module_sa_concerned_dept,$plc_module_rf_details,$plc_section,$audit_fiscal_year_id)
+    function __construct($date,
+    $audit_fiscal_year_id,
+    $plc_category,
+    $sa_ng_data,
+    $sa_rf_ng_data,
+    $first_half_affected_status_arr,
+    $get_control_id,
+    $second_half_affected_status_arr,
+    $get_2nd_half_id,
+    $key_ctrl_arr,
+    $year
+    )
     {
         $this->date = $date;
-        $this->plc_module_sa = $plc_module_sa;
-        $this->status_check_array = $status_check_array;
-        $this->assessment_status_array_dic = $assessment_status_array_dic;
-        $this->yec_date_arr = $yec_date_arr;
-        $this->second_half_status_check_array = $second_half_status_check_array;
-        $this->second_assessment_status_array = $second_assessment_status_array;
-        $this->first_half_affected_status_arr = $first_half_affected_status_arr;
-        $this->second_assessment_status_array_rf = $second_assessment_status_array_rf;
-        $this->fu_affected_internal_control_arr = $fu_affected_internal_control_arr;
-        $this->second_assessment_status_array_fu = $second_assessment_status_array_fu;
-        $this->plc_module_sa_concerned_dept = $plc_module_sa_concerned_dept;
-        $this->plc_module_rf_details = $plc_module_rf_details;
-        $this->plc_section = $plc_section;
         $this->audit_fiscal_year_id = $audit_fiscal_year_id;
+        $this->plc_category = $plc_category;
+        $this->sa_ng_data = $sa_ng_data;
+        $this->sa_rf_ng_data = $sa_rf_ng_data;
+        $this->first_half_affected_status_arr = $first_half_affected_status_arr;
+        $this->get_control_id = $get_control_id;
+        $this->second_half_affected_status_arr = $second_half_affected_status_arr;
+        $this->get_2nd_half_id = $get_2nd_half_id;
+        $this->key_ctrl_arr = $key_ctrl_arr;
+        $this->year = $year;
 
 
 
@@ -80,20 +83,60 @@ class UsersExports implements  WithMultipleSheets
     public function sheets(): array
     {
         // $year = $this->plc_module_sa[0]->fiscal_year;
-        $sheets = [];
-        if($this->audit_fiscal_year_id == 'First-Half'){
-            $sheets[] = new audit_result($this->date, $this->plc_module_sa, $this->status_check_array,$this->assessment_status_array_dic,  $this->second_half_status_check_array, $this->second_assessment_status_array );
-            $sheets[] = new fy_summary($this->date, $this->plc_module_sa,$this->assessment_status_array_dic,$this->yec_date_arr,$this->first_half_affected_status_arr,$this->second_assessment_status_array_rf,$this->fu_affected_internal_control_arr,$this->second_assessment_status_array_fu);
-            $sheets[] = new firsthalf($this->date,$this->plc_module_sa_concerned_dept,$this->plc_section);
-            // $sheets[] = new ExportAnalytics($this->date);
 
+        if($this->audit_fiscal_year_id == 1 ){
+            $sheets = [];
+            $sheets[] = new fy_summary($this->date,
+            $this->plc_category,
+            $this->sa_rf_ng_data,
+            $this->sa_ng_data,
+            $this->first_half_affected_status_arr,
+            $this->get_control_id,
+            $this->second_half_affected_status_arr,
+            $this->get_2nd_half_id,
+            $this->key_ctrl_arr,
+            $this->year,
+            $this->audit_fiscal_year_id
+            );
+
+            $sheets[] = new firsthalf(
+                $this->date,
+                $this->sa_ng_data,
+                $this->get_control_id,
+                $this->plc_category,
+                $this->year
+            );
         }else{
-            $sheets[] = new audit_result($this->date, $this->plc_module_sa, $this->status_check_array,$this->assessment_status_array_dic,  $this->second_half_status_check_array, $this->second_assessment_status_array );
-            $sheets[] = new fy_summary($this->date, $this->plc_module_sa,$this->assessment_status_array_dic,$this->yec_date_arr,$this->first_half_affected_status_arr,$this->second_assessment_status_array_rf,$this->fu_affected_internal_control_arr,$this->second_assessment_status_array_fu);
-            $sheets[] = new firsthalf($this->date,$this->plc_module_sa_concerned_dept,$this->plc_section);
-            $sheets[] = new rollforward($this->date,$this->plc_module_rf_details);
+            $sheets = [];
+            $sheets[] = new fy_summary($this->date,
+            $this->plc_category,
+            $this->sa_rf_ng_data,
+            $this->sa_ng_data,
+            $this->first_half_affected_status_arr,
+            $this->get_control_id,
+            $this->second_half_affected_status_arr,
+            $this->get_2nd_half_id,
+            $this->key_ctrl_arr,
+            $this->year,
+            $this->audit_fiscal_year_id
+            );
 
+            $sheets[] = new firsthalf(
+                $this->date,
+                $this->sa_ng_data,
+                $this->get_control_id,
+                $this->plc_category,
+                $this->year
+            );
+            $sheets[] = new rollforward(
+                $this->date,
+                $this->sa_rf_ng_data,
+                $this->get_2nd_half_id,
+                $this->plc_category,
+                $this->year
+            );
         }
+        
 
         return $sheets;
     }

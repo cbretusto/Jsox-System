@@ -1,25 +1,10 @@
 <?php $layout = 'layouts.super_user_layout'; ?>
 
-<?php if(auth()->guard()->check()): ?>
-    <?php
-        if(Auth::user()->user_level_id == 1){
-            $layout = 'layouts.super_user_layout';
-        }
-        else if(Auth::user()->user_level_id == 2){
-            $layout = 'layouts.admin_layout';
-        }
-        else if(Auth::user()->user_level_id == 3){
-            $layout = 'layouts.user_layout';
-        }
-    ?>
-<?php endif; ?>
-
 
 
 <?php $__env->startSection('title', 'JSOX'); ?>
 
 <?php $__env->startSection('content_page'); ?>
-
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -53,7 +38,7 @@
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="user-management" role="tabpanel" aria-labelledby="user-management-tab">
                                 <div>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddPlcCategory"
+                                <button class="btn btn-primary myButton" id="" data-toggle="modal" data-target="#modalAddPlcCategory"
                                 style="float: right;"><i class="fa fa-plus fa-md"></i> Add
                                 PLC Category</button></div><br><br>
                             </div>
@@ -115,7 +100,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-  <!-- /.modal -->
+    <!-- /.modal -->
 
 
     <!-- EDIT MODAL START -->
@@ -220,30 +205,30 @@
 <?php $__env->startSection('js_content'); ?>
     <script type="text/javascript">
 
-
         // ============================== VIEW PLC CATEGORY DATATABLES  START ==============================
-    dataTablePlcCategory = $("#plcCategoryTable").DataTable({
-                "processing" : false,
-                "serverSide" : true,
-                "responsive": true,
-                // "scrollX": true,
-                // "scrollX": "100%",
-                "language": {
-                    "info": "Showing _START_ to _END_ of _TOTAL_ records",
-                    "lengthMenu":     "Show _MENU_ records",
-                },
-                "ajax" : {
-                    url: "view_plc_category", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
-                },
-                "columns":[
-                    { "data" : "plc_category",orderable:false},
-                    { "data" : "status",orderable:false},
-                    { "data" : "action",orderable:false},
-                ],
-            });
-            //VIEW PLC CATEGORY DATATABLES END
+        dataTablePlcCategory = $("#plcCategoryTable").DataTable({
+            "processing" : false,
+            "serverSide" : true,
+            "responsive": true,
+            // "scrollX": true,
+            // "scrollX": "100%",
+            "language": {
+                "info": "Showing _START_ to _END_ of _TOTAL_ records",
+                "lengthMenu":     "Show _MENU_ records",
+            },
+            "ajax" : {
+                url: "view_plc_category", // this will be pass in the uri called view_users_archive that handles datatables of view_users_archive() method inside UserController
+            },
+            "columns":[
+                { "data" : "plc_category",orderable:false},
+                { "data" : "status",orderable:false},
+                { "data" : "action",orderable:false},
+            ],
+            // "aoColumnDefs": [{ "bVisible": false, "aTargets": [2] }]
+        });
+        //VIEW PLC CATEGORY DATATABLES END
 
-               //===== ADD USER APPROVER =====//
+        //===== ADD USER APPROVER =====//
         $('#btnAddPlcCategory').on('click', function(event) {
             event.preventDefault(); // to stop the form submission
             AddPlcCategory();

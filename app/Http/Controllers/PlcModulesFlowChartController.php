@@ -7,12 +7,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\PLCModuleFlowChart;
+use App\UserManagement;
 use DataTables;
 use App\RapidXUser;
 use Carbon\Carbon;
 
 class PlcModulesFlowChartController extends Controller{
     public function view_plc_modules_flow_chart(Request $request){
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        $get_user_level = UserManagement::where('rapidx_name', $rapidx_name)->get();
+
         $plc_module_flow_chart = PLCModuleFlowChart::with('rapidx_user_details')
         ->where('category', $request->session)
         ->where('flow_chart_status', 1)
@@ -22,17 +27,17 @@ class PlcModulesFlowChartController extends Controller{
 
         return DataTables::of($plc_module_flow_chart)
 
-        ->addColumn('flow_chart_status', function($plc_module_flow_chart){
-            $result = "<center>";
-            if($plc_module_flow_chart->flow_chart_status == 1){
-                $result .= '<span class="badge badge-pill badge-success">Active</span>';
-            }
-            else{
-                $result .= '<span class="badge badge-pill badge-danger">Inactive</span>';
-            }
-                $result .= '</center>';
-                return $result;
-        })
+        // ->addColumn('flow_chart_status', function($plc_module_flow_chart){
+        //     $result = "<center>";
+        //     if($plc_module_flow_chart->flow_chart_status == 1){
+        //         $result .= '<span class="badge badge-pill badge-success">Active</span>';
+        //     }
+        //     else{
+        //         $result .= '<span class="badge badge-pill badge-danger">Inactive</span>';
+        //     }
+        //         $result .= '</center>';
+        //         return $result;
+        // })
 
         ->addColumn('revision', function($plc_module_flow_chart){
             $result = "";
@@ -41,10 +46,14 @@ class PlcModulesFlowChartController extends Controller{
             return $result;
         })
 
-        ->addColumn('action', function($plc_module_flow_chart){
+        ->addColumn('action', function($plc_module_flow_chart) use($get_user_level){
             $result = '<center>';
-                    $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionUploadFlowChart" style="width:125px;margin:2%;" flow_chart-id="' . $plc_module_flow_chart->id . '" data-toggle="modal" data-target="#modalEditFlowChart" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Upload Flow Chart</button>&nbsp;';
-                    $result .= '<br>';
+            if($get_user_level[0]->user_level_id == 3){
+                $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionUploadFlowChart" style="width:125px;margin:2%;" flow_chart-id="' . $plc_module_flow_chart->id . '" data-toggle="modal" data-target="#modalEditFlowChart" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Upload Flow Chart</button>&nbsp;';
+                $result .= '<br>';
+            }else{
+                $result .= '<button class="m-r-15 text-muted btn" data-toggle="modal" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
+            }     
             $result .= '</center>';
             return $result;
         })
@@ -71,7 +80,8 @@ class PlcModulesFlowChartController extends Controller{
             return $result;
         })
 
-        ->rawColumns(['flow_chart_status', 'action','flow_chart','uploaded_by'])
+        // ->rawColumns(['flow_chart_status', 'revision', 'action','flow_chart','uploaded_by'])
+        ->rawColumns(['action', 'revision', 'flow_chart','uploaded_by'])
         ->make(true);
     }
 

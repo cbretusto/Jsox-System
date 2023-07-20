@@ -49,7 +49,8 @@
                                                 <div class="inner" style="height:100px;">
                                                     <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>Sample Matrix</strong></h4></span>
                                                     <div class="icon">
-                                                        <i class="fas fa-newspaper"></i>
+                                                        {{-- <i class="fas fa-newspaper"></i> --}}
+                                                        <i class="nav-icon fas fa-clipboard"></i>
                                                     </div>   
                                                 </div>
                                             </a>
@@ -60,7 +61,7 @@
                                         <div class="small-box bg-info shadow">
                                             <a href="{{ route('plc_dashboard') }}">
                                                 <div class="inner" style="height:100px;">
-                                                    <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>3-Sets Documents</strong></h4></span>
+                                                    <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>3-Set Documents</strong></h4></span>
                                                     <div class="icon">
                                                         <i class="fas fa-tachometer-alt"></i>
                                                     </div>   
@@ -95,6 +96,19 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-4">
+                                        <div class="small-box bg-info shadow">
+                                            <a href="{{ route('analytics') }}">
+                                                <div class="inner" style="height:100px;">
+                                                    <span class="info-box-text position-absolute mt-4 ml-3"><h4><strong>Analytics</strong></h4></span>
+                                                    <div class="icon">
+                                                        <i class="nav-icon fas fa-chart-bar"></i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
                                     {{-- <div class="col-4">
                                         <div class="small-box bg-info shadow">
                                             <a href="{{ route('plc_category') }}">
@@ -114,7 +128,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row myButton">
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">

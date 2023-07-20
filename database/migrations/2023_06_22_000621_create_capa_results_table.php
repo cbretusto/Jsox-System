@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateViewLogsRevisionHistoriesTable extends Migration
+class CreateCapaResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateViewLogsRevisionHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('view_logs_revision_histories', function (Blueprint $table) {
+        Schema::create('capa_results', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedTinyInteger('status')->default(0)->comment = '1-active,2-Inactive';
-            $table->String('process_owner')->nullable();
-            $table->String('revision_date')->nullable();
-            $table->integer('version_no')->nullable();
+            $table->string('fiscal_year')->nullable();
+            $table->string('audit_period')->nullable();
+            $table->string('dept_sect')->nullable();
+            $table->string('capa')->nullable();
+            $table->string('uploaded_by')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class CreateViewLogsRevisionHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('view_logs_revision_histories');
+        Schema::dropIfExists('capa_results');
     }
 }

@@ -59,7 +59,9 @@ function LoadRapidXDepartmentList(cboElement)
         success: function(response){
             result = '';
             if(response['department'].length > 0){
-                result = '<option selected disabled>-- Select Department -- </option>';
+                if(!$("select[multiple]").length){
+                    result = '<option selected disabled>-- Select Department -- </option>';
+                }
                 for(let index = 0; index < response['department'].length; index++){
                     console.log(response['department'][index].id);
                     result += '<option value="' + response['department'][index].department_name + '">' + response['department'][index].department_name + '</option>';
@@ -136,7 +138,9 @@ function AddUser(){
                     dataTableUsers.draw(); // reload the tables after insertion
                     toastr.success('User was succesfully saved!');
                 }else{
-                    toastr.warning(response['tryCatchError']);
+                    let name = $('#selectAddRapidxUser').val();
+                    // toastr.warning(response['tryCatchError']);
+                    alert('"'+name+'" is already on the list of users');
                 }
             }
 

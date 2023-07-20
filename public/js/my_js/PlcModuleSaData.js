@@ -35,12 +35,16 @@ function GetSaData(saDataId){
             let rf_details  = response['rf_details'];
             let fu_details  = response['fu_details'];
             let rcm_internal_control  = response['rcm_internal_control'];
+            console.log('sa_data',sa_data);
             console.log('dic_details',dic_details);
             console.log('oec_details',oec_details);
             console.log('rf_details',rf_details);
             console.log('fu_details',fu_details);
-            // console.log('test', sa_data);
             if(sa_data.length > 0){
+                if(sa_data[0].approval_status == 2 || sa_data[0].approval_status == 4 || sa_data[0].approval_status == 7){
+                    $('#btnEditSaModule').addClass('d-none');
+                }
+
                 $("#txtSACounter").val(sa_data[0].rcm_internal_control_counter);
                 $("#txtFiscalYear").val(sa_data[0].fiscal_year);
                 $("#selectEditDept").val(sa_data[0].concerned_dept).trigger('change');
@@ -219,6 +223,10 @@ function GetSaSecondHalf(saSecondHalfId){
             console.log('ric_details',ric_details);
 
             if(sa_data.length > 0){
+                if(sa_data[0].approval_status == 2 || sa_data[0].approval_status == 4 || sa_data[0].approval_status == 7){
+                    $('#btnEditSaSecondHalf').addClass('d-none');
+                }
+
                 console.log('sa_data[0].fiscal_year', sa_data[0].fiscal_year);
                 $("#txtFiscalYearSecondHalf").val(sa_data[0].fiscal_year);
                 $("#selectEditDeptSecondHalf").val(sa_data[0].concerned_dept);
@@ -321,16 +329,20 @@ function GetSaFollowUp(saFollowUpId){
         beforeSend: function(){
         },
         success: function(response){
-            // console.log(response);
-            let sa_data     = response['sa_data'];
+            let sa_data = response['sa_data'];
+            console.log('sa_data', sa_data);
 
             let fu_details  = response['fu_details'];
-            console.log('fu_details',fu_details);
+            console.log('fu_details1',fu_details);
             
             let ric_details = response['ric_details'];
-            console.log('ric_details',ric_details);
+            console.log('ric_details1',ric_details);
             // console.log('test', sa_data);
             if(sa_data.length > 0){
+                if(sa_data[0].approval_status == 2 || sa_data[0].approval_status == 4 || sa_data[0].approval_status == 7){
+                    $('#btnEditSaFollowUp').addClass('d-none');
+                }
+
                 $("#txtFiscalYearFollowUp").val(sa_data[0].fiscal_year);
                 $("#selectEditDeptFollowUp").val(sa_data[0].concerned_dept);
                 $("#txtEditSaFuImprovement").val(sa_data[0].fu_improvement);
@@ -779,27 +791,48 @@ function countPmiCategoryById(category){
         beforeSend: function(){  
         },
         success: function(JsonObject){
-            if(JsonObject['get_sa_status'].length > 0){
-                $("#totalNumberOfGood"+JsonObject['category']).text(JsonObject['get_dic_good_status'] + JsonObject['get_oec_good_status'] + JsonObject['get_rf_good_status']);
-            }
-            else{
-                // toastr.warning('No Record Found!');
-            }
+            let getUserLevel = JsonObject['get_user_level'];
+            // if(JsonObject['result'] != 1){
+                // if(JsonObject['get_sa_status'].length > 0){
+                //     $("#totalNumberOfGood"+JsonObject['category']).text(JsonObject['get_dic_good_status'] + JsonObject['get_oec_good_status'] + JsonObject['get_rf_good_status']);
+                // }
+                // else{
+                //     // toastr.warning('No Record Found!');
+                // }
 
-            if(JsonObject['get_sa_status'].length > 0){
-                $("#totalNumberOfNotGood"+JsonObject['category']).text(JsonObject['get_dic_not_good_status'] + JsonObject['get_oec_not_good_status'] + JsonObject['get_rf_not_good_status']);
-            }
-            else{
-                // toastr.warning('No Record Found!');
-            }
+                // if(JsonObject['get_sa_status'].length > 0){
+                //     $("#totalNumberOfNotGood"+JsonObject['category']).text(JsonObject['get_dic_not_good_status'] + JsonObject['get_oec_not_good_status'] + JsonObject['get_rf_not_good_status']);
+                // }
+                // else{
+                //     // toastr.warning('No Record Found!');
+                // }
 
-            if(JsonObject['count'] == JsonObject['sa_first_half_status'] || JsonObject['sa_second_half_status']){
-                if(!JsonObject['count'] == 0){
-                    $("#checkPendingStatus"+JsonObject['category']).text(['DONE']);
+                if(JsonObject['count'] == JsonObject['sa_first_half_status'] || JsonObject['sa_second_half_status']){
+                    if(!JsonObject['count'] == 0){
+                        $("#checkPendingStatus"+JsonObject['category']).text(['DONE']);
+
+                        if(JsonObject['get_sa_status'].length > 0){
+                            $("#totalNumberOfGood"+JsonObject['category']).text(JsonObject['get_dic_good_status'] + JsonObject['get_oec_good_status'] + JsonObject['get_rf_good_status']);
+                        }
+        
+                        if(JsonObject['get_sa_status'].length > 0){
+                            $("#totalNumberOfNotGood"+JsonObject['category']).text(JsonObject['get_dic_not_good_status'] + JsonObject['get_oec_not_good_status'] + JsonObject['get_rf_not_good_status']);
+                        }
+                    }
+                }else{
+                    $("#checkPendingStatus"+JsonObject['category']).text(['PENDING']);
+
+                    if(getUserLevel[0].user_level_id == 3){
+                        if(JsonObject['get_sa_status'].length > 0){
+                            $("#totalNumberOfGood"+JsonObject['category']).text(JsonObject['get_dic_good_status'] + JsonObject['get_oec_good_status'] + JsonObject['get_rf_good_status']);
+                        }
+        
+                        if(JsonObject['get_sa_status'].length > 0){
+                            $("#totalNumberOfNotGood"+JsonObject['category']).text(JsonObject['get_dic_not_good_status'] + JsonObject['get_oec_not_good_status'] + JsonObject['get_rf_not_good_status']);
+                        }
+                    }
                 }
-            }else{
-                $("#checkPendingStatus"+JsonObject['category']).text(['PENDING']);
-            }
+            // }
 
             // if(JsonObject['count'] == JsonObject['sa_second_half_status']){
             //     $("#checkPendingStatus"+JsonObject['category']).text(['DONE']);
@@ -1011,6 +1044,71 @@ function EditSaFollowUp(){
             $("#iBtnEditSaFollowUpIcon").removeClass('fa fa-spinner fa-pulse');
             $("#btnEditSaFollowUp").removeAttr('disabled');
             $("#iBtnEditSaFollowUpIcon").addClass('fa fa-check');
+        }
+    });
+}
+
+function EditSaDepartment(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    let formData = new FormData($('#formEditSaDepartmentModule')[0]);
+
+    $.ajax({
+        url: "edit_sa_department",
+        method: "post",
+        processData: false,
+        contentType: false,
+        data: formData,
+        dataType: "json",
+        beforeSend: function(){
+            $("#iBtnEditSaModuleIcon").addClass('fa fa-spinner fa-pulse');
+            $("#btnEditSaModule").prop('disabled', 'disabled');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Saving SA Department Failed!');
+
+                if(response['error']['concerned_dept'] === undefined){
+                    $("#selectEditDept").removeClass('is-invalid');
+                    $("#selectEditDept").attr('title', '');
+                }
+                else{
+                    $("#selectEditDept").addClass('is-invalid');
+                    $("#selectEditDept").attr('title', response['error']['concerned_dept']);
+                }
+            }
+            else if(response['result'] == 1){
+                $("#modalEditSaDataDepartment").modal('hide');
+                $("#formEditSaDepartmentModule")[0].reset();
+                toastr.success('SA Department was succesfully saved!');
+                dataTablePlcModuleSa.draw(); // reload the tables after insertion
+            }
+
+            $("#iBtnEditSaModuleIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditSaModule").removeAttr('disabled');
+            $("#iBtnEditSaModuleIcon").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#iBtnEditSaModuleIcon").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditSaModule").removeAttr('disabled');
+            $("#iBtnEditSaModuleIcon").addClass('fa fa-check');
         }
     });
 }

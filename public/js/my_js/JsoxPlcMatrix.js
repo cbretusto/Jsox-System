@@ -133,7 +133,7 @@ function GetJsoxPlcMatrixByIdToEdit(JsoxPlcMatrixId){
             let jsox_plc_matrix = response['jsox_plc_matrix'];
             // console.log(jsox_plc_matrix);
             if(jsox_plc_matrix.length > 0){
-                $("#selEditJsoxPlcMatrix").val(jsox_plc_matrix[0].process_name).trigger('change');;
+                $("#selEditJsoxPlcMatrix").val(jsox_plc_matrix[0].process_name).trigger('change');
                 $("#txtEditControlNo").val(jsox_plc_matrix[0].control_no);
                 // $("#txtEditDocument").val(jsox_plc_matrix[0].document);
                 $("#txtEditFrequency").val(jsox_plc_matrix[0].frequency);

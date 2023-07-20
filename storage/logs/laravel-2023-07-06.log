@@ -1,6 +1,6 @@
-[2023-05-11 00:09:54] local.ERROR: Undefined index: rapidx_name {"exception":"[object] (ErrorException(code: 0): Undefined index: rapidx_name at /var/www/Jsox/app/Http/Controllers/PlcModulesSaController.php:41)
+[2023-07-06 03:42:01] local.ERROR: Undefined index: rapidx_name {"exception":"[object] (ErrorException(code: 0): Undefined index: rapidx_name at /var/www/Jsox/app/Http/Controllers/PlcModulesSaController.php:45)
 [stacktrace]
-#0 /var/www/Jsox/app/Http/Controllers/PlcModulesSaController.php(41): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(8, 'Undefined index...', '/var/www/Jsox/a...', 41, Array)
+#0 /var/www/Jsox/app/Http/Controllers/PlcModulesSaController.php(45): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(8, 'Undefined index...', '/var/www/Jsox/a...', 45, Array)
 #1 [internal function]: App\\Http\\Controllers\\PlcModulesSaController->view_plc_sa_data(Object(Illuminate\\Http\\Request))
 #2 /var/www/Jsox/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): call_user_func_array(Array, Array)
 #3 /var/www/Jsox/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(45): Illuminate\\Routing\\Controller->callAction('view_plc_sa_dat...', Array)

@@ -40,7 +40,4 @@ class PLCModule extends Model
     public function concern_dept_sect_inchanrge_details(){
     	return $this->hasMany(RevisionHistoryConcernDeptSectIncharge::class, 'plc_module_id', 'id');
     }
-
-    
-    
 }

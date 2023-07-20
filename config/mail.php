@@ -29,7 +29,8 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.googlemail.com'),
+    // 'host' => env('MAIL_HOST', 'smtp.googlemail.com'),
+    'host' => env('MAIL_HOST', 'mail3.pricon.ph'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +57,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'pmiissnotif@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'PATS Notification'),
+        'address' => env('MAIL_FROM_ADDRESS', 'issinfoservice@pricon.ph'),
+        'name' => env('MAIL_FROM_NAME', 'JSOX Revision History Conformance Notification'),
     ],
 
     /*

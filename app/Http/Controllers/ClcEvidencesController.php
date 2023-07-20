@@ -24,16 +24,16 @@ class ClcEvidencesController extends Controller
         // return $clc_evidences;
         return DataTables::of($clc_evidences)
 
-        ->addColumn('fiscal_year_audit_period', function($clc_evidences){
-            $result = "";
-            if($clc_evidences->fiscal_year != null && $clc_evidences->audit_period != null){
-                $result .= "FY ".$clc_evidences->fiscal_year."";
-                $result .= "<br>" .$clc_evidences->audit_period. "";
-            }else{
-                $result .=  "iror 404 sheeesh";
-            }
-            return $result;
-        })
+        // ->addColumn('fiscal_year_audit_period', function($clc_evidences){
+        //     $result = "";
+        //     if($clc_evidences->fiscal_year != null && $clc_evidences->audit_period != null){
+        //         $result .= "FY ".$clc_evidences->fiscal_year."";
+        //         $result .= "<br>" .$clc_evidences->audit_period. "";
+        //     }else{
+        //         $result .=  "iror 404 sheeesh";
+        //     }
+        //     return $result;
+        // })
 
         ->addColumn('uploaded_file', function($clc_evidences){
             $result = "";
@@ -55,7 +55,11 @@ class ClcEvidencesController extends Controller
             $result .= '</center>';
             return $result;   
         })
-        ->rawColumns(['fiscal_year_audit_period', 'uploaded_file', 'action']) // to format the added columns(status & action) as html format
+        ->rawColumns([
+        // 'fiscal_year_audit_period', 
+        'uploaded_file', 
+        'action'
+        ]) // to format the added columns(status & action) as html format
         ->make(true);  
     }
 

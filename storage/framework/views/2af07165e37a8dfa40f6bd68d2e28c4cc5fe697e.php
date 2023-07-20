@@ -38,23 +38,24 @@
 <script type="text/javascript" src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152197/smartwizard/jquery.smartWizard.min.js"></script>
 
 <!-- Custom JS -->
-<script src="<?php echo e(asset('public/js/my_js/UserManagement.js?n=11')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/UserManagement.js?n=2')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/UserLevel.js?n=1')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/FiscalYear.js?n=4')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/Department.js?n=1')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/FiscalYear.js?n=2')); ?>"></script>
 
 <script src="<?php echo e(asset('public/js/my_js/PlcCategory.js?n=5')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/PlcEvidences.js?n=3')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/JsoxPlcMatrix.js?n=1')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/Matrix.js?n=2')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/PlcModules.js?n=3')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/PlcModules.js?n=12')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/PlcModulesFlowChart.js?n=1')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/PlcModulesRCM.js?n=5')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/PlcModuleSaData.js?n=2')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/PlcModulesRCM.js?n=6')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/PlcModuleSaData.js?n=3')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/SelectPlcEvidence.js?n=3')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/PlcCapa.js?n=15')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/PlcCapa.js?n=2')); ?>"></script>
 
 <script src="<?php echo e(asset('public/js/my_js/ClcCategory.js?n=1')); ?>"></script>
-<script src="<?php echo e(asset('public/js/my_js/ClcEvidences.js?n=4')); ?>"></script>
+<script src="<?php echo e(asset('public/js/my_js/ClcEvidences.js?n=1')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/ClcCategoryPmiClc.js?n=4')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/ClcCategoryPmiFcrp.js?n=8')); ?>"></script>
 <script src="<?php echo e(asset('public/js/my_js/ClcCategoryPmiItClc.js?n=7')); ?>"></script>

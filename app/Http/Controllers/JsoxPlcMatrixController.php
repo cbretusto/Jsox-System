@@ -11,11 +11,15 @@ use DataTables;
 
 //MODEL
 Use App\JsoxPlcMatrix;
+use App\UserManagement;
 Use App\RapidXUser;
 
 class JsoxPlcMatrixController extends Controller
 {
     public function view_jsox_plc_matrix(){
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        $get_user_level = UserManagement::where('rapidx_name', $rapidx_name)->get();
 
         $jsox_plc_matrix = JsoxPlcMatrix::where('logdel',0)->get();
         return DataTables::of($jsox_plc_matrix)
@@ -31,33 +35,33 @@ class JsoxPlcMatrixController extends Controller
                 $result .= '</center>';
                 return $result;
         })
-        ->addColumn('documentsxz', function($jsox_plc_matrix){
+        ->addColumn('documents', function($jsox_plc_matrix){
             $exploded_document = explode("^",$jsox_plc_matrix->document);
-
-
             $result = "";
             $counter = 1;
             for($x=0; $x < count($exploded_document); $x++){
-
                 $result .=$exploded_document[$x]."<br>";
-
                 $counter++;
             }
             return $result;
         }) 
-        ->addColumn('action', function($jsox_plc_matrix){
+        ->addColumn('action', function($jsox_plc_matrix) use($get_user_level){
             $result = "<center>";
-            if($jsox_plc_matrix->status == 1){
-                $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditJsoxPlcMatrix" style="width:105px;margin:2%;" jsox_plc_matrix-id="' . $jsox_plc_matrix->id . '" data-toggle="modal" data-target="#modalEditJsoxPlcMatrix" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
-                $result .= '<br>';
-                $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangeJsoxPlcMatrixStat" style="width:105px;margin:2%;" jsox_plc_matrix-id="' . $jsox_plc_matrix->id . '" status="2" data-toggle="modal" data-target="#modalChangeJsoxPlcMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-ban"></i> Deactivate</button>&nbsp;';
+            if($get_user_level[0]->user_level_id == 3){
+                if($jsox_plc_matrix->status == 1){
+                    $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditJsoxPlcMatrix" style="width:105px;margin:2%;" jsox_plc_matrix-id="' . $jsox_plc_matrix->id . '" data-toggle="modal" data-target="#modalEditJsoxPlcMatrix" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                    $result .= '<br>';
+                    $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangeJsoxPlcMatrixStat" style="width:105px;margin:2%;" jsox_plc_matrix-id="' . $jsox_plc_matrix->id . '" status="2" data-toggle="modal" data-target="#modalChangeJsoxPlcMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-ban"></i> Deactivate</button>&nbsp;';
+                }else{
+                    $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangeJsoxPlcMatrixStat" style="width:105px;margin:2%;" jsox_plc_matrix-id="' . $jsox_plc_matrix->id . '" status="1" data-toggle="modal" data-target="#modalChangeJsoxPlcMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-check"></i> Active</button>&nbsp;';
+                }
             }else{
-                $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangeJsoxPlcMatrixStat" style="width:105px;margin:2%;" jsox_plc_matrix-id="' . $jsox_plc_matrix->id . '" status="1" data-toggle="modal" data-target="#modalChangeJsoxPlcMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-check"></i> Active</button>&nbsp;';
+                $result .= '<button class="m-r-15 text-muted btn" data-toggle="modal" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
             }
             $result .= '</center>';
             return $result;   
         })
-        ->rawColumns(['status', 'action','documentsxz']) // to format the added columns(status & action) as html format
+        ->rawColumns(['status', 'action','documents']) // to format the added columns(status & action) as html format
         ->make(true);  
     }
 

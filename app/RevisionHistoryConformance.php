@@ -13,7 +13,7 @@ class RevisionHistoryConformance extends Model
 
 
     public function conformance_details(){
-    	return $this->hasMany(RevisionHistoryDeptSectConformance::class, 'conformance_id', 'id');
+    	return $this->hasMany(RevisionHistoryDeptSectConformance::class, 'conformance_id', 'id')->where('logdel', 0);
     }
 
 }

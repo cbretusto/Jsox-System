@@ -19,28 +19,53 @@
 @section('title', 'JSOX')
 @section('content_page')
     <style type="text/css">
-        table {
+        table{
             color: black;
         }
 
-        /* table.table tbody td {
+        table.table tbody td{
             padding: 4px 4px;
             margin: 1px 1px;
             font-size: 16px;
-        } */
+            /* vertical-align: middle; */
+        }
 
-        table.table thead th {
-            padding-top: 5px;
+        table.table thead th{
+            padding-top: 5px; 
             padding-bottom: 5px;
             padding-right: 5px;
             padding-left: 5px;
             font-size: 16px;
             text-align: center;
-            white-space: nowrap;
             vertical-align: middle;
+            /* white-space:nowrap; */
             padding: 5px 5px;
             margin: 3px 3px;
         }
+        .disabled-select {
+            background-color: #0f0f0f;
+            cursor: not-allowed;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+
+        select[readonly].select2-hidden-accessible + .select2-container {
+            pointer-events: none;
+            touch-action: none;
+        }
+
+        /* select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+            background: #eee;
+            box-shadow: none;
+        } */
+
+        /* select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow, */
+        /* select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
+            display: none;
+        } */
     </style>
 
     <div class="content-wrapper"  style="height: 666px; overflow: scroll;">
@@ -48,7 +73,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 style="font-size: 22px;">Internal Audit Section Audit Findings <br> CORRECTIVE / PREVENTIVE ACTION REPORT</h1>
+                        <h1 style="font-size: 22px;">Internal Audit Section Audit Findings Corrective / Preventive Action Report</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -60,51 +85,68 @@
             </div>
         </section>
 
-    <!-- Main content -->
+        <!-- Main content -->
         <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" id="plc-capa-management" data-toggle="tab" href="#plc-capa-management" role="tab" aria-controls="plc-capa-management" aria-selected="true">Corrective/Preventive Action Report Management Tab</a>
-                                            </li>
-                                            {{-- <li class="nav-item">
-                                                <a class="nav-link" id="archive-tab" data-toggle="tab" href="#archive" role="tab" aria-controls="archive" aria-selected="false">Revised PLC Evidences Tab</a>
-                                            </li> --}}
-                                        </ul>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="plc-capa-management" role="tabpanel" aria-labelledby="plc-capa-management">
-                                            <div class="text-right mt-2 ml-2">
-                                                <button class="btn btn-primary mr-2" data-toggle="modal"
-                                                data-target="#modalExportSummary"
-                                                style="float: left;"><i class="fas fa-download"></i> Export CAPA
-                                                </button>
-                                                {{-- <button class="btn btn-primary mr-2" data-toggle="modal"
-                                                data-target="#modalExportAuditResult"
-                                                style="float: left;"><i class="fas fa-download"></i> Export Audit Result
-                                                </button> --}}
-                                            </div><br><br>
-                                            <div class="table-responsive">
-                                                <table id="plcCapaTable" class="table table-sm table-bordered table-striped table-hover" width="100%" style="white-space: pre-wrap;">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width: 10%">Action</th>
-                                                            <th style="width: 10%">Process Name</th>
-                                                            <th style="width: 10%">Control No.</th>
-                                                            <th style="width: 15%">Internal Control</th>
-                                                            <th style="width: 15%">Statement of Finding(s)</th>
-                                                            <th style="width: 15%">Analysis</th>
-                                                            <th style="width: 15%">Corrective Action</th>
-                                                            <th style="width: 15%">Preventive Action</th>
-                                                            <th style="width: 5%">Commitment Date</th>
-                                                            <th style="width: 5%">In-Charge</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" id="tabjsoxPlcCapa" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tabCapaRecord" data-toggle="tab" href="#capaRecord" role="tab" aria-controls="capaRecord" aria-selected="false">Corrective/Preventive Action Report</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tabCapaResult" data-toggle="tab" href="#capaResult" role="tab" aria-controls="capaResult" aria-selected="false">CAPA Result</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content table-responsive" id="tabjsoxPlcCapa">
+                                    <div class="tab-pane fade show active" id="capaRecord" role="tabpanel" aria-labelledby="tabCapaRecord">
+                                        <div class="text-right mt-2 ml-2">
+                                            <button class="btn btn-primary mr-2" data-toggle="modal"
+                                            data-target="#modalExportSummary"f
+                                            style="float: right;"><i class="fas fa-download"></i> Export CAPA
+                                            </button>
+                                        </div><br><br>
+                                        <div class="table responsive" style="height: 640px; overflow: scroll;">
+                                            <table id="plcCapaTable" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Action</th>
+                                                        <th style="width: 10%">Process Name</th>
+                                                        <th style="width: 5%">Control No.</th>
+                                                        <th style="width: 15%">Internal Control</th>
+                                                        <th style="width: 15%">Statement of Finding(s)</th>
+                                                        <th style="width: 15%">Analysis</th>
+                                                        <th style="width: 15%">Corrective Action</th>
+                                                        <th style="width: 15%">Preventive Action</th>
+                                                        <th>Commitment Date</th>
+                                                        <th style="width: 15%">In-Charge</th>
+                                                    </tr>
+                                                </thead>   
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="capaResult" role="tabpanel" aria-labelledby="tabCapaResult">
+                                        <div style="float: right;">                   
+                                            <button class="btn btn-dark mt-1 myButton" data-toggle="modal" data-target="#modalCapaResult" id="btnShowAddCapaResultModal"><i class="fa fa-plus"></i>  Add Result </button>
+                                        </div> <br><br>
+                                        <div class="table responsive" style="height: 640px; overflow: scroll;">
+                                            <table id="capaResultTable" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
+                                                <thead>
+                                                    <tr style="text-align:center">
+                                                        <th>Fiscal Year</th>
+                                                        <th>Audit Period</th>
+                                                        <th>Departmet / Section</th>
+                                                        <th>CAPA</th>
+                                                        <th>Uploaded By</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>            
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -112,6 +154,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </section>
     </div>
 
@@ -151,12 +194,12 @@
                             <select name="select_dept" id="selectDeptId">
                                 <option value="Logistics">Logistics</option>
                                 <option value="PPC-TSCN">PPC TS/CN</option>
-                                <option value="Warehouse-TSCN">Warehouse-TS/CN</option>
-                                <option value="PPS-Production">PPS-Production</option>
-                                <option value="PPS-WHSE">PPS-Warehouse</option>
+                                <option value="Warehouse-TSCN">WHSE TS/CN</option>
+                                <option value="PPS Production">PPS Production</option>
+                                <option value="PPS WHSE">PPS WHSE</option>
                                 <option value="IAS">IAS</option>
                                 <option value="Finance">Finance</option>
-                                <option value="PPS-PPC">PPS-PPC</option>
+                                <option value="PPS PPC">PPS PPC</option>
                             </select>
                         </div>
                     </div>
@@ -170,7 +213,7 @@
         </div> <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <!-- MODALS -->
+    {{-- <!-- MODALS -->
     <div class="modal fade" id="modalExportAuditResult">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -186,7 +229,7 @@
                         <div class="form-group">
                             <label>Select Year:</label>
                             <select name="select_year" id="selectAuditYearId">
-                                <?php
+                                @php
                                     $year_now = date('Y');
 
                                     for($i = 2022; $i <= $year_now; $i++){
@@ -194,13 +237,13 @@
                                             ".$i."
                                             </option>";
                                     }
-                                ?>
+                                @endphp
                             </select>
 
                             <label>Select Audit Period:</label>
                             <select name="select_fiscal_year" id="selectAuditFiscalYearId">
-                                <option value="First-Half">First Half</option>
-                                <option value="Second-Half">Second Half</option>
+                                <option value="1">First Half</option>
+                                <option value="2">Second Half</option>
                             </select>
 
                         </div>
@@ -213,14 +256,14 @@
             </div>
         </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    </div><!-- /.modal --> --}}
 
     <!-- EDIT MODAL START -->
     <div class="modal fade" id="modalEditPlcCapa">
         <div class="modal-dialog modal-xl-custom">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title"><i class="far fa-edit"></i> Edit PLC Capa</h4>
+                    <h4 class="modal-title"><i class="far fa-edit"></i> PLC CAPA</h4>
                     <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close" btn-sm>
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -241,32 +284,107 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <input type="hidden" class="form-control" name="plc_capa_id" id="txtPlcCapaId">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <label>Issued Date:</label>
-                                                    <input type="date" class="form-control" id="txtIssuedDateId" name="issued_date">
+                                        <div class="" id="firstHalf">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Issued Date:</label>
+                                                        <input type="date" class="form-control hi txtIssuedDateId issued_date" id="txtIssuedDateId" name="issued_date">
+                                                    </div>
+        
+                                                    <div class="col-sm-6">
+                                                        <label>Due Date:</label>
+                                                        <input type="date" class="form-control hi txtDueDateId due_date" id="txtDueDateId" name="due_date">
+                                                    </div>
                                                 </div>
-
-                                                <div class="col-sm-6">
-                                                    <label>Due Date:</label>
-                                                    <input type="date" class="form-control" id="txtDueDateId" name="due_date">
+                                            </div> 
+    
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Prepared by:</label>
+                                                        <select class="form-control selJsoxUsers select2bs4 hi prepared_by selPreparedBy"  name="prepared_by[]" id="selPreparedBy" multiple required></select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>Approved by:</label>
+                                                        <select class="form-control selJsoxUsers select2bs4 hi approved_by selApprovedBy" name="approved_by[]" id="selApprovedBy" multiple required></select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        {{-- <div class="form-group d-none">
                                             <div class="row">
                                                 <div class="col-sm-6">
-                                                    <label>Prepared by:</label>
-                                                    <select class="form-control selJsoxUser select2bs4"  name="prepared_by" id="selPreparedBy"></select>
+                                                    <label>2nd Half Prepared by:</label>
+                                                    <select class="form-control selJsoxUser select2bs4"  name="second_half_prepared_by" id="selSecondHalfPreparedBy" required></select>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <label>Approved by:</label>
-                                                    <select class="form-control selJsoxUser select2bs4" name="approved_by" id="selApprovedBy"></select>
+                                                    <label>2nd Half Approved by:</label>
+                                                    <select class="form-control selJsoxUsers select2bs4" name="second_half_approved_by[]" id="selSecondHalfApprovedBy" multiple required></select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
+
+                                        <div class="d-none" id="secondHalf"><!-- START TEST -->
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>1st Half Issued Date:</label>
+                                                        <input type="date" class="form-control ho txtFirstHalfIssuedDateId issued_date" id="txtFirstHalfIssuedDateId" name="issued_date" readonly>
+                                                    </div>
+    
+                                                    <div class="col-sm-6">
+                                                        <label>2nd Half Issued Date:</label>
+                                                        <input type="date" class="form-control" id="txtSecondHalfIssuedDateId" name="second_half_issued_date">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>1st Half Due Date:</label>
+                                                        <input type="date" class="form-control ho txFirstHalftDueDateId due_date" id="txFirstHalftDueDateId" name="due_date" readonly>
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-6">
+                                                        <label>2nd Half Due Date:</label>
+                                                        <input type="date" class="form-control ho txtSecondHalfDueDateId second_half_due_date" id="txtSecondHalfDueDateId" name="second_half_due_date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label class="">1st Half Prepared by:</label>
+                                                        {{-- <input type="text" class="form-control" id="selFirstHalfPreparedBy" name="prepared_by" readonly> --}}
+                                                        <select class="form-control selJsoxUsers select2bs4 ho prepared_by selFirstHalfPreparedBy"  name="prepared_by[]" id="selFirstHalfPreparedBy" multiple></select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>2nd Half Prepared by:</label>
+                                                        {{-- <input type="text" class="form-control" id="selSecondHalfPreparedBy" readonly> --}}
+                                                        <select class="form-control selJsoxUserss select2bs4 ho second_half_prepared_by selSecondHalfPreparedBy"  name="second_half_prepared_by[]" id="selSecondHalfPreparedBy" multiple required></select>
+                                                    </div>
+    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label class="">1st Half Approved by:</label>
+                                                        {{-- <input type="text" class="form-control" id="selFirstHalfApprovedBy" name="approved_by" readonly> --}}
+                                                        <select class="form-control selJsoxUserss select2bs4 ho" name="approved_by[]" id="selFirstHalfApprovedBy" multiple></select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>2nd Half Approved by:</label>
+                                                        {{-- <input type="text" class="form-control" id="selSecondHalfApprovedBy" readonly> --}}
+                                                        <select class="form-control selJsoxUsers select2bs4 ho second_half_approved_by selSecondHalfApprovedBy" name="second_half_approved_by[]" id="selSecondHalfApprovedBy" multiple required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- END TEST -->
+                                        
 
                                         <div class="form-group">
                                             <div class="row">
@@ -288,7 +406,7 @@
                                         </div>
                                         <hr>
                                         <!-- START DESIGN AND IMPLEMENTATION OF CONTROLS -->
-                                        <div class="card" id="btnDesignImplementationControls">
+                                        <div class="card d-none" id="btnDesignImplementationControls">
                                             <div id="accordion">
                                                 <button type="button" class="btn btn-dark w-100" data-toggle="collapse"  data-target="#designImplementationControls" aria-expanded="false" aria-controls="designImplementationControls"><i class=""></i>
                                                     &nbsp;&nbsp;<strong>Design and Implementation of Controls</strong>
@@ -353,7 +471,7 @@
                                                             <div class="row">
                                                                 <div class="col-sm-6">
                                                                     <label>CAPA Person In-Charge(s):</label>
-                                                                    <select class="form-control selJsoxUser select2bs4" name="dic_capa_in_charge_0" id="dicCapaInCharge_0"></select>
+                                                                    <select class="form-control selJsoxUsers select2bs4" name="dic_capa_in_charge_0[]" id="dicCapaInCharge_0" multiple></select>
                                                                 </div>
 
                                                                 <div class="col-sm-6">
@@ -369,7 +487,7 @@
                                         <!-- END DESIGN AND IMPLEMENTATION OF CONTROLS -->
 
                                         <!-- START OPERATING EFFECTIVENESS OF CONTROLS -->
-                                        <div class="card" id="btnOperatingEffectivenessControls" >
+                                        <div class="card d-none" id="btnOperatingEffectivenessControls" >
                                             <div id="accordion">
                                                 <button type="button" class="btn btn-dark w-100" data-toggle="collapse" data-target="#operatingEffectivenessControls" aria-expanded="false" aria-controls="operatingEffectivenessControls"><i class=""></i>
                                                     &nbsp;&nbsp;<strong>Operating Effectiveness of Controls  </strong>
@@ -433,7 +551,7 @@
                                                             <div class="row">
                                                                 <div class="col-sm-6">
                                                                     <label>CAPA Person In-Charge(s):</label>
-                                                                    <select class="form-control selJsoxUser select2bs4" name="oec_capa_in_charge_0" id="oecCapaInCharge_0"></select>
+                                                                    <select class="form-control selJsoxUsers select2bs4" name="oec_capa_in_charge_0[]" id="oecCapaInCharge_0" multiple></select>
                                                                 </div>
 
                                                                 <div class="col-sm-6">
@@ -451,21 +569,48 @@
                                         <!-- START ROLL FORWARD ASSESSMENT -->
                                         <div class="card d-none" id="btnRollForwardAssessment">
                                             <div id="accordion">
-                                                <button type="button" class="btn btn-dark w-100 d-none" data-toggle="collapse"  data-target="#rollForwardAssessment" aria-expanded="false" aria-controls="rollForwardAssessment"><i class=""></i>
+                                                <button type="button" class="btn btn-dark w-100" data-toggle="collapse"  data-target="#rollForwardAssessment" aria-expanded="false" aria-controls="rollForwardAssessment"><i class=""></i>
                                                     &nbsp;&nbsp;<strong>Roll Forward Assessment </strong>
                                                 </button>
                                                 <div class="collapse" id="rollForwardAssessment" data-parent="#accordion">
                                                     <div class="card-body" id="cardRfaStatementOfFindings">
                                                         <input type="hidden" name="rfa_statement_of_findings_counter" id="rfaStatementFindingsCounter" value="0" readonly>
+                                                        {{-- <div class="" id="secondHalfRollForward">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <label>2nd Half Issued Date:</label>
+                                                                        <input type="date" class="form-control" id="txtSecondHalfIssuedDateId" name="issued_date">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <label>2nd Half Due Date:</label>
+                                                                        <input type="date" class="form-control" id="txtSecondHalfDueDateId" name="due_date">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <label>2nd Half Prepared by:</label>
+                                                                        <select class="form-control selJsoxUser select2bs4"  name="second_half_prepared_by" id="selSecondHalfPreparedBy" required></select>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <label>2nd Half Approved by:</label>
+                                                                        <select class="form-control selJsoxUsers select2bs4" name="second_half_approved_by[]" id="selSecondHalfApproveBy" multiple required></select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> --}}
                                                         <div class="form-group">
+                                                            <span class="badge badge-secondary"># 1.</span>
                                                             <label class="col-form-label">Statement of Finding(s):</label>
                                                             <textarea type="text" class="form-control" rows="3" name="rfa_statement_of_findings_0" id="txtRfaStatementOfFindings_0"></textarea>
                                                         </div>
-                                                        <input type="file" class="" id="fileRfaStatementOfFindingsAttachment_0" name="rfa_statement_of_findings_0[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
-                                                        <input type="text" class="d-none" id="txtRfaStatementOfFindingsAttachment_0" name="rfa_statement_of_findings_0" readonly><br>
-
+                                                        <input type="file" class="" id="fileRfaStatementOfFindingsAttachment_0" name="rfa_statement_of_findings_attachment_0[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                        <input type="text" class="d-none" id="txtRfaStatementOfFindingsAttachment_0" name="rfa_statement_of_findings_attachment_0" readonly><br>
                                                         <input type="checkbox" class="form-check-input ml-1 d-none checked" name="rfa_statement_of_findings_checkbox_0" id="chckRfaStatementOfFindings_0">
-                                                        <label class="d-none ml-4" id="txtRfacStatementOfFindingsReuploadFile_0">Re-upload File</label>
+                                                        <label class="d-none ml-4" id="txtRfaStatementOfFindingsReuploadFile_0">Re-upload File</label>
                                                         <hr>
                                                         <div class="card" id="cardRfaCapaAnalysis">
                                                             <div class="card-header">
@@ -501,7 +646,7 @@
                                                                     <label>Preventive Action:</label>
                                                                     <textarea type="text" class="form-control" rows="3" name="rfa_preventive_action_0" id="txtRfaPrentiveAction_0" autocomplete= "off"></textarea>
                                                                 </div>
-                                                                <input type="file" class="" id="fileRfaPreventiveActionAttachment_0" name="preventive_action_attachment_0[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
+                                                                <input type="file" class="" id="fileRfaPreventiveActionAttachment_0" name="rfa_preventive_action_attachment_0[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>
                                                                 <input type="text" class="d-none" id="txtRfaPreventiveActionAttachment_0" name="rfa_preventive_action_attachment_0" readonly><br>
 
                                                                 <input type="checkbox" class="form-check-input ml-1 d-none checked" name="rfa_preventive_action_checkbox_0" id="chckRfaPreventiveAction_0">
@@ -513,11 +658,11 @@
                                                             <div class="row">
                                                                 <div class="col-sm-6">
                                                                     <label>CAPA Person In-Charge(s):</label>
-                                                                    <select class="form-control selJsoxUser select2bs4" name="rfa_capa_in_charge_0" id="rfaCapaInCharge_0"></select>
+                                                                    <select class="form-control selJsoxUsers select2bs4" name="rfa_capa_in_charge_0[]" id="rfaCapaInCharge_0" multiple></select>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <label>Commitment Date:</label>
-                                                                    <input type="date" class="form-control" id="txtRfadCommitmentDate_0" name="rfa_commitment_date_0">
+                                                                    <input type="date" class="form-control" id="txtRfaCommitmentDate_0" name="rfa_commitment_date_0">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -541,6 +686,86 @@
             </div>
         </div>
     </div><!-- EDIT MODAL END -->
+
+    <!-- CAPA RESULT MODAL START -->
+    <div class="modal fade" id="modalCapaResult">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fab fa-stack-overflow"></i> CAPA RESULT</h4>
+                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formCapaResult" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" class="form-control" name="capa_result_id" id="txtCapaResultId"> 
+
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Fiscal Year:</strong></span>
+                                    </div>
+                                    <select class="form-control selFiscalYear select2bs4" name="fiscal_year" id="selFiscalYear" required>
+                                        <!-- Code generated -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Audit Period:</strong></span>
+                                    </div>
+                                    <select class="form-control select2bs4" name="audit_period" id="selAuditPeriod" required>
+                                        <option selected disabled value="">--Select--</option>
+                                        <option value="First Half">First Half</option>
+                                        <option value="Second Half">Second Half</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Dept/Sect:</strong></span>
+                                    </div>
+                                    <select class="form-control selectDepartmentSection select2bs4" name="dept_sect[]" id="selDeptSect" multiple required>
+                                        <!-- Code generated -->
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend w-50">
+                                        <span class="input-group-text w-100"><strong>Upload By:</strong></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="upload_by" id="txtUploadBy" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group col-sm-12 flex-column d-flex"> 
+                                <input type="file" class="" id="fileCapaResult" name="capa_result[]" accept="application/pdf" multiple> 
+                                <input type="text" class="d-none" id="txtCapaResult" name="capa_result[]" readonly>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" class="d-none" name="check_box" id="checkBox">
+                                <label class="d-none" id="reUpload">Do you wish to re-upload?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnCapaResult" class="btn btn-dark"><i id="iBtnCapaResultIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- CAPA RESULT MODAL END -->
 @endsection
 
 @section('js_content')
@@ -554,12 +779,19 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         });
+
         LoadJsoxUserList($('.selJsoxUser'));
-        // ============================== VIEW PLC CAPA DATATABLES  START ==============================
+        LoadUserListProcessOwner($('.selJsoxUsers'));
+        LoadUserListProcessOwners($('.selJsoxUserss'));
+        GetFiscalYear($('.selFiscalYear '));
+        LoadRapidXDepartmentList($('.selectDepartmentSection'));
+
+        // ============================== VIEW PLC CAPA DATATABLES START ==============================
         dataTablePlcCapa = $("#plcCapaTable").DataTable({
             "processing" : false,
             "serverSide" : true,
             "responsive": true,
+            "order": [[ 1, "asc" ]],
             // "scrollX": true,
             // "scrollX": "100%",
             "language": {
@@ -586,8 +818,38 @@
                     { className: "align-middle", targets: [0] },
                 ],
         });
-
         //VIEW PLC CAPA DATATABLES END
+
+        // ============================== VIEW CAPA RESULT DATATABLES START ==============================
+        dataTablePlcCapaResult = $("#capaResultTable").DataTable({
+        "processing" : false,
+        "serverSide" : true,
+        "responsive": true,
+        "order": [[ 1, "asc" ]],
+        // "scrollX": true,
+        // "scrollX": "100%",
+        "language": {
+            "info": "Showing _START_ to _END_ of _TOTAL_ records",
+            "lengthMenu":     "Show _MENU_ records",
+        },
+        "ajax" : {
+            url: "view_plc_capa_result",
+        },
+        "columns":[
+            { "data" : "fiscal_year"},
+            { "data" : "audit_period"},
+            { "data" : "dept_sect"},
+            { "data" : "capa"},
+            { "data" : "uploaded_by"},
+            { "data" : "action", orderable:false, searchable:false },
+        ],
+        "columnDefs": [
+                // { className: "align-top", targets: [2, 3, 4, 5, 7, 9, 10, 12, 13, 15] },
+                { className: "align-middle", targets: [5] },
+            ],
+        });
+        //VIEW CAPA RESULT DATATABLES END
+
         $("#editPlcCapaForm").submit(function(event){
             event.preventDefault();
             EditPlcCapa();
@@ -677,7 +939,7 @@
                 html +='        <div class="row">';
                 html +='            <div class="col-sm-6">';
                 html +='                <label>CAPA Person In-Charge(s):</label>';
-                html +='                <select class="form-control selJsoxUser select2bs4" name="dic_capa_in_charge_'+dicStatementOfFindingsCounter+'" id="dicCapaInCharge_'+dicStatementOfFindingsCounter+'"></select>';
+                html +='                <select class="form-control selJsoxUsers select2bs4" name="dic_capa_in_charge_'+dicStatementOfFindingsCounter+'[]" id="dicCapaInCharge_'+dicStatementOfFindingsCounter+'" multiple></select>';
                 html +='            </div>';
 
                 html +='            <div class="col-sm-6">';
@@ -696,7 +958,7 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
-            LoadJsoxUserList($('.selJsoxUser'));
+            LoadUserListProcessOwner($('.selJsoxUsers'));
         });
 
         // =============================================== REMOVE ROW DIC ASSESSMENT ===============================================
@@ -780,7 +1042,7 @@
                 html +='        <div class="row">';
                 html +='            <div class="col-sm-6">';
                 html +='                <label>CAPA Person In-Charge(s):</label>';
-                html +='                <select class="form-control selJsoxUser select2bs4" name="oec_capa_in_charge_'+oecStatementOfFindingsCounter+'" id="oecCapaInCharge_'+oecStatementOfFindingsCounter+'"></select>';
+                html +='                <select class="form-control selJsoxUsers select2bs4" name="oec_capa_in_charge_'+oecStatementOfFindingsCounter+'[]" id="oecCapaInCharge_'+oecStatementOfFindingsCounter+'" multiple></select>';
                 html +='            </div>';
                 html +='            <div class="col-sm-6">';
                 html +='                <label>Commitment Date:</label>';
@@ -798,7 +1060,7 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
-            LoadJsoxUserList($('.selJsoxUser'));
+            LoadUserListProcessOwner($('.selJsoxUsers'));
         });
 
         // =============================================== REMOVE OEC DIC ASSESSMENT ===============================================
@@ -829,13 +1091,13 @@
                 html +='<div id="row_'+rfaStatementOfFindingsCounter+'">';
                 html +='    <span class="badge badge-secondary rfaStatementOfFindingsCount"> # '+ rfaStatementOfFindingsCount +'.</span>';
                 html +='    <label class="col-form-label">Statement of Finding(s):</label>';
-                html +='    <textarea type="text" class="form-control" rows="3" name="rfa_statement_of_findings_'+rfaStatementOfFindingsCounter+'" id="txtRfaStatementOfFindings_'+rfaStatementOfFindingsCounter+'"></textarea>';
+                html +='    <textarea type="text" class="form-control mb-2" rows="3" name="rfa_statement_of_findings_'+rfaStatementOfFindingsCounter+'" id="txtRfaStatementOfFindings_'+rfaStatementOfFindingsCounter+'"></textarea>';
+                html +='    <input type="file" class="test" id="fileRfaStatementOfFindingsAttachment_'+rfaStatementOfFindingsCounter+'" name="rfa_statement_of_findings_attachment_'+rfaStatementOfFindingsCounter+'[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>';
+                html +='    <input type="text" class="d-none" id="txtRfacStatementOfFindingsAttachment_'+rfaStatementOfFindingsCounter+'" name="rfa_statement_of_findings_attachment_'+rfaStatementOfFindingsCounter+'" readonly><br>';
                 html +='    <hr>';
-                html +='            <input type="file" class="test" id="fileRfaStatementOfFindingsAttachment_'+rfaStatementOfFindingsCounter+'" name="rfa_statement_of_findings_attachment_'+rfaStatementOfFindingsCounter+'[]" accept="image/jpeg , image/jpg, image/gif, image/png" multiple>';
-                html +='            <input type="text" class="d-none" id="txtRfacStatementOfFindingsAttachment_'+rfaStatementOfFindingsCounter+'" name="rfa_statement_of_findings_attachment_'+rfaStatementOfFindingsCounter+'" readonly><br>';
 
-                html +='            <input type="checkbox" class="form-check-input ml-1 d-none checked" name="rfa_statement_of_findindings_checkbox_'+rfaStatementOfFindingsCounter+'" id="chckRfaStatementOfFindings_'+rfaStatementOfFindingsCounter+'">';
-                html +='            <label class="d-none ml-4" id="txtRfaStatementOfFindingsReuploadFile_'+rfaStatementOfFindingsCounter+'">Re-upload File</label>';
+                html +='    <input type="checkbox" class="form-check-input ml-1 d-none checked" name="rfa_statement_of_findindings_checkbox_'+rfaStatementOfFindingsCounter+'" id="chckRfaStatementOfFindings_'+rfaStatementOfFindingsCounter+'">';
+                html +='    <label class="d-none ml-4" id="txtRfaStatementOfFindingsReuploadFile_'+rfaStatementOfFindingsCounter+'">Re-upload File</label>';
 
                 html +='    <div class="card" id="cardRfaCapaAnalysis">';
                 html +='        <div class="card-header">';
@@ -875,7 +1137,7 @@
                 html +='            <input type="text" class="d-none" id="txtRfaPreventiveActionAttachment_'+rfaStatementOfFindingsCounter+'" name="rfa_preventive_action_attachment_'+rfaStatementOfFindingsCounter+'" readonly><br>';
 
                 html +='            <input type="checkbox" class="form-check-input ml-1 d-none checked" name="rfa_preventive_action_checkbox_'+rfaStatementOfFindingsCounter+'" id="chckRfaPreventiveAction_'+rfaStatementOfFindingsCounter+'">';
-                html +='            <label class="d-none ml-4" id="txtPreventiveActionReuploadFile">Re-upload File</label>';
+                html +='            <label class="d-none ml-4" id="txtRfaPreventiveActionReuploadFile_'+rfaStatementOfFindingsCounter+'">Re-upload File</label>';
                 html +='        </div>';
                 html +='    </div>';
 
@@ -883,7 +1145,7 @@
                 html +='        <div class="row">';
                 html +='            <div class="col-sm-6">';
                 html +='                <label>CAPA Person In-Charge(s):</label>';
-                html +='                <select class="form-control selJsoxUser select2bs4" name="rfa_capa_in_charge_'+rfaStatementOfFindingsCounter+'" id="rfaCapaInCharge_'+rfaStatementOfFindingsCounter+'"></select>';
+                html +='                <select class="form-control selJsoxUsers select2bs4" name="rfa_capa_in_charge_'+rfaStatementOfFindingsCounter+'[]" id="rfaCapaInCharge_'+rfaStatementOfFindingsCounter+'" multiple></select>';
                 html +='            </div>';
                 html +='            <div class="col-sm-6">';
                 html +='                <label>Commitment Date:</label>';
@@ -901,7 +1163,7 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
-            LoadJsoxUserList($('.selJsoxUser'));
+            LoadUserListProcessOwner($('.selJsoxUsers'));
         });
 
         // =============================================== REMOVE RFA DIC ASSESSMENT ===============================================
@@ -953,7 +1215,95 @@
             $("#editPlcCapaForm")[0].reset();
         }
         $("#modalEditPlcCapa").on('hidden.bs.modal', function () {
+            $("#btnDesignImplementationControls").addClass('d-none');
+            $("#btnOperatingEffectivenessControls").addClass('d-none');
+            $("#btnRollForwardAssessment").addClass('d-none');
             resetValue();
+
+            // ========== START ADD ATTRIBUTE (editPlcCapaForm) ==========
+            $(".txtIssuedDateId").attr("id","txtIssuedDateId");
+            $(".issued_date").attr("name","issued_date");
+            $(".txtDueDateId").attr("id","txtDueDateId");
+            $(".due_date").attr("name","due_date");
+            $(".selPreparedBy").attr("id","selPreparedBy");
+            $(".prepared_by").attr("name","prepared_by[]");
+            $(".selApprovedBy").attr("id","selApprovedBy");
+            $(".approved_by").attr("name","approved_by[]");
+            $("#firstHalf").find('.hi').attr('required', true);
+
+            $(".txtFirstHalfIssuedDateId").attr("id","txtFirstHalfIssuedDateId");
+            $(".first_half_issued_date").attr("name","first_half_issued_date");
+            $(".txtFirstHalfDueDateId").attr("id","txtFirstHalfDueDateId");
+            $(".first_half_due_date").attr("name","first_half_due_date");
+            $(".selFirstHalfPreparedBy").attr("id","selFirstHalfPreparedBy");
+            $(".first_half_prepared_by").attr("name","first_half_prepared_by[]");
+            $(".selFirstHalfApprovedBy").attr("id","selFirstHalfApprovedBy");
+            $(".first_half_approved_by").attr("name","first_half_approved_by[]");
+
+            $(".txtSecondHalfIssuedDateId").attr("id","txtSecondHalfIssuedDateId");
+            $(".second_half_issued_date").attr("name","second_half_issued_date");
+            $(".txtSecondHalfDueDateId").attr("id","txtSecondHalfDueDateId");
+            $(".second_half_due_date").attr("name","second_half_due_date");
+            $(".selSecondHalfPreparedBy").attr("id","selSecondHalfPreparedBy");
+            $(".second_half_prepared_by").attr("name","second_half_prepared_by[]");
+            $(".selSecondHalfApprovedBy").attr("id","selSecondHalfApprovedBy");
+            $(".second_half_approved_by").attr("name","second_half_approved_by[]");
+            // ========== END ADD ATTRIBUTE (editPlcCapaForm) ==========
+
+            let dic = $('#dicStatementFindingsCounter').val();
+            let oec = $('#oecStatementFindingsCounter').val();
+            let rfa = $('#rfaStatementFindingsCounter').val();
+            for (let index = 0; index < dic.length; index++) {
+                $(`#dicCapaInCharge_${index}`).val('').trigger('change');
+            }
+
+            for (let ondex = 0; ondex < oec.length; ondex++) {
+                $(`#oecCapaInCharge_${ondex}`).val('').trigger('change');
+            }
+
+            for (let undex = 0; undex < rfa.length; undex++) {
+                $(`#rfaCapaInCharge_${undex}`).val('').trigger('change');
+            }
+        });
+
+        // ================================= AUTO ADD REQUESTOR BY USER =================================
+        $('#btnShowAddCapaResultModal').on('click', function(){
+            $.ajax({
+                url: "get_rapidx_user",
+                method: "get",
+                dataType: "json",
+                beforeSend: function(){    
+                },
+                success: function(response){
+                    let result = response['get_user'];
+                    $('#txtUploadBy').val(result[0].name);
+                },
+            });
+        });
+
+        $("#formCapaResult").submit(function(event){
+            event.preventDefault(); // to stop the form submission
+            CapaResult();
+        });
+
+        //============================== EDIT CAPA RESULT ==============================
+        $(document).on('click', '.actionEditCapaResult', function(){
+            let capaResultId = $(this).attr('capa_result-id'); 
+            $("#txtCapaResultId").val(capaResultId);
+            GetCapaResultByIdToEdit(capaResultId); 
+        });
+
+        $('#modalCapaResult').on('hide.bs.modal', function() {
+            $("#txtCapaResultId").val("");
+            $("#selFiscalYear").val("").trigger('change');
+            $("#selAuditPeriod").val("").trigger('change');
+            $("#selDeptSect").val("").trigger('change');
+            $("#checkBox").prop("checked",false);
+
+            $('#fileCapaResult').removeClass("d-none");
+            $('#txtCapaResult').addClass("d-none");
+            $('#checkBox').addClass("d-none");
+            $('#reUpload').addClass("d-none");
         });
 
     </script>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateViewLogsJsoxMatricesTable extends Migration
+class CreateDepartmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,11 @@ class CreateViewLogsJsoxMatricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('view_logs_jsox_matrices', function (Blueprint $table) {
+        Schema::create('Departments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('process_name')->nullable();
-            $table->string('control_no')->nullable();
-            $table->string('document')->nullable();
-            $table->string('frequency')->nullable();
-            $table->string('samples')->nullable();
-            $table->string('in_charge')->nullable();
+            $table->string('department')->nullable();
             $table->unsignedTinyInteger('status')->default(1)->comment = '1-active,2-inactive';
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
             $table->unsignedTinyInteger('logdel')->default(0)->comment = '0-show,1-hide';
-
             $table->timestamps();
         });
     }
@@ -37,6 +29,6 @@ class CreateViewLogsJsoxMatricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('view_logs_jsox_matrices');
+        Schema::dropIfExists('Departments');
     }
 }

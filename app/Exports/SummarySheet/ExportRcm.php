@@ -19,7 +19,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 
 
-class ExportRcm implements  FromView, WithTitle, WithEvents
+class ExportRcm implements  FromView, WithTitle, WithEvents, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -192,7 +192,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
 
 
 
-                    $event->sheet->getDelegate()->getRowDimension('4')->setRowHeight(100);
+                    // $event->sheet->getDelegate()->getRowDimension('4')->setRowHeight(100);
 
 
                     $event->sheet->getDelegate()->getStyle('B4:AI4')
@@ -571,7 +571,7 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                                 ->getStartColor()
                                 ->setARGB('c0c0c0');
 
-                                $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(120);
+                                // $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(120);
                             }
 
                             $event->sheet->setCellValue('Q'.$start_col, $rcm_details[$i]->rcm_info[$x]->internal_control);
@@ -595,8 +595,6 @@ class ExportRcm implements  FromView, WithTitle, WithEvents
                         $counter++;
                         // $start_col++;
                     }
-
-
 
                 },
             ];

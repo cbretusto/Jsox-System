@@ -2,6 +2,8 @@
 
 namespace App\Exports\Sheets;
 
+use App\Model\PLCModuleSA;
+
 // use App\FactorItemList;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -25,25 +27,37 @@ class firsthalf implements FromView, WithTitle, WithEvents
     use Exportable;
 
     protected $date;
-    protected $plc_module_sa_concerned_dept;
-    protected $plc_section;
-    // protected $range1;
+    protected $sa_ng_data;
+    protected $get_control_id;
+    protected $plc_category;
+    protected $year;
 
-    function __construct($date,$plc_module_sa_concerned_dept,$plc_section)
+
+    function __construct(
+        $date,
+        $sa_ng_data,
+        $get_control_id,
+        $plc_category,
+        $year
+    )
     {
         $this->date = $date;
-        $this->plc_module_sa_concerned_dept = $plc_module_sa_concerned_dept;
-        $this->plc_section = $plc_section;
+        $this->sa_ng_data = $sa_ng_data;
+        $this->get_control_id = $get_control_id;
+        $this->plc_category = $plc_category;
+        $this->year = $year;
+
     }
 
 
     public function view(): View {
-        return view('exports.first_half', ['date' => $this->date,'concerned_dept' =>$this->plc_module_sa_concerned_dept]);
+        return view('exports.first_half', ['date' => $this->date]);
     }
 
 
     public function title(): string
     {
+
         return '1stHalf';
     }
 
@@ -52,55 +66,67 @@ class firsthalf implements FromView, WithTitle, WithEvents
     public function registerEvents(): array
     {
 
+        $sa_ng_data = $this->sa_ng_data;
+        $get_control_id = $this->get_control_id;
+        $plc_category = $this->plc_category;
+        $year = $this->year;
 
-        $get_concerned_dept = $this->plc_module_sa_concerned_dept;
-        $get_plc_section = $this->plc_section;
-
-        // dd($get_concerned_dept);
-
-
-        $arial_font12 = array(
+        $arial_font_12 = array(
             'font' => array(
                 'name'      =>  'Arial',
                 'size'      =>  12,
-                // 'color'      =>  'red',
-                // 'italic'      =>  true
             )
         );
 
-        $arial_font10 = array(
-            'font' => array(
-                'name'      =>  'Arial',
-                'size'      =>  10,
-                // 'color'      =>  'red',
-                // 'italic'      =>  true
-            )
-        );
-
-        $arial_font12_bold = array(
+        $arial_font_12_red = array(
             'font' => array(
                 'name'      =>  'Arial',
                 'size'      =>  12,
-                // 'color'      =>  'red',
+                'color'      =>  ['argb' => 'EB2B02'],
+            )
+        );
+
+        $arial_font_12_bold = array(
+            'font' => array(
+                'name'      =>  'Arial',
+                'size'      =>  12,
                 'bold'      =>  true
             )
         );
 
-        $hcv_align = array(
+        $arial_font_14_bold = array(
+            'font' => array(
+                'name'      =>  'Arial',
+                'size'      =>  14,
+                'bold'      =>  true
+            )
+        );
+
+        $hv_center = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
             ]
         );
 
-        $hlv_align = array(
+        $hl_center = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
                 'vertical' => Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
             ]
         );
 
-        $hrv_align = array(
+        $hl_left = array(
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_TOP ,
+                'wrap' => TRUE
+            ]
+        );
+
+        $hr_center = array(
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
                 'vertical' => Alignment::VERTICAL_CENTER,
@@ -121,169 +147,227 @@ class firsthalf implements FromView, WithTitle, WithEvents
             ],
         ];
 
-
         return [
             AfterSheet::class => function(AfterSheet $event) use (
-                $arial_font12,
-                $hcv_align,
-                $hlv_align,
-                $hrv_align,
+                $arial_font_12,
+                $arial_font_12_red,
+                $arial_font_12_bold,
+                $arial_font_14_bold,
+                $hv_center,
+                $hl_center, 
+                $hl_left,
+                $hr_center,
                 $styleBorderBottomThin,
                 $styleBorderAll,
-                $arial_font10,
-                $arial_font12_bold,
-                $get_concerned_dept,
-                $get_plc_section
-                ){
+                $sa_ng_data,
+                $get_control_id,
+                $plc_category,
+                $year
+            ){
+                    $event->sheet->getColumnDimension('A')->setWidth(15);
+                    $event->sheet->getColumnDimension('B')->setWidth(15);
+                    $event->sheet->getColumnDimension('C')->setWidth(20);
+                    $event->sheet->getColumnDimension('D')->setWidth(20);
+                    $event->sheet->getColumnDimension('E')->setWidth(60);
+                    $event->sheet->getColumnDimension('F')->setWidth(80);
+                    $event->sheet->getColumnDimension('G')->setWidth(50);
+                    $event->sheet->getColumnDimension('H')->setWidth(50);
+                    $event->sheet->getColumnDimension('I')->setWidth(20);
+                    $event->sheet->getColumnDimension('J')->setWidth(30);
+
+                    $event->sheet->getDelegate()->getRowDimension('2')->setRowHeight(30);
 
 
+                    $event->sheet->setCellValue('A1', 'PMI FY'.$year);
+                    $event->sheet->setCellValue('B1', 'Details of Findings (1st Half)');
+                    $event->sheet->setCellValue('F1', 'Improvement Plan');
+                    $event->sheet->getDelegate()->mergeCells('F1:I1');
+
+                    $event->sheet->setCellValue('A2', 'Section');
+                    $event->sheet->setCellValue('B2', 'No. of Findings');
+                    $event->sheet->setCellValue('C2', 'Process Name');
+                    $event->sheet->setCellValue('D2', 'Internal Control No. Affected');
+                    $event->sheet->setCellValue('E2', 'Statement of Findings');
+                    $event->sheet->setCellValue('F2', 'Analysis');
+                    $event->sheet->setCellValue('G2', 'Corrective action');
+                    $event->sheet->setCellValue('H2', 'Preventive action');
+                    $event->sheet->setCellValue('I2', 'Commitment Date');
+                    $event->sheet->setCellValue('J2', 'In-Charge');
+
+                    $event->sheet->getDelegate()->getStyle('A1:J2')->applyFromArray($arial_font_12_bold);
+                    $event->sheet->getDelegate()->getStyle('A2:J2')->applyFromArray($hv_center);
+                    $event->sheet->getDelegate()->getStyle('F1:J1')->applyFromArray($hv_center);
+                    $event->sheet->getDelegate()->getStyle('A2:J2')->getAlignment()->setWrapText(true);
+
+                    $start_col = 3;
+                    $start_col_aff = 3;
+
+                    $oec_ng_data = array();
+                    $dic_ng_data = array();
+                    $oec_dic_ng_data = array();
+                    $capa_analysis_data = array();
+                    $corrective_data = array();
+                    $preventinve_data = array();
+
+                    for ($i=0; $i <count($sa_ng_data); $i++) { 
+                        $event->sheet->setCellValue('A'.$start_col,$sa_ng_data[$i]->concerned_dept);
+                        $event->sheet->setCellValue('B'.$start_col,'1');
+                        $event->sheet->getDelegate()->getStyle('B'.$start_col)->applyFromArray($hv_center);
+                        $event->sheet->getDelegate()->getStyle('A'.$start_col)->applyFromArray($hl_center);
+                        $event->sheet->getDelegate()->getStyle('A2'.':'.'J'.$start_col)->applyFromArray($styleBorderAll);
+
+                        for ($n=0; $n <count($sa_ng_data[$i]->plc_capa_details) ; $n++) { 
+                            for ($o=0; $o <count($sa_ng_data[$i]->plc_capa_details[$n]->capa_details); $o++) { 
+                                $capa_analysis = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->capa_analysis;
+                                $corrective_action = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->corrective_action;
+                                $preventive_action = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->preventive_action;
+                                $commitment_date = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->commitment_date;
+                                $in_charge = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->in_charge;
+                                $capa_analysis_data[] = $capa_analysis;
+                                $corrective_data[] = $corrective_action;
+                                $preventinve_data[] = $preventive_action;
+                                if($sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->counter >= 1){
+                                    $event->sheet->setCellValue('F'.$start_col,implode(PHP_EOL.PHP_EOL,$capa_analysis_data));
+                                    $event->sheet->setCellValue('G'.$start_col,implode(PHP_EOL.PHP_EOL,$corrective_data));
+                                    $event->sheet->setCellValue('H'.$start_col,implode(PHP_EOL.PHP_EOL,$preventinve_data));
+                                    $event->sheet->setCellValue('I'.$start_col,$commitment_date);
+                                    $event->sheet->setCellValue('J'.$start_col,$in_charge);
 
 
-                $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(35);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($hl_left);
+                                    $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hl_left);
+                                    $event->sheet->getDelegate()->getStyle('H'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($hl_left);
+                                    $event->sheet->getDelegate()->getStyle('I'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($hl_center);
+                                    $event->sheet->getDelegate()->getStyle('J'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($hl_left);
 
+                                }else{
+                                    $capa_analysis = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->capa_analysis;
+                                    $corrective_action = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->corrective_action;
+                                    $preventive_action = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->preventive_action;
+                                    $commitment_date = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->commitment_date;
+                                    $in_charge = $sa_ng_data[$i]->plc_capa_details[$n]->capa_details[$o]->in_charge;
 
-                $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($styleBorderAll);
-                $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($hcv_align);
+                                    $event->sheet->setCellValue('F'.$start_col,$capa_analysis);
+                                    $event->sheet->setCellValue('G'.$start_col,$corrective_action);
+                                    $event->sheet->setCellValue('H'.$start_col,$preventive_action);
+                                    $event->sheet->setCellValue('I'.$start_col,$commitment_date);
+                                    $event->sheet->setCellValue('J'.$start_col,$in_charge);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('F'.$start_col)->applyFromArray($hl_left);
+                                    $event->sheet->getDelegate()->getStyle('G'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('G'.$start_col)->applyFromArray($hl_left);
+                                    $event->sheet->getDelegate()->getStyle('H'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('H'.$start_col)->applyFromArray($hl_left);
+                                    $event->sheet->getDelegate()->getStyle('I'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('I'.$start_col)->applyFromArray($hl_center);
+                                    $event->sheet->getDelegate()->getStyle('J'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('J'.$start_col)->applyFromArray($hl_left);
 
-                $event->sheet->getColumnDimension('A')->setWidth(20);
-                $event->sheet->getColumnDimension('B')->setWidth(11);
-                $event->sheet->getColumnDimension('C')->setWidth(40);
-                $event->sheet->getColumnDimension('D')->setWidth(20);
-                $event->sheet->getColumnDimension('E')->setWidth(50);
-
-                $event->sheet->setCellValue('A2','Section');
-                $event->sheet->setCellValue('B2','No. of Findings');
-                $event->sheet->setCellValue('C2','Process Name');
-                $event->sheet->setCellValue('D2','Internal Control No. Affected');
-                $event->sheet->setCellValue('E2','Statement of Findings');
-                $event->sheet->getDelegate()->getStyle('A2:E2')->applyFromArray($arial_font12_bold);
-
-                $event->sheet->getDelegate()->getStyle('B2')->getAlignment()->setWrapText(true);
-                $event->sheet->getDelegate()->getStyle('D2')->getAlignment()->setWrapText(true);
-
-
-                $start_col = 3;
-
-                $push = array();
-
-                for($i = 0; $i < count($get_concerned_dept); $i++){
-
-                    $concerned_dept = $get_concerned_dept[$i]->concerned_dept;
-                    $affected_internal_control = $get_concerned_dept[$i]->control_no;
-
-                    // $key ="";
-                    // $event->sheet->setCellValue('B'.$start_col,$test);
-
-
-
-                    if($i != 0){
-                        $counter = $i - 1;
-
-                        if($get_concerned_dept[$counter]->concerned_dept == $concerned_dept ){
-                            // if(in_array($concerned_dept,$get_plc_section)){
-                                // $key = array_search($concerned_dept, $get_plc_section);
-                            // }
-                            $sa_loob_ng_if = array_push($push,$start_col);
-                            $event->sheet->getDelegate()->mergeCells('A'.$push[0].':A'.end($push));
-                            $event->sheet->getDelegate()->mergeCells('B'.$push[0].':B'.end($push));
-                            $event->sheet->getDelegate()->mergeCells('C'.$push[0].':C'.end($push));
-                            // $event->sheet->setCellValue('B'.$start_col,"=COUNTA(D".$push[0].":D".end($push));
-
-                            // $ci = count($counter);
-
+                                }
+                            }
                         }
-                        else{
-                            $push = array();
-                            $sa_loob_ng_if = array_push($push,$start_col);
+                        
+                      
+                        
+                        for ($c=0; $c <count($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding); $c++){ 
+
+                            for ($d=0; $d <count($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding) ; $d++) { 
+                                if($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == 'NG' && ($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_status == 'G'  || $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$d]->dic_status == NULL)){
+
+                                    if($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->counter >= 1){
+                                        $affected_oec_data = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_assessment_details_findings;
+                                        $oec_ng_data[] = $affected_oec_data;
+                                        $event->sheet->setCellValue('E'.$start_col,implode(PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL,$oec_ng_data));
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hl_left);
+
+                                    }else{
+                                        $affected_oec_data = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_assessment_details_findings;
+                                        $event->sheet->setCellValue('E'.$start_col,$affected_oec_data);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hl_left);
+
+                                    }   
+                                    
+                                    
+                                }
+                                else if($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_status == 'NG' && ($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == 'G' || $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == NULL)){
+                                    if($sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->counter >= 1){
+                                        $affected_dic_data = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_assessment_details_findings;
+                                        $dic_ng_data[] = $affected_dic_data;
+                                        $event->sheet->setCellValue('E'.$start_col,implode(PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL,$dic_ng_data));
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hl_left);
+
+        
+                                    }else{
+                                        $affected_dic_data = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_assessment_details_findings;
+                                        $event->sheet->setCellValue('E'.$start_col,$affected_dic_data);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hl_left);
+
+                                    }
+                                }else if($sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_status == 'NG' && 
+                                        $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_status == 'NG'){
+                                    $oec_dic_ng_data[] = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_assessment_details_findings;
+                                    $oec_dic_ng_data[] = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_assessment_details_findings;
+                                    $event->sheet->setCellValue('E'.$start_col,implode(PHP_EOL,$oec_dic_ng_data));
+                                    $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
+                                    $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hl_left);
+
+
+                                }
+                                $dic_attachment = $sa_ng_data[$i]->plc_sa_dic_assessment_details_finding[$d]->dic_attachment;
+
+                                if($dic_attachment != null ){
+
+                                    $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                    $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$dic_attachment)));
+                                    $drawing->setWidth(250);
+                                    $drawing->setOffsetY(120);
+                                    $drawing->setOffsetX(60);
+                                    $drawing->setCoordinates('E'.$start_col);
+                                    $drawing->setWorksheet($event->sheet->getDelegate());
+                                }
+                                    
+                            }
+                            $oec_attachment = $sa_ng_data[$i]->plc_sa_oec_assessment_details_finding[$c]->oec_attachment;
+
+                            if($oec_attachment != null ){
+
+                                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                                $drawing->setPath(public_path(("/storage/plc_sa_attachment/".$oec_attachment)));
+                                $drawing->setWidth(250);
+                                $drawing->setOffsetY(120);
+                                $drawing->setOffsetX(60);
+                                $drawing->setCoordinates('E'.$start_col);
+                                $drawing->setWorksheet($event->sheet->getDelegate());
+                            }
+             
                         }
-                    }else{
-                        // $push = array();
-                        $sa_loob_ng_if = array_push($push,$start_col);
-                        // $key = array_search($concerned_dept, $get_plc_section);
 
-                        // $event->sheet->setCellValue('B'.$start_col,"=COUNTIF(D".$push[0].":D".end($push),"<>*txt*");
-
+                        $start_col++;
 
                     }
 
-                    // // $countt = count($push);
+                    for ($u=0; $u <count($get_control_id) ; $u++) { 
+                        $event->sheet->setCellValue('D'.$start_col_aff,$get_control_id[$u]->control_id);
+                        $event->sheet->getDelegate()->getStyle('D'.$start_col_aff)->applyFromArray($hl_center);
+                        for ($x=0; $x <count($plc_category) ; $x++) { 
+                            if($get_control_id[$u]->category == $plc_category[$x]->id){
+                                $event->sheet->setCellValue('C'.$start_col_aff,$plc_category[$x]->plc_category);
+                                $event->sheet->getDelegate()->getStyle('C'.$start_col_aff)->applyFromArray($hl_center);
+                                $event->sheet->getDelegate()->getStyle('C'.$start_col_aff)->getAlignment()->setWrapText(true);
 
-
-
-
-                    // // $test = "=COUNTA(D".$push[0].":D".end($push).")";
-
-
-                    $test = '=COUNTIF(D'.$push[0].':D'.end($push).',"<>")';
-                    $event->sheet->setCellValue('B'.$push[0],strval($test));
-
-
-
-
-                    $event->sheet->setCellValue('A'.$start_col,$concerned_dept);
-                    $event->sheet->getDelegate()->getStyle('A'.$start_col)->applyFromArray($arial_font10);
-                    $event->sheet->getDelegate()->getStyle('A'.$start_col)->applyFromArray($hlv_align);
-                    // $event->sheet->getDelegate()->getStyle('A'.$start_col)->getAlignment()->setWrapText(true);
-
-
-                    $event->sheet->setCellValue('C'.$start_col,$get_concerned_dept[$i]->plc_categories->plc_category);
-                    $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($arial_font10);
-                    $event->sheet->getDelegate()->getStyle('C'.$start_col)->applyFromArray($hlv_align);
-
-                    $event->sheet->setCellValue('D'.$start_col,$affected_internal_control);
-                    $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($arial_font10);
-                    $event->sheet->getDelegate()->getStyle('D'.$start_col)->applyFromArray($hcv_align);
-
-                    $process_name = $get_concerned_dept[$i]->plc_categories->plc_category;
-                    $strlen_process = strlen($process_name);
-
-
-                    if($strlen_process > 40){
-                        $event->sheet->getDelegate()->getRowDimension($start_col)->setRowHeight(40);
-                        $event->sheet->getDelegate()->getStyle('C'.$start_col)->getAlignment()->setWrapText(true);
-
-                    }
-
-                    $dicCounter = count($get_concerned_dept[$i]->plc_sa_dic_assessment_details_finding);
-
-                    for($y=0; $y < count($get_concerned_dept[$i]->plc_sa_dic_assessment_details_finding); $y++){
-                        $event->sheet->getDelegate()->getStyle('A'.$start_col.':E'.$start_col)->applyFromArray($styleBorderAll);
-
-                        $dic = $get_concerned_dept[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_assessment_details_findings;
-                        $event->sheet->setCellValue('E'.$start_col, $get_concerned_dept[$i]->plc_sa_dic_assessment_details_finding[$y]->dic_assessment_details_findings);
-                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($hlv_align);
-                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->applyFromArray($arial_font10);
-                        $event->sheet->getDelegate()->getStyle('E'.$start_col)->getAlignment()->setWrapText(true);
-
-                        // $get_plc_section;
-
-
-                        // $exploded_tse = explode(" ",$get_concerned_dept[$i]->control_no);
-
-                        // $countt = (count($exploded_tse));
-
-                        // $event->sheet->setCellValue('B'.$start_col, $countt);
-
-                        if($dicCounter > 0){
-                            $dicCounter--;
-                            $start_col++;
-                            // $tempoCounter++;
+                            }
                         }
-
+                        $start_col_aff++;
                     }
-
-                    $event->sheet->getDelegate()->getStyle('A'.$start_col.':E'.$start_col)->applyFromArray($styleBorderAll);
-
-
-
-                    // $start_col++;
-                }
-
-
-
-
-
-
             },
         ];
     }

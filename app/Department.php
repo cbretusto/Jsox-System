@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ViewLogsRevisionHistory extends Model
+class Department extends Model
 {
-    protected $table = 'view_logs_revision_histories';
+    protected $table = 'departments';
     protected $connection = 'mysql';
+
 }

@@ -313,7 +313,7 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
                         if($rev_history[$i]->revision_date == null){
                         $event->sheet->setCellValue('A'.$start_col,$rev_history[$i]->no_revision);
                         // $event->sheet->getDelegate()->mergeCells('A'.$start_col.':C'.$start_col);
-                        $event->sheet->getDelegate()->mergeCells('C'.$start_col.':D'.$start_col);
+                        // $event->sheet->getDelegate()->mergeCells('C'.$start_col.':D'.$start_col);
                         $event->sheet->getDelegate()->getStyle('A'.$start_col)->getAlignment()->setWrapText(true);
                         $event->sheet->getDelegate()->getStyle('A'.$start_col)->applyFromArray($hlv_top);
 
@@ -408,8 +408,8 @@ class ExportRevisionHistory implements  FromView, WithTitle, WithEvents, ShouldA
 
                                 if($details_for_revision_counter > 1){
                                     $end_col = $start_col + $details_for_revision_counter -1;
-                                    $event->sheet->getDelegate()->mergeCells('A'.$start_col.':A'.$end_col);
-                                    $event->sheet->getDelegate()->mergeCells('B'.$start_col.':B'.$end_col);
+                                    // $event->sheet->getDelegate()->mergeCells('A'.$start_col.':A'.$end_col);
+                                    // $event->sheet->getDelegate()->mergeCells('B'.$start_col.':B'.$end_col);
                                     // $event->sheet->getDelegate()->mergeCells('C'.$start_col.':D'.$end_col);
                                     $start_col++;
                                     $details_for_revision_counter--;

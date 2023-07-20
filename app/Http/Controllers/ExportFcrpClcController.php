@@ -85,6 +85,6 @@ class ExportFcrpClcController extends Controller
             $year_end,
             $audit_period,
             $year
-        ), 'PMI FCRP-CLC - '.'FY'.$year.' '. $audit_period_text.'.xlsx');
+        ), 'PMI FCRP '.'(FY'.$year.')'.'.xlsx');
     }
 }

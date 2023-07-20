@@ -11,11 +11,16 @@ use DataTables;
 
 //MODEL
 Use App\Matrix;
+use App\UserManagement;
 Use App\RapidXUser;
 
 class MatrixController extends Controller
 {
     public function view_matrix(){
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        $get_user_level = UserManagement::where('rapidx_name', $rapidx_name)->get();
+
         $matrix = Matrix::where('logdel',0)->get();
         return DataTables::of($matrix)
 
@@ -30,14 +35,18 @@ class MatrixController extends Controller
                 $result .= '</center>';
                 return $result;
         })
-        ->addColumn('action', function($matrix){
+        ->addColumn('action', function($matrix) use($get_user_level){
             $result = "<center>";
-            if($matrix->status == 1){
-                $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditMatrix" style="width:105px;margin:2%;" matrix-id="' . $matrix->id . '" data-toggle="modal" data-target="#modalEditMatrix" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
-                $result .= '<br>';
-                $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangeMatrixStat" style="width:105px;margin:2%;" matrix-id="' . $matrix->id . '" status="2" data-toggle="modal" data-target="#modalChangeMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-ban"></i> Deactivate</button>&nbsp;';
+            if($get_user_level[0]->user_level_id == 3){
+                if($matrix->status == 1){
+                    $result .= '<button type="button" class="btn btn-primary btn-sm text-center actionEditMatrix" style="width:105px;margin:2%;" matrix-id="' . $matrix->id . '" data-toggle="modal" data-target="#modalEditMatrix" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                    $result .= '<br>';
+                    $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangeMatrixStat" style="width:105px;margin:2%;" matrix-id="' . $matrix->id . '" status="2" data-toggle="modal" data-target="#modalChangeMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-ban"></i> Deactivate</button>&nbsp;';
+                }else{
+                    $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangeMatrixStat" style="width:105px;margin:2%;" matrix-id="' . $matrix->id . '" status="1" data-toggle="modal" data-target="#modalChangeMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-check"></i> Active</button>&nbsp;';
+                }
             }else{
-                $result .= '<button type="button" class="btn btn-success btn-sm text-center actionChangeMatrixStat" style="width:105px;margin:2%;" matrix-id="' . $matrix->id . '" status="1" data-toggle="modal" data-target="#modalChangeMatrixStat" data-keyboard="false"><i class="nav-icon fas fa-check"></i> Active</button>&nbsp;';
+                $result .= '<button class="m-r-15 text-muted btn" data-toggle="modal" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
             }
             $result .= '</center>';
             return $result;   

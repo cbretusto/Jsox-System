@@ -38,6 +38,10 @@
                                     </li>
 
                                     <li class="nav-item">
+                                        <a class="nav-link" id="tabDepartment" data-toggle="tab" href="#department" role="tab" aria-controls="department" aria-selected="false">Department</a>
+                                    </li>
+
+                                    <li class="nav-item">
                                         <a class="nav-link" id="tabFiscalYear" data-toggle="tab" href="#fiscalYear" role="tab" aria-controls="fiscalYear" aria-selected="false">Fiscal Year</a>
                                     </li>
                                 </ul>
@@ -48,7 +52,7 @@
                                             <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddUser" id="btnShowAddUserModal"><i class="fa fa-user-plus"></i> Add User </button>
                                         </div> <br><br>
                                         <div class="table-responsive">
-                                            <table id="tblUsers" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
+                                            <table id="tblUsers" class="table table-sm table-bordered table-striped table-hover" style="width: 100%; overflow: scroll;">
                                                 <thead>
                                                     <tr style="text-align:center">
                                                     <th>Name</th>
@@ -64,12 +68,29 @@
                                         </div>
                                     </div>
 
+                                    <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="tabDepartment">
+                                        <div style="float: right;">                   
+                                            <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalDepartment" id="btnShowAddDepartment"><i class="fa fa-plus"></i>  Add Department </button>
+                                        </div> <br><br>
+                                        <div class="table responsive">
+                                            <table id="tblDepartment" class="table table-sm table-bordered table-striped table-hover" style="width: 100%; white-space: pre-wrap;">
+                                                <thead>
+                                                    <tr style="text-align:center">
+                                                        <th>Department</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>            
+                                            </table>
+                                        </div>
+                                    </div>
+
                                     <div class="tab-pane fade" id="fiscalYear" role="tabpanel" aria-labelledby="tabFiscalYear">
                                         <div style="float: right;">                   
                                             <button class="btn btn-dark mt-2" data-toggle="modal" data-target="#modalAddFiscalYear" id="btnShowAddFiscalYear"><i class="fa fa-plus"></i>  Add Fiscal Year </button>
                                         </div> <br><br>
                                         <div class="table responsive">
-                                            <table id="tblFiscalYear" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
+                                            <table id="tblFiscalYear" class="table table-sm table-bordered table-striped table-hover" style="width: 100%; white-space: pre-wrap;">
                                                 <thead>
                                                     <tr style="text-align:center">
                                                         <th>Fiscal Year</th>
@@ -111,7 +132,8 @@
 
                                 <div class="form-group">
                                     <label>Department</label>
-                                    <select class="form-control sel-rapidx-department-list select2bs4" id="selectAddRapidxDepartment" name="rapidx_department"></select>
+                                    <select class="form-control sel-department select2bs4" id="selectAddRapidxDepartment" name="rapidx_department">
+                                    </select>
                                 </div>                             
 
                                 <div class="form-group">
@@ -155,7 +177,8 @@
 
                                 <div class="form-group">
                                     <label>Department</label>
-                                    <select class="form-control sel-rapidx-department-list select2bs4" id="selectEditRapidxDepartment" name="rapidx_department"></select>
+                                    <select class="form-control sel-department select2bs4" id="selectEditRapidxDepartment" name="rapidx_department">
+                                    </select>
                                 </div>  
 
                                 <div class="form-group">
@@ -298,6 +321,69 @@
             </div>
         </div>
     </div> <!-- CHANGE FISCAL YEAR STAT MODAL END -->
+    
+    <!-- ADD / EDIT DEPARTMENT MODAL START -->
+    <div class="modal fade" id="modalDepartment">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title"><i class="fas fa-calendar-alt"></i>&nbsp;&nbsp; Department</h4>
+                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formDepartment">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="hidden" class="form-control" name="department_id" id="txtDepartmentId">
+                                <div class="form-group col-sm-12 flex-column d-flex"> 
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><strong>Department: </strong></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="txtDepartment" name="department" autocomplete="off">
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnDepartment" class="btn btn-dark"><i id="iBtnDepartmentIcon" class="fa fa-check"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- ADD / EDIT DEPARTMENT MODAL END -->
+
+    <!-- CHANGE DEPARTMENT STAT MODAL START -->
+    <div class="modal fade" id="modalChangeDepartmentStat">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title" id="h4ChangeDepartmentTitle"><i class="fas fa-calendar-alt"></i> Change Status</h4>
+                    <button type="button" style="color: #fff" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="formChangeDepartmentStat">
+                    @csrf
+                    <div class="modal-body">
+                        <label id="lblChangeDepartmentStatLabel"></label>
+                        <input type="hidden" name="department_id" id="txtChangeDepartmentStatId">
+                        <input type="hidden" name="status" placeholder="Status" id="txtChangeDepartmentStat">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+                        <button type="submit" id="btnChangeDepartmentStat" class="btn btn-dark"><i id="iBtnChangeDepartmentStatIcon" class="fa fa-check"></i> Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- CHANGE DEPARTMENT STAT MODAL END -->
+
 @endsection
 
 <!-- {{-- JS CONTENT --}} -->
@@ -305,6 +391,7 @@
     <script type="text/javascript">
         let dataTableUsers;
         let dataTableFiscalYear;
+        let dataTableDepartment
         let arrSelectedUsers = [];
 
         $(document).ready(function () {
@@ -336,7 +423,8 @@
             // this will fetch <option> based on the uri called get_user_approver
             // then the controller will handle that uri to use specific method called get_user_approver() inside UserApproverController
             LoadRapidXUserList($('.sel-rapidx-user-list'));
-            LoadRapidXDepartmentList($('.sel-rapidx-department-list'));
+            // LoadRapidXDepartmentList($('.sel-rapidx-department-list'));
+            LoadDepartment($('.sel-department'));
             GetUserLevel($(".selectUserLevel"));
 
             dataTableUsers = $("#tblUsers").DataTable({
@@ -424,6 +512,26 @@
             });
 
             // FISCAL YEAR DATATABLE START
+            dataTableDepartment = $("#tblDepartment").DataTable({
+                "processing" : false,
+                "serverSide" : true,
+                "ajax" : {
+                    url: "view_department",
+                },
+                "columns":[
+                    { "data" : "department" },
+                    { "data" : "status" },
+                    { "data" : "action", orderable:false, searchable:false }
+                ],
+
+                "columnDefs": [{ 
+                    className: 'text-center', 
+                    targets: [0] 
+                },],
+
+            }); // FISCAL YEAR DATATABLES END
+
+            // FISCAL YEAR DATATABLE START
             dataTableFiscalYear = $("#tblFiscalYear").DataTable({
                 "processing" : false,
                 "serverSide" : true,
@@ -470,18 +578,47 @@
                 $("#txtChangeFiscalYearStatId").val(fiscalYearId); 
 
                 if(fiscalYearStat == 1){
-                    $("#lblChangeFiscalYearStatLabel").text('Are you sure to activate?'); 
-                    $("#h4ChangeFiscalYearTitle").html('<i class="fas fa-calendar-alt"></i> Activate Year');
-                }
-                else{
-                    $("#lblChangeFiscalYearStatLabel").text('Are you sure to deactivate?');
-                    $("#h4ChangeFiscalYearTitle").html('<i class="fas fa-calendar-alt"></i> Deactivate Year');
+                    $("#lblChangeFiscalYearStatLabel").text('Are you sure to lock the RCM Data?'); 
+                    $("#h4ChangeFiscalYearTitle").html('<i class="fas fa-calendar-alt"></i> Lock RCM');
                 }
             });
 
             $("#formChangeFiscalYearStat").submit(function(event){
                 event.preventDefault();
                 ChangeFiscalYearStatus();
+            });
+
+            $("#formDepartment").submit(function(event){
+                event.preventDefault(); // to stop the form submission
+                AddEditDepartment();
+            });
+
+            $(document).on('click', '.actionDepartment', function(){
+                let departmentId = $(this).attr('department-id'); 
+                $("#txtDepartmentId").val(departmentId);
+                GetDepartmentByIdToEdit(departmentId); 
+            });
+
+            //============================== CHANGE DEPARTMENT STATUS ==============================
+            $(document).on('click', '.actionChangeDepartmentStat', function(){
+                let departmentStat = $(this).attr('status'); 
+                let departmentId = $(this).attr('department-id'); 
+                $("#txtChangeDepartmentStat").val(departmentStat); 
+                $("#txtChangeDepartmentStatId").val(departmentId);
+                
+                if(departmentStat == 1){
+                    $("#lblChangeDepartmentStatLabel").text('Are you sure to activate?'); 
+                    $("#h4ChangeDepartmentTitle").html('<i class="fa fa-bookmark"></i> Activate');
+                }
+                else{
+                    $("#lblChangeDepartmentStatLabel").text('Are you sure to deactivate?');
+                    $("#h4ChangeDepartmentTitle").html('<i class="fa fa-bookmark"></i> Deactivate');
+                }
+            });
+
+            $("#formChangeDepartmentStat").submit(function(event){
+                event.preventDefault();
+                ChangeDepartmentStatus();
             });
 
         }); // JQUERY DOCUMENT READY END

@@ -109,6 +109,6 @@ class ExportClcController extends Controller
             $clc_reporting,
             $audit_period,
             $year
-        ), 'PMI CLC - '.'FY'.$year.' '. $audit_period_text.'.xlsx');
+        ), 'PMI CLC '.'(FY'.$year.')'.'.xlsx');
     }
 }

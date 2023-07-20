@@ -203,16 +203,11 @@ function ChangeFiscalYearStatus(){
         success: function(response){
 
             if(response['validation'] == 'hasError'){
-                toastr.error('Year activation failed!');
+                toastr.error('Lock RCM Data failed!');
             }else{
                 if(response['result'] == 1){
                     if($("#txtChangeFiscalYearStat").val() == 1){
-                        toastr.success('Year activation success!');
-                        $("#txtChangeFiscalYearStat").val() == 2;
-                    }
-                    else{
-                        toastr.success('Year deactivation success!');
-                        $("#txtChangeFiscalYearStat").val() == 1;
+                        toastr.success('Success!');
                     }
                 }
                 $("#modalChangeFiscalYearStat").modal('hide');
@@ -267,5 +262,100 @@ function GetFiscalYear(cboElement){
     });
 }
 
+function UpdatedAtFiscalYear(){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+    
+	$.ajax({
+        url: "edit_updated_at",
+        method: "post",
+        data: $('#formUpdatedAtFiscalYear').serialize(),
+        // data:  {
+        //     updated_at: selectFiscalYearDashboard
+        // },
+        dataType: "json",
+        beforeSend: function(){
+            $("#btnEditUpdatedAtFiscalYear").addClass('fa fa-spinner fa-pulse');
+        },
+        success: function(response){
+            if(response['validation'] == 'hasError'){
+                toastr.error('Show dashboard result failed!');
+            }else{
+                if(response['result'] == 1){
+                    toastr.success('Fiscal Year was succesfully saved!');
+                    window.location.reload();
+                }else{
+                    toastr.warning(response['tryCatchError']);
+                }
+            }
+
+            $("#btnEditUpdatedAtFiscalYear").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditUpdatedAtFiscalYear").addClass('fa fa-check');
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+            $("#btnEditUpdatedAtFiscalYear").removeClass('fa fa-spinner fa-pulse');
+            $("#btnEditUpdatedAtFiscalYear").addClass('fa fa-check');
+        }
+    });
+}
+
+//============================== EDIT FISCAL YEAR BY ID TO EDIT ==============================
+function GetActiveFiscalYear(activeFiscalYear){
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+
+    $.ajax({
+        url: "get_active_fiscal_year",
+        method: "get",
+        data: {
+            fiscal_year: activeFiscalYear
+        },
+        dataType: "json",
+        beforeSend: function(){    
+        },
+        success: function(response){
+            let active = response['get_year'];
+            console.log('active', active[0].fiscal_year)
+            setTimeout(() => {
+                $("#selFiscalYearDashboard").val(active[0].fiscal_year).trigger('change');
+            }, 420);
+
+        },
+        error: function(data, xhr, status){
+            toastr.error('An error occured!\n' + 'Data: ' + data + "\n" + "XHR: " + xhr + "\n" + "Status: " + status);
+        }
+    });
+}
 
 

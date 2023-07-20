@@ -96,6 +96,15 @@ Route::post('/edit_fiscal_year', 'FiscalYearController@edit_fiscal_year');
 Route::post('/change_fiscal_year_stat', 'FiscalYearController@change_fiscal_year_stat')->name('change_user_stat');
 Route::get('/load_fiscal_year_list', 'FiscalYearController@load_fiscal_year_list');
 Route::get('/search_fiscal_year', 'FiscalYearController@search_fiscal_year');
+Route::post('/edit_updated_at', 'FiscalYearController@edit_updated_at');
+Route::get('/get_active_fiscal_year', 'FiscalYearController@get_active_fiscal_year');
+
+//========================== DEPARTMENT CONTROLLER =============================//
+Route::get('/view_department', 'DepartmentController@view_department');
+Route::post('/add_edit_department', 'DepartmentController@add_edit_department')->name('add_edit_department');
+Route::get('/get_department_by_id', 'DepartmentController@get_department_by_id');
+Route::post('/change_department_stat', 'DepartmentController@change_department_stat')->name('change_department_stat');
+Route::get('/load_concerned_department', 'DepartmentController@load_concerned_department');
 
 //========================== PLC CATEGORY CONTROLLER =============================//
 Route::post('/add_plc_category', 'PlcCategoryController@add_plc_category');
@@ -147,8 +156,9 @@ Route::post('/edit_revision_history', 'PlcModulesController@edit_revision_histor
 Route::post('/edit_revision_history_conformance', 'PlcModulesController@edit_revision_history_conformance');
 Route::get('/load_user_management_rev', 'PlcModulesController@load_user_management_rev');
 Route::get('/load_user_management_process_owner', 'PlcModulesController@load_user_management_process_owner');
-Route::get('/load_concerned_department', 'PlcModulesController@load_concerned_department');
+Route::get('/load_user_management_process_owners', 'PlcModulesController@load_user_management_process_owners');
 Route::post('/change_plc_revision_history_stat', 'PlcModulesController@change_plc_revision_history_stat')->name('change_plc_revision_history_stat');
+Route::post('/change_plc_revision_history_conformance_stat', 'PlcModulesController@change_plc_revision_history_conformance_stat')->name('change_plc_revision_history_conformance_stat');
 
 //===========================PLC MODULES FLOW CHART CONTROLLER =============================
 Route::get('/view_plc_modules_flow_chart', 'PlcModulesFlowChartController@view_plc_modules_flow_chart');
@@ -185,6 +195,8 @@ Route::get('/get_sa_follow_up_to_edit', 'PlcModulesSaController@get_sa_follow_up
 Route::post('/edit_sa_follow_up', 'PlcModulesSaController@edit_sa_follow_up');
 Route::get('/get_sa_second_half_to_edit', 'PlcModulesSaController@get_sa_second_half_to_edit');
 Route::post('/edit_sa_second_half', 'PlcModulesSaController@edit_sa_second_half');
+Route::get('/view_plc_sa_record', 'PlcModulesSaController@view_plc_sa_record');
+Route::post('/edit_sa_department', 'PlcModulesSaController@edit_sa_department');
 
 //============================= SELECT PLC EVIDENCE CONTROLLER ================================
 Route::get('/view_select_plc_evidences', 'SelectPlcEvidenceController@view_select_plc_evidences');
@@ -257,7 +269,12 @@ Route::get('/view_plc_capa', 'PlcCapaController@view_plc_capa');
 Route::get('/get_plc_capa_id_to_edit', 'PlcCapaController@get_plc_capa_id_to_edit');
 Route::post('/edit_plc_capa', 'PlcCapaController@edit_plc_capa');
 Route::get('/load_jsox_user_list', 'PlcCapaController@load_jsox_user_list');
+Route::get('/get_rapidx_user', 'PlcCapaController@get_rapidx_user');
 
+Route::get('/view_plc_capa_result', 'PlcCapaController@view_plc_capa_result');
+Route::post('/add_edit_capa_result', 'PlcCapaController@add_edit_capa_result');
+Route::get('/get_capa_result_by_id', 'PlcCapaController@get_capa_result_by_id');
+Route::get('/download_file_capa_result/{id}', 'PlcCapaController@download_file_capa_result');
 
 Route::get('/export_capa/{year_id}/{fiscal_year_id}/{dept_id}', 'PlcCapaController@export_capa');
 
@@ -269,17 +286,21 @@ Route::get('/export_fcrp_clc_summary/{year_id}/{audit_period}', 'ExportFcrpClcCo
 
 Route::get('/export_summary/{year_id}/{select_category}/{select_audit_period}', 'ExportSummaryController@export_summary');
 
-Route::get('/get_ppc_section_data', 'AnalyticsController@get_ppc_section_data');
-Route::get('/get_ppc_whse_tscn_data', 'AnalyticsController@get_ppc_whse_tscn_data');
-Route::get('/get_ppc_whse_pps_data', 'AnalyticsController@get_ppc_whse_pps_data');
-Route::get('/get_finance_data', 'AnalyticsController@get_finance_data');
-Route::get('/get_logistics_data', 'AnalyticsController@get_logistics_data');
+// Route::get('/get_ppc_section_data', 'AnalyticsController@get_ppc_section_data');
+// Route::get('/get_ppc_whse_tscn_data', 'AnalyticsController@get_ppc_whse_tscn_data');
+// Route::get('/get_ppc_whse_pps_data', 'AnalyticsController@get_ppc_whse_pps_data');
+// Route::get('/get_finance_data', 'AnalyticsController@get_finance_data');
 
+
+Route::get('/get_all_ng_data', 'AnalyticsController@get_all_ng_data');
+Route::get('/get_cowide_data', 'AnalyticsController@get_cowide_data');
 Route::get('/export_ng_report/{year_id}/{dept_id}', 'AnalyticsController@export_ng_report');
 // Route::get('/view_pps_data', 'AnalyticsController@view_pps_data');
 Route::get('/view_logistics_data', 'AnalyticsController@view_logistics_data');
-
 Route::get('/get_data_for_chart_per_section', 'AnalyticsController@get_data_for_chart_per_section');
+Route::get('/get_total_ng_counts', 'AnalyticsController@get_total_ng_counts');
+Route::get('/view_plc_capa_data', 'AnalyticsController@view_plc_capa_data');
+Route::post('/save_audit_findings', 'AnalyticsController@save_audit_findings');
 
 // Import Controller
 Route::post('/import_pmi_clc', 'ImportController@import_pmi_clc');

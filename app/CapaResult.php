@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ViewLogsJsoxMatrix extends Model
+class CapaResult extends Model
 {
-    protected $table = 'view_logs_jsox_plc_matrices';
+    protected $table = 'capa_results';
     protected $connection = 'mysql';
 }

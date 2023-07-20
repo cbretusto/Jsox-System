@@ -50,15 +50,15 @@
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="tabPmiClcCategory" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="tabPmiCLC" data-toggle="tab" href="#pmiCLC" role="tab" aria-controls="pmiCLC" aria-selected="false" a-value="PMI CLC">PMI CLC</a>
+                                        <a class="nav-link active" id="tabPmiCLC" data-toggle="tab" href="#pmiCLC" role="tab" aria-controls="pmiCLC" aria-selected="false" a-value="PMI CLC" b-value="Export PMI CLC">PMI CLC</a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="nav-link" id="tabPmiFCRP" data-toggle="tab" href="#pmiFCRP" role="tab" aria-controls="pmiFCRP" aria-selected="true" a-value="PMI FCRP">PMI FCRP</a>
+                                        <a class="nav-link" id="tabPmiFCRP" data-toggle="tab" href="#pmiFCRP" role="tab" aria-controls="pmiFCRP" aria-selected="true" a-value="PMI FCRP" b-value="Export PMI FCRP">PMI FCRP</a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="nav-link" id="tabPmiItCLC" data-toggle="tab" href="#pmiItCLC" role="tab" aria-controls="pmiItCLC" aria-selected="true" a-value="PMI IT-CLC">PMI IT-CLC</a>
+                                        <a class="nav-link" id="tabPmiItCLC" data-toggle="tab" href="#pmiItCLC" role="tab" aria-controls="pmiItCLC" aria-selected="true" a-value="PMI IT-CLC" b-value="Export PMI IT-CLC">PMI IT-CLC</a>
                                     </li>
                                 </ul>
                                 
@@ -81,15 +81,18 @@
                                             </div>
                                         </div>
                                         <div>       
-                                            <button class="btn btn-info " data-toggle="modal" data-target="#" id="btnShowAddClcEvidencesModal" style="float: right;" value="PMI CLC"><i class="fa fa-plus"></i> <span>Add CLC Evidence</span> </button>
+                                            <button class="btn btn-dark ml-2" data-toggle="modal" data-target="#" id="btnShowAddClcEvidencesModal" style="float: right;" value="PMI CLC"><i class="fa fa-plus"></i> <span>Add CLC Evidence</span> </button>
+                                            
+                                            
+
                                         </div> <br><br>
 
                                         <div class="table responsive" style="height: 666px; overflow-y: scroll;">
                                             <table id="tblClcEvidences" class="table table-sm table-bordered table-striped table-hover" style="width: 100%;">
                                                 <thead>
                                                     <tr style="text-align:center">
-                                                    <th>Date Uploaded</th>
-                                                    <th>Fiscal Year & Audit Period</th>
+                                                    <th>Fiscal Year</th>
+                                                    <th>Audit Period</th>
                                                     <th>Category</th>
                                                     <th>CLC Uploaded File</th>
                                                     <th>Uploaded By</th>
@@ -235,7 +238,7 @@
                                             <div class="input-group-prepend w-50">
                                                 <span class="input-group-text w-100"><strong>Category:</strong></span>
                                             </div>
-                                            <input type="text" name="clc_category" id="txtEditClcCategory">
+                                            <input class="form-control" type="text" name="clc_category" id="txtEditClcCategory">
                                             
                                         </div>
                                     </div>
@@ -263,6 +266,8 @@
                     </div>
                 </div>
             </div><!-- EDIT MODAL END -->
+
+            
 
             
             
@@ -306,8 +311,8 @@
                 },
 
                 "columns":[
-                    { "data" : "date_uploaded" },
-                    { "data" : "fiscal_year_audit_period" },
+                    { "data" : "fiscal_year" },
+                    { "data" : "audit_period" },
                     { "data" : "clc_category" },
                     { "data" : "uploaded_file" },
                     { "data" : "uploaded_by" },
@@ -365,7 +370,7 @@
                 // READ ONLY
                 $("#txtEditFiscalYear").attr('disabled', 'disabled');
                 $("#selEditAuditPeriod").attr('disabled', 'disabled');
-                $("#selEditClcCategory").attr('disabled', 'disabled');
+                $("#txtEditClcCategory").attr('disabled', 'disabled');
                 $("#EditClcEvidenceFile").attr('disabled', 'disabled');
             });
                 // The EditClcCategory(); function is inside public/js/my_js/ClcCategory.js
@@ -418,14 +423,24 @@
             
             $(document).on('click', '#tabPmiCLC, #tabPmiFCRP, #tabPmiItCLC', function() {
                 let textAValue = $(this).attr('a-value');
+                let textBValue = $(this).attr('b-value');
 
                 $('#btnShowAddClcEvidencesModal span').html("Add "+textAValue)
                 $('#btnShowAddClcEvidencesModal').val(textAValue);
+
+                $('#btnShowExportClcFcrpItClcEvidencesModal span').html(textBValue)
+                $('#btnShowExportClcFcrpItClcEvidencesModal').val(textAValue);
+
                 dataTableClcEvidences.draw();
                 // console.log(btnValue);
                 // $('#modalAddClcEvidences').modal('show');
                 // $('#txtAddClcCategory').val(btnValue);
             });
+
+            $('#btnShowExportClcFcrpItClcEvidencesModal').on('click', function() {
+                let darrenSweetLover =  $('#btnShowExportClcFcrpItClcEvidencesModal').val();
+                $('#category').val(darrenSweetLover);
+            });   
 
             $(document).on('click', '#btnShowAddClcEvidencesModal', function() {
                 let btnValue = $(this).val();
@@ -433,7 +448,32 @@
                 // console.log(btnValue);
                 $('#modalAddClcEvidences').modal('show');
                 $('#txtAddClcCategory').val(btnValue);
+
             });
+
+            // $('#btnExportClcSummary').on('click', function(){
+            // // console.log($('#formViewWPRequest').serialize());
+            // let year_id = $('#selectYearId').val();
+            // let audit_period = $('#selectAuditPeriod').val();
+            // let category = $('#category').val();
+            // // let selected_month = $('#selectMonthId').val();
+
+            // if(category == 'PMI CLC'){
+            //     window.location.href = `export_clc_summary/${year_id}/${audit_period}`;
+            // }
+            // else if (category == 'PMI FCRP'){
+            //     window.location.href = `export_fcrp_clc_summary/${year_id}/${audit_period}`;
+            // }
+            // else{
+            //     window.location.href = `export_it_clc_summary/${year_id}/${audit_period}`;
+            // }
+            // console.log(year_id);
+            // // console.log(selected_month);
+            // $('#modalExportClcSummary').modal('hide');
+
+            // });
+
+            
 
         }); // JQUERY DOCUMENT READY END
     </script>                  

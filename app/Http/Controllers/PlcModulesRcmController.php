@@ -12,12 +12,17 @@ use DataTables;
 use App\RapidXUser;
 use App\PLCModuleSA;
 use App\PLCModuleRCM;
+use App\UserManagement;
 use App\PLCModuleRCMInternalControl;
 
 class PlcModulesRcmController extends Controller
 {
     public function view_plc_modules_rcm(Request $request)
     {
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        $get_user_level = UserManagement::where('rapidx_name', $rapidx_name)->get();
+
         $plc_module_rcm = PLCModuleRCM::where('category', $request->session)
         ->where('logdel', 0)
         ->get();
@@ -90,19 +95,23 @@ class PlcModulesRcmController extends Controller
             return $result;
         })
 
-        ->addColumn('action', function ($plc_module_rcm){
+        ->addColumn('action', function ($plc_module_rcm) use($get_user_level){
             $result = "";
             $result = "<center>";
-            if($plc_module_rcm->status == 1){
-                $result .= '<button class="m-r-15 text-muted btn actionGetRcmData" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalViewRcmData" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
-                $result .= '<br>';
-                if($plc_module_rcm->data_status == 0){
-                    $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionEditRcmData" style="width:105px;margin:2%;" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalEditRcmData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+            if($get_user_level[0]->user_level_id == 3){
+                if($plc_module_rcm->status == 1){
+                    // $result .= '<button class="m-r-15 text-muted btn actionGetRcmData" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalViewRcmData" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
+                    $result .= '<br>';
+                    if($plc_module_rcm->data_status == 0){
+                        $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionEditRcmData" style="width:105px;margin:2%;" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalEditRcmData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                    }
+                    // $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionEditRcmData" style="width:105px;margin:2%;" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalEditRcmData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+                    // $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangePlcRcmStat" style="width:105px;margin:2%;" plc_module_rcm-id="' . $plc_module_rcm->id . '" status="2" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-ban"></i>  Deactivate</button>&nbsp;';
+                }else{
+                    // $result .= '<button class="btn btn-success btn-sm text-center actionChangePlcRcmStat" plc_module_rcm-id="' . $plc_module_rcm->id . '"  status="1" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-check"></i>  Active</button>&nbsp;';
                 }
-                // $result .= '<button type="button" class="btn btn-primary btn-sm  text-center actionEditRcmData" style="width:105px;margin:2%;" rcm_data-id="' . $plc_module_rcm->id . '" data-toggle="modal" data-target="#modalEditRcmData" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
-                // $result .= '<button type="button" class="btn btn-danger btn-sm text-center actionChangePlcRcmStat" style="width:105px;margin:2%;" plc_module_rcm-id="' . $plc_module_rcm->id . '" status="2" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-ban"></i>  Deactivate</button>&nbsp;';
             }else{
-                // $result .= '<button class="btn btn-success btn-sm text-center actionChangePlcRcmStat" plc_module_rcm-id="' . $plc_module_rcm->id . '"  status="1" data-toggle="modal" data-target="#modalChangePlcRcmStat" data-keyboard="false"><i class ="nav-icon fa fa-check"></i>  Active</button>&nbsp;';
+                $result .= '<button class="m-r-15 text-muted btn" data-toggle="modal" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
             }
             $result .= '</center>';
             return $result;
@@ -366,13 +375,41 @@ class PlcModulesRcmController extends Controller
                         PLCModuleSA::insert([
                             $MultipleSa
                         ]);
-                    }else{
-                        // return "123";
                     }
+
+                    // if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
+                    //     $MultipleSa = [
+                    //         'logdel'        => $rcm_status,
+                    //         'category'      => $request->category_name,
+                    //         'rcm_id'        => $request->rcm_data_id,
+                    //         'rcm_internal_control_counter'       => $index,
+                    //         'fiscal_year'   => $request->fiscal_year,
+                    //         'updated_at'        => date('Y-m-d H:i:s'),
+                    //     ];
+
+                    //     PLCModuleSA::where('rcm_id', $request->rcm_data_id)
+                    //     ->update(
+                    //         $MultipleSa
+                    //     );
+                    // }else{
+                    //     if ($request->input("edit_control_id_$index") != null && $request->input("internal_control_$index") != null){
+                    //         $MultipleSa = [
+                    //             'logdel'        => $rcm_status,
+                    //             'category'      => $request->category_name,
+                    //             'rcm_id'        => $request->rcm_data_id,
+                    //             'rcm_internal_control_counter'       => $index,
+                    //             'fiscal_year'   => $request->fiscal_year,
+                    //             'updated_at'        => date('Y-m-d H:i:s'),
+                    //         ];
+
+                    //         PLCModuleSA::insert([
+                    //             $MultipleSa
+                    //         ]);
+                    //     }
+                    // }
                 }
             }else{ // Single Insert
                 PLCModuleRCMInternalControl::where('rcm_id', $request->rcm_data_id)->delete();
-                PLCModuleSA::where('rcm_id', $request->rcm_data_id)->delete();
                 $edit_rcm_internal_control = [
                     'rcm_id'            => $request->rcm_data_id,
                     'category'          => $request->category_name,
@@ -421,42 +458,41 @@ class PlcModulesRcmController extends Controller
                     PLCModuleSA::insert([
                         $SingleSa
                     ]);
-                }else{
                 }
 
+                // if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
+                //     $SingleSa = [
+                //         'logdel'        => $rcm_status,
+                //         'category'      => $request->category_name,
+                //         'rcm_id'        => $request->rcm_data_id,
+                //         'rcm_internal_control_counter'       => 0,
+                //         'fiscal_year'   => $request->fiscal_year,
+                //         'updated_at'        => date('Y-m-d H:i:s'),
+                //     ];
+
+                //     PLCModuleSA::where('rcm_id', $request->rcm_data_id)
+                //     ->update(
+                //         $SingleSa
+                //     );
+                // }else{
+                //     PLCModuleSA::where('rcm_id', $request->rcm_data_id)->delete();
+                //     if ($request->input("edit_control_id_0") != null && $request->input("internal_control_0") != null){
+                //         $SingleSa = [
+                //             'logdel'        => $rcm_status,
+                //             'category'      => $request->category_name,
+                //             'rcm_id'        => $request->rcm_data_id,
+                //             'rcm_internal_control_counter'       => 0,
+                //             'fiscal_year'   => $request->fiscal_year,
+                //             'updated_at'        => date('Y-m-d H:i:s'),
+                //         ];
+    
+                //         PLCModuleSA::insert([
+                //             $SingleSa
+                //         ]);
+                //     }
+                // }
             }//END RCM INTERNAL CONTROL
 
-               // // $PLCModuleRCM = PLCModuleRCM::where('id', $request->rcm_data_id)->get();
-                // // if($PLCModuleRCM[0]->edit_control_id != null && $PLCModuleRCM[0]->edit_internal_control != null){
-                // //     PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                // //     ->update([
-                // //         'control_no'        => $request->edit_control_id,
-                // //         'internal_control'  => $request->edit_internal_control,
-                // //         'key_control' => $request->edit_key_control,
-                // //         'it_control' => $request->edit_it_control,
-                // //     ]);
-                // // }
-                // // else{
-                // //     if(PLCModuleSA::where('rcm_id', $request->rcm_data_id)->exists()){
-                // //         PLCModuleSA::where('rcm_id', $request->rcm_data_id)
-                // //         ->update([
-                // //             'control_no'        => $request->edit_control_id,
-                // //             'internal_control'  => $request->edit_internal_control,
-                // //             'key_control' => $request->edit_key_control,
-                // //             'it_control' => $request->edit_it_control,
-                // //         ]);
-                // //     }else{
-                // //         PLCModuleSA::insert([
-                // //             'rcm_id'            => $request->rcm_data_id,
-                // //             'category'          => $request->category_name,
-                // //             'control_no'        => $request->edit_control_id,
-                // //             'internal_control'  => $request->edit_internal_control,
-                // //             'key_control'       => $request->edit_key_control,
-                // //             'it_control'        => $request->edit_it_control,
-                // //         ]);
-                // //     }
-                // // }
-            /*DB::commit();*/
             return response()->json(['result' => "1"]);
         }
     }
@@ -521,66 +557,76 @@ class PlcModulesRcmController extends Controller
 
         if($validator->passes()){
             $get_rcm_data = PLCModuleRCM::where('fiscal_year', $request->sel_fiscal_year)->where('category', $request->category_name)->where('logdel', 0)->get();
-            for ($i = 0; $i < count($get_rcm_data); $i++){
-                if($get_rcm_data[$i]->fiscal_year == $request->sel_fiscal_year){
-                    PLCModuleRCM::where('id', $get_rcm_data[$i]->id)->update(['data_status' => 1]);
-                }
-            }
-            
-            $copy_plc_rcm_data = $get_rcm_data->map(function($get_rcm_details) {
-                $get_rcm_details = array_except($get_rcm_details, 'id'); // Remove IDs to make insert() work
-                $get_rcm_details->fiscal_year = NOW()->format('Y');
-                $get_rcm_details->data_status = 0;
-                $get_rcm_details->created_at = date('Y-m-d H:i:s');
-                return $get_rcm_details;
-            })->toArray();
-            
-            for($x = 0; $x < count($copy_plc_rcm_data); $x++){
-                $insert_rcm = PLCModuleRCM::insertGetId($copy_plc_rcm_data[$x]);
-
-                $get_internal_control_data = PLCModuleRCM::with('rcm_info', 'sa_data_record')->where('fiscal_year', $request->sel_fiscal_year)->where('category', $request->category_name)->where('logdel', 0)->get();
-                $copy_internal_control_data = $get_internal_control_data[$x]->rcm_info->map(function($get_internal_control_details) use($insert_rcm){
-                    $get_internal_control_details = array_except($get_internal_control_details, 'id'); // Remove IDs to make insert() work
-                    $get_internal_control_details->rcm_id = $insert_rcm;
-                    $get_internal_control_details->created_at = date('Y-m-d H:i:s');
-                    return $get_internal_control_details;
+            $get_data_status = collect($get_rcm_data)->where('data_status', 1)->where('logdel', 0);
+            // return count($get_data_status);
+            // return count($get_rcm_data);
+            // for ($i = 0; $i < count($get_rcm_data); $i++){
+            //     if($get_rcm_data[$i]->fiscal_year == $request->sel_fiscal_year){
+            //         PLCModuleRCM::where('id', $get_rcm_data[$i]->id)->update(['data_status' => 1]);
+            //     }
+            // }
+            if(count($get_rcm_data) == count($get_data_status)){
+                $copy_plc_rcm_data = $get_rcm_data->map(function($get_rcm_details) {
+                    $get_rcm_details = array_except($get_rcm_details, 'id'); // Remove IDs to make insert() work
+                    $get_rcm_details->fiscal_year = NOW()->format('Y');
+                    $get_rcm_details->data_status = 0;
+                    $get_rcm_details->created_at = date('Y-m-d H:i:s');
+                    return $get_rcm_details;
                 })->toArray();
-                
-                for ($y = 0; $y < count($copy_internal_control_data); $y++) { 
-                    PLCModuleRCMInternalControl::insert($copy_internal_control_data[$y]);
+            
+                for($x = 0; $x < count($copy_plc_rcm_data); $x++){
+                    $insert_rcm = PLCModuleRCM::insertGetId($copy_plc_rcm_data[$x]);
 
-                    $get_rcm_data_for_sa = PLCModuleRCMInternalControl::where('rcm_id', $get_internal_control_data[$x]->id)->where('logdel', 0)->get();
-                    if ($get_rcm_data_for_sa[$y]->control_id != null && $get_rcm_data_for_sa[$y]->internal_control != null) {
-                        $add_sa_data = [
-                            'category'     => $get_rcm_data_for_sa[$y]->category,
-                            'rcm_id'       => $get_rcm_data_for_sa[$y]->rcm_id,
-                            'rcm_internal_control_counter'  => $get_rcm_data_for_sa[$y]->counter,
-                            'logdel'       => $get_rcm_data_for_sa[$y]->status,
-                            'fiscal_year'  => NOW()->format('Y'),
-                            'updated_at'   => date('Y-m-d H:i:s'),
-                        ];
+                    $get_internal_control_data = PLCModuleRCM::with('rcm_info', 'sa_data_record')->where('fiscal_year', $request->sel_fiscal_year)->where('category', $request->category_name)->where('logdel', 0)->get();
+                    $copy_internal_control_data = $get_internal_control_data[$x]->rcm_info->map(function($get_internal_control_details) use($insert_rcm){
+                        $get_internal_control_details = array_except($get_internal_control_details, 'id'); // Remove IDs to make insert() work
+                        $get_internal_control_details->rcm_id = $insert_rcm;
+                        $get_internal_control_details->created_at = date('Y-m-d H:i:s');
+                        return $get_internal_control_details;
+                    })->toArray();
+                    
+                    for ($y = 0; $y < count($copy_internal_control_data); $y++) { 
+                        PLCModuleRCMInternalControl::insert($copy_internal_control_data[$y]);
 
-                        PLCModuleSA::insert([
-                            $add_sa_data
-                        ]);
-                    }else{
+                        $get_rcm_data_for_sa = PLCModuleRCMInternalControl::where('rcm_id', $get_internal_control_data[$x]->id)->where('logdel', 0)->get();
+                        if ($get_rcm_data_for_sa[$y]->control_id != null && $get_rcm_data_for_sa[$y]->internal_control != null) {
+                            $add_sa_data = [
+                                'category'     => $get_rcm_data_for_sa[$y]->category,
+                                'rcm_id'       =>  $insert_rcm,
+                                'rcm_internal_control_counter'  => $get_rcm_data_for_sa[$y]->counter,
+                                'logdel'       => $get_rcm_data_for_sa[$y]->status,
+                                'fiscal_year'  => NOW()->format('Y'),
+                                'updated_at'   => date('Y-m-d H:i:s'),
+                            ];
 
+                            PLCModuleSA::insert([
+                                $add_sa_data
+                            ]);
+                        }
                     }
                 }
+                return response()->json(['result' => "1"]);
+            }else{
+                // echo "<script>";
+                // echo "alert('hello');";
+                // echo "</script>";
+                return response()->json(['result' => "0"]);
             }
 
-            // $qwe = PLCModuleRCM::where('fiscal_year', $request->sel_fiscal_year)->where('category', $request->category_name)->where('logdel', 0)->get();
-            // foreach ( $qwe as $asd ) { 
-            //     $zxc = new PLCModuleRCM();
-            //     $asd->fiscal_year = NOW()->format('Y');
-            //     $zxc = $asd->replicate();
-            //     $zxc->save();
-            // }
+            // // $qwe = PLCModuleRCM::where('fiscal_year', $request->sel_fiscal_year)->where('category', $request->category_name)->where('logdel', 0)->get();
+            // // foreach ( $qwe as $asd ) { 
+            // //     $zxc = new PLCModuleRCM();
+            // //     $asd->fiscal_year = NOW()->format('Y');
+            // //     $zxc = $asd->replicate();
+            // //     $zxc->save();
+            // // }
 
-            return response()->json(['result' => "1"]);
-        }else{
+        }
+        else{
             return response()->json(['validation' => "hasError", 'error' => $validator->messages()]);
         }
+        // return response()->json(['rcm_data_view' => $rcm_data_view]);  // pass the $user(variable) to ajax as a response for retrieving and pass the values on the inputs
+        // $get_rcm_data
     }
 
 }

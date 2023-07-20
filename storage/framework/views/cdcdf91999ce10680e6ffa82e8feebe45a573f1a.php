@@ -66,14 +66,14 @@
                                 <div class="tab-content table-responsive" id="tabjsoxPlcMatrices">
                                     <div class="tab-pane fade show active" id="matrixRecord" role="tabpanel" aria-labelledby="tabMatrixRecordRecord">
                                         <div style="float: right;">                   
-                                            <button class="btn btn-info mt-1" data-toggle="modal" data-target="#modalAddMatrix" id="btnShowAddMatrixModal"><i class="fa fa-plus"></i>  Add Matrix </button>
+                                            <button class="btn btn-info mt-1 myButton" data-toggle="modal" data-target="#modalAddMatrix" id="btnShowAddMatrixModal"><i class="fa fa-plus"></i>  Add Matrix </button>
                                         </div> <br><br>
                                         <div class="table responsive" style="height: 640px; overflow: scroll;">
                                             <table id="tblMatrix" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
                                                 <thead>
                                                     <tr>
                                                         <th rowspan="2">Status</th>
-                                                        <th rowspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                                        <th rowspan="2">Frequency</th>
                                                         <th colspan="3" class="bg-success">1st Test Assessment</th>
                                                         <th colspan="2" class="bg-primary">2nd Test Roll-forward / Follow-up</th>
                                                         <th rowspan="2">Action</th>
@@ -92,7 +92,7 @@
                                     
                                     <div class="tab-pane fade" id="jsoxPlcMatrix" role="tabpanel" aria-labelledby="tabJsoxPlcMatrix">
                                         <div style="float: right;">                   
-                                            <button class="btn btn-dark mt-1" data-toggle="modal" data-target="#modalAddJsoxPlcMatrix" id="btnShowAddJsoxPlcMatrixModal"><i class="fa fa-plus"></i>  Add Reference </button>
+                                            <button class="btn btn-dark mt-1 myButton" data-toggle="modal" data-target="#modalAddJsoxPlcMatrix" id="btnShowAddJsoxPlcMatrixModal"><i class="fa fa-plus"></i>  Add Reference </button>
                                         </div> <br><br>
                                         <div class="table responsive" style="height: 640px; overflow: scroll;">
                                             <table id="tblJsoxPlcMatrix" class="table table-sm table-bordered table-striped table-hover w-100" style="white-space: pre-wrap;">
@@ -295,8 +295,8 @@
                             <?php echo csrf_field(); ?>
                             <div class="modal-body">
                                 <label id="lblChangeMatrixStatLabel"></label>
-                                <input type="text" name="matrix_id" id="txtChangeMatrixId">
-                                <input type="text" name="status" id="txtChangeMatrixStat">
+                                <input type="hidden" name="matrix_id" id="txtChangeMatrixId">
+                                <input type="hidden" name="status" id="txtChangeMatrixStat">
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
@@ -595,7 +595,7 @@
                     { "data" : "process_name" },
                     { "data" : "control_no" },
                     // { "data" : "document" },
-                    { "data" : "documentsxz" },
+                    { "data" : "documents" },
                     { "data" : "frequency" },
                     { "data" : "samples" },
                     { "data" : "in_charge" },

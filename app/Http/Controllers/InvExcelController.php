@@ -26,6 +26,8 @@ class InvExcelController extends Controller
     public function export(Request $request, $id, $audit_year_id, $audit_fiscal_year_id)
     {
 
+        // return "BOBO";
+
         $first_half_affected_status_arr = array();
 
         for($y = 1; $y <= 36; $y++){
@@ -34,8 +36,8 @@ class InvExcelController extends Controller
             $first_half_assessment_status = "";
 
         $plc_module_sa_NG = PLCModuleSA::where([['category', '=', $y]])
-        ->where('year',$audit_year_id)
-        ->where('fiscal_year',$audit_fiscal_year_id)
+        ->where('fiscal_year',$audit_year_id)
+        // ->where('fiscal_year',$audit_fiscal_year_id)
         ->where(function($q){
                 $q->where('dic_status', '=', 'NG')
                 ->orWhere('oec_status', '=','NG');

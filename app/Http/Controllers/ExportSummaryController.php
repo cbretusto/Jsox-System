@@ -34,6 +34,7 @@ class ExportSummaryController extends Controller
             'concern_dept_sect_inchanrge_details'
 
         ])
+        ->where('fiscal_year', '<=',$year_id)
         ->where('logdel',0)
         ->where('category', '=',$select_category)
         // ->orderBy('revision_date', 'asc')
@@ -85,13 +86,16 @@ class ExportSummaryController extends Controller
         ->where('fiscal_year', $year_id)
         ->get();
 
+        // return $sa_details;
+
         $plc_category = $rev_history_details[0]->plc_category_details->plc_category;
 
         $conformance_data = RevisionHistoryConformance::with('conformance_details')
             ->where('category', '=',$select_category)
             ->get();
 
-        // return $sa_details;
+        $year = substr($year_id,2);
+
 
 
         $date = date('Ymd',strtotime(NOW()));
@@ -106,6 +110,6 @@ class ExportSummaryController extends Controller
             $conformance_data,
             $select_audit_period
 
-        ), $plc_category.'.xlsx');
+        ), $plc_category. ' FY'.$year.'.xlsx');
     }
 }

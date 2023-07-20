@@ -9,32 +9,42 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use App\PlcEvidences;
 use App\SelectPlcEvidence;
+use App\UserManagement;
 use App\RapidXUser;
+
 use DataTables;
 use Carbon\Carbon;
 
 class PlcEvidencesController extends Controller{
     public function view_plc_evidences()
     {
-        $plc_evidences = PlcEvidences::where('logdel', 0)->orderBy('id', 'desc')->get();
+        session_start();
+        $rapidx_name = $_SESSION['rapidx_name'];
+        $get_user_level = UserManagement::where('rapidx_name', $rapidx_name)->get();
+
+        $plc_evidences = PlcEvidences::where('logdel', 0)->get();
 
         return DataTables::of($plc_evidences)
 
-        ->addColumn('fiscal_year_audit_period', function($plc_evidences){
-            $result = "";
-            if($plc_evidences->fiscal_year != null && $plc_evidences->audit_period != null){
-                $result .= "FY ".$plc_evidences->fiscal_year."";
-                $result .= "\n" .$plc_evidences->audit_period. "";
-            }else{
-                $result .=  "iror 404 sheeesh";
-            }
-            return $result;
-        })
+        // ->addColumn('fiscal_year_audit_period', function($plc_evidences){
+        //     $result = "";
+        //     if($plc_evidences->fiscal_year != null && $plc_evidences->audit_period != null){
+        //         $result .= "FY ".$plc_evidences->fiscal_year."";
+        //         $result .= "\n" .$plc_evidences->audit_period. "";
+        //     }else{
+        //         $result .=  "iror 404 sheeesh";
+        //     }
+        //     return $result;
+        // })
 
-        ->addColumn('action',function($plc_evidences){
+        ->addColumn('action',function($plc_evidences) use($get_user_level){
             $result = "";
             $result = "<center>";
-            $result .= '<button class="btn btn-primary btn-sm  text-center actionEditPlcEvidences" plc_evidences-id="' . $plc_evidences->id . '" data-toggle="modal" data-target="#modalEditPlcEvidences" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+            if($get_user_level[0]->user_level_id == 3){
+                $result .= '<button class="btn btn-primary btn-sm  text-center actionEditPlcEvidences" plc_evidences-id="' . $plc_evidences->id . '" data-toggle="modal" data-target="#modalEditPlcEvidences" data-keyboard="false"><i class="nav-icon fas fa-edit"></i> Edit</button>&nbsp;';
+            }else{
+                $result .= '<button class="m-r-15 text-muted btn" data-toggle="modal" data-keyboard="false"><i class="fa fa-eye" style="color: #40E0D0;"></i> </button>&nbsp;';
+            }
             $result .= '</center>';
             return $result;
         })
@@ -53,16 +63,16 @@ class PlcEvidencesController extends Controller{
                 return $result;
         })
 
-        ->addColumn('updated_a1', function($plc_evidences){
-            $result = "";
-            $date =$plc_evidences->updated_at;
+        // ->addColumn('updated_a1', function($plc_evidences){
+        //     $result = "";
+        //     $date =$plc_evidences->updated_at;
 
-            if($date != null){
-                $result .= Carbon::parse($date)->format('M. d, Y');
-            }
+        //     if($date != null){
+        //         $result .= Carbon::parse($date)->format('M. d, Y');
+        //     }
 
-            return $result;
-        })
+        //     return $result;
+        // })
         ->addColumn('uploaded_by', function($plc_evidences){
                 $result = "";
             if ($plc_evidences->status == 0){
@@ -83,7 +93,13 @@ class PlcEvidencesController extends Controller{
             }
             return $result;
         })
-            ->rawColumns(['fiscal_year_audit_period', 'action','plc_evidences','updated_a1','uploaded_by', 'date_uploaded'])
+            ->rawColumns([
+                // 'fiscal_year_audit_period', 
+                'action',
+                'plc_evidences',
+                // 'updated_a1',
+                'uploaded_by', 
+                'date_uploaded'])
             ->make(true);
     }
 
@@ -114,8 +130,8 @@ class PlcEvidencesController extends Controller{
             }
                 return $result;
         })
-            ->rawColumns(['action','fiscal_year', 'plc_evidences'])
-            ->make(true);
+        ->rawColumns(['action','fiscal_year', 'plc_evidences'])
+        ->make(true);
     }
 
     // Chan March 16, 2022

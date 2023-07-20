@@ -111,14 +111,13 @@ function GetClcEvidencesByIdToEdit(clc_evidencesId){
         },
         
         success: function(response){
-            console.log(response);
-
             let clc_evidences_id = response['clc_evidences_id'];
+            console.log('clc_evidences_id', clc_evidences_id)
             if(clc_evidences_id.length > 0){
                 $("#txtEditDate").val(clc_evidences_id[0].date_uploaded);
                 $("#txtEditFiscalYear").val(clc_evidences_id[0].fiscal_year).trigger('change');
                 $("#selEditAuditPeriod").val(clc_evidences_id[0].audit_period).trigger('change');
-                $("#selEditClcCategory").val(clc_evidences_id[0].clc_category).trigger('change');
+                $("#txtEditClcCategory").val(clc_evidences_id[0].clc_category);
                 $("#EditClcEvidenceFile").val(clc_evidences_id[0].uploaded_file);
 
                 $('#modalEditClcEvidences').on('hide', function() {

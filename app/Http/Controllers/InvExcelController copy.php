@@ -12,6 +12,9 @@ use App\Exports\Sheets\audit_result;
 // use App\Model\FgsRecieve;
 // use App\Model\ReworkVisual;
 use App\PLCModuleSA;
+use App\PlcCategory;
+use App\PLCModuleRCMInternalControl;
+use App\PlcCapa;
 
 
 
@@ -26,346 +29,216 @@ class InvExcelController extends Controller
     public function export(Request $request, $id, $audit_year_id, $audit_fiscal_year_id)
     {
 
-        $first_half_affected_status_arr = array();
+            $plc_category = PlcCategory::where('status', 0)
+            ->get();
 
-        for($y = 1; $y <= 36; $y++){
-            $first_half_assessment_status_array = array();
-            $implode_test = "";
-            $first_half_assessment_status = "";
+            // return $plc_category;
 
-        $plc_module_sa_NG = PLCModuleSA::where([['category', '=', $y]])
-        ->where('year',$audit_year_id)
-        ->where('fiscal_year',$audit_fiscal_year_id)
-        ->where(function($q){
+            // return $audit_year_id;
+            $year = substr($audit_year_id,2);
+
+            $get_control_id = array();
+            $sa_ng_data = PLCModuleSA::with([
+                'plc_sa_dic_assessment_details_finding',
+                'plc_sa_oec_assessment_details_finding',
+                'plc_capa_details.capa_details'
+            ])
+            ->where('fiscal_year',$audit_year_id)
+            ->where(function($q){
                 $q->where('dic_status', '=', 'NG')
                 ->orWhere('oec_status', '=','NG');
-        })->get();
+                // ->orWhere('rf_status', '=', 'NG');
+                })
+            ->where('logdel', 0)
+            ->get();
 
-            if(count($plc_module_sa_NG) > 0){
-            $first_half_assessment_status_array = array();
+            // return $sa_ng_data;
 
-                for ( $u = 0; $u < count($plc_module_sa_NG); $u++){
-                    $first_half_assessment_status_array[$u] = $plc_module_sa_NG[$u]->control_no;
-                }
-
-                $implode_test = implode(',', $first_half_assessment_status_array);
-
-                $first_half_assessment_status = $implode_test;
-
-                array_push($first_half_affected_status_arr,$first_half_assessment_status);
-
-            }else{
-
-                array_push($first_half_affected_status_arr,$first_half_assessment_status);
+            for ($i=0; $i < count($sa_ng_data); $i++) {
+                $get_control_id[] = PLCModuleRCMInternalControl::where('rcm_id', $sa_ng_data[$i]->rcm_id)
+                ->where('counter', $sa_ng_data[$i]->rcm_internal_control_counter)
+                ->where('status', 0)->first();
+                // $get_control_id = $test[$i]->internal_control;
             }
-        }
 
-        // return $plc_module_sa_NG;
-        // return $first_half_affected_status_arr;
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
-            $fu_affected_internal_control_arr = array();
-
-            for($t = 1; $t <= 36; $t++){
-                $fu_affected_internal_control_array = array();
-                $imploded_fu = "";
-                $fu_affected_internal_control = "";
+            // return $get_control_id;
 
 
-                $plc_module_sa_rf = PLCModuleSA::where('category',$t)
-                ->where('year',$audit_year_id)
-                ->where('fiscal_year',$audit_fiscal_year_id)
-                ->where('rf_status', '!=', 'G')
-                ->where('logdel', 0)
+            $first_half_affected_status_arr = array();
+            $second_half_affected_status_arr = array();
+            $key_ctrl_arr = array();
+            $assessment_status = "";
+            $second_assessment_status = "";
+            $key_ctrl = "";
+
+            for($y = 1; $y <= 36; $y++){
+                $first_half_assessment_status_array = array();
+                $implode_test = "";
+                $first_half_assessment_status = "";
+
+    
+                $sa_data = PLCModuleSA::where([['category', '=', $y]])
+                ->where('fiscal_year',$audit_year_id)
+                ->where('logdel',0)
                 ->get();
+                
+
+                $first_half_assessment_status_array_dic = array();
+                $first_half_assessment_status_array_oec = array();
 
 
-                if(count($plc_module_sa_rf) > 0){
-                    for ( $a = 0; $a < count($plc_module_sa_rf); $a++){
-                        $fu_affected_internal_control_array[$a] = $plc_module_sa_rf[$a]->control_no;
+    
+                if(count($sa_data) > 0){
+                    $first_half_assessment_status_array_dic = array();
+    
+                    for ( $u = 0; $u < count($sa_data); $u++){
+                        // $first_half_assessment_status_array_dic[$u] = $sa_data[$u]->category;
+                        $first_half_assessment_status_array_dic[] = $sa_data[$u]->dic_status;
+                        $first_half_assessment_status_array_oec[] = $sa_data[$u]->oec_status;
+
+                        // return $plc_module_sa_NG[0]->dic_status;
+                        
                     }
 
-                    $imploded_fu = implode(',', $fu_affected_internal_control_array);
+                            if(in_array('NG',$first_half_assessment_status_array_dic) || in_array('NG',$first_half_assessment_status_array_oec)){
+                                $assessment_status = "No Good";
+                            }
+                            else if(in_array('G',$first_half_assessment_status_array_dic) || in_array('G',$first_half_assessment_status_array_oec)
+                            || in_array('G',$first_half_assessment_status_array_dic) && in_array('No Sample',$first_half_assessment_status_array_dic) 
+                            || in_array('G',$first_half_assessment_status_array_oec) && in_array('No Sample',$first_half_assessment_status_array_oec)
+                            || in_array('No Sample',$first_half_assessment_status_array_dic) && in_array('No Sample',$first_half_assessment_status_array_oec)){
+                                $assessment_status = "Good";
+                            }else{
+                                $assessment_status = "";
+                            }
+                            array_push($first_half_affected_status_arr,$assessment_status);
+                        // }
 
-                    $fu_affected_internal_control = $imploded_fu;
-
-                    array_push($fu_affected_internal_control_arr,$fu_affected_internal_control);
-
-                }else{
-                    array_push($fu_affected_internal_control_arr,$fu_affected_internal_control);
+                        
                 }
+                else{
+                    array_push($first_half_affected_status_arr,$assessment_status);
+                }
+                
             }
 
-            // return $fu_affected_internal_control_arr;
-            // return $first_half_assessment_status_array;
-            // return $first_half_affected_status_arr;
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
-        $yec_date_arr = array();
-
-        for($z = 1; $z <= 36; $z++){
-            $yec_date_array = array();
-            $imploded_yec_date = "";
-            $yec_date = "";
-
-
-            $plc_module_sa_yec_date = PLCModuleSA::where('category',$z)
-            ->where('year',$audit_year_id)
-            ->where('fiscal_year',$audit_fiscal_year_id)
-            // ->where('rf_status', '!=', 'G')
-            // ->where('logdel', 0)
-            ->get();
-
-            // return $plc_module_sa_yec_date;
-
-            if(count($plc_module_sa_yec_date) > 0){
-                for ( $v = 0; $v < count($plc_module_sa_yec_date); $v++){
-                    $yec_date_array[$v] = $plc_module_sa_yec_date[$v]->yec_approved_date;
-                }
-
-                // return $yec_date_array;
-
-                $imploded_yec_date = implode(',', $yec_date_array);
-
-                $yec_date = $imploded_yec_date;
-
-                array_push($yec_date_arr,$yec_date);
-
-            }else{
-                array_push($yec_date_arr,$yec_date);
-            }
-        }
-
-        // return $yec_date_arr;
-        // return $first_half_assessment_status_array;
-        // return $first_half_affected_status_arr;
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-            $plc_module_sa_concerned_dept = PLCModuleSA::
-            with(
-                'plc_categories',
-                'plc_sa_dic_assessment_details_finding',
-                'plc_sa_oec_assessment_details_finding'
-                )
-                ->where('year',$audit_year_id)
-                ->where('fiscal_year',$audit_fiscal_year_id)
-                ->where(function($q){
-                $q->where('dic_status', '!=', 'G')
-                ->orWhere('oec_status', '!=','G');
-            })->get();
-
-            $plc_module_rf_details = PLCModuleSA::with('plc_categories')
-            ->where('year',$audit_year_id)
-            ->where('fiscal_year',$audit_fiscal_year_id)
-            ->where('rf_status', '!=', 'G')
-            ->where('logdel', 0)
-            ->get();
-
-            // return $plc_module_sa_concerned_dept;
-
-            $plc_section = PLCModuleSA::
-            where('dic_status', '!=', 'G')
-            ->where('year',$audit_year_id)
-            ->where('fiscal_year',$audit_fiscal_year_id)
-            ->orWhere('oec_status', '!=','G')
-            ->distinct()
-            ->get('concerned_dept');
-
-            // return $plc_section;
-
-
-
-        // return $first_half_details_arr;
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        $status_check_array = array();
-        $second_half_status_check_array = array();
-        $assessment_status_array_dic = array();
-        $second_assessment_status_array = array();
-        $second_assessment_status_array_rf = array();
-        $second_assessment_status_array_fu = array();
-
-
-
-
-        for($x = 1; $x<= 36; $x++){
-
-            $plc_module_sa_category1 = PLCModuleSA::where('category', $x)
-            ->where('year',$audit_year_id)
-            ->where('fiscal_year',$audit_fiscal_year_id)
-            ->where('logdel', 0)
-            ->get();
-
-
-            $plc_module_sa = PLCModuleSA::where('category', $x)
-            ->where('year',$audit_year_id)
-            ->where('fiscal_year',$audit_fiscal_year_id)
-            ->where('logdel', 0)
-            ->get();
-
-            // return count($plc_module_sa);
-
-            $plc_sa_module_rf_status = PLCModuleSA::where('category', $x)
-            ->where('year',$audit_year_id)
-            ->where('fiscal_year',$audit_fiscal_year_id)
-            ->where('logdel', 0)
-            ->get();
-
-
-
-            $approver_status_array = array();
-            $second_half_approver_status_array = array();
-            $first_half_assessment_status_array_dic = array();
-            $first_half_assessment_status_array_oec = array();
-
-            $second_half_assessment_status_array =  array();
-            $second_half_assessment_rf_status_array =  array();
-            $second_half_assessment_fu_status_array =  array();
-
-
-            $status_check = "";
-            $assessment_status = "";
-            $second_half_status_check = "";
-
-            $second_assessment_status = "";
-            $second_assessment_status_rf = "";
-            $second_assessment_status_fu = "";
-
-
-            if(count($plc_module_sa_category1) > 0){
-
-                for ( $i = 0; $i < count($plc_module_sa_category1); $i++){
-                    $approver_status_array[] = $plc_module_sa_category1[$i]->approver_status;
-                    $second_half_approver_status_array[] = $plc_module_sa_category1[$i]->approver_status;
-                    $first_half_assessment_status_array_dic[] = $plc_module_sa_category1[$i]->dic_status;
-                    $first_half_assessment_status_array_oec[] = $plc_module_sa_category1[$i]->oec_status;
-                    $second_half_assessment_status_array[] = $plc_module_sa_category1[$i]->non_key_control;
-                    $second_half_assessment_rf_status_array[] = $plc_sa_module_rf_status[$i]->rf_status;
-                    $second_half_assessment_fu_status_array[] = $plc_module_sa_category1[$i]->fu_status;
-                }
-
-                // return $second_half_assessment_fu_status_array;
-
-                if(in_array('NG',$second_half_assessment_fu_status_array)){
-                    $second_assessment_status_fu = "Not Good";
-                }else if(in_array('G',$second_half_assessment_fu_status_array)){
-                    $second_assessment_status_fu = "Good";
-                }
-
-                // return $second_assessment_status_fu;
-
-                /////////////////////////////////////////////////////////////////////////////////////////
-
-                if(in_array('NG',$second_half_assessment_rf_status_array)){
-                    $second_assessment_status_rf = "Not Good";
-
-                }else if(in_array('G', $second_half_assessment_rf_status_array) && in_array(null,$second_half_assessment_rf_status_array)){
-                    $second_assessment_status_rf = "Good";
-
-                }else if(in_array(null, $second_half_assessment_rf_status_array)){
-                    $second_assessment_status_rf = "Not tested (non-key control)";
-
-                }else{
-                    $second_assessment_status_rf = "Good";
-                }
-
-                // return $second_assessment_status_rf;
-
-
-                if (in_array(0,$approver_status_array,TRUE)){
-                    $status_check = "0";
-                }else if (in_array(1,$approver_status_array,TRUE)){
-                    $status_check = "1";
-                }else if (in_array(2,$approver_status_array,TRUE)){
-                    $status_check = "2";
-                }
-
-                if (in_array(3,$second_half_approver_status_array,TRUE)){
-                    $second_half_status_check = "3";
-                    $status_check = "1";
-                    $status_check = "2";
-
-                }else if (in_array(4,$second_half_approver_status_array,TRUE)){
-                    $second_half_status_check = "4";
-                    $status_check = "1";
-                    $status_check = "2";
-                }
-
-                // return $status_check;
-
-                if (in_array('NG',$first_half_assessment_status_array_dic) || in_array('NG',$first_half_assessment_status_array_oec)){
-                    $assessment_status = "No Good";
-
-                } else if (in_array('G',$first_half_assessment_status_array_dic)){
-                    $assessment_status = "Good";
-                }
-
-
-                if (in_array('X',$second_half_assessment_status_array)){
-                    $second_assessment_status = "Not tested (non-key control)";
-                }
-
-
-
-                array_push($status_check_array, $status_check);
-                array_push($second_half_status_check_array,$second_half_status_check);
-                array_push($assessment_status_array_dic,$assessment_status);
-                array_push($second_assessment_status_array,$second_assessment_status);
-                array_push($second_assessment_status_array_rf,$second_assessment_status_rf);
-                array_push($second_assessment_status_array_fu,$second_assessment_status_fu);
-
-
-            }
-            else{
-
-                array_push($status_check_array, $status_check);
-                array_push($second_half_status_check_array,$second_half_status_check);
-                array_push($assessment_status_array_dic,$assessment_status);
-                array_push($second_assessment_status_array,$second_assessment_status);
-                array_push($second_assessment_status_array_rf,$second_assessment_status_rf);
-                array_push($second_assessment_status_array_fu,$second_assessment_status_fu);
-
-            }
-
-        }
-
-                // for($q= 0; $q < count($plc_module_sa); $q++){
-
-                //     $year = $plc_module_sa[$q]->year;
-                //     $result = substr("$year",2);
+            //2nd HALF
+
+            for($y = 1; $y <= 36; $y++){
+                $first_half_assessment_status_array = array();
+                $implode_test = "";
+                $first_half_assessment_status = "";
+
+    
+                $sa_data = PLCModuleSA::with([
+                    'rcm_info'
+                ])
+                ->where([['category', '=', $y]])
+                ->where('fiscal_year',$audit_year_id)
+                ->where('logdel',0)
+                ->get();
+    
+                // $test = array();
+    
+                // for ($i=0; $i < count($sa_data); $i++) {
+                //     $test[] = PLCModuleRCMInternalControl::where('rcm_id', $sa_data[$i]->rcm_id)
+                //     // ->where('category', 24)
+                //     ->where('counter', $sa_data[$i]->rcm_internal_control_counter)
+                //     ->where('status', 0)->first();
+                //     // $get_control_id = $test[$i]->internal_control;
                 // }
 
-                // return $plc_module_sa;
+                // return $test;
+                
+                $first_half_assessment_status_array_rf = array();
+                $key_ctrl_collect = array();
+                
 
-                // return $second_assessment_status_array_fu;
 
-            // print_r ($second_assessment_status_array);
+    
+                if(count($sa_data) > 0){
+                    $first_half_assessment_status_array_dic = array();
+    
+                    for ( $u = 0; $u < count($sa_data); $u++){
+                        $first_half_assessment_status_array_rf[] = $sa_data[$u]->rf_status;
+                        for ($x=0; $x <count($sa_data[$u]->rcm_info) ; $x++) { 
+                            $key_ctrl_collect[] = $sa_data[$u]->rcm_info[$x]->key_control;
+                        }
+                    }
+
+                           
+                            // else{
+                            //     $second_assessment_status = "Not tested(non-key control)";
+                            // }
+                            if(in_array('X',$key_ctrl_collect)){
+                                if(in_array('NG',$first_half_assessment_status_array_rf)){
+                                    $second_assessment_status = "No Good";
+                                }
+                                else if(in_array('G',$first_half_assessment_status_array_rf) || in_array('No Sample',$first_half_assessment_status_array_rf)){
+                                    $second_assessment_status = "Good";
+                                }
+                            }else{
+                                $second_assessment_status = "Not tested(non-key control)";
+
+                            }
+
+                            array_push($second_half_affected_status_arr,$second_assessment_status);
+
+                           
+                            
+                            array_push($key_ctrl_arr,$key_ctrl);
+
+                }
+                else{
+                    array_push($second_half_affected_status_arr,$second_assessment_status);
+                    array_push($key_ctrl_arr,$key_ctrl);
+
+                }
+
+                
+            }
+
+            // return $second_half_affected_status_arr;
+
+
+            $sa_rf_ng_data = PLCModuleSA::with(['plc_sa_rf_assessment_details_finding'])
+            ->where('fiscal_year',$audit_year_id)
+            ->where(function($q){
+                $q->where('rf_status', '=', 'NG');
+                })
+            ->where('logdel', 0)
+            ->get();
+
+            $get_2nd_half_id = array();
+
+            for ($i=0; $i < count($sa_rf_ng_data); $i++) {
+                $get_2nd_half_id[] = PLCModuleRCMInternalControl::where('rcm_id', $sa_rf_ng_data[$i]->rcm_id)
+                // ->where('category', 24)
+                ->where('counter', $sa_rf_ng_data[$i]->rcm_internal_control_counter)
+                ->where('status', 0)->first();
+                // $get_control_id = $test[$i]->internal_control;
+            }
+
+            // return $sa_rf_ng_data;
+
+            // return $get_plc_capa;
+    
+
             $date = date('Ymd',strtotime(NOW()));
             // return $date;
             return Excel::download(new UsersExports(
                 $date,
-                $plc_module_sa,
-                $status_check_array,
-                $assessment_status_array_dic,
-                $yec_date_arr,
-                $second_half_status_check_array,
-                $second_assessment_status_array,
+                $audit_fiscal_year_id,
+                $plc_category,
+                $sa_ng_data,
+                $sa_rf_ng_data,
                 $first_half_affected_status_arr,
-                $second_assessment_status_array_rf,
-                $fu_affected_internal_control_arr,
-                $second_assessment_status_array_fu,
-                $plc_module_sa_concerned_dept,
-                $plc_module_rf_details,
-                $plc_section,
-                $audit_fiscal_year_id
-                ), 'PMI FY PLC Audit Result.xlsx');
+                $get_control_id,
+                $second_half_affected_status_arr,
+                $get_2nd_half_id,
+                $key_ctrl_arr,
+                $year
+                ), 'PMI FY'.$year.' PLC Audit Result.xlsx');
             // return Excel::download(new audit_result($date,$plc_module_sa), 'PMI FY21 PLC Audit Result - '.$date.'.xlsx');
 
 
